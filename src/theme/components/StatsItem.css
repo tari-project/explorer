@@ -1,0 +1,12 @@
+.topbar-item-value {
+  font-family: 'AvenirHeavy', sans-serif !important;
+  font-size: 24px !important;
+  color: #fff;
+  text-align: center;
+}
+
+.topbar-item-label {
+  font-size: 12px !important;
+  color: #fff;
+  text-align: center;
+}
