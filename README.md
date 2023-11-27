@@ -1,4 +1,4 @@
-# Tari Blockchain Explorer Front-End
+# Tari Block Explorer
 
 ## Development
 
