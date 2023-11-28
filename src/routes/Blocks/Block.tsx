@@ -29,14 +29,14 @@ import Inputs from './Inputs';
 import Outputs from './Outputs';
 import Kernels from './Kernels';
 import { useLocation } from 'react-router-dom';
-import { useGetBlockByHeight } from '../../api/hooks/useBlocks';
+import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
 import FetchStatusCheck from '../../components/FetchStatusCheck';
 
 function Block() {
   const theme = useTheme();
   const { pathname } = useLocation();
   const blockHeight = pathname.split('/')[2];
-  const { isLoading, isError, error } = useGetBlockByHeight(blockHeight);
+  const { isLoading, isError, error } = useGetBlockByHeightOrHash(blockHeight);
 
   if (isLoading || isError) {
     return (

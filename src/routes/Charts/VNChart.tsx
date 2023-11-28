@@ -20,13 +20,28 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { QueryClient } from '@tanstack/react-query';
+import { Box, Typography } from '@mui/material';
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    },
-  },
-});
+const VNChart = () => {
+  return (
+    <Box>
+      <Typography variant="h6" gutterBottom>
+        VALIDATORS BY TIME
+      </Typography>
+      <Box
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: 265,
+        }}
+      >
+        <Typography variant="body2" gutterBottom>
+          Coming soon...
+        </Typography>
+      </Box>
+    </Box>
+  );
+};
+
+export default VNChart;

@@ -26,7 +26,7 @@ import {
   InnerHeading,
   TypographyData,
 } from '../../components/StyledComponents';
-import { useGetBlockByHeight } from '../../api/hooks/useBlocks';
+import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
 import {
   toHexString,
   shortenString,
@@ -36,7 +36,7 @@ import CopyToClipboard from '../../components/CopyToClipboard';
 import { useTheme } from '@mui/material/styles';
 
 function BlockInfo({ blockHeight }: { blockHeight: any }) {
-  const { data } = useGetBlockByHeight(blockHeight);
+  const { data } = useGetBlockByHeightOrHash(blockHeight);
   const theme = useTheme();
   const { header } = data ?? {};
   const items = [

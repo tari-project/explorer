@@ -109,7 +109,7 @@ function VNTable() {
         isLoading={isLoading}
       />
       {data?.activeVns.length === 0 && !isLoading && !isError ? (
-        <Alert severity="info">No active validator nodes</Alert>
+        <Alert severity="info">Coming Soon</Alert>
       ) : isMobile ? (
         <Mobile />
       ) : (

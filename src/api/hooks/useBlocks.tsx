@@ -53,28 +53,17 @@ export const useGetBlocksByParam = (from: number, limit: number) => {
   });
 };
 
-export const useGetBlockByHeight = (blockHeight: string) => {
+export const useGetBlockByHeightOrHash = (blockHeight: string) => {
   return useQuery({
     queryKey: ['block', blockHeight],
     queryFn: () =>
-      jsonRpc(`${address}/blocks/${blockHeight}?json`).then((resp) => {
-        return resp;
-      }),
+      jsonRpc(`${address}/blocks/${blockHeight}?json`, 'Block not found').then(
+        (resp) => {
+          return resp;
+        }
+      ),
     onError: (error: apiError) => {
       return error;
     },
   });
 };
-
-// export const useGetBlockByHeightOrHash = (query: any) => {
-//   return useQuery({
-//     queryKey: ['block', query],
-//     queryFn: () =>
-//       jsonRpc(`${address}/blocks/${query}?json`).then((resp) => {
-//         return resp;
-//       }),
-//     onError: (error: apiError) => {
-//       return error;
-//     },
-//   });
-// };

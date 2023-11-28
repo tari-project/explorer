@@ -21,14 +21,15 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { useState, useEffect } from 'react';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import { Button, Box, Container, Typography } from '@mui/material';
 import { useTheme, styled } from '@mui/material/styles';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
-import { useAllBlocks, useGetBlockByHeight } from '../../api/hooks/useBlocks';
+import {
+  useAllBlocks,
+  useGetBlockByHeightOrHash,
+} from '../../api/hooks/useBlocks';
+import { shortenString } from '../../utils/helpers';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -42,7 +43,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 function BlockHeader() {
   const { pathname } = useLocation();
   const heightOrHash = pathname.split('/')[2];
-  const { data } = useGetBlockByHeight(heightOrHash);
+  const { data, isFetching, isError } = useGetBlockByHeightOrHash(heightOrHash);
   const { data: tipInfo } = useAllBlocks();
   const [nextDisabled, setNextDisabled] = useState(false);
   const [prevDisabled, setPrevDisabled] = useState(false);
@@ -65,31 +66,62 @@ function BlockHeader() {
   return (
     <>
       <Container maxWidth="xl">
-        <Box
-          style={{
-            marginTop: theme.spacing(10),
-            marginBottom: theme.spacing(10),
-            color: theme.palette.text.primary,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: theme.spacing(1),
-          }}
-        >
-          <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
-            Block at Height
-          </Typography>
-          <Typography
-            variant="h1"
+        {data?.height ? (
+          <Box
             style={{
-              fontFamily: '"AvenirHeavy", sans-serif',
-              fontSize: 60,
+              marginTop: theme.spacing(10),
+              marginBottom: theme.spacing(10),
+              color: theme.palette.text.primary,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: theme.spacing(1),
             }}
           >
-            {data?.height}
-          </Typography>
-        </Box>
+            <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
+              Block at Height
+            </Typography>
+            <Typography
+              variant="h1"
+              style={{
+                fontFamily: '"AvenirHeavy", sans-serif',
+                fontSize: 60,
+              }}
+            >
+              {data?.height}
+            </Typography>
+          </Box>
+        ) : (
+          <Box
+            style={{
+              marginTop: theme.spacing(10),
+              marginBottom: theme.spacing(10),
+              color: theme.palette.text.primary,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: theme.spacing(1),
+            }}
+          >
+            <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
+              {isFetching && 'Searching...'}
+              {isError && 'Block not found'}
+            </Typography>
+            <Typography
+              variant="h1"
+              style={{
+                fontFamily: '"AvenirHeavy", sans-serif',
+                fontSize: 60,
+              }}
+            >
+              {heightOrHash.length > 30
+                ? shortenString(heightOrHash)
+                : heightOrHash}
+            </Typography>
+          </Box>
+        )}
       </Container>
       <Box
         style={{

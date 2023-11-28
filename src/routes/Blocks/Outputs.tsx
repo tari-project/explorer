@@ -30,7 +30,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useGetBlockByHeight } from '../../api/hooks/useBlocks';
+import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
 import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
@@ -39,7 +39,7 @@ import CopyToClipboard from '../../components/CopyToClipboard';
 import GridItem from './GridItem';
 
 function Outputs({ blockHeight }: { blockHeight: string }) {
-  const { data } = useGetBlockByHeight(blockHeight);
+  const { data } = useGetBlockByHeightOrHash(blockHeight);
   const [expanded, setExpanded] = useState<string | false>(false);
   const theme = useTheme();
 

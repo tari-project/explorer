@@ -23,9 +23,10 @@
 import { GradientPaper } from '../../components/StyledComponents';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container } from '@mui/material';
-import BlockTimes from '../Charts/BlockTimes';
-import HashRates from '../Charts/HashRates';
-import ProofOfWork from '../Charts/ProofOfWork';
+import BlockTimesChart from '../Charts/BlockTimesChart';
+import HashRatesChart from '../Charts/HashRatesChart';
+import POWChart from '../Charts/POWChart';
+import VNChart from '../Charts/VNChart';
 
 function Home() {
   const theme = useTheme();
@@ -41,17 +42,22 @@ function Home() {
       >
         <Grid item xs={12} md={12} lg={6}>
           <GradientPaper>
-            <BlockTimes />
+            <BlockTimesChart />
           </GradientPaper>
         </Grid>
         <Grid item xs={12} md={12} lg={6}>
           <GradientPaper>
-            <HashRates />
+            <HashRatesChart />
           </GradientPaper>
         </Grid>
         <Grid item xs={12} md={12} lg={6}>
           <GradientPaper>
-            <ProofOfWork />
+            <POWChart />
+          </GradientPaper>
+        </Grid>
+        <Grid item xs={12} md={12} lg={6}>
+          <GradientPaper>
+            <VNChart />
           </GradientPaper>
         </Grid>
       </Grid>

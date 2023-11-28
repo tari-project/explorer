@@ -26,15 +26,29 @@ import { useNavigate } from 'react-router-dom';
 import { IoSearch } from 'react-icons/io5';
 import { useTheme } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
+import SnackbarAlert from './SnackbarAlert';
 
 const SearchField = () => {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [open, setOpen] = React.useState(false);
+
+  const validateQuery = (query: string) => {
+    const height = parseInt(query);
+    const isHeight = !isNaN(height) && height >= 0;
+    const isHash = query.length === 64;
+    return isHeight || isHash;
+  };
 
   const handleSearch = () => {
     if (query === '') {
+      return;
+    }
+    if (!validateQuery(query)) {
+      setOpen(true);
+      setQuery('');
       return;
     }
     navigate(`/blocks/${query}`);
@@ -52,36 +66,39 @@ const SearchField = () => {
   };
 
   return (
-    <TextField
-      label="Search by height or hash"
-      style={
-        isMobile
-          ? {
-              width: '100%',
-            }
-          : {
-              width: 300,
-            }
-      }
-      value={query}
-      onChange={handleInputChange}
-      onKeyPress={handleKeyPress}
-      size="small"
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton
-              onClick={handleSearch}
-              style={{
-                borderRadius: 8,
-              }}
-            >
-              <IoSearch />
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
-    />
+    <>
+      <SnackbarAlert open={open} setOpen={setOpen} message="Invalid query" />
+      <TextField
+        label="Search by height or hash"
+        style={
+          isMobile
+            ? {
+                width: '100%',
+              }
+            : {
+                width: 300,
+              }
+        }
+        value={query}
+        onChange={handleInputChange}
+        onKeyPress={handleKeyPress}
+        size="small"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={handleSearch}
+                style={{
+                  borderRadius: 8,
+                }}
+              >
+                <IoSearch />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+    </>
   );
 };
 

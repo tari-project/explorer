@@ -20,8 +20,17 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-export async function jsonRpc(url: string) {
+export async function jsonRpc(url: string, error404?: string) {
   let response = await fetch(`${url}`);
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error(error404 || 'Not found');
+    }
+
+    throw new Error(`Request failed with status: ${response.status}`);
+  }
+
   let json = await response.json();
   return json;
 }
