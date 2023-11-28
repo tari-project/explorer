@@ -31,7 +31,7 @@ a {
 }
 
 .main-bg {
-  background-image: url('../assets/images/bg-gradient.png');
+  background: url('../assets/images/bg-gradient.png') no-repeat fixed top center;
   background-color: #0c0c0e;
 }
 
