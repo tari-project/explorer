@@ -21,35 +21,13 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { StyledPaper } from '../components/StyledComponents';
-import { Box, Grid } from '@mui/material';
-import BlockTable from './Blocks/BlockTable';
+import { Grid } from '@mui/material';
 import MempoolTable from './Mempool/MempoolTable';
 import VNTable from './VNs/VNTable';
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
 
 function BlockExplorerPage() {
   return (
     <>
-      <Grid item xs={12} md={12} lg={12}>
-        <StyledPaper>
-          <BlockTable />
-          <Box sx={{ flexGrow: 1 }}>
-            <Link
-              to="/blocks/"
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Button variant="contained" style={{ width: 175 }}>
-                View All Blocks
-              </Button>
-            </Link>
-          </Box>
-        </StyledPaper>
-      </Grid>
       <Grid item xs={12} md={12} lg={12}>
         <StyledPaper>
           <MempoolTable />

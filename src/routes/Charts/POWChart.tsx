@@ -24,6 +24,7 @@ import ReactEcharts from 'echarts-for-react';
 import { useTheme } from '@mui/material/styles';
 import { chartColor } from '../../theme/colors';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
+import { InnerHeading } from '../../components/StyledComponents';
 
 interface AlgoSplit {
   monero10: number;
@@ -74,15 +75,6 @@ const ProofOfWork = () => {
   };
 
   const option = {
-    title: {
-      text: 'PROOF OF WORK SPLIT',
-      textStyle: {
-        color: theme.palette.text.primary,
-        fontSize: theme.typography.h6.fontSize,
-        fontFamily: 'AvenirMedium',
-        fontWeight: 'normal',
-      },
-    },
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -106,12 +98,14 @@ const ProofOfWork = () => {
       textStyle: {
         color: theme.palette.text.primary,
       },
+      bottom: 10,
     },
     color: [chartColor[2], chartColor[3]],
     grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
+      left: '2%',
+      right: '2%',
+      bottom: '15%',
+      top: '5%',
       containLabel: true,
     },
     xAxis: {
@@ -176,7 +170,12 @@ const ProofOfWork = () => {
     ],
   };
 
-  return <ReactEcharts option={option} />;
+  return (
+    <>
+      <InnerHeading>Proof of Work Split</InnerHeading>
+      <ReactEcharts option={option} />
+    </>
+  );
 };
 
 export default ProofOfWork;

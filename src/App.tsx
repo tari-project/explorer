@@ -27,8 +27,8 @@ import BlocksPage from './routes/Blocks/BlocksPage';
 import MempoolPage from './routes/Mempool/MempoolPage';
 import VNPage from './routes/VNs/VNPage';
 import Block from './routes/Blocks/Block';
-
 import { Routes, Route } from 'react-router-dom';
+
 function App() {
   return (
     <>

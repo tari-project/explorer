@@ -26,7 +26,7 @@ import { Grid, Container } from '@mui/material';
 import BlockTimesChart from '../Charts/BlockTimesChart';
 import HashRatesChart from '../Charts/HashRatesChart';
 import POWChart from '../Charts/POWChart';
-import VNChart from '../Charts/VNChart';
+import BlockWidget from '../Blocks/BlockWidget';
 
 function Home() {
   const theme = useTheme();
@@ -42,22 +42,28 @@ function Home() {
       >
         <Grid item xs={12} md={12} lg={6}>
           <GradientPaper>
-            <BlockTimesChart />
+            <BlockWidget />
           </GradientPaper>
         </Grid>
-        <Grid item xs={12} md={12} lg={6}>
+        <Grid
+          item
+          xs={12}
+          md={12}
+          lg={6}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: theme.spacing(3),
+          }}
+        >
+          <GradientPaper>
+            <BlockTimesChart />
+          </GradientPaper>
           <GradientPaper>
             <HashRatesChart />
           </GradientPaper>
-        </Grid>
-        <Grid item xs={12} md={12} lg={6}>
           <GradientPaper>
             <POWChart />
-          </GradientPaper>
-        </Grid>
-        <Grid item xs={12} md={12} lg={6}>
-          <GradientPaper>
-            <VNChart />
           </GradientPaper>
         </Grid>
       </Grid>

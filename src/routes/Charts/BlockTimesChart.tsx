@@ -24,6 +24,7 @@ import ReactEcharts from 'echarts-for-react';
 import { useTheme } from '@mui/material/styles';
 import { chartColor } from '../../theme/colors';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
+import { InnerHeading } from '../../components/StyledComponents';
 
 const BlockTimes = () => {
   const { data } = useAllBlocks();
@@ -38,15 +39,6 @@ const BlockTimes = () => {
   }
 
   const option = {
-    title: {
-      text: 'BLOCK TIMES',
-      textStyle: {
-        color: theme.palette.text.primary,
-        fontSize: theme.typography.h6.fontSize,
-        fontFamily: 'AvenirMedium',
-        fontWeight: 'normal',
-      },
-    },
     tooltip: {
       trigger: 'axis',
     },
@@ -55,6 +47,7 @@ const BlockTimes = () => {
       textStyle: {
         color: theme.palette.text.primary,
       },
+      bottom: 10,
     },
     color: [
       chartColor[1],
@@ -64,9 +57,10 @@ const BlockTimes = () => {
       chartColor[5],
     ],
     grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
+      left: '2%',
+      right: '2%',
+      bottom: '15%',
+      top: '5%',
       containLabel: true,
     },
     xAxis: {
@@ -114,7 +108,12 @@ const BlockTimes = () => {
     ],
   };
 
-  return <ReactEcharts option={option} />;
+  return (
+    <>
+      <InnerHeading>Block Times</InnerHeading>
+      <ReactEcharts option={option} />
+    </>
+  );
 };
 
 export default BlockTimes;

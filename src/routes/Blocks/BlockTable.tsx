@@ -295,72 +295,92 @@ function BlockTable() {
 
   return (
     <>
-      <InnerHeading>Blocks</InnerHeading>
+      <InnerHeading>All Blocks</InnerHeading>
       {isMobile ? <Mobile /> : <Desktop />}
-
       <Divider />
-      <Grid container spacing={2} pl={2} pr={2} pb={2} pt={2}>
-        <Grid item xs={12} md={6}>
-          <Box
-            style={{
-              display: 'flex',
-              justifyContent: isMobile ? 'center' : 'flex-start',
-              alignItems: 'center',
-              gap: theme.spacing(1),
-            }}
-          >
-            <Typography variant="body2">Rows per page</Typography>
-            <ButtonGroup disableElevation variant="contained">
-              <Button
-                onClick={handleChange(10)}
-                style={
-                  selectedButton === 10
-                    ? { backgroundColor: theme.palette.primary.dark }
-                    : { backgroundColor: theme.palette.primary.main }
-                }
-              >
-                10
-              </Button>
-              <Button
-                onClick={handleChange(20)}
-                style={
-                  selectedButton === 20
-                    ? { backgroundColor: theme.palette.primary.dark }
-                    : { backgroundColor: theme.palette.primary.main }
-                }
-              >
-                20
-              </Button>
-              <Button
-                onClick={handleChange(50)}
-                style={
-                  selectedButton === 50
-                    ? { backgroundColor: theme.palette.primary.dark }
-                    : { backgroundColor: theme.palette.primary.main }
-                }
-              >
-                50
-              </Button>
-            </ButtonGroup>
-          </Box>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={6}
-          style={isMobile ? { textAlign: 'center' } : { textAlign: 'right' }}
+      <Box
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: theme.spacing(2),
+          gap: theme.spacing(2),
+          flexDirection: isMobile ? 'column' : 'row',
+        }}
+      >
+        <Typography variant="caption">
+          Showing blocks {firstHeight - blocksPerPage + 1} - {firstHeight}
+        </Typography>
+        <ButtonGroup
+          variant="contained"
+          disableElevation
+          size="small"
+          style={{ paddingRight: 20, paddingLeft: 20 }}
         >
-          <ButtonGroup variant="contained" disableElevation>
-            <Button onClick={handlePreviousPage} disabled={prevDisabled}>
-              Previous
+          <Button
+            onClick={handlePreviousPage}
+            disabled={prevDisabled}
+            style={{ paddingRight: 20, paddingLeft: 20 }}
+          >
+            Previous
+          </Button>
+          <Button
+            onClick={handleGoToTip}
+            style={{ paddingRight: 20, paddingLeft: 20 }}
+          >
+            Tip
+          </Button>
+          <Button
+            onClick={handleNextPage}
+            disabled={nextDisabled}
+            style={{ paddingRight: 20, paddingLeft: 20 }}
+          >
+            Next
+          </Button>
+        </ButtonGroup>
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: isMobile ? 'center' : 'flex-start',
+            alignItems: 'center',
+            gap: theme.spacing(1),
+          }}
+        >
+          <Typography variant="caption">Rows per page</Typography>
+          <ButtonGroup disableElevation variant="contained" size="small">
+            <Button
+              onClick={handleChange(10)}
+              style={
+                selectedButton === 10
+                  ? { backgroundColor: theme.palette.primary.dark }
+                  : { backgroundColor: theme.palette.primary.main }
+              }
+            >
+              10
             </Button>
-            <Button onClick={handleGoToTip}>Tip</Button>
-            <Button onClick={handleNextPage} disabled={nextDisabled}>
-              Next
+            <Button
+              onClick={handleChange(20)}
+              style={
+                selectedButton === 20
+                  ? { backgroundColor: theme.palette.primary.dark }
+                  : { backgroundColor: theme.palette.primary.main }
+              }
+            >
+              20
+            </Button>
+            <Button
+              onClick={handleChange(50)}
+              style={
+                selectedButton === 50
+                  ? { backgroundColor: theme.palette.primary.dark }
+                  : { backgroundColor: theme.palette.primary.main }
+              }
+            >
+              50
             </Button>
           </ButtonGroup>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </>
   );
 }
