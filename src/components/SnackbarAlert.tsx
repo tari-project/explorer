@@ -65,7 +65,12 @@ function SnackbarAlert({ open, setOpen, message }: SnackbarProps) {
         action={action}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleClose}
+          severity="error"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
           {message}
         </Alert>
       </Snackbar>

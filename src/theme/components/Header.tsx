@@ -44,7 +44,7 @@ function Header() {
     0
   );
   const average = sum / values.length;
-  const formattedAverageBlockTime = numeral(average).format('0') + 's';
+  const formattedAverageBlockTime = numeral(average).format('0') + 'm';
 
   const formattedBlockHeight = numeral(
     data?.tipInfo.metadata.height_of_longest_chain
