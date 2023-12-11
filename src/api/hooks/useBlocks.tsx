@@ -24,7 +24,7 @@ import { useQuery } from '@tanstack/react-query';
 import { apiError } from '../helpers/types';
 import { jsonRpc } from '../helpers/jsonRpc';
 
-const address = 'https://textexplore-stagenet.tari.com';
+const address = import.meta.env.VITE_ADDRESS;
 
 export const useAllBlocks = () => {
   return useQuery({
