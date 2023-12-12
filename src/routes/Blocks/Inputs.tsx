@@ -34,7 +34,7 @@ import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
 import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
-import { toHexString, shortenString } from '../../utils/helpers';
+import { shortenString } from '../../utils/helpers';
 import CopyToClipboard from '../../components/CopyToClipboard';
 
 function Inputs({ blockHeight }: { blockHeight: string }) {
@@ -43,17 +43,13 @@ function Inputs({ blockHeight }: { blockHeight: string }) {
   const theme = useTheme();
 
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
 
   const renderItems = data?.block.body.inputs.map(
     (input: any, index: number) => {
       const expandedPanel = `panel${index}`;
-      // const excessData = toHexString(input.excess.data);
-      // const hashData = toHexString(input.hash.data);
-      // const publicNonce = toHexString(input.excess_sig.public_nonce.data);
-      // const signature = toHexString(input.excess_sig.signature.data);
 
       return (
         <StyledAccordion
