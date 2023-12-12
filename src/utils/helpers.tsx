@@ -102,7 +102,6 @@ function emptyRows(page: number, rowsPerPage: number, array: any[]) {
 }
 
 function handleChangePage(
-  event: unknown,
   newPage: number,
   setPage: React.Dispatch<React.SetStateAction<number>>
 ) {

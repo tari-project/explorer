@@ -26,13 +26,7 @@ import {
   InnerHeading,
   TypographyData,
 } from '../../components/StyledComponents';
-import {
-  Typography,
-  Grid,
-  Divider,
-  ButtonGroup,
-  Skeleton,
-} from '@mui/material';
+import { Typography, Grid, Divider, ButtonGroup } from '@mui/material';
 import {
   toHexString,
   shortenString,
@@ -76,25 +70,6 @@ function BlockTable() {
       setNextDisabled(false);
     }
   }, [firstHeight]);
-
-  const Loading = () => {
-    const loadingItems = [];
-    const cellHeight = 42;
-    for (let i = 0; i < blocksPerPage; i++) {
-      loadingItems.push(
-        <Fragment key={i}>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <Grid item xs={126} style={{ height: cellHeight }}>
-            <Skeleton />
-          </Grid>
-        </Fragment>
-      );
-    }
-
-    return loadingItems;
-  };
 
   const handleChange = (value: number) => () => {
     setBlocksPerPage(value);

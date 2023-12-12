@@ -24,7 +24,6 @@ import { useState, Fragment } from 'react';
 import {
   InnerHeading,
   StyledAccordion,
-  TypographyData,
 } from '../../components/StyledComponents';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -33,9 +32,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
 import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
-import Divider from '@mui/material/Divider';
-import { toHexString, shortenString } from '../../utils/helpers';
-import CopyToClipboard from '../../components/CopyToClipboard';
+import { toHexString } from '../../utils/helpers';
 import GridItem from './GridItem';
 
 function Outputs({ blockHeight }: { blockHeight: string }) {
@@ -44,7 +41,7 @@ function Outputs({ blockHeight }: { blockHeight: string }) {
   const theme = useTheme();
 
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
 
