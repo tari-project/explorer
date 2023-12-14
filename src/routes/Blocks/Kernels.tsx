@@ -55,44 +55,44 @@ function Kernels({ blockHeight }: { blockHeight: string }) {
 
       const items = [
         {
-          label: 'Features:',
+          label: 'Features',
           value: content.features,
           copy: false,
         },
         {
-          label: 'Fee:',
+          label: 'Fee',
           value: content.fee,
           copy: false,
         },
         {
-          label: 'Lock Height:',
+          label: 'Lock Height',
           value: content.lock_height,
           copy: false,
         },
         {
-          label: 'Excess:',
+          label: 'Excess',
           value: excessData,
           copy: true,
         },
         {
-          label: 'Excess Sig:',
+          label: 'Excess Sig',
           copy: false,
           children: [
             {
-              label: 'Public Nonce:',
+              label: 'Public Nonce',
               value: publicNonce,
               copy: true,
             },
             {
-              label: 'Signature:',
+              label: 'Signature',
               value: signature,
               copy: true,
             },
           ],
         },
-        { label: 'Hash:', value: hashData, copy: true, header: false },
+        { label: 'Hash', value: hashData, copy: true, header: false },
         {
-          label: 'Version:',
+          label: 'Version',
           value: content.version,
           copy: false,
         },

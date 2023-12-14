@@ -50,7 +50,7 @@ function Outputs({ blockHeight }: { blockHeight: string }) {
       const expandedPanel = `panel${index}`;
       const items = [
         {
-          label: 'Features:',
+          label: 'Features',
           copy: false,
           children: [
             {
@@ -71,27 +71,27 @@ function Outputs({ blockHeight }: { blockHeight: string }) {
           ],
         },
         {
-          label: 'Commitment:',
+          label: 'Commitment',
           value: toHexString(content.commitment.data),
           copy: true,
         },
         {
-          label: 'Hash:',
+          label: 'Hash',
           value: toHexString(content.hash.data),
           copy: true,
         },
         {
-          label: 'Script:',
-          value: content.script.data,
-          copy: false,
+          label: 'Script',
+          value: toHexString(content.script.data),
+          copy: true,
         },
         {
-          label: 'Sender Offset Public Key:',
+          label: 'Sender Offset Public Key',
           value: toHexString(content.sender_offset_public_key.data),
           copy: true,
         },
         {
-          label: 'Metadata Signature:',
+          label: 'Metadata Signature',
           copy: false,
           children: [
             {
@@ -126,7 +126,7 @@ function Outputs({ blockHeight }: { blockHeight: string }) {
           ],
         },
         {
-          label: 'Covenant Version:',
+          label: 'Covenant Version',
           value: content.covenant.data,
           copy: false,
         },
