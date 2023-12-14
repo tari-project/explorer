@@ -24,7 +24,6 @@ import { useState, Fragment } from 'react';
 import {
   InnerHeading,
   StyledAccordion,
-  TypographyData,
 } from '../../components/StyledComponents';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -33,9 +32,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
 import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
-import Divider from '@mui/material/Divider';
-import { shortenString } from '../../utils/helpers';
-import CopyToClipboard from '../../components/CopyToClipboard';
+import { toHexString } from '../../utils/helpers';
+import GridItem from './GridItem';
 
 function Inputs({ blockHeight }: { blockHeight: string }) {
   const { data } = useGetBlockByHeightOrHash(blockHeight);
@@ -48,8 +46,156 @@ function Inputs({ blockHeight }: { blockHeight: string }) {
     };
 
   const renderItems = data?.block.body.inputs.map(
-    (input: any, index: number) => {
+    (content: any, index: number) => {
       const expandedPanel = `panel${index}`;
+      const items = [
+        {
+          label: 'Features',
+          copy: false,
+          children: [
+            {
+              label: 'Version',
+              value: content.features.version,
+              copy: false,
+            },
+            {
+              label: 'Output Type',
+              value: content.features.output_type,
+              copy: false,
+            },
+            {
+              label: 'Maturity',
+              value: content.features.maturity,
+              copy: false,
+            },
+          ],
+        },
+        {
+          label: 'Commitment',
+          value: toHexString(content.commitment.data),
+          copy: true,
+        },
+        {
+          label: 'Hash',
+          value: toHexString(content.hash.data),
+          copy: true,
+        },
+        {
+          label: 'Script',
+          value: content.script.data,
+          copy: false,
+        },
+        {
+          label: 'Input Data',
+          value: toHexString(content.input_data.data),
+          copy: true,
+        },
+        {
+          label: 'Sender Offset Public Key',
+          value: toHexString(content.sender_offset_public_key.data),
+          copy: true,
+        },
+        {
+          label: 'Script Signature',
+          copy: false,
+          children: [
+            {
+              label: 'Ephemeral commitment',
+              value: toHexString(
+                content.script_signature.ephemeral_commitment.data
+              ),
+              copy: true,
+            },
+            {
+              label: 'Ephemeral pubkey',
+              value: toHexString(
+                content.script_signature.ephemeral_pubkey.data
+              ),
+              copy: true,
+            },
+            {
+              label: 'u_a',
+              value: toHexString(content.script_signature.u_a.data),
+              copy: true,
+            },
+            {
+              label: 'u_x',
+              value: toHexString(content.script_signature.u_x.data),
+              copy: true,
+            },
+            {
+              label: 'u_y',
+              value: toHexString(content.script_signature.u_y.data),
+              copy: true,
+            },
+          ],
+        },
+        {
+          label: 'Output Hash',
+          value: toHexString(content.output_hash.data),
+          copy: true,
+        },
+        {
+          label: 'Covenant',
+          value: content.covenant.data,
+          copy: false,
+        },
+        {
+          label: 'Version',
+          value: content.version,
+          copy: false,
+        },
+        {
+          label: 'Encrypted Data',
+          value: toHexString(content.encrypted_data.data),
+          copy: true,
+        },
+        {
+          label: 'Minimum Value Promise',
+          value: content.minimum_value_promise,
+          copy: false,
+        },
+        {
+          label: 'Metadata Signature',
+          copy: false,
+          children: [
+            {
+              label: 'Ephemeral commitment',
+              value: toHexString(
+                content.metadata_signature.ephemeral_commitment.data
+              ),
+              copy: true,
+            },
+            {
+              label: 'Ephemeral pubkey',
+              value: toHexString(
+                content.metadata_signature.ephemeral_pubkey.data
+              ),
+              copy: true,
+            },
+            {
+              label: 'u_a',
+              value: toHexString(content.metadata_signature.u_a.data),
+              copy: true,
+            },
+            {
+              label: 'u_x',
+              value: toHexString(content.metadata_signature.u_x.data),
+              copy: true,
+            },
+            {
+              label: 'u_y',
+              value: toHexString(content.metadata_signature.u_y.data),
+              copy: true,
+            },
+          ],
+        },
+        {
+          label: 'Rangeproof Hash',
+          value: toHexString(content.rangeproof_hash.data),
+          copy: true,
+        },
+      ];
 
       return (
         <StyledAccordion
@@ -67,36 +213,44 @@ function Inputs({ blockHeight }: { blockHeight: string }) {
           </AccordionSummary>
           <AccordionDetails>
             <Grid container spacing={2}>
-              {[
-                {
-                  label: 'Features:',
-                  value: input.features,
-                  copy: false,
-                  header: false,
-                },
-              ].map((item, subIndex) => (
+              {items.map((item, subIndex) => (
                 <Fragment key={subIndex}>
-                  <Grid item xs={12}>
-                    <Divider color={theme.palette.background.paper} />
-                  </Grid>
-                  <Grid item xs={12} md={4} lg={4}>
-                    <Typography variant="body2">{item.label}</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={8} lg={8}>
-                    <TypographyData>
-                      {item.copy ? (
-                        <>
-                          {shortenString(item.value)}
-                          <CopyToClipboard
-                            copy={item.value}
-                            key={`${index}-${subIndex}-copy`}
-                          />
-                        </>
-                      ) : (
-                        item.value
+                  {item.children ? (
+                    <Fragment>
+                      {GridItem(
+                        theme,
+                        item.label,
+                        item.value,
+                        item.copy,
+                        index,
+                        subIndex,
+                        true
                       )}
-                    </TypographyData>
-                  </Grid>
+                      {item.children.map((child, innerIndex) => (
+                        <Fragment key={innerIndex}>
+                          {GridItem(
+                            theme,
+                            child.label,
+                            child.value,
+                            child.copy,
+                            index,
+                            subIndex,
+                            false
+                          )}
+                        </Fragment>
+                      ))}
+                    </Fragment>
+                  ) : (
+                    GridItem(
+                      theme,
+                      item.label,
+                      item.value,
+                      item.copy,
+                      index,
+                      subIndex,
+                      true
+                    )
+                  )}
                 </Fragment>
               ))}
             </Grid>
