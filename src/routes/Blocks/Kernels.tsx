@@ -20,24 +20,19 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { useState, Fragment } from 'react';
-import {
-  InnerHeading,
-  StyledAccordion,
-} from '../../components/StyledComponents';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useState } from 'react';
+import { InnerHeading } from '../../components/StyledComponents';
+import Box from '@mui/material/Box';
 import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
 import { useTheme } from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
 import { toHexString } from '../../utils/helpers';
-import GridItem from './GridItem';
+import Pagination from '@mui/material/Pagination';
+import GenerateAccordion from './GenerateAccordion';
 
 function Kernels({ blockHeight }: { blockHeight: string }) {
   const { data } = useGetBlockByHeightOrHash(blockHeight);
   const [expanded, setExpanded] = useState<string | false>(false);
+  const [page, setPage] = useState(1);
   const theme = useTheme();
 
   const handleChange =
@@ -45,128 +40,108 @@ function Kernels({ blockHeight }: { blockHeight: string }) {
       setExpanded(isExpanded ? panel : false);
     };
 
-  const renderItems = data?.block.body.kernels.map(
-    (content: any, index: number) => {
-      const expandedPanel = `panel${index}`;
-      const excessData = toHexString(content.excess.data);
-      const hashData = toHexString(content.hash.data);
-      const publicNonce = toHexString(content.excess_sig.public_nonce.data);
-      const signature = toHexString(content.excess_sig.signature.data);
+  const itemsPerPage = 5;
+  const totalItems = data?.block.body.kernels.length || 0;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedItems = data?.block.body.kernels.slice(startIndex, endIndex);
 
-      const items = [
-        {
-          label: 'Features',
-          value: content.features,
-          copy: false,
-        },
-        {
-          label: 'Fee',
-          value: content.fee,
-          copy: false,
-        },
-        {
-          label: 'Lock Height',
-          value: content.lock_height,
-          copy: false,
-        },
-        {
-          label: 'Excess',
-          value: excessData,
-          copy: true,
-        },
-        {
-          label: 'Excess Sig',
-          copy: false,
-          children: [
-            {
-              label: 'Public Nonce',
-              value: publicNonce,
-              copy: true,
-            },
-            {
-              label: 'Signature',
-              value: signature,
-              copy: true,
-            },
-          ],
-        },
-        { label: 'Hash', value: hashData, copy: true, header: false },
-        {
-          label: 'Version',
-          value: content.version,
-          copy: false,
-        },
-      ];
+  const renderItems = displayedItems?.map((content: any, index: number) => {
+    const adjustedIndex = startIndex + index;
+    const expandedPanel = `panel${adjustedIndex}`;
+    const excessData = toHexString(content.excess.data);
+    const hashData = toHexString(content.hash.data);
+    const publicNonce = toHexString(content.excess_sig.public_nonce.data);
+    const signature = toHexString(content.excess_sig.signature.data);
 
-      return (
-        <StyledAccordion
-          expanded={expanded === `panel${index}`}
-          onChange={handleChange(`panel${index}`)}
-          elevation={0}
-          key={index}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls={expandedPanel + '-content'}
-            id={expandedPanel + '-header'}
-          >
-            <Typography variant="h6">Kernel {index}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Grid container spacing={2}>
-              {items.map((item, subIndex) => (
-                <Fragment key={subIndex}>
-                  {item.children ? (
-                    <Fragment>
-                      {GridItem(
-                        theme,
-                        item.label,
-                        item.value,
-                        item.copy,
-                        index,
-                        subIndex,
-                        true
-                      )}
-                      {item.children.map((child, innerIndex) => (
-                        <Fragment key={innerIndex}>
-                          {GridItem(
-                            theme,
-                            child.label,
-                            child.value,
-                            child.copy,
-                            index,
-                            subIndex,
-                            false
-                          )}
-                        </Fragment>
-                      ))}
-                    </Fragment>
-                  ) : (
-                    GridItem(
-                      theme,
-                      item.label,
-                      item.value,
-                      item.copy,
-                      index,
-                      subIndex,
-                      true
-                    )
-                  )}
-                </Fragment>
-              ))}
-            </Grid>
-          </AccordionDetails>
-        </StyledAccordion>
-      );
-    }
-  );
+    const items = [
+      {
+        label: 'Features',
+        value: content.features,
+        copy: false,
+      },
+      {
+        label: 'Fee',
+        value: content.fee,
+        copy: false,
+      },
+      {
+        label: 'Lock Height',
+        value: content.lock_height,
+        copy: false,
+      },
+      {
+        label: 'Excess',
+        value: excessData,
+        copy: true,
+      },
+      {
+        label: 'Excess Sig',
+        copy: false,
+        children: [
+          {
+            label: 'Public Nonce',
+            value: publicNonce,
+            copy: true,
+          },
+          {
+            label: 'Signature',
+            value: signature,
+            copy: true,
+          },
+        ],
+      },
+      { label: 'Hash', value: hashData, copy: true, header: false },
+      {
+        label: 'Version',
+        value: content.version,
+        copy: false,
+      },
+    ];
+
+    return (
+      <GenerateAccordion
+        items={items}
+        adjustedIndex={adjustedIndex}
+        expanded={expanded}
+        handleChange={handleChange}
+        theme={theme}
+        expandedPanel={expandedPanel}
+        tabName="Kernel"
+        key={adjustedIndex}
+      />
+    );
+  });
+
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
 
   return (
     <>
-      <InnerHeading>
-        Kernels ({data?.block.body.kernels.length || 0})
-      </InnerHeading>
+      <InnerHeading>Kernels ({totalItems})</InnerHeading>
       {renderItems}
+      <Box
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: theme.spacing(2),
+        }}
+      >
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={handlePageChange}
+          showFirstButton
+          showLastButton
+          color="primary"
+          variant="outlined"
+        />
+      </Box>
     </>
   );
 }
