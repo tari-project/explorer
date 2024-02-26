@@ -237,6 +237,7 @@ function Inputs({ blockHeight }: { blockHeight: string }) {
           showFirstButton
           showLastButton
           color="primary"
+          variant="outlined"
         />
       </Box>
     </>

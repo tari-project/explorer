@@ -174,6 +174,7 @@ function Outputs({ blockHeight }: { blockHeight: string }) {
           showFirstButton
           showLastButton
           color="primary"
+          variant="outlined"
         />
       </Box>
     </>
