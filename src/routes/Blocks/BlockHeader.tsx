@@ -48,7 +48,7 @@ function BlockHeader() {
   const [nextDisabled, setNextDisabled] = useState(false);
   const [prevDisabled, setPrevDisabled] = useState(false);
   const theme = useTheme();
-  const tip = tipInfo?.tipInfo.metadata.height_of_longest_chain;
+  const tip = tipInfo?.tipInfo.metadata.best_block_height;
 
   useEffect(() => {
     if (data?.height === 0) {
