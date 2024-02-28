@@ -70,15 +70,17 @@ export default function TopBar() {
                 </Typography>
                 <Typography variant="body2">
                   <strong>Height:</strong>{' '}
-                  {data?.tipInfo?.metadata?.height_of_longest_chain}
+                  {data?.tipInfo?.metadata?.best_block_height}
                 </Typography>
                 <Typography variant="body2">
                   <strong>Best Block:</strong>{' '}
                   {shortenString(
-                    toHexString(data?.tipInfo.metadata.best_block.data)
+                    toHexString(data?.tipInfo.metadata.best_block_hash.data)
                   )}
                   <CopyToClipboard
-                    copy={toHexString(data?.tipInfo.metadata.best_block?.data)}
+                    copy={toHexString(
+                      data?.tipInfo.metadata.best_block_hash?.data
+                    )}
                   />
                 </Typography>
                 <Typography variant="body2">

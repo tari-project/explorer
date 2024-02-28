@@ -41,7 +41,7 @@ import { useMediaQuery } from '@mui/material';
 
 function BlockTable() {
   const { data: tipData } = useAllBlocks();
-  const tip = tipData?.tipInfo?.metadata?.height_of_longest_chain;
+  const tip = tipData?.tipInfo?.metadata?.best_block_height;
   const [blocksPerPage, setBlocksPerPage] = useState(10);
   const [page, setPage] = useState(1);
   const [firstHeight, setFirstHeight] = useState(tip || 0);

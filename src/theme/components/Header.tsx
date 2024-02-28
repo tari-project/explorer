@@ -47,7 +47,7 @@ function Header() {
   const formattedAverageBlockTime = numeral(average).format('0') + 'm';
 
   const formattedBlockHeight = numeral(
-    data?.tipInfo.metadata.height_of_longest_chain
+    data?.tipInfo.metadata.best_block_height
   ).format('0,0');
   const formattedMoneroHashRate =
     numeral(data?.currentMoneroHashRate).format('0.0 a') + 'H';
