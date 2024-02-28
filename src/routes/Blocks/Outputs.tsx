@@ -41,11 +41,11 @@ function Outputs({ blockHeight }: { blockHeight: string }) {
     };
 
   const itemsPerPage = 5;
-  const totalItems = data?.block.body.outputs.length || 0;
+  const totalItems = data?.body.outputs.length || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedItems = data?.block.body.outputs.slice(startIndex, endIndex);
+  const displayedItems = data?.body.outputs.slice(startIndex, endIndex);
 
   const renderItems = displayedItems?.map((content: any, index: number) => {
     const adjustedIndex = startIndex + index;
