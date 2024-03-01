@@ -67,3 +67,24 @@ export const useGetBlockByHeightOrHash = (blockHeight: string) => {
     },
   });
 };
+
+export const useGetPaginatedData = (
+  blockHeight: string,
+  what: string,
+  from: number,
+  to: number
+) => {
+  return useQuery({
+    queryKey: ['block', blockHeight, what, from, to],
+    queryFn: () =>
+      jsonRpc(
+        `${address}/block_data/${blockHeight}?what=${what}&from=${from.toString()}&to=${to.toString()}&json`,
+        'Block not found'
+      ).then((resp) => {
+        return resp;
+      }),
+    onError: (error: apiError) => {
+      return error;
+    },
+  });
+};

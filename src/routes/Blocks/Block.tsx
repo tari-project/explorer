@@ -79,13 +79,31 @@ function Block() {
             }}
           >
             <StyledPaper>
-              <Kernels blockHeight={blockHeight} />
+              <Kernels
+                blockHeight={blockHeight}
+                type="kernels"
+                title="Kernel"
+                dataLength="kernels_length"
+                itemsPerPage={5}
+              />
             </StyledPaper>
             <StyledPaper>
-              <Outputs blockHeight={blockHeight} />
+              <Outputs
+                blockHeight={blockHeight}
+                type="outputs"
+                title="Output"
+                dataLength="outputs_length"
+                itemsPerPage={5}
+              />
             </StyledPaper>
             <StyledPaper>
-              <Inputs blockHeight={blockHeight} />
+              <Inputs
+                blockHeight={blockHeight}
+                type="inputs"
+                title="Input"
+                dataLength="inputs_length"
+                itemsPerPage={5}
+              />
             </StyledPaper>
           </Grid>
         </Grid>
