@@ -23,16 +23,39 @@
 import { useState } from 'react';
 import { InnerHeading } from '../../components/StyledComponents';
 import Box from '@mui/material/Box';
-import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
+import {
+  useGetBlockByHeightOrHash,
+  useGetPaginatedData,
+} from '../../api/hooks/useBlocks';
 import { useTheme } from '@mui/material/styles';
 import { toHexString } from '../../utils/helpers';
 import Pagination from '@mui/material/Pagination';
 import GenerateAccordion from './GenerateAccordion';
+import FetchStatusCheck from '../../components/FetchStatusCheck';
 
-function Inputs({ blockHeight }: { blockHeight: string }) {
-  const { data } = useGetBlockByHeightOrHash(blockHeight);
-  const [expanded, setExpanded] = useState<string | false>(false);
+function Inputs({
+  blockHeight,
+  type,
+  title,
+  dataLength,
+  itemsPerPage,
+}: {
+  blockHeight: string;
+  type: string;
+  title: string;
+  dataLength: string;
+  itemsPerPage: number;
+}) {
   const [page, setPage] = useState(1);
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const { data: blockData } = useGetBlockByHeightOrHash(blockHeight);
+  const {
+    data: paginatedData,
+    isFetching,
+    isError,
+  } = useGetPaginatedData(blockHeight, type, startIndex, endIndex);
+  const [expanded, setExpanded] = useState<string | false>(false);
   const theme = useTheme();
 
   const handleChange =
@@ -40,12 +63,9 @@ function Inputs({ blockHeight }: { blockHeight: string }) {
       setExpanded(isExpanded ? panel : false);
     };
 
-  const itemsPerPage = 5;
-  const totalItems = data?.body.inputs.length || 0;
+  const totalItems = blockData?.body[dataLength] || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const displayedItems = data?.body.inputs.slice(startIndex, endIndex);
+  const displayedItems = paginatedData?.body.data;
 
   const renderItems = displayedItems?.map((content: any, index: number) => {
     const adjustedIndex = startIndex + index;
@@ -206,7 +226,7 @@ function Inputs({ blockHeight }: { blockHeight: string }) {
         handleChange={handleChange}
         theme={theme}
         expandedPanel={expandedPanel}
-        tabName="Input"
+        tabName={title}
         key={adjustedIndex}
       />
     );
@@ -219,9 +239,21 @@ function Inputs({ blockHeight }: { blockHeight: string }) {
     setPage(value);
   };
 
+  if (isFetching || isError) {
+    return (
+      <FetchStatusCheck
+        isLoading={isFetching}
+        isError={isError}
+        errorMessage="Error"
+      />
+    );
+  }
+
   return (
     <>
-      <InnerHeading>Inputs ({totalItems})</InnerHeading>
+      <InnerHeading>
+        {title}s ({totalItems})
+      </InnerHeading>
       {renderItems}
       <Box
         style={{

@@ -23,16 +23,39 @@
 import { useState } from 'react';
 import { InnerHeading } from '../../components/StyledComponents';
 import Box from '@mui/material/Box';
-import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
+import {
+  useGetBlockByHeightOrHash,
+  useGetPaginatedData,
+} from '../../api/hooks/useBlocks';
 import { useTheme } from '@mui/material/styles';
 import { toHexString } from '../../utils/helpers';
 import Pagination from '@mui/material/Pagination';
 import GenerateAccordion from './GenerateAccordion';
+import FetchStatusCheck from '../../components/FetchStatusCheck';
 
-function Kernels({ blockHeight }: { blockHeight: string }) {
-  const { data } = useGetBlockByHeightOrHash(blockHeight);
-  const [expanded, setExpanded] = useState<string | false>(false);
+function Kernels({
+  blockHeight,
+  type,
+  title,
+  dataLength,
+  itemsPerPage,
+}: {
+  blockHeight: string;
+  type: string;
+  title: string;
+  dataLength: string;
+  itemsPerPage: number;
+}) {
   const [page, setPage] = useState(1);
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const { data: blockData } = useGetBlockByHeightOrHash(blockHeight);
+  const {
+    data: paginatedData,
+    isFetching,
+    isError,
+  } = useGetPaginatedData(blockHeight, type, startIndex, endIndex);
+  const [expanded, setExpanded] = useState<string | false>(false);
   const theme = useTheme();
 
   const handleChange =
@@ -40,16 +63,14 @@ function Kernels({ blockHeight }: { blockHeight: string }) {
       setExpanded(isExpanded ? panel : false);
     };
 
-  const itemsPerPage = 5;
-  const totalItems = data?.body.kernels.length || 0;
+  const totalItems = blockData?.body[dataLength] || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const displayedItems = data?.body.kernels.slice(startIndex, endIndex);
+  const displayedItems = paginatedData?.body.data;
 
   const renderItems = displayedItems?.map((content: any, index: number) => {
     const adjustedIndex = startIndex + index;
     const expandedPanel = `panel${adjustedIndex}`;
+
     const excessData = toHexString(content.excess.data);
     const hashData = toHexString(content.hash.data);
     const publicNonce = toHexString(content.excess_sig.public_nonce.data);
@@ -108,7 +129,7 @@ function Kernels({ blockHeight }: { blockHeight: string }) {
         handleChange={handleChange}
         theme={theme}
         expandedPanel={expandedPanel}
-        tabName="Kernel"
+        tabName={title}
         key={adjustedIndex}
       />
     );
@@ -121,9 +142,21 @@ function Kernels({ blockHeight }: { blockHeight: string }) {
     setPage(value);
   };
 
+  if (isFetching || isError) {
+    return (
+      <FetchStatusCheck
+        isLoading={isFetching}
+        isError={isError}
+        errorMessage="Error"
+      />
+    );
+  }
+
   return (
     <>
-      <InnerHeading>Kernels ({totalItems})</InnerHeading>
+      <InnerHeading>
+        {title}s ({totalItems})
+      </InnerHeading>
       {renderItems}
       <Box
         style={{
