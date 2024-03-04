@@ -28,22 +28,20 @@ import {
   useGetPaginatedData,
 } from '../../api/hooks/useBlocks';
 import { useTheme } from '@mui/material/styles';
-import { toHexString } from '../../utils/helpers';
 import Pagination from '@mui/material/Pagination';
 import GenerateAccordion from './GenerateAccordion';
 import FetchStatusCheck from '../../components/FetchStatusCheck';
+import { inputItems } from './Data/Inputs';
+import { outputItems } from './Data/Outputs';
+import { kernelItems } from './Data/Kernels';
 
-function Outputs({
+function Inputs({
   blockHeight,
   type,
-  title,
-  dataLength,
   itemsPerPage,
 }: {
   blockHeight: string;
   type: string;
-  title: string;
-  dataLength: string;
   itemsPerPage: number;
 }) {
   const [page, setPage] = useState(1);
@@ -58,6 +56,36 @@ function Outputs({
   const [expanded, setExpanded] = useState<string | false>(false);
   const theme = useTheme();
 
+  let dataLength = '';
+  switch (type) {
+    case 'inputs':
+      dataLength = 'inputs_length';
+      break;
+    case 'outputs':
+      dataLength = 'outputs_length';
+      break;
+    case 'kernels':
+      dataLength = 'kernels_length';
+      break;
+    default:
+      break;
+  }
+
+  let title = '';
+  switch (type) {
+    case 'inputs':
+      title = 'Input';
+      break;
+    case 'outputs':
+      title = 'Output';
+      break;
+    case 'kernels':
+      title = 'Kernel';
+      break;
+    default:
+      break;
+  }
+
   const handleChange =
     (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -68,92 +96,22 @@ function Outputs({
   const displayedItems = paginatedData?.body.data;
 
   const renderItems = displayedItems?.map((content: any, index: number) => {
-    const adjustedIndex = startIndex + index;
+    const adjustedIndex = startIndex + 1 + index;
     const expandedPanel = `panel${adjustedIndex}`;
-
-    const items = [
-      {
-        label: 'Features',
-        copy: false,
-        children: [
-          {
-            label: 'Version',
-            value: content.features.version,
-            copy: false,
-          },
-          {
-            label: 'Output Type',
-            value: content.features.output_type,
-            copy: false,
-          },
-          {
-            label: 'Maturity',
-            value: content.features.maturity,
-            copy: false,
-          },
-        ],
-      },
-      {
-        label: 'Commitment',
-        value: toHexString(content.commitment.data),
-        copy: true,
-      },
-      {
-        label: 'Hash',
-        value: toHexString(content.hash.data),
-        copy: true,
-      },
-      {
-        label: 'Script',
-        value: toHexString(content.script.data),
-        copy: true,
-      },
-      {
-        label: 'Sender Offset Public Key',
-        value: toHexString(content.sender_offset_public_key.data),
-        copy: true,
-      },
-      {
-        label: 'Metadata Signature',
-        copy: false,
-        children: [
-          {
-            label: 'Ephemeral commitment',
-            value: toHexString(
-              content.metadata_signature.ephemeral_commitment.data
-            ),
-            copy: true,
-          },
-          {
-            label: 'Ephemeral pubkey',
-            value: toHexString(
-              content.metadata_signature.ephemeral_pubkey.data
-            ),
-            copy: true,
-          },
-          {
-            label: 'u_a',
-            value: toHexString(content.metadata_signature.u_a.data),
-            copy: true,
-          },
-          {
-            label: 'u_x',
-            value: toHexString(content.metadata_signature.u_x.data),
-            copy: true,
-          },
-          {
-            label: 'u_y',
-            value: toHexString(content.metadata_signature.u_y.data),
-            copy: true,
-          },
-        ],
-      },
-      {
-        label: 'Covenant Version',
-        value: content.covenant.data,
-        copy: false,
-      },
-    ];
+    let items: any[] = [];
+    switch (type) {
+      case 'inputs':
+        items = inputItems(content);
+        break;
+      case 'outputs':
+        items = outputItems(content);
+        break;
+      case 'kernels':
+        items = kernelItems(content);
+        break;
+      default:
+        break;
+    }
 
     return (
       <GenerateAccordion
@@ -199,18 +157,20 @@ function Outputs({
           marginTop: theme.spacing(2),
         }}
       >
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={handlePageChange}
-          showFirstButton
-          showLastButton
-          color="primary"
-          variant="outlined"
-        />
+        {totalItems > itemsPerPage && (
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+            showFirstButton
+            showLastButton
+            color="primary"
+            variant="outlined"
+          />
+        )}
       </Box>
     </>
   );
 }
 
-export default Outputs;
+export default Inputs;

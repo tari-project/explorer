@@ -20,53 +20,58 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
+import { toHexString } from '../../../utils/helpers';
 
-interface HeaderTitleProps {
-  title: string;
-  subTitle?: string;
-}
+export const kernelItems = (content: any) => {
+  const items = [
+    {
+      label: 'Features',
+      value: content.features,
+      copy: false,
+    },
+    {
+      label: 'Fee',
+      value: content.fee,
+      copy: false,
+    },
+    {
+      label: 'Lock Height',
+      value: content.lock_height,
+      copy: false,
+    },
+    {
+      label: 'Excess',
+      value: toHexString(content.excess.data),
+      copy: true,
+    },
+    {
+      label: 'Excess Sig',
+      copy: false,
+      children: [
+        {
+          label: 'Public Nonce',
+          value: toHexString(content.excess_sig.public_nonce.data),
+          copy: true,
+        },
+        {
+          label: 'Signature',
+          value: toHexString(content.excess_sig.signature.data),
+          copy: true,
+        },
+      ],
+    },
+    {
+      label: 'Hash',
+      value: toHexString(content.hash.data),
+      copy: true,
+      header: false,
+    },
+    {
+      label: 'Version',
+      value: content.version,
+      copy: false,
+    },
+  ];
 
-function HeaderTitle({ title, subTitle }: HeaderTitleProps) {
-  const theme = useTheme();
-
-  return (
-    <>
-      <Container maxWidth="xl">
-        <Box
-          style={{
-            marginTop: theme.spacing(14),
-            marginBottom: theme.spacing(12),
-            color: theme.palette.text.primary,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: theme.spacing(1),
-          }}
-        >
-          <Typography
-            variant="h1"
-            style={{
-              fontFamily: '"AvenirHeavy", sans-serif',
-              fontSize: 60,
-            }}
-          >
-            {title}
-          </Typography>
-          <Typography
-            variant="body2"
-            style={{ textTransform: 'uppercase', letterSpacing: '1.3px' }}
-          >
-            {subTitle}
-          </Typography>
-        </Box>
-      </Container>
-    </>
-  );
-}
-
-export default HeaderTitle;
+  return items;
+};

@@ -20,53 +20,54 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
+import { StyledPaper } from '../../components/StyledComponents';
+import { Grid } from '@mui/material';
+import { useLocation } from 'react-router-dom';
+import { useSearchByKernel } from '../../api/hooks/useBlocks';
+import FetchStatusCheck from '../../components/FetchStatusCheck';
+import BlockTable from './BlockTable';
 
-interface HeaderTitleProps {
-  title: string;
-  subTitle?: string;
-}
+function KernelsPage() {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
 
-function HeaderTitle({ title, subTitle }: HeaderTitleProps) {
-  const theme = useTheme();
+  const noncesParams = params.get('nonces');
+  const nonces = noncesParams ? noncesParams.split(',') : [];
+
+  const signaturesParams = params.get('signatures');
+  const signatures = signaturesParams ? signaturesParams.split(',') : [];
+
+  const { data, isLoading, isError, error } = useSearchByKernel(
+    nonces,
+    signatures
+  );
+
+  if (isLoading || isError) {
+    return (
+      <Grid item xs={12} md={12} lg={12}>
+        <StyledPaper>
+          <FetchStatusCheck
+            isError={isError}
+            isLoading={isLoading}
+            errorMessage={error?.message || 'Error retrieving data'}
+          />
+        </StyledPaper>
+      </Grid>
+    );
+  }
+
+  // if (data?.items.length === 1) {
+  //   const blockHeight = data.items[0].block.header.height;
+  //   window.location.replace(`/blocks/${blockHeight}`);
+  // }
 
   return (
-    <>
-      <Container maxWidth="xl">
-        <Box
-          style={{
-            marginTop: theme.spacing(14),
-            marginBottom: theme.spacing(12),
-            color: theme.palette.text.primary,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: theme.spacing(1),
-          }}
-        >
-          <Typography
-            variant="h1"
-            style={{
-              fontFamily: '"AvenirHeavy", sans-serif',
-              fontSize: 60,
-            }}
-          >
-            {title}
-          </Typography>
-          <Typography
-            variant="body2"
-            style={{ textTransform: 'uppercase', letterSpacing: '1.3px' }}
-          >
-            {subTitle}
-          </Typography>
-        </Box>
-      </Container>
-    </>
+    <Grid item xs={12} md={12} lg={12}>
+      <StyledPaper>
+        <BlockTable data={data?.items || []} />
+      </StyledPaper>
+    </Grid>
   );
 }
 
-export default HeaderTitle;
+export default KernelsPage;
