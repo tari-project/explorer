@@ -24,6 +24,7 @@ import { Box, Container, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useLocation } from 'react-router-dom';
 import { useSearchByKernel } from '../../api/hooks/useBlocks';
+import { useMediaQuery } from '@mui/material';
 
 function KernelHeader() {
   const location = useLocation();
@@ -41,6 +42,7 @@ function KernelHeader() {
   );
 
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   let status = '';
   switch (true) {
@@ -59,33 +61,35 @@ function KernelHeader() {
 
   return (
     <>
-      <Container maxWidth="xl">
-        <Box
-          style={{
-            marginTop: theme.spacing(10),
-            marginBottom: theme.spacing(10),
-            color: theme.palette.text.primary,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: theme.spacing(1),
-          }}
-        >
-          <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
-            Kernel Search
-          </Typography>
-          <Typography
-            variant="h1"
+      {!isMobile ? (
+        <Container maxWidth="xl">
+          <Box
             style={{
-              fontFamily: '"AvenirHeavy", sans-serif',
-              fontSize: 40,
+              marginTop: theme.spacing(10),
+              marginBottom: theme.spacing(10),
+              color: theme.palette.text.primary,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: theme.spacing(1),
             }}
           >
-            {status}
-          </Typography>
-        </Box>
-      </Container>
+            <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
+              Kernel Search
+            </Typography>
+            <Typography
+              variant="h1"
+              style={{
+                fontFamily: '"AvenirHeavy", sans-serif',
+                fontSize: 40,
+              }}
+            >
+              {status}
+            </Typography>
+          </Box>
+        </Container>
+      ) : null}
     </>
   );
 }

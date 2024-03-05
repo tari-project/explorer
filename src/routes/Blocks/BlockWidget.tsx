@@ -115,13 +115,11 @@ function BlockWidget() {
               </Grid>
 
               <Grid item xs={12}>
-                <Button
-                  onClick={() => window.open(`/blocks/${block.height}`)}
-                  variant="outlined"
-                  fullWidth
-                >
-                  View Block
-                </Button>
+                <Link to={`/blocks/${block.height}`}>
+                  <Button variant="outlined" fullWidth>
+                    View Block
+                  </Button>
+                </Link>
               </Grid>
               <Grid item xs={12}>
                 <Divider

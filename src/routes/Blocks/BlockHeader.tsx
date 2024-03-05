@@ -21,7 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { useState, useEffect } from 'react';
-import { Button, Box, Container, Typography } from '@mui/material';
+import { Button, Box, Container, Typography, IconButton } from '@mui/material';
 import { useTheme, styled } from '@mui/material/styles';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
@@ -30,6 +30,7 @@ import {
   useGetBlockByHeightOrHash,
 } from '../../api/hooks/useBlocks';
 import { shortenString } from '../../utils/helpers';
+import { useMediaQuery } from '@mui/material';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -49,6 +50,7 @@ function BlockHeader() {
   const [prevDisabled, setPrevDisabled] = useState(false);
   const theme = useTheme();
   const tip = tipInfo?.tipInfo.metadata.best_block_height;
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (data?.height === 0) {
@@ -146,23 +148,41 @@ function BlockHeader() {
             </Link>
             <Box>
               <Link to={data?.prevLink}>
-                <StyledButton
-                  startIcon={<ChevronLeft />}
-                  disabled={prevDisabled}
-                >
-                  Previous Block
-                </StyledButton>
+                {isMobile ? (
+                  <IconButton
+                    disabled={prevDisabled}
+                    style={{ color: theme.palette.text.primary }}
+                  >
+                    <ChevronLeft />
+                  </IconButton>
+                ) : (
+                  <StyledButton
+                    startIcon={<ChevronLeft />}
+                    disabled={prevDisabled}
+                  >
+                    Previous Block
+                  </StyledButton>
+                )}
               </Link>
               <Link to={`/blocks/${tip}`}>
                 <StyledButton>Tip</StyledButton>
               </Link>
               <Link to={data?.nextLink}>
-                <StyledButton
-                  endIcon={<ChevronRight />}
-                  disabled={nextDisabled}
-                >
-                  Next Block
-                </StyledButton>
+                {isMobile ? (
+                  <IconButton
+                    disabled={nextDisabled}
+                    style={{ color: theme.palette.text.primary }}
+                  >
+                    <ChevronRight />
+                  </IconButton>
+                ) : (
+                  <StyledButton
+                    endIcon={<ChevronRight />}
+                    disabled={nextDisabled}
+                  >
+                    Next Block
+                  </StyledButton>
+                )}
               </Link>
             </Box>
           </Box>

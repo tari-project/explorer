@@ -118,13 +118,11 @@ function BlockTable({ data }: { data: any }) {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Button
-                    onClick={() => window.open(`/blocks/${height}`)}
-                    variant="outlined"
-                    fullWidth
-                  >
-                    View Block
-                  </Button>
+                  <Link to={`/blocks/${height}`}>
+                    <Button variant="outlined" fullWidth>
+                      View Block
+                    </Button>
+                  </Link>
                 </Grid>
                 <Grid item xs={12}>
                   <Divider color={theme.palette.background.paper} />
