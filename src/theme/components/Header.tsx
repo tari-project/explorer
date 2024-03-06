@@ -27,17 +27,19 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
 import StatsItem from './StatsItem';
-import { Divider } from '@mui/material';
+import { Divider, Fade } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from '@mui/material';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
 import StatsDialog from './StatsDialog';
+import SearchField from './SearchField';
+import { useState } from 'react';
 
 function Header() {
   const { data } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
+  const [isExpanded, setIsExpanded] = useState(false);
   const values = data?.blockTimes || [];
   const sum = values.reduce(
     (accumulator: number, currentValue: number) => accumulator + currentValue,
@@ -53,10 +55,6 @@ function Header() {
     numeral(data?.currentMoneroHashRate).format('0.0 a') + 'H';
   const formattedSha3HashRate =
     numeral(data?.currentShaHashRate).format('0.0 a') + 'H';
-  // //   const formattedTotalTransactions = numeral(metadata.totalTransactions).format(
-  // //     '0,0'
-  // //   );
-  //   const formattedAverageFee = numeral(metadata.averageFee).format('0,0');
 
   return (
     <Grid item xs={12} md={12} lg={12}>
@@ -76,19 +74,49 @@ function Header() {
               width: '100%',
               paddingTop: theme.spacing(3),
               paddingBottom: theme.spacing(3),
+              minHeight: '100px',
             }}
           >
-            <Grid container spacing={3}>
-              <Grid item xs={10} md={3} lg={3}>
-                <Link to="/">
-                  <TariLogo fill={theme.palette.text.primary} />
-                </Link>
-              </Grid>
-              {isMobile ? (
-                <Grid item xs={2}>
+            {isMobile ? (
+              <>
+                {!isExpanded && (
+                  <Fade in={!isExpanded}>
+                    <Link to="/">
+                      <TariLogo fill={theme.palette.text.primary} />
+                    </Link>
+                  </Fade>
+                )}
+                <Box
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    gap: theme.spacing(1),
+                    width: '100%',
+                  }}
+                >
+                  <Box
+                    style={{
+                      flexGrow: 1,
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                    }}
+                  >
+                    <SearchField
+                      isExpanded={isExpanded}
+                      setIsExpanded={setIsExpanded}
+                    />
+                  </Box>
                   <StatsDialog />
+                </Box>
+              </>
+            ) : (
+              <Grid container spacing={3}>
+                <Grid item xs={10} md={3} lg={3}>
+                  <Link to="/">
+                    <TariLogo fill={theme.palette.text.primary} />
+                  </Link>
                 </Grid>
-              ) : (
                 <Grid item xs={12} md={9} lg={9}>
                   <Box
                     style={{
@@ -98,12 +126,6 @@ function Header() {
                       gap: theme.spacing(3),
                     }}
                   >
-                    {/* <StatsItem label="Total Txns" value="408" />
-                  <Divider
-                    orientation="vertical"
-                    flexItem
-                    color={theme.palette.divider}
-                  /> */}
                     <StatsItem
                       label="RandomX Hash Rate"
                       value={formattedMoneroHashRate}
@@ -122,12 +144,6 @@ function Header() {
                       flexItem
                       color={theme.palette.divider}
                     />
-                    {/* <StatsItem label="Avg Fee" value="28" />
-                  <Divider
-                    orientation="vertical"
-                    flexItem
-                    color={theme.palette.divider}
-                  /> */}
                     <StatsItem
                       label="Avg Block Time"
                       value={formattedAverageBlockTime}
@@ -144,8 +160,8 @@ function Header() {
                     />
                   </Box>
                 </Grid>
-              )}
-            </Grid>
+              </Grid>
+            )}
           </Box>
         </Container>
       </Box>

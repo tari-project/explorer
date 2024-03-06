@@ -71,8 +71,8 @@ function BlockHeader() {
         {data?.height ? (
           <Box
             style={{
-              marginTop: theme.spacing(10),
-              marginBottom: theme.spacing(10),
+              marginTop: isMobile ? theme.spacing(3) : theme.spacing(10),
+              marginBottom: isMobile ? theme.spacing(3) : theme.spacing(10),
               color: theme.palette.text.primary,
               display: 'flex',
               flexDirection: 'column',
@@ -88,7 +88,7 @@ function BlockHeader() {
               variant="h1"
               style={{
                 fontFamily: '"AvenirHeavy", sans-serif',
-                fontSize: 60,
+                fontSize: isMobile ? 40 : 60,
               }}
             >
               {data?.height}
@@ -97,8 +97,8 @@ function BlockHeader() {
         ) : (
           <Box
             style={{
-              marginTop: theme.spacing(10),
-              marginBottom: theme.spacing(10),
+              marginTop: isMobile ? theme.spacing(3) : theme.spacing(10),
+              marginBottom: isMobile ? theme.spacing(3) : theme.spacing(10),
               color: theme.palette.text.primary,
               display: 'flex',
               flexDirection: 'column',
@@ -115,7 +115,7 @@ function BlockHeader() {
               variant="h1"
               style={{
                 fontFamily: '"AvenirHeavy", sans-serif',
-                fontSize: 60,
+                fontSize: isMobile ? 40 : 60,
               }}
             >
               {heightOrHash.length > 30

@@ -20,25 +20,70 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { StyledPaper } from '../components/StyledComponents';
+import { GradientPaper } from '../components/StyledComponents';
 import { Grid } from '@mui/material';
 import MempoolTable from './Mempool/MempoolTable';
 import VNTable from './VNs/VNTable';
+import BlockWidget from './Blocks/BlockWidget';
+import BlockTimesChart from './Charts/BlockTimesChart';
+import HashRatesChart from './Charts/HashRatesChart';
+import POWChart from './Charts/POWChart';
+import { useTheme } from '@mui/material/styles';
 
 function BlockExplorerPage() {
+  const theme = useTheme();
   return (
-    <>
-      <Grid item xs={12} md={12} lg={12}>
-        <StyledPaper>
+    <Grid
+      container
+      spacing={3}
+      style={{
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(6),
+      }}
+    >
+      <Grid
+        item
+        xs={12}
+        md={12}
+        lg={6}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: theme.spacing(3),
+        }}
+      >
+        <GradientPaper>
+          <BlockWidget />
+        </GradientPaper>
+        <GradientPaper>
           <MempoolTable />
-        </StyledPaper>
+        </GradientPaper>
       </Grid>
-      <Grid item xs={12} md={12} lg={12}>
-        <StyledPaper>
+      <Grid
+        item
+        xs={12}
+        md={12}
+        lg={6}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: theme.spacing(3),
+        }}
+      >
+        <GradientPaper>
+          <BlockTimesChart />
+        </GradientPaper>
+        <GradientPaper>
+          <HashRatesChart />
+        </GradientPaper>
+        <GradientPaper>
+          <POWChart />
+        </GradientPaper>
+        <GradientPaper>
           <VNTable />
-        </StyledPaper>
+        </GradientPaper>
       </Grid>
-    </>
+    </Grid>
   );
 }
 

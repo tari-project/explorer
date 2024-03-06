@@ -24,6 +24,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 
 interface HeaderTitleProps {
   title: string;
@@ -32,14 +33,15 @@ interface HeaderTitleProps {
 
 function HeaderTitle({ title, subTitle }: HeaderTitleProps) {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <>
       <Container maxWidth="xl">
         <Box
           style={{
-            marginTop: theme.spacing(14),
-            marginBottom: theme.spacing(12),
+            marginTop: isMobile ? theme.spacing(6) : theme.spacing(14),
+            marginBottom: isMobile ? theme.spacing(4) : theme.spacing(12),
             color: theme.palette.text.primary,
             display: 'flex',
             flexDirection: 'column',
@@ -52,7 +54,7 @@ function HeaderTitle({ title, subTitle }: HeaderTitleProps) {
             variant="h1"
             style={{
               fontFamily: '"AvenirHeavy", sans-serif',
-              fontSize: 60,
+              fontSize: isMobile ? 40 : 60,
             }}
           >
             {title}

@@ -226,7 +226,9 @@ function MempoolTable() {
         isLoading={isLoading}
       />
       {data?.mempool.length === 0 && !isLoading && !isError ? (
-        <Alert severity="info">Mempool is empty</Alert>
+        <Alert severity="info" variant="outlined">
+          Mempool is empty
+        </Alert>
       ) : isMobile ? (
         <Mobile />
       ) : (

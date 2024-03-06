@@ -30,33 +30,36 @@ import { useMediaQuery } from '@mui/material';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
 import { toHexString, shortenString } from '../../utils/helpers';
 import CopyToClipboard from '../../components/CopyToClipboard';
-import SearchField from '../../components/SearchField';
+import SearchField from './SearchField';
+import { useState } from 'react';
 
 export default function TopBar() {
   const { data } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <Grid item xs={12} md={12} lg={12}>
-      <AppBar
-        position="static"
-        style={{
-          background: theme.palette.divider,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-        }}
-        elevation={0}
-      >
-        <Container maxWidth="xl">
-          <Box
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: theme.spacing(1),
-            }}
-          >
-            {!isMobile && (
+      {!isMobile && (
+        <AppBar
+          position="static"
+          style={{
+            background: theme.palette.divider,
+            borderBottom: `1px solid ${theme.palette.divider}`,
+          }}
+          elevation={0}
+        >
+          <Container maxWidth="xl">
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: theme.spacing(1),
+              }}
+            >
               <Box
                 style={{
                   display: 'flex',
@@ -91,11 +94,14 @@ export default function TopBar() {
                   <strong>Version:</strong> {data?.version}
                 </Typography>
               </Box>
-            )}
-            <SearchField />
-          </Box>
-        </Container>
-      </AppBar>
+              <SearchField
+                isExpanded={isExpanded}
+                setIsExpanded={setIsExpanded}
+              />
+            </Box>
+          </Container>
+        </AppBar>
+      )}
     </Grid>
   );
 }

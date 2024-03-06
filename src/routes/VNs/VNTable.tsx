@@ -109,7 +109,9 @@ function VNTable() {
         isLoading={isLoading}
       />
       {data?.activeVns.length === 0 && !isLoading && !isError ? (
-        <Alert severity="info">Coming Soon</Alert>
+        <Alert severity="info" variant="outlined">
+          Coming Soon
+        </Alert>
       ) : isMobile ? (
         <Mobile />
       ) : (

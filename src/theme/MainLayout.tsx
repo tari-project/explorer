@@ -29,13 +29,12 @@ import { createTheme } from '@mui/material/styles';
 import { componentSettings, light, dark } from './tokens';
 import Header from './components/Header';
 import TopBar from './components/TopBar';
-import Home from '../routes/Home/Home';
 
 export default function MainLayout() {
-  const lightTheme = createTheme({
-    ...light,
-    ...componentSettings,
-  });
+  // const lightTheme = createTheme({
+  //   ...light,
+  //   ...componentSettings,
+  // });
 
   const darkTheme = createTheme({
     ...dark,
@@ -49,10 +48,12 @@ export default function MainLayout() {
         <Grid container spacing={0} className="main-bg">
           <TopBar />
           <Header />
-          <Home />
+          <Container maxWidth="xl">
+            <Outlet />
+          </Container>
         </Grid>
       </ThemeProvider>
-      <ThemeProvider theme={lightTheme}>
+      {/* <ThemeProvider theme={lightTheme}>
         <Container maxWidth="xl">
           <Grid
             container
@@ -65,7 +66,7 @@ export default function MainLayout() {
             <Outlet />
           </Grid>
         </Container>
-      </ThemeProvider>
+      </ThemeProvider> */}
     </>
   );
 }

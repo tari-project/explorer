@@ -36,7 +36,7 @@ export const useAllBlocks = () => {
     onError: (error: apiError) => {
       error;
     },
-    refetchInterval: 5000,
+    refetchInterval: 120000,
   });
 };
 
