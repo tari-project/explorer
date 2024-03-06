@@ -26,7 +26,7 @@ import { Outlet } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { createTheme } from '@mui/material/styles';
-import { componentSettings, light, dark } from './tokens';
+import { componentSettings, dark } from './tokens';
 import Header from './components/Header';
 import TopBar from './components/TopBar';
 

@@ -37,7 +37,6 @@ export default function TopBar() {
   const { data } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
