@@ -137,7 +137,7 @@ function BlockTable() {
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>
-                {shortenString(toHexString(block.hash.data))}
+                {shortenString(toHexString(block.hash.data), 6, 6)}
                 <CopyToClipboard copy={toHexString(block.hash.data)} />
               </TypographyData>
             </Grid>
