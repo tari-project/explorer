@@ -20,71 +20,54 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { GradientPaper } from '../components/StyledComponents';
+import { StyledPaper } from '../../components/StyledComponents';
 import { Grid } from '@mui/material';
-import MempoolTable from './Mempool/MempoolTable';
-import VNTable from './VNs/VNTable';
-import BlockWidget from './Blocks/BlockWidget';
-import BlockTimesChart from './Charts/BlockTimesChart';
-import HashRatesChart from './Charts/HashRatesChart';
-import POWChart from './Charts/POWChart';
-import { useTheme } from '@mui/material/styles';
+import { useLocation } from 'react-router-dom';
+import { useSearchByKernel } from '../../api/hooks/useBlocks';
+import FetchStatusCheck from '../../components/FetchStatusCheck';
+import BlockTable from './BlockTable';
 
-function BlockExplorerPage() {
-  const theme = useTheme();
+function KernelsPage() {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+
+  const noncesParams = params.get('nonces');
+  const nonces = noncesParams ? noncesParams.split(',') : [];
+
+  const signaturesParams = params.get('signatures');
+  const signatures = signaturesParams ? signaturesParams.split(',') : [];
+
+  const { data, isLoading, isError, error } = useSearchByKernel(
+    nonces,
+    signatures
+  );
+
+  if (isLoading || isError) {
+    return (
+      <Grid item xs={12} md={12} lg={12}>
+        <StyledPaper>
+          <FetchStatusCheck
+            isError={isError}
+            isLoading={isLoading}
+            errorMessage={error?.message || 'Error retrieving data'}
+          />
+        </StyledPaper>
+      </Grid>
+    );
+  }
+
+  // if (data?.items.length === 1) {
+  //   const blockHeight = data.items[0].block.header.height;
+  //   window.location.replace(`/blocks/${blockHeight}`);
+  // }
+
   return (
-    <Grid
-      container
-      spacing={3}
-      style={{
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(6),
-      }}
-    >
-      <Grid
-        item
-        xs={12}
-        md={12}
-        lg={6}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: theme.spacing(3),
-        }}
-      >
-        <GradientPaper>
-          <BlockWidget />
-        </GradientPaper>
-        <GradientPaper>
-          <MempoolTable />
-        </GradientPaper>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        md={12}
-        lg={6}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: theme.spacing(3),
-        }}
-      >
-        <GradientPaper>
-          <BlockTimesChart />
-        </GradientPaper>
-        <GradientPaper>
-          <HashRatesChart />
-        </GradientPaper>
-        <GradientPaper>
-          <POWChart />
-        </GradientPaper>
-        <GradientPaper>
-          <VNTable />
-        </GradientPaper>
-      </Grid>
+    <Grid item xs={12} md={12} lg={12}>
+      <StyledPaper>
+        <BlockTable data={data?.items || []} />
+      </StyledPaper>
     </Grid>
   );
 }
 
-export default BlockExplorerPage;
+export default KernelsPage;

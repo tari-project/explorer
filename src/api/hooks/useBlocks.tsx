@@ -36,7 +36,7 @@ export const useAllBlocks = () => {
     onError: (error: apiError) => {
       error;
     },
-    refetchInterval: 5000,
+    refetchInterval: 120000,
   });
 };
 
@@ -85,6 +85,25 @@ export const useGetPaginatedData = (
       }),
     onError: (error: apiError) => {
       return error;
+    },
+  });
+};
+
+export const useSearchByKernel = (nonces: string[], signatures: string[]) => {
+  return useQuery({
+    queryKey: ['searchByKernel'],
+    queryFn: () => {
+      const encodedNonces = nonces.map(encodeURIComponent).join(',');
+      const encodedSignatures = signatures.map(encodeURIComponent).join(',');
+
+      return jsonRpc(
+        `${address}/search_kernels?nonces=${encodedNonces}&signatures=${encodedSignatures}&json`
+      ).then((resp) => {
+        return resp;
+      });
+    },
+    onError: (error: apiError) => {
+      error;
     },
   });
 };

@@ -25,12 +25,10 @@ import Grid from '@mui/material/Grid';
 import { StyledPaper } from '../../components/StyledComponents';
 import { useTheme } from '@mui/material/styles';
 import BlockInfo from './BlockInfo';
-import Inputs from './Inputs';
-import Outputs from './Outputs';
-import Kernels from './Kernels';
 import { useLocation } from 'react-router-dom';
 import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
 import FetchStatusCheck from '../../components/FetchStatusCheck';
+import BlockParts from './BlockParts';
 
 function Block() {
   const theme = useTheme();
@@ -79,29 +77,23 @@ function Block() {
             }}
           >
             <StyledPaper>
-              <Kernels
+              <BlockParts
                 blockHeight={blockHeight}
                 type="kernels"
-                title="Kernel"
-                dataLength="kernels_length"
                 itemsPerPage={5}
               />
             </StyledPaper>
             <StyledPaper>
-              <Outputs
+              <BlockParts
                 blockHeight={blockHeight}
                 type="outputs"
-                title="Output"
-                dataLength="outputs_length"
                 itemsPerPage={5}
               />
             </StyledPaper>
             <StyledPaper>
-              <Inputs
+              <BlockParts
                 blockHeight={blockHeight}
                 type="inputs"
-                title="Input"
-                dataLength="inputs_length"
                 itemsPerPage={5}
               />
             </StyledPaper>

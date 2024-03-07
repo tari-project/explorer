@@ -137,7 +137,7 @@ function BlockTable() {
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>
-                {shortenString(toHexString(block.hash.data))}
+                {shortenString(toHexString(block.hash.data), 6, 6)}
                 <CopyToClipboard copy={toHexString(block.hash.data)} />
               </TypographyData>
             </Grid>
@@ -157,13 +157,11 @@ function BlockTable() {
             </Grid>
 
             <Grid item xs={12}>
-              <Button
-                onClick={() => window.open(`/blocks/${block.height}`)}
-                variant="outlined"
-                fullWidth
-              >
-                View Block
-              </Button>
+              <Link to={`/blocks/${block.height}`}>
+                <Button variant="outlined" fullWidth>
+                  View Block
+                </Button>
+              </Link>
             </Grid>
             <Grid item xs={12}>
               <Divider color={theme.palette.background.paper} />

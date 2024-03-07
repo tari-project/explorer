@@ -29,19 +29,19 @@ import { createTheme } from '@mui/material/styles';
 import { componentSettings, light, dark } from './tokens';
 import Header from './components/Header';
 import TopBar from './components/TopBar';
-import BlockHeader from '../routes/Blocks/BlockHeader';
+
 import HeaderTitle from './components/HeaderTitle';
 
 interface PageLayoutProps {
-  blockHeader?: boolean;
   title?: string;
   subTitle?: string;
+  customHeader?: any;
 }
 
 export default function PageLayout({
-  blockHeader = false,
   title,
   subTitle,
+  customHeader,
 }: PageLayoutProps) {
   const lightTheme = createTheme({
     ...light,
@@ -60,8 +60,8 @@ export default function PageLayout({
         <Grid container spacing={0} className="main-bg">
           <TopBar />
           <Header />
-          {blockHeader ? (
-            <BlockHeader />
+          {customHeader ? (
+            customHeader
           ) : (
             <HeaderTitle title={title || ''} subTitle={subTitle || ''} />
           )}

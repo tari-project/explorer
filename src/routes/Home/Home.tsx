@@ -27,6 +27,8 @@ import BlockTimesChart from '../Charts/BlockTimesChart';
 import HashRatesChart from '../Charts/HashRatesChart';
 import POWChart from '../Charts/POWChart';
 import BlockWidget from '../Blocks/BlockWidget';
+import MempoolTable from '../Mempool/MempoolTable';
+import VNTable from '../VNs/VNTable';
 
 function Home() {
   const theme = useTheme();
@@ -40,9 +42,22 @@ function Home() {
           paddingBottom: theme.spacing(6),
         }}
       >
-        <Grid item xs={12} md={12} lg={6}>
+        <Grid
+          item
+          xs={12}
+          md={12}
+          lg={6}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: theme.spacing(3),
+          }}
+        >
           <GradientPaper>
             <BlockWidget />
+          </GradientPaper>
+          <GradientPaper>
+            <MempoolTable />
           </GradientPaper>
         </Grid>
         <Grid
@@ -64,6 +79,9 @@ function Home() {
           </GradientPaper>
           <GradientPaper>
             <POWChart />
+          </GradientPaper>
+          <GradientPaper>
+            <VNTable />
           </GradientPaper>
         </Grid>
       </Grid>

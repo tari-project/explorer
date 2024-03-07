@@ -25,9 +25,12 @@ import PageLayout from './theme/PageLayout';
 import BlockExplorerPage from './routes/BlockExplorer';
 import BlocksPage from './routes/Blocks/BlocksPage';
 import MempoolPage from './routes/Mempool/MempoolPage';
+import KernelSearch from './routes/KernelSearch/KernelSearch';
 import VNPage from './routes/VNs/VNPage';
 import Block from './routes/Blocks/Block';
 import { Routes, Route } from 'react-router-dom';
+import BlockHeader from './routes/Blocks/BlockHeader';
+import KernelHeader from './routes/KernelSearch/KernelHeader';
 
 function App() {
   return (
@@ -42,8 +45,17 @@ function App() {
         <Route path="blocks" element={<PageLayout title="Blocks" />}>
           <Route index element={<BlocksPage />} />
         </Route>
-        <Route path="blocks/:blockHeight" element={<PageLayout blockHeader />}>
+        <Route
+          path="blocks/:blockHeight"
+          element={<PageLayout customHeader={<BlockHeader />} />}
+        >
           <Route index element={<Block />} />
+        </Route>
+        <Route
+          path="kernel_search"
+          element={<PageLayout customHeader={<KernelHeader />} />}
+        >
+          <Route index element={<KernelSearch />} />
         </Route>
       </Routes>
     </>

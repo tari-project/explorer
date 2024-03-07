@@ -21,19 +21,25 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import React, { useState } from 'react';
-import { TextField, IconButton, InputAdornment } from '@mui/material';
+import { TextField, IconButton, InputAdornment, Fade } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { IoSearch } from 'react-icons/io5';
+import { IoSearch, IoClose } from 'react-icons/io5';
 import { useTheme } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
-import SnackbarAlert from './SnackbarAlert';
+import SnackbarAlert from '../../components/SnackbarAlert';
 
-const SearchField = () => {
+const SearchField = ({
+  isExpanded,
+  setIsExpanded,
+}: {
+  isExpanded: boolean;
+  setIsExpanded: (expanded: boolean) => void;
+}) => {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const validateQuery = (query: string) => {
     const height = parseInt(query);
@@ -44,15 +50,18 @@ const SearchField = () => {
 
   const handleSearch = () => {
     if (query === '') {
+      setIsExpanded(false);
       return;
     }
     if (!validateQuery(query)) {
       setOpen(true);
       setQuery('');
+      setIsExpanded(false);
       return;
     }
     navigate(`/blocks/${query}`);
     setQuery('');
+    setIsExpanded(false);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,42 +71,75 @@ const SearchField = () => {
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSearch();
+      setIsExpanded(false);
     }
   };
 
   return (
     <>
       <SnackbarAlert open={open} setOpen={setOpen} message="Invalid query" />
-      <TextField
-        label="Search by height or hash"
-        style={
-          isMobile
-            ? {
-                width: '100%',
-              }
-            : {
-                width: 300,
-              }
-        }
-        value={query}
-        onChange={handleInputChange}
-        onKeyPress={handleKeyPress}
-        size="small"
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                onClick={handleSearch}
-                style={{
-                  borderRadius: 8,
-                }}
-              >
-                <IoSearch />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-      />
+      {isExpanded && (
+        <Fade in={isExpanded} timeout={500}>
+          <TextField
+            label="Search by height or hash"
+            style={{
+              width: isMobile ? '100%' : '400px',
+            }}
+            autoFocus
+            value={query}
+            onChange={handleInputChange}
+            size="small"
+            onKeyPress={handleKeyPress}
+            InputProps={
+              query !== ''
+                ? {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleSearch}
+                          style={{
+                            padding: 0,
+                            borderRadius: 40,
+                            background: 'none',
+                          }}
+                        >
+                          <IoSearch />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }
+                : {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setIsExpanded(false)}
+                          style={{
+                            padding: 0,
+                            borderRadius: 40,
+                            background: 'none',
+                          }}
+                        >
+                          <IoClose />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }
+            }
+          />
+        </Fade>
+      )}
+      {!isExpanded && (
+        <Fade in={!isExpanded}>
+          <IconButton
+            onClick={() => setIsExpanded(true)}
+            style={{
+              borderRadius: 40,
+            }}
+          >
+            <IoSearch />
+          </IconButton>
+        </Fade>
+      )}
     </>
   );
 };

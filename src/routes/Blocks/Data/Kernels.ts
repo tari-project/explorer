@@ -20,53 +20,58 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { ThemeProvider } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Outlet } from 'react-router-dom';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import { createTheme } from '@mui/material/styles';
-import { componentSettings, dark } from './tokens';
-import Header from './components/Header';
-import TopBar from './components/TopBar';
+import { toHexString } from '../../../utils/helpers';
 
-export default function MainLayout() {
-  // const lightTheme = createTheme({
-  //   ...light,
-  //   ...componentSettings,
-  // });
+export const kernelItems = (content: any) => {
+  const items = [
+    {
+      label: 'Features',
+      value: content.features,
+      copy: false,
+    },
+    {
+      label: 'Fee',
+      value: content.fee,
+      copy: false,
+    },
+    {
+      label: 'Lock Height',
+      value: content.lock_height,
+      copy: false,
+    },
+    {
+      label: 'Excess',
+      value: toHexString(content.excess.data),
+      copy: true,
+    },
+    {
+      label: 'Excess Sig',
+      copy: false,
+      children: [
+        {
+          label: 'Public Nonce',
+          value: toHexString(content.excess_sig.public_nonce.data),
+          copy: true,
+        },
+        {
+          label: 'Signature',
+          value: toHexString(content.excess_sig.signature.data),
+          copy: true,
+        },
+      ],
+    },
+    {
+      label: 'Hash',
+      value: toHexString(content.hash.data),
+      copy: true,
+      header: false,
+    },
+    {
+      label: 'Version',
+      value: content.version,
+      copy: false,
+    },
+  ];
 
-  const darkTheme = createTheme({
-    ...dark,
-    ...componentSettings,
-  });
-
-  return (
-    <>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <Grid container spacing={0} className="main-bg">
-          <TopBar />
-          <Header />
-          <Container maxWidth="xl">
-            <Outlet />
-          </Container>
-        </Grid>
-      </ThemeProvider>
-      {/* <ThemeProvider theme={lightTheme}>
-        <Container maxWidth="xl">
-          <Grid
-            container
-            spacing={3}
-            style={{
-              paddingTop: lightTheme.spacing(6),
-              paddingBottom: lightTheme.spacing(6),
-            }}
-          >
-            <Outlet />
-          </Grid>
-        </Container>
-      </ThemeProvider> */}
-    </>
-  );
-}
+  return items;
+};
