@@ -27,6 +27,8 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Accordion from '@mui/material/Accordion';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 
 export const AccordionIconButton = styled(IconButton)(({ theme }) => ({
   backgroundColor: theme.palette.divider,
@@ -140,4 +142,19 @@ export const GridDataCell = styled(Box)(({ theme, className }) => ({
   borderBottom: `1px solid ${theme.palette.divider}`,
   fontFamily: "'Courier New', Courier, monospace",
   gridArea: `${className}`,
+}));
+
+export const TransparentButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(3),
+  marginBottom: theme.spacing(2),
+  height: 56,
+  borderColor: theme.palette.divider,
+  color: 'white',
+  background: theme.palette.divider,
+  textTransform: 'uppercase',
+}));
+
+export const TransparentDivider = styled(Divider)(({ theme }) => ({
+  backgroundColor: theme.palette.divider,
+  background: 'none',
 }));

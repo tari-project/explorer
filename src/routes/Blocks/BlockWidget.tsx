@@ -25,6 +25,7 @@ import { useAllBlocks } from '../../api/hooks/useBlocks';
 import {
   InnerHeading,
   TypographyData,
+  TransparentButton,
 } from '../../components/StyledComponents';
 import { Typography, Grid, Divider } from '@mui/material';
 import {
@@ -42,8 +43,8 @@ function BlockWidget() {
   const { data } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const desktopBlocks = 14;
-  const mobileBlocks = 5;
+  const desktopCount = 12;
+  const mobileCount = 5;
 
   function Mobile() {
     const col1 = 4;
@@ -52,7 +53,7 @@ function BlockWidget() {
     return (
       <Grid container spacing={2} pl={2} pr={2}>
         {data?.headers
-          .slice(0, mobileBlocks)
+          .slice(0, mobileCount)
           .map((block: any, index: number) => (
             <Fragment key={index}>
               <Grid item xs={col1}>
@@ -177,7 +178,7 @@ function BlockWidget() {
         </Grid>
         <Grid container spacing={2} pl={2} pr={2} pb={2}>
           {data?.headers
-            .slice(0, desktopBlocks)
+            .slice(0, desktopCount)
             .map((block: any, index: number) => (
               <Fragment key={index}>
                 <Grid item xs={12}>
@@ -247,21 +248,9 @@ function BlockWidget() {
       <InnerHeading>Recent Blocks</InnerHeading>
       {isMobile ? <Mobile /> : <Desktop />}
       <Divider />
-      <Button
-        href="/blocks/"
-        style={{
-          marginTop: theme.spacing(3),
-          marginBottom: theme.spacing(2),
-          borderColor: theme.palette.divider,
-          color: 'white',
-          background: theme.palette.divider,
-          textTransform: 'uppercase',
-        }}
-        variant="text"
-        fullWidth
-      >
+      <TransparentButton href="/blocks/" variant="text" fullWidth>
         View All Blocks
-      </Button>
+      </TransparentButton>
     </>
   );
 }

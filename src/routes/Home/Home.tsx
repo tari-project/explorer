@@ -27,7 +27,7 @@ import BlockTimesChart from '../Charts/BlockTimesChart';
 import HashRatesChart from '../Charts/HashRatesChart';
 import POWChart from '../Charts/POWChart';
 import BlockWidget from '../Blocks/BlockWidget';
-import MempoolTable from '../Mempool/MempoolTable';
+import MempoolTable from '../Mempool/MempoolWidget';
 import VNTable from '../VNs/VNTable';
 
 function Home() {
