@@ -22,6 +22,7 @@
 
 import { StyledPaper } from '../../components/StyledComponents';
 import { Grid } from '@mui/material';
+// import MempoolWidget from './MempoolWidget';
 import MempoolTable from './MempoolTable';
 
 function MempoolPage() {

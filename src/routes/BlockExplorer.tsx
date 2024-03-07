@@ -22,7 +22,7 @@
 
 import { GradientPaper } from '../components/StyledComponents';
 import { Grid } from '@mui/material';
-import MempoolTable from './Mempool/MempoolTable';
+import MempoolWidget from './Mempool/MempoolWidget';
 import VNTable from './VNs/VNTable';
 import BlockWidget from './Blocks/BlockWidget';
 import BlockTimesChart from './Charts/BlockTimesChart';
@@ -56,7 +56,7 @@ function BlockExplorerPage() {
           <BlockWidget />
         </GradientPaper>
         <GradientPaper>
-          <MempoolTable />
+          <MempoolWidget />
         </GradientPaper>
       </Grid>
       <Grid

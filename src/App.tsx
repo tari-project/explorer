@@ -39,7 +39,6 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<BlockExplorerPage />} />
           {/* <Route path="*" element={<ErrorPage />} /> */}
-          <Route path="mempool" element={<MempoolPage />} />
           <Route path="vns" element={<VNPage />} />
         </Route>
         <Route path="blocks" element={<PageLayout title="Blocks" />}>
@@ -56,6 +55,9 @@ function App() {
           element={<PageLayout customHeader={<KernelHeader />} />}
         >
           <Route index element={<KernelSearch />} />
+        </Route>
+        <Route path="mempool" element={<PageLayout title="Mempool" />}>
+          <Route index element={<MempoolPage />} />
         </Route>
       </Routes>
     </>

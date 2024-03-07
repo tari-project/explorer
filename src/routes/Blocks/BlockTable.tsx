@@ -26,15 +26,24 @@ import {
   InnerHeading,
   TypographyData,
 } from '../../components/StyledComponents';
-import { Typography, Grid, Divider, ButtonGroup } from '@mui/material';
+import {
+  Typography,
+  Grid,
+  Divider,
+  Box,
+  Button,
+  ButtonGroup,
+  FormControl,
+  MenuItem,
+} from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {
   toHexString,
   shortenString,
   formatTimestamp,
 } from '../../utils/helpers';
 import { Link } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+
 import { useTheme } from '@mui/material/styles';
 import CopyToClipboard from '../../components/CopyToClipboard';
 import { useMediaQuery } from '@mui/material';
@@ -48,7 +57,6 @@ function BlockTable() {
   const { data } = useGetBlocksByParam(firstHeight, blocksPerPage);
   const [prevDisabled, setPrevDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(false);
-  const [selectedButton, setSelectedButton] = useState(10);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -71,11 +79,10 @@ function BlockTable() {
     }
   }, [firstHeight]);
 
-  const handleChange = (value: number) => () => {
-    setBlocksPerPage(value);
+  const handleNoOfItems = (event: SelectChangeEvent) => {
+    const newValue = parseInt(event.target.value, 10);
+    setBlocksPerPage(newValue);
     setPage(1);
-    setFirstHeight(parseInt(tip));
-    setSelectedButton(value);
   };
 
   const handlePreviousPage = () => {
@@ -281,13 +288,12 @@ function BlockTable() {
           flexDirection: isMobile ? 'column' : 'row',
         }}
       >
-        <Typography variant="caption">
+        <Typography variant="h6">
           Showing blocks {firstHeight - blocksPerPage + 1} - {firstHeight}
         </Typography>
         <ButtonGroup
-          variant="contained"
+          variant="outlined"
           disableElevation
-          size="small"
           style={{ paddingRight: 20, paddingLeft: 20 }}
         >
           <Button
@@ -319,39 +325,23 @@ function BlockTable() {
             gap: theme.spacing(1),
           }}
         >
-          <Typography variant="caption">Rows per page</Typography>
-          <ButtonGroup disableElevation variant="contained" size="small">
-            <Button
-              onClick={handleChange(10)}
-              style={
-                selectedButton === 10
-                  ? { backgroundColor: theme.palette.primary.dark }
-                  : { backgroundColor: theme.palette.primary.main }
-              }
+          <Typography variant="h6">Rows per page</Typography>
+          <FormControl size="small">
+            <Select
+              labelId="rows-per-page"
+              id="rows-per-page"
+              value={blocksPerPage.toString()}
+              onChange={handleNoOfItems}
+              variant="outlined"
+              style={{
+                fontSize: theme.typography.h6.fontSize,
+              }}
             >
-              10
-            </Button>
-            <Button
-              onClick={handleChange(20)}
-              style={
-                selectedButton === 20
-                  ? { backgroundColor: theme.palette.primary.dark }
-                  : { backgroundColor: theme.palette.primary.main }
-              }
-            >
-              20
-            </Button>
-            <Button
-              onClick={handleChange(50)}
-              style={
-                selectedButton === 50
-                  ? { backgroundColor: theme.palette.primary.dark }
-                  : { backgroundColor: theme.palette.primary.main }
-              }
-            >
-              50
-            </Button>
-          </ButtonGroup>
+              <MenuItem value={'10'}>10</MenuItem>
+              <MenuItem value={'20'}>20</MenuItem>
+              <MenuItem value={'50'}>50</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
       </Box>
     </>
