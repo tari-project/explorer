@@ -130,6 +130,16 @@ function formatTimestamp(timestamp: any) {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+function formatHash(number: number) {
+  const suffixes = ['', 'K', 'M', 'G', 'T', 'P'];
+  let suffixIndex = 0;
+  while (number >= 1000 && suffixIndex < suffixes.length - 1) {
+    number /= 1000;
+    suffixIndex++;
+  }
+  return number.toFixed(1) + ' ' + suffixes[suffixIndex] + 'H';
+}
+
 export {
   renderJson,
   toHexString,
@@ -140,4 +150,5 @@ export {
   handleChangePage,
   handleChangeRowsPerPage,
   formatTimestamp,
+  formatHash,
 };

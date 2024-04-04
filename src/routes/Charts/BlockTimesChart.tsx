@@ -38,9 +38,22 @@ const BlockTimes = () => {
     return dataArray;
   }
 
+  const blockNumbers = data?.headers.map((header: any) => header.height);
+
   const option = {
     tooltip: {
       trigger: 'axis',
+      formatter: (params: any) => {
+        const tooltipContent = params.map((param: any) => {
+          const seriesName = param.seriesName;
+          const value = param.value;
+          return `${seriesName}: ${value.toFixed(2)}m`;
+        });
+        const blockNumber = blockNumbers?.[params[0].dataIndex];
+        return `<b>Block ${blockNumber}</b><br/>${tooltipContent.join(
+          '<br/>'
+        )}`;
+      },
     },
     legend: {
       data: ['All', 'Monero', 'Sha 3'],
@@ -66,10 +79,15 @@ const BlockTimes = () => {
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: generateDataArray(25),
+      data: generateDataArray(20),
       axisLine: {
         lineStyle: {
           color: theme.palette.text.primary,
+        },
+      },
+      axisLabel: {
+        formatter: (value: string) => {
+          return blockNumbers?.[parseInt(value, 10) - 1];
         },
       },
     },
@@ -84,6 +102,9 @@ const BlockTimes = () => {
         lineStyle: {
           color: theme.palette.divider,
         },
+      },
+      axisLabel: {
+        formatter: (value: number) => value + 'm',
       },
     },
     series: [
@@ -110,7 +131,7 @@ const BlockTimes = () => {
 
   return (
     <>
-      <InnerHeading>Block Times</InnerHeading>
+      <InnerHeading>Block Times (Minutes)</InnerHeading>
       <ReactEcharts option={option} />
     </>
   );

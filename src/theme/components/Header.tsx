@@ -34,16 +34,7 @@ import { useAllBlocks } from '../../api/hooks/useBlocks';
 import StatsDialog from './StatsDialog';
 import SearchField from './SearchField';
 import { useState } from 'react';
-
-function formatHash(number: number) {
-  const suffixes = ['', 'K', 'M', 'G', 'T', 'P'];
-  let suffixIndex = 0;
-  while (number >= 1000 && suffixIndex < suffixes.length - 1) {
-    number /= 1000;
-    suffixIndex++;
-  }
-  return number.toFixed(1) + ' ' + suffixes[suffixIndex] + 'H';
-}
+import { formatHash } from '../../utils/helpers';
 
 function Header() {
   const { data } = useAllBlocks();
@@ -60,8 +51,8 @@ function Header() {
   const formattedBlockHeight = numeral(
     data?.tipInfo.metadata.best_block_height
   ).format('0,0');
-  const formattedMoneroHashRate = formatHash(data?.currentMoneroHashRate);
-  const formattedSha3HashRate = formatHash(data?.currentShaHashRate);
+  const formattedMoneroHashRate = formatHash(data?.currentMoneroHashRate || 0);
+  const formattedSha3HashRate = formatHash(data?.currentShaHashRate || 0);
 
   return (
     <Grid item xs={12} md={12} lg={12}>
