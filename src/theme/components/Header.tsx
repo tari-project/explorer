@@ -35,6 +35,16 @@ import StatsDialog from './StatsDialog';
 import SearchField from './SearchField';
 import { useState } from 'react';
 
+function formatHash(number: number) {
+  const suffixes = ['', 'K', 'M', 'G', 'T', 'P'];
+  let suffixIndex = 0;
+  while (number >= 1000 && suffixIndex < suffixes.length - 1) {
+    number /= 1000;
+    suffixIndex++;
+  }
+  return number.toFixed(1) + ' ' + suffixes[suffixIndex] + 'H';
+}
+
 function Header() {
   const { data } = useAllBlocks();
   const theme = useTheme();
@@ -47,14 +57,11 @@ function Header() {
   );
   const average = sum / values.length;
   const formattedAverageBlockTime = numeral(average).format('0') + 'm';
-
   const formattedBlockHeight = numeral(
     data?.tipInfo.metadata.best_block_height
   ).format('0,0');
-  const formattedMoneroHashRate =
-    numeral(data?.currentMoneroHashRate).format('0.0 a') + 'H';
-  const formattedSha3HashRate =
-    numeral(data?.currentShaHashRate).format('0.0 a') + 'H';
+  const formattedMoneroHashRate = formatHash(data?.currentMoneroHashRate);
+  const formattedSha3HashRate = formatHash(data?.currentShaHashRate);
 
   return (
     <Grid item xs={12} md={12} lg={12}>
