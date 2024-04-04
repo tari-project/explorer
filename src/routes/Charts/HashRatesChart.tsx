@@ -25,6 +25,7 @@ import { useTheme } from '@mui/material/styles';
 import { chartColor } from '../../theme/colors';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
 import { InnerHeading } from '../../components/StyledComponents';
+import { formatHash } from '../../utils/helpers';
 
 const HashRates = () => {
   const { data } = useAllBlocks();
@@ -38,9 +39,22 @@ const HashRates = () => {
     return dataArray;
   }
 
+  const blockNumbers = data?.headers.map((header: any) => header.height);
+
   const option = {
     tooltip: {
       trigger: 'axis',
+      formatter: (params: any) => {
+        const tooltipContent = params.map((param: any) => {
+          const seriesName = param.seriesName;
+          const value = formatHash(param.value);
+          return `${seriesName}: ${value}`;
+        });
+        const blockNumber = blockNumbers?.[params[0].dataIndex];
+        return `<b>Block ${blockNumber}</b><br/>${tooltipContent.join(
+          '<br/>'
+        )}`;
+      },
     },
     legend: {
       data: ['All', 'Monero', 'Sha 3'],
@@ -66,10 +80,15 @@ const HashRates = () => {
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: generateDataArray(25),
+      data: generateDataArray(20),
       axisLine: {
         lineStyle: {
           color: theme.palette.text.primary,
+        },
+      },
+      axisLabel: {
+        formatter: (value: string) => {
+          return blockNumbers?.[parseInt(value, 10) - 1];
         },
       },
     },
@@ -84,6 +103,9 @@ const HashRates = () => {
         lineStyle: {
           color: theme.palette.divider,
         },
+      },
+      axisLabel: {
+        formatter: (value: number) => formatHash(value),
       },
     },
     series: [
