@@ -87,7 +87,7 @@ function BlockWidget() {
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>
-                  {block.pow.pow_algo === '0' ? 'Monero' : 'SHA-3'}
+                  {block.pow.pow_algo === '0' ? 'RandomX' : 'SHA-3'}
                 </TypographyData>
               </Grid>
 
@@ -209,7 +209,7 @@ function BlockWidget() {
                 </Grid>
                 <Grid item xs={col3} md={col3} lg={col3}>
                   <TypographyData>
-                    {block.pow.pow_algo === '0' ? 'Monero' : 'SHA-3'}
+                    {block.pow.pow_algo === '0' ? 'RandomX' : 'SHA-3'}
                   </TypographyData>
                 </Grid>
                 <Grid item xs={col4} md={col4} lg={col4}>

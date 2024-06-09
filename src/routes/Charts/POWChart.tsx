@@ -89,7 +89,7 @@ const ProofOfWork = () => {
         const shaColor = params[1].color;
         return `
           <b>In the last ${params[0].name} blocks:</b><br />
-          <span style="color:${moneroColor};"></span>Monero: ${moneroBlocks} blocks (${params[0].value}%)<br />
+          <span style="color:${moneroColor};"></span>RandomX: ${moneroBlocks} blocks (${params[0].value}%)<br />
           <span style="color:${shaColor};"></span>Sha 3: ${shaBlocks} blocks (${params[1].value}%)
         `;
       },
@@ -142,7 +142,7 @@ const ProofOfWork = () => {
     },
     series: [
       {
-        name: 'Monero',
+        name: 'RandomX',
         type: 'bar',
         stack: 'total',
         label: {

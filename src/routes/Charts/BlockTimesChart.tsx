@@ -56,7 +56,7 @@ const BlockTimes = () => {
       },
     },
     legend: {
-      data: ['All', 'Monero', 'Sha 3'],
+      data: ['All', 'RandomX', 'Sha 3'],
       textStyle: {
         color: theme.palette.text.primary,
       },
@@ -115,7 +115,7 @@ const BlockTimes = () => {
         data: data?.blockTimes,
       },
       {
-        name: 'Monero',
+        name: 'RandomX',
         type: 'line',
         smooth: true,
         data: data?.moneroTimes,

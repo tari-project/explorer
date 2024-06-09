@@ -57,7 +57,7 @@ const HashRates = () => {
       },
     },
     legend: {
-      data: ['All', 'Monero', 'Sha 3'],
+      data: ['All', 'RandomX', 'Sha 3'],
       textStyle: {
         color: theme.palette.text.primary,
       },
@@ -116,7 +116,7 @@ const HashRates = () => {
         data: data?.totalHashRates,
       },
       {
-        name: 'Monero',
+        name: 'RandomX',
         type: 'line',
         smooth: true,
         data: data?.moneroHashRates,
