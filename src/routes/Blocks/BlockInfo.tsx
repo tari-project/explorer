@@ -47,7 +47,7 @@ function BlockInfo({ blockHeight }: { blockHeight: any }) {
     },
     {
       label: 'Proof of Work',
-      value: header?.pow?.pow_algo === '0' ? 'Monero' : 'SHA-3',
+      value: header?.pow?.pow_algo === '0' ? 'RandomX' : 'SHA-3',
       copy: false,
     },
     {

@@ -89,7 +89,7 @@ function BlockTable({ data }: { data: any }) {
                 </Grid>
                 <Grid item xs={col2}>
                   <TypographyData>
-                    {pow === '0' ? 'Monero' : 'SHA-3'}
+                    {pow === '0' ? 'RandomX' : 'SHA-3'}
                   </TypographyData>
                 </Grid>
 
@@ -204,7 +204,7 @@ function BlockTable({ data }: { data: any }) {
                   </Grid>
                   <Grid item xs={col3} md={col3} lg={col3}>
                     <TypographyData>
-                      {pow === '0' ? 'Monero' : 'SHA-3'}
+                      {pow === '0' ? 'RandomX' : 'SHA-3'}
                     </TypographyData>
                   </Grid>
                   <Grid item xs={col4} md={col4} lg={col4}>
