@@ -43,7 +43,7 @@ function BlockWidget() {
   const { data } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const desktopCount = 12;
+  const desktopCount = 9;
   const mobileCount = 5;
 
   function Mobile() {

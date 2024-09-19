@@ -25,10 +25,11 @@ import { Grid } from '@mui/material';
 import MempoolWidget from './Mempool/MempoolWidget';
 import VNTable from './VNs/VNTable';
 import BlockWidget from './Blocks/BlockWidget';
-import BlockTimesChart from './Charts/BlockTimesChart';
-import HashRatesChart from './Charts/HashRatesChart';
+import BlockTimes from './Charts/BlockTimes';
+import HashRates from './Charts/HashRates';
 import POWChart from './Charts/POWChart';
 import { useTheme } from '@mui/material/styles';
+import { InnerHeading } from '../components/StyledComponents';
 
 function BlockExplorerPage() {
   const theme = useTheme();
@@ -56,6 +57,9 @@ function BlockExplorerPage() {
           <BlockWidget />
         </GradientPaper>
         <GradientPaper>
+          <POWChart />
+        </GradientPaper>
+        <GradientPaper>
           <MempoolWidget />
         </GradientPaper>
       </Grid>
@@ -71,13 +75,14 @@ function BlockExplorerPage() {
         }}
       >
         <GradientPaper>
-          <BlockTimesChart />
+          <InnerHeading>Block Times (Minutes)</InnerHeading>
+          <BlockTimes type="RandomX" />
+          <BlockTimes type="Sha3" />
         </GradientPaper>
         <GradientPaper>
-          <HashRatesChart />
-        </GradientPaper>
-        <GradientPaper>
-          <POWChart />
+          <InnerHeading>Hash Rates</InnerHeading>
+          <HashRates type="RandomX" />
+          <HashRates type="Sha3" />
         </GradientPaper>
         <GradientPaper>
           <VNTable />
