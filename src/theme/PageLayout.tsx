@@ -25,10 +25,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Outlet } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { createTheme } from '@mui/material/styles';
-import { componentSettings, light, dark } from './tokens';
 import Header from './components/Header';
 import TopBar from './components/TopBar';
+import { darkTheme, lightTheme } from './themes';
 
 import HeaderTitle from './components/HeaderTitle';
 
@@ -43,16 +42,6 @@ export default function PageLayout({
   subTitle,
   customHeader,
 }: PageLayoutProps) {
-  const lightTheme = createTheme({
-    ...light,
-    ...componentSettings,
-  });
-
-  const darkTheme = createTheme({
-    ...dark,
-    ...componentSettings,
-  });
-
   return (
     <>
       <ThemeProvider theme={darkTheme}>

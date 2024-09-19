@@ -20,42 +20,17 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { ThemeProvider } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Outlet } from 'react-router-dom';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Header from './components/Header';
-import TopBar from './components/TopBar';
-import { darkTheme } from './themes';
+import { componentSettings, light, dark } from './tokens';
+import { createTheme } from '@mui/material/styles';
 
-export default function MainLayout() {
-  return (
-    <>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <Grid container spacing={0} className="main-bg">
-          <TopBar />
-          <Header />
-          <Container maxWidth="xl">
-            <Outlet />
-          </Container>
-        </Grid>
-      </ThemeProvider>
-      {/* <ThemeProvider theme={lightTheme}>
-        <Container maxWidth="xl">
-          <Grid
-            container
-            spacing={3}
-            style={{
-              paddingTop: lightTheme.spacing(6),
-              paddingBottom: lightTheme.spacing(6),
-            }}
-          >
-            <Outlet />
-          </Grid>
-        </Container>
-      </ThemeProvider> */}
-    </>
-  );
-}
+const lightTheme = createTheme({
+  ...light,
+  ...componentSettings,
+});
+
+const darkTheme = createTheme({
+  ...dark,
+  ...componentSettings,
+});
+
+export { lightTheme, darkTheme };
