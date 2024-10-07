@@ -76,13 +76,25 @@ function BlockExplorerPage() {
       >
         <GradientPaper>
           <InnerHeading>Block Times (Minutes)</InnerHeading>
-          <BlockTimes type="RandomX" />
-          <BlockTimes type="Sha3" />
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <BlockTimes type="RandomX" />
+            </Grid>
+            <Grid item xs={12}>
+              <BlockTimes type="Sha3" />
+            </Grid>
+          </Grid>
         </GradientPaper>
         <GradientPaper>
           <InnerHeading>Hash Rates</InnerHeading>
-          <HashRates type="RandomX" />
-          <HashRates type="Sha3" />
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <HashRates type="RandomX" />
+            </Grid>
+            <Grid item xs={12}>
+              <HashRates type="Sha3" />
+            </Grid>
+          </Grid>
         </GradientPaper>
         <GradientPaper>
           <VNTable />

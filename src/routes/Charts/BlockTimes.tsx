@@ -26,12 +26,15 @@ import { chartColor } from '../../theme/colors';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
 
 interface BlockTimesProps {
-  type: 'RandomX' | 'Sha3' | 'All';
+  type: 'RandomX' | 'Sha3';
 }
 
 const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
   const { data } = useAllBlocks();
   const theme = useTheme();
+  const tip = data?.tipInfo?.metadata.best_block_height;
+  const noOfBlocks = 60;
+  const zoomAmount = 30;
 
   const name = type;
   const colorMap: { [key: string]: string } = {
@@ -48,7 +51,13 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
 
   const color = colorMap[type] || colorMap['default'];
   const blockTimes = blockTimesMap[type] || blockTimesMap['default'];
-  const blockNumbers = data?.headers.map((header: any) => header.height);
+
+  const blockNumbers = new Array();
+  let blockItem = parseInt(tip, 10);
+  for (let i = 1; i <= noOfBlocks; i++) {
+    blockNumbers.push(blockItem);
+    blockItem = blockItem - 1;
+  }
 
   function generateDataArray(amount: number) {
     const dataArray = [];
@@ -86,14 +95,13 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
     grid: {
       left: '2%',
       right: '2%',
-      bottom: '15%',
+      bottom: '20%',
       top: '5%',
       containLabel: true,
     },
     xAxis: {
       type: 'category',
-      boundaryGap: false,
-      data: generateDataArray(20),
+      data: generateDataArray(noOfBlocks),
       inverse: true,
       axisLine: {
         lineStyle: {
@@ -108,6 +116,7 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
     },
     yAxis: {
       type: 'value',
+      boundaryGap: ['10%', '10%'],
       axisLine: {
         lineStyle: {
           color: theme.palette.text.primary,
@@ -122,6 +131,18 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
         formatter: (value: number) => value + 'm',
       },
     },
+    dataZoom: [
+      {
+        type: 'slider',
+        start: 0,
+        end: (zoomAmount / noOfBlocks) * 100,
+      },
+      {
+        type: 'inside',
+        start: 0,
+        end: (zoomAmount / noOfBlocks) * 100,
+      },
+    ],
     series: [
       {
         name,

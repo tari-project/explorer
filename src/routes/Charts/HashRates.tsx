@@ -33,6 +33,9 @@ interface HashRatesProps {
 const HashRates: React.FC<HashRatesProps> = ({ type }) => {
   const { data } = useAllBlocks();
   const theme = useTheme();
+  const tip = data?.tipInfo?.metadata.best_block_height;
+  const noOfBlocks = 180;
+  const zoomAmount = 30;
 
   const name = type;
   const colorMap: { [key: string]: string } = {
@@ -44,12 +47,18 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
   const hashRatesMap: { [key: string]: any[] } = {
     RandomX: data?.moneroHashRates,
     Sha3: data?.shaHashRates,
-    default: data?.blockTimes || [],
   };
 
   const color = colorMap[type] || colorMap['default'];
-  const blockTimes = hashRatesMap[type] || hashRatesMap['default'];
-  const blockNumbers = data?.headers.map((header: any) => header.height);
+  const blockTimes = hashRatesMap[type] || [];
+  const blockNumbers = Array.from(
+    { length: noOfBlocks },
+    (_, i) => parseInt(tip, 10) - i
+  );
+  const minValue = blockTimes.length
+    ? Math.min(...blockTimes.filter((item) => item !== 0))
+    : 0;
+  const minValueWithMargin = minValue * 0.98;
 
   function generateDataArray(amount: number) {
     const dataArray = [];
@@ -66,7 +75,7 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
       formatter: (params: any) => {
         const tooltipContent = params.map((param: any) => {
           const seriesName = param.seriesName;
-          const value = formatHash(param.value);
+          const value = formatHash(param.value, 2);
           return `${seriesName}: ${value}`;
         });
         const blockNumber = blockNumbers?.[params[0].dataIndex];
@@ -87,14 +96,13 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     grid: {
       left: '2%',
       right: '2%',
-      bottom: '15%',
+      bottom: '20%',
       top: '5%',
       containLabel: true,
     },
     xAxis: {
       type: 'category',
-      boundaryGap: false,
-      data: generateDataArray(20),
+      data: generateDataArray(noOfBlocks),
       inverse: true,
       axisLine: {
         lineStyle: {
@@ -109,6 +117,8 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     },
     yAxis: {
       type: 'value',
+      boundaryGap: ['10%', '10%'],
+      min: minValueWithMargin,
       axisLine: {
         lineStyle: {
           color: theme.palette.text.primary,
@@ -120,9 +130,21 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
         },
       },
       axisLabel: {
-        formatter: (value: number) => formatHash(value),
+        formatter: (value: number) => formatHash(value, 2),
       },
     },
+    dataZoom: [
+      {
+        type: 'slider',
+        start: 0,
+        end: (zoomAmount / noOfBlocks) * 100,
+      },
+      {
+        type: 'inside',
+        start: 0,
+        end: (zoomAmount / noOfBlocks) * 100,
+      },
+    ],
     series: [
       {
         name,
