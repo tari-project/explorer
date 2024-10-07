@@ -55,7 +55,9 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     { length: noOfBlocks },
     (_, i) => parseInt(tip, 10) - i
   );
-  const minValue = blockTimes.length ? Math.min(...blockTimes) : 0;
+  const minValue = blockTimes.length
+    ? Math.min(...blockTimes.filter((item) => item !== 0))
+    : 0;
   const minValueWithMargin = minValue * 0.98;
 
   function generateDataArray(amount: number) {

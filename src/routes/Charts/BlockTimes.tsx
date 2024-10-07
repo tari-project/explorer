@@ -26,7 +26,7 @@ import { chartColor } from '../../theme/colors';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
 
 interface BlockTimesProps {
-  type: 'RandomX' | 'Sha3' | 'All';
+  type: 'RandomX' | 'Sha3';
 }
 
 const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
