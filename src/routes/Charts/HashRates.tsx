@@ -25,17 +25,26 @@ import { useTheme } from '@mui/material/styles';
 import { chartColor } from '../../theme/colors';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
 import { formatHash } from '../../utils/helpers';
+import { useState, useEffect } from 'react';
 
 interface HashRatesProps {
-  type: 'RandomX' | 'Sha3' | 'All';
+  type: 'RandomX' | 'Sha3';
+}
+
+interface Display {
+  blockNumber: number;
+  hashRate: number;
 }
 
 const HashRates: React.FC<HashRatesProps> = ({ type }) => {
   const { data } = useAllBlocks();
   const theme = useTheme();
   const tip = data?.tipInfo?.metadata.best_block_height;
-  const noOfBlocks = 180;
-  const zoomAmount = 30;
+  const [display, setDisplay] = useState<Display[]>([
+    { blockNumber: 0, hashRate: 0 },
+  ]);
+  const [noOfBlocks, setNoOfBlocks] = useState(180);
+  const zoomAmount = 20;
 
   const name = type;
   const colorMap: { [key: string]: string } = {
@@ -44,20 +53,15 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     default: chartColor[1],
   };
 
-  const hashRatesMap: { [key: string]: any[] } = {
-    RandomX: data?.moneroHashRates,
-    Sha3: data?.shaHashRates,
-  };
-
   const color = colorMap[type] || colorMap['default'];
-  const blockTimes = hashRatesMap[type] || [];
-  const blockNumbers = Array.from(
-    { length: noOfBlocks },
-    (_, i) => parseInt(tip, 10) - i
-  );
-  const minValue = blockTimes.length
-    ? Math.min(...blockTimes.filter((item) => item !== 0))
-    : 0;
+  const minValue = display
+    .map((item) => item.hashRate)
+    .reduce((acc, cur) => {
+      if (cur === 0) {
+        return acc;
+      }
+      return acc === 0 ? cur : Math.min(acc, cur);
+    }, 0);
   const minValueWithMargin = minValue * 0.98;
 
   function generateDataArray(amount: number) {
@@ -68,8 +72,30 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     return dataArray;
   }
 
+  const hashRatesMap: { [key: string]: any[] } = {
+    RandomX: data?.moneroHashRates,
+    Sha3: data?.shaHashRates,
+  };
+
+  useEffect(() => {
+    const display: Display[] = [];
+    let blockItem = parseInt(tip, 10);
+    let hashRates = hashRatesMap[type];
+    for (let i = 1; i <= noOfBlocks; i++) {
+      if (hashRates?.[i - 1] !== 0) {
+        display.push({
+          blockNumber: blockItem,
+          hashRate: hashRates?.[i - 1] || 0,
+        });
+      } else {
+        setNoOfBlocks((prevState) => prevState - 1);
+      }
+      blockItem = blockItem - 1;
+    }
+    setDisplay(display.reverse());
+  }, [data]);
+
   const option = {
-    animation: false,
     tooltip: {
       trigger: 'axis',
       formatter: (params: any) => {
@@ -78,7 +104,7 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
           const value = formatHash(param.value, 2);
           return `${seriesName}: ${value}`;
         });
-        const blockNumber = blockNumbers?.[params[0].dataIndex];
+        const blockNumber = display[params[0].dataIndex].blockNumber;
         return `<b>Block ${blockNumber}</b><br/>${tooltipContent.join(
           '<br/>'
         )}`;
@@ -103,7 +129,6 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     xAxis: {
       type: 'category',
       data: generateDataArray(noOfBlocks),
-      inverse: true,
       axisLine: {
         lineStyle: {
           color: theme.palette.text.primary,
@@ -111,7 +136,11 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
       },
       axisLabel: {
         formatter: (value: string) => {
-          return blockNumbers?.[parseInt(value, 10) - 1];
+          const index = parseInt(value, 10) - 1;
+          if (display && display[index]) {
+            return display[index].blockNumber;
+          }
+          return '';
         },
       },
     },
@@ -136,13 +165,13 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     dataZoom: [
       {
         type: 'slider',
-        start: 0,
-        end: (zoomAmount / noOfBlocks) * 100,
+        start: noOfBlocks - zoomAmount,
+        end: noOfBlocks,
       },
       {
         type: 'inside',
-        start: 0,
-        end: (zoomAmount / noOfBlocks) * 100,
+        start: noOfBlocks - zoomAmount,
+        end: noOfBlocks,
       },
     ],
     series: [
@@ -150,7 +179,7 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
         name,
         type: 'line',
         smooth: false,
-        data: blockTimes,
+        data: display.map((item) => item.hashRate),
       },
     ],
   };
