@@ -142,8 +142,6 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
           }
           return '';
         },
-        // rotate: 35,
-        // interval: 3,
       },
     },
     yAxis: {
@@ -167,17 +165,13 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     dataZoom: [
       {
         type: 'slider',
-        // start: 0,
-        // end: (zoomAmount / noOfBlocks) * 100,
         start: noOfBlocks - zoomAmount,
         end: noOfBlocks,
       },
       {
         type: 'inside',
-        // start: 0,
-        // end: (zoomAmount / noOfBlocks) * 100,
-        // start: noOfBlocks - zoomAmount,
-        // end: noOfBlocks,
+        start: noOfBlocks - zoomAmount,
+        end: noOfBlocks,
       },
     ],
     series: [
