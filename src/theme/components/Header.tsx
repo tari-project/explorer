@@ -46,13 +46,20 @@ function Header() {
     (accumulator: number, currentValue: number) => accumulator + currentValue,
     0
   );
+
+  // check for the first non-zero value
+  const latestMoneroHashRate =
+    data?.moneroHashRates?.find((rate: number) => rate !== 0) ?? 0;
+  const latestShaHashRate =
+    data?.shaHashRates?.find((rate: number) => rate !== 0) ?? 0;
+
   const average = sum / values.length;
   const formattedAverageBlockTime = numeral(average).format('0') + 'm';
   const formattedBlockHeight = numeral(
     data?.tipInfo.metadata.best_block_height
   ).format('0,0');
-  const formattedMoneroHashRate = formatHash(data?.currentMoneroHashRate || 0);
-  const formattedSha3HashRate = formatHash(data?.currentShaHashRate || 0);
+  const formattedMoneroHashRate = formatHash(latestMoneroHashRate);
+  const formattedSha3HashRate = formatHash(latestShaHashRate);
 
   return (
     <Grid item xs={12} md={12} lg={12}>
