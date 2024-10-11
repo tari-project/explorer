@@ -35,6 +35,7 @@ import {
   ButtonGroup,
   FormControl,
   MenuItem,
+  Stack,
 } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {
@@ -43,10 +44,12 @@ import {
   formatTimestamp,
 } from '../../utils/helpers';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import { useTheme } from '@mui/material/styles';
 import CopyToClipboard from '../../components/CopyToClipboard';
 import { useMediaQuery } from '@mui/material';
+import SkeletonLoader from './SkeletonLoader';
 
 function BlockTable() {
   const { data: tipData } = useAllBlocks();
@@ -54,11 +57,19 @@ function BlockTable() {
   const [blocksPerPage, setBlocksPerPage] = useState(10);
   const [page, setPage] = useState(1);
   const [firstHeight, setFirstHeight] = useState(tip || 0);
-  const { data } = useGetBlocksByParam(firstHeight, blocksPerPage);
+  const { data, isLoading } = useGetBlocksByParam(firstHeight, blocksPerPage);
   const [prevDisabled, setPrevDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const motionProps = () => ({
+    component: motion.div,
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { delay: 0.05, ease: 'easeOut', duration: 0.5 },
+    AnimatePresence: true,
+  });
 
   useEffect(() => {
     if (tip && firstHeight === 0) {
@@ -108,8 +119,34 @@ function BlockTable() {
     const col1 = 4;
     const col2 = 8;
 
+    if (isLoading) {
+      const loaderHeight = 221;
+      const renderSkeleton = Array.from(
+        { length: blocksPerPage },
+        (_, index) => (
+          <Fragment key={index}>
+            <Grid item xs={12}>
+              <Stack spacing={2}>
+                <SkeletonLoader height={loaderHeight} />
+                <SkeletonLoader height={48} />
+              </Stack>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider color={theme.palette.background.paper} />
+            </Grid>
+          </Fragment>
+        )
+      );
+
+      return (
+        <Grid container spacing={2} pl={2} pr={2}>
+          {renderSkeleton}
+        </Grid>
+      );
+    }
+
     return (
-      <Grid container spacing={2} pl={2} pr={2}>
+      <Grid container spacing={2} pl={2} pr={2} {...motionProps()}>
         {data?.headers.map((block: any, index: number) => (
           <Fragment key={index}>
             <Grid item xs={col1}>
@@ -187,41 +224,69 @@ function BlockTable() {
     const col5 = 1;
     const col6 = 1;
 
+    const Header = () => (
+      <Grid container spacing={2} pl={2} pr={2} pb={2} pt={2}>
+        <Grid item xs={col1} md={col1} lg={col1}>
+          <Typography variant="body2">Height</Typography>
+        </Grid>
+        <Grid item xs={col2} md={col2} lg={col2}>
+          <Typography variant="body2">Time</Typography>
+        </Grid>
+        <Grid item xs={col3} md={col3} lg={col3}>
+          <Typography variant="body2">Proof of Work</Typography>
+        </Grid>
+        <Grid item xs={col4} md={col4} lg={col4}>
+          <Typography variant="body2">Hash</Typography>
+        </Grid>
+        <Grid
+          item
+          xs={col5}
+          md={col5}
+          lg={col5}
+          style={{ textAlign: 'center' }}
+        >
+          <Typography variant="body2">Kernels</Typography>
+        </Grid>
+        <Grid
+          item
+          xs={col6}
+          md={col6}
+          lg={col6}
+          style={{ textAlign: 'center' }}
+        >
+          <Typography variant="body2">Outputs</Typography>
+        </Grid>
+      </Grid>
+    );
+
+    if (isLoading) {
+      const loaderHeight = 26;
+      const renderSkeleton = Array.from(
+        { length: blocksPerPage },
+        (_, index) => (
+          <Fragment key={index}>
+            <Grid item xs={12} pl={2} pr={2}>
+              <Divider color={theme.palette.background.paper} />
+            </Grid>
+            <Grid item p={2} xs={12}>
+              <SkeletonLoader height={loaderHeight} />
+            </Grid>
+          </Fragment>
+        )
+      );
+
+      return (
+        <>
+          <Header />
+          {renderSkeleton}
+        </>
+      );
+    }
+
     return (
       <>
-        <Grid container spacing={2} pl={2} pr={2} pb={2} pt={2}>
-          <Grid item xs={col1} md={col1} lg={col1}>
-            <Typography variant="body2">Height</Typography>
-          </Grid>
-          <Grid item xs={col2} md={col2} lg={col2}>
-            <Typography variant="body2">Time</Typography>
-          </Grid>
-          <Grid item xs={col3} md={col3} lg={col3}>
-            <Typography variant="body2">Proof of Work</Typography>
-          </Grid>
-          <Grid item xs={col4} md={col4} lg={col4}>
-            <Typography variant="body2">Hash</Typography>
-          </Grid>
-          <Grid
-            item
-            xs={col5}
-            md={col5}
-            lg={col5}
-            style={{ textAlign: 'center' }}
-          >
-            <Typography variant="body2">Kernels</Typography>
-          </Grid>
-          <Grid
-            item
-            xs={col6}
-            md={col6}
-            lg={col6}
-            style={{ textAlign: 'center' }}
-          >
-            <Typography variant="body2">Outputs</Typography>
-          </Grid>
-        </Grid>
-        <Grid container spacing={2} pl={2} pr={2} pb={2}>
+        <Header />
+        <Grid container spacing={2} pl={2} pr={2} pb={2} {...motionProps()}>
           {data?.headers.map((block: any, index: number) => (
             <Fragment key={index}>
               <Grid item xs={12}>

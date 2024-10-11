@@ -25,11 +25,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Outlet } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Header from './components/Header';
-import TopBar from './components/TopBar';
+import Header from '../routes/Header/Header';
+import TopBar from '../routes/Header/TopBar';
 import { darkTheme, lightTheme } from './themes';
 
-import HeaderTitle from './components/HeaderTitle';
+import HeaderTitle from '../routes/Header/HeaderTitle';
 
 interface PageLayoutProps {
   title?: string;

@@ -103,6 +103,11 @@ export const outputItems = (content: any) => {
       value: content.covenant.data,
       copy: false,
     },
+    {
+      label: 'Encrypted Data',
+      value: toHexString(content.encrypted_data.data),
+      copy: true,
+    },
   ];
 
   return items;
