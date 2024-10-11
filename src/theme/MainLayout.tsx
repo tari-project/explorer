@@ -25,8 +25,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Outlet } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Header from './components/Header';
-import TopBar from './components/TopBar';
+import Header from '../routes/Header/Header';
+import TopBar from '../routes/Header/TopBar';
 import { darkTheme } from './themes';
 
 export default function MainLayout() {
