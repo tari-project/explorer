@@ -119,7 +119,6 @@ function Inputs({
         adjustedIndex={adjustedIndex}
         expanded={expanded}
         handleChange={handleChange}
-        theme={theme}
         expandedPanel={expandedPanel}
         tabName={title}
         key={adjustedIndex}
