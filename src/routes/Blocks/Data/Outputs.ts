@@ -43,6 +43,11 @@ export const outputItems = (content: any) => {
           value: content.features.maturity,
           copy: false,
         },
+        {
+          label: 'Coinbase Extra Data',
+          value: toHexString(content.features.coinbase_extra.data),
+          copy: true,
+        },
       ],
     },
     {

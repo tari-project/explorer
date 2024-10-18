@@ -26,7 +26,6 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Grid from '@mui/material/Grid';
 import GridItem from './GridItem';
 
 function GenerateAccordion({
@@ -34,7 +33,6 @@ function GenerateAccordion({
   adjustedIndex,
   expanded,
   handleChange,
-  theme,
   expandedPanel,
   tabName,
 }: {
@@ -44,7 +42,6 @@ function GenerateAccordion({
   handleChange: (
     panel: string
   ) => (_: React.SyntheticEvent, isExpanded: boolean) => void;
-  theme: any;
   expandedPanel: string;
   tabName: string;
 }) {
@@ -64,49 +61,48 @@ function GenerateAccordion({
           {tabName} {adjustedIndex}
         </Typography>
       </AccordionSummary>
-      <AccordionDetails>
-        <Grid container spacing={2}>
-          {items.map((item: any, subIndex: number) => (
-            <Fragment key={subIndex}>
-              {item.children ? (
-                <Fragment>
-                  {GridItem(
-                    theme,
-                    item.label,
-                    item.value,
-                    item.copy,
-                    adjustedIndex,
-                    subIndex,
-                    true
-                  )}
-                  {item.children.map((child: any, innerIndex: number) => (
-                    <Fragment key={innerIndex}>
-                      {GridItem(
-                        theme,
-                        child.label,
-                        child.value,
-                        child.copy,
-                        adjustedIndex,
-                        subIndex,
-                        false
-                      )}
-                    </Fragment>
-                  ))}
-                </Fragment>
-              ) : (
-                GridItem(
-                  theme,
+      <AccordionDetails
+        style={{
+          padding: 0,
+        }}
+      >
+        {items.map((item: any, subIndex: number) => (
+          <Fragment key={subIndex}>
+            {item.children ? (
+              <Fragment>
+                {GridItem(
                   item.label,
                   item.value,
                   item.copy,
                   adjustedIndex,
                   subIndex,
                   true
-                )
-              )}
-            </Fragment>
-          ))}
-        </Grid>
+                )}
+                {item.children.map((child: any, innerIndex: number) => (
+                  <Fragment key={innerIndex}>
+                    {GridItem(
+                      child.label,
+                      child.value,
+                      child.copy,
+                      adjustedIndex,
+                      subIndex,
+                      false
+                    )}
+                  </Fragment>
+                ))}
+              </Fragment>
+            ) : (
+              GridItem(
+                item.label,
+                item.value,
+                item.copy,
+                adjustedIndex,
+                subIndex,
+                true
+              )
+            )}
+          </Fragment>
+        ))}
       </AccordionDetails>
     </StyledAccordion>
   );

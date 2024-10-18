@@ -24,12 +24,11 @@ import { Fragment } from 'react';
 import { TypographyData } from '../../components/StyledComponents';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Divider from '@mui/material/Divider';
 import { shortenString } from '../../utils/helpers';
 import CopyToClipboard from '../../components/CopyToClipboard';
+import { useTheme } from '@mui/material/styles';
 
 function GridItem(
-  theme: any,
   label: string,
   value: any,
   copy: boolean,
@@ -37,21 +36,36 @@ function GridItem(
   subIndex: number,
   showDivider: boolean
 ) {
+  const theme = useTheme();
   return (
-    <Fragment>
-      <Grid item xs={12}>
-        {showDivider && (
-          <Divider
-            style={{
-              backgroundColor: theme.palette.background.paper,
-            }}
-          />
-        )}
-      </Grid>
-      <Grid item xs={12} md={4} lg={4}>
+    <Grid
+      container
+      xs={12}
+      style={{
+        backgroundColor: subIndex % 2 === 1 ? '' : 'rgba(0, 0, 0, 0.02)',
+        borderTop: showDivider ? `1px solid white` : 'none',
+      }}
+    >
+      <Grid
+        item
+        xs={12}
+        md={4}
+        lg={4}
+        style={{
+          padding: theme.spacing(2),
+        }}
+      >
         <Typography variant="body2">{label}</Typography>
       </Grid>
-      <Grid item xs={12} md={8} lg={8}>
+      <Grid
+        item
+        xs={12}
+        md={8}
+        lg={8}
+        style={{
+          padding: theme.spacing(2),
+        }}
+      >
         <TypographyData>
           {copy ? (
             <Fragment>
@@ -63,7 +77,7 @@ function GridItem(
           )}
         </TypographyData>
       </Grid>
-    </Fragment>
+    </Grid>
   );
 }
 

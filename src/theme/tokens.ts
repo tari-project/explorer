@@ -140,7 +140,7 @@ export const light: ThemeOptions = {
       dark: gothic[500],
       light: teal[400],
     },
-    divider: 'rgba(0,0,0,0.08)',
+    divider: 'rgba(0,0,0,0.04)',
     text: {
       primary: grey[950],
       secondary: grey[600],

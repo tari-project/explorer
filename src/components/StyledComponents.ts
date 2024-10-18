@@ -40,9 +40,15 @@ export const AccordionIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export const StyledAccordion = styled(Accordion)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: theme.palette.background.paper,
+  boxShadow: '1px 5px 28px rgba(35, 11, 73, 0.05)',
+  borderRadius: theme.shape.borderRadius,
+  marginBottom: theme.spacing(1),
   '&:hover': {
     backgroundColor: '#fafafc',
+  },
+  '&:before': {
+    display: 'none',
   },
 }));
 
