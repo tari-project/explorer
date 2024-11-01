@@ -26,7 +26,6 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { shortenString } from '../../utils/helpers';
 import CopyToClipboard from '../../components/CopyToClipboard';
-import { useTheme } from '@mui/material/styles';
 
 function GridItem(
   label: string,
@@ -36,7 +35,6 @@ function GridItem(
   subIndex: number,
   showDivider: boolean
 ) {
-  const theme = useTheme();
   return (
     <Grid
       container
@@ -46,26 +44,10 @@ function GridItem(
         borderTop: showDivider ? `1px solid white` : 'none',
       }}
     >
-      <Grid
-        item
-        xs={12}
-        md={4}
-        lg={4}
-        style={{
-          padding: theme.spacing(2),
-        }}
-      >
+      <Grid item xs={12} md={4} lg={4} p={2}>
         <Typography variant="body2">{label}</Typography>
       </Grid>
-      <Grid
-        item
-        xs={12}
-        md={8}
-        lg={8}
-        style={{
-          padding: theme.spacing(2),
-        }}
-      >
+      <Grid item xs={12} md={8} lg={8} p={2}>
         <TypographyData>
           {copy ? (
             <Fragment>

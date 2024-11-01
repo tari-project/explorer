@@ -20,45 +20,50 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { ThemeProvider } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Outlet } from 'react-router-dom';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Header from '../routes/Header/Header';
-import StickyHeader from '../routes/Header/StickyHeader';
-import TopBar from '../routes/Header/TopBar';
-import { darkTheme } from './themes';
+import React, { useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
 
-export default function MainLayout() {
-  return (
-    <>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <Grid container spacing={0} className="main-bg">
-          <StickyHeader>
-            <TopBar />
-            <Header />
-          </StickyHeader>
-          <Container maxWidth="xl">
-            <Outlet />
-          </Container>
-        </Grid>
-      </ThemeProvider>
-      {/* <ThemeProvider theme={lightTheme}>
-        <Container maxWidth="xl">
-          <Grid
-            container
-            spacing={3}
-            style={{
-              paddingTop: lightTheme.spacing(6),
-              paddingBottom: lightTheme.spacing(6),
-            }}
-          >
-            <Outlet />
-          </Grid>
-        </Container>
-      </ThemeProvider> */}
-    </>
-  );
+interface Props {
+  children: React.ReactNode;
 }
+
+const darkBg = 'rgb(25, 14, 43, 0.95)';
+const lightBg = 'rgba(0,0,0,0.1)';
+
+const StickyHeader = ({ children }: Props) => {
+  const [bgColor, setBgColor] = useState(lightBg);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setBgColor(darkBg);
+      } else {
+        setBgColor(lightBg);
+      }
+    };
+
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return (
+    <Box
+      style={{
+        position: 'sticky',
+        top: 0,
+        width: '100%',
+        backgroundColor: bgColor,
+        transition: 'background-color 0.3s ease',
+        zIndex: 1000,
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
+
+export default StickyHeader;

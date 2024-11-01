@@ -79,20 +79,26 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
 
   useEffect(() => {
     const display: Display[] = [];
-    let blockItem = parseInt(tip, 10);
+    const ascendingBlockNumbers: number[] = [];
+    let blockItem = parseInt(tip, 10) - noOfBlocks + 1;
     let hashRates = hashRatesMap[type];
+
+    // Populate ascendingBlockNumbers array
+    for (let i = 0; i < noOfBlocks; i++) {
+      ascendingBlockNumbers.push(blockItem + i);
+    }
+
     for (let i = 1; i <= noOfBlocks; i++) {
       if (hashRates?.[i - 1] !== 0) {
         display.push({
-          blockNumber: blockItem,
+          blockNumber: ascendingBlockNumbers[i - 1],
           hashRate: hashRates?.[i - 1] || 0,
         });
       } else {
         setNoOfBlocks((prevState) => prevState - 1);
       }
-      blockItem = blockItem - 1;
     }
-    setDisplay(display.reverse());
+    setDisplay(display);
   }, [data]);
 
   const option = {
