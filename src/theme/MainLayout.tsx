@@ -25,10 +25,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Outlet } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Header from '../routes/Header/Header';
-import StickyHeader from '../routes/Header/StickyHeader';
-import TopBar from '../routes/Header/TopBar';
 import { darkTheme } from './themes';
+import AppHeader from '../routes/Header/AppHeader';
 
 export default function MainLayout() {
   return (
@@ -36,10 +34,7 @@ export default function MainLayout() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Grid container spacing={0} className="main-bg">
-          <StickyHeader>
-            <TopBar />
-            <Header />
-          </StickyHeader>
+          <AppHeader />
           <Container maxWidth="xl">
             <Outlet />
           </Container>

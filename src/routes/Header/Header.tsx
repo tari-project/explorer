@@ -36,7 +36,11 @@ import SearchField from './SearchField';
 import { useState } from 'react';
 import { formatHash } from '../../utils/helpers';
 
-function Header() {
+interface HeaderProps {
+  isScrolled: boolean;
+}
+
+function Header({ isScrolled }: HeaderProps) {
   const { data } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -74,9 +78,9 @@ function Header() {
               justifyContent: 'space-between',
               alignItems: 'center',
               width: '100%',
-              paddingTop: theme.spacing(3),
-              paddingBottom: theme.spacing(3),
-              minHeight: '100px',
+              paddingTop: isScrolled ? theme.spacing(1) : theme.spacing(3),
+              paddingBottom: isScrolled ? theme.spacing(0) : theme.spacing(3),
+              transition: 'padding 0.3s ease-in-out, height 0.3s ease-in-out',
             }}
           >
             {isMobile ? (
@@ -84,7 +88,14 @@ function Header() {
                 {!isExpanded && (
                   <Fade in={!isExpanded}>
                     <Link to="/">
-                      <TariLogo fill={theme.palette.text.primary} />
+                      <Box
+                        style={{
+                          marginTop: isScrolled ? '0' : '10px',
+                          transition: 'margin 0.3s ease-in-out',
+                        }}
+                      >
+                        <TariLogo fill={theme.palette.text.primary} />
+                      </Box>
                     </Link>
                   </Fade>
                 )}
@@ -116,7 +127,14 @@ function Header() {
               <Grid container spacing={3}>
                 <Grid item xs={10} md={3} lg={3}>
                   <Link to="/">
-                    <TariLogo fill={theme.palette.text.primary} />
+                    <Box
+                      style={{
+                        marginTop: isScrolled ? '0' : '10px',
+                        transition: 'margin 0.3s ease-in-out',
+                      }}
+                    >
+                      <TariLogo fill={theme.palette.text.primary} />
+                    </Box>
                   </Link>
                 </Grid>
                 <Grid item xs={12} md={9} lg={9}>
@@ -131,6 +149,7 @@ function Header() {
                     <StatsItem
                       label="RandomX Hash Rate"
                       value={formattedMoneroHashRate}
+                      isScrolled={isScrolled}
                     />
                     <Divider
                       orientation="vertical"
@@ -140,6 +159,7 @@ function Header() {
                     <StatsItem
                       label="Sha3 Hash Rate"
                       value={formattedSha3HashRate}
+                      isScrolled={isScrolled}
                     />
                     <Divider
                       orientation="vertical"
@@ -149,6 +169,7 @@ function Header() {
                     <StatsItem
                       label="Avg Block Time"
                       value={formattedAverageBlockTime}
+                      isScrolled={isScrolled}
                       lowerCase
                     />
                     <Divider
@@ -159,6 +180,7 @@ function Header() {
                     <StatsItem
                       label="Block Height"
                       value={formattedBlockHeight}
+                      isScrolled={isScrolled}
                     />
                   </Box>
                 </Grid>

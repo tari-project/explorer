@@ -21,15 +21,20 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Box, Typography } from '@mui/material';
-import './StatsItem.css';
 
 interface Props {
   label: string;
   value: string;
   lowerCase?: boolean;
+  isScrolled: boolean;
 }
 
-export default function StatsItem({ label, value, lowerCase }: Props) {
+export default function StatsItem({
+  label,
+  value,
+  lowerCase,
+  isScrolled,
+}: Props) {
   return (
     <Box
       style={{
@@ -37,18 +42,31 @@ export default function StatsItem({ label, value, lowerCase }: Props) {
         flexDirection: 'column',
         alignItems: 'center',
         gap: 0,
+        minWidth: '108px',
       }}
     >
       <Typography
         variant="body1"
-        className="topbar-item-value"
         style={{
           textTransform: lowerCase ? 'lowercase' : 'uppercase',
+          fontFamily: 'AvenirHeavy',
+          fontSize: isScrolled ? '18px' : '24px',
+          color: '#fff',
+          textAlign: 'center',
+          transition: 'font-size 0.3s ease-in-out',
         }}
       >
         {value}
       </Typography>
-      <Typography className="topbar-item-label">{label}</Typography>
+      <Typography
+        style={{
+          fontSize: '12px',
+          color: '#fff',
+          textAlign: 'center',
+        }}
+      >
+        {label}
+      </Typography>
     </Box>
   );
 }
