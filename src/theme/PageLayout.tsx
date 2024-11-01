@@ -26,6 +26,7 @@ import { Outlet } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Header from '../routes/Header/Header';
+import StickyHeader from '../routes/Header/StickyHeader';
 import TopBar from '../routes/Header/TopBar';
 import { darkTheme, lightTheme } from './themes';
 
@@ -47,27 +48,30 @@ export default function PageLayout({
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Grid container spacing={0} className="main-bg">
-          <TopBar />
-          <Header />
+          <StickyHeader>
+            <TopBar />
+            <Header />
+          </StickyHeader>
           {customHeader ? (
             customHeader
           ) : (
             <HeaderTitle title={title || ''} subTitle={subTitle || ''} />
           )}
+          <ThemeProvider theme={lightTheme}>
+            <Container
+              maxWidth="xl"
+              style={{
+                paddingTop: lightTheme.spacing(5),
+                paddingBottom: lightTheme.spacing(5),
+                background: lightTheme.palette.background.default,
+              }}
+            >
+              <Grid container spacing={3}>
+                <Outlet />
+              </Grid>
+            </Container>
+          </ThemeProvider>
         </Grid>
-      </ThemeProvider>
-      <ThemeProvider theme={lightTheme}>
-        <Container
-          maxWidth="xl"
-          style={{
-            paddingTop: lightTheme.spacing(5),
-            paddingBottom: lightTheme.spacing(5),
-          }}
-        >
-          <Grid container spacing={3}>
-            <Outlet />
-          </Grid>
-        </Container>
       </ThemeProvider>
     </>
   );

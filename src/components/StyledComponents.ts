@@ -44,6 +44,7 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   boxShadow: '1px 5px 28px rgba(35, 11, 73, 0.05)',
   borderRadius: theme.shape.borderRadius,
   marginBottom: theme.spacing(1),
+  border: '1px solid #f8f8f8',
   '&:hover': {
     backgroundColor: '#fafafc',
   },

@@ -47,11 +47,8 @@ function Header() {
     0
   );
 
-  // check for the first non-zero value
-  const latestMoneroHashRate =
-    data?.moneroHashRates?.find((rate: number) => rate !== 0) ?? 0;
-  const latestShaHashRate =
-    data?.shaHashRates?.find((rate: number) => rate !== 0) ?? 0;
+  const latestMoneroHashRate = data?.currentMoneroHashRate ?? 0;
+  const latestShaHashRate = data?.currentShaHashRate ?? 0;
 
   const average = sum / values.length;
   const formattedAverageBlockTime = numeral(average).format('0') + 'm';
