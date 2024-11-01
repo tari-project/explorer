@@ -20,7 +20,6 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { StyledPaper } from '../../components/StyledComponents';
 import { useTheme } from '@mui/material/styles';
@@ -39,67 +38,63 @@ function Block() {
   if (isLoading || isError) {
     return (
       <Grid item xs={12} md={12} lg={12}>
-        <Container maxWidth="xl">
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={12} lg={12}>
-              <StyledPaper>
-                <FetchStatusCheck
-                  isError={isError}
-                  isLoading={isLoading}
-                  errorMessage={error?.message || 'Error retrieving data'}
-                />
-              </StyledPaper>
-            </Grid>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={12} lg={12}>
+            <StyledPaper>
+              <FetchStatusCheck
+                isError={isError}
+                isLoading={isLoading}
+                errorMessage={error?.message || 'Error retrieving data'}
+              />
+            </StyledPaper>
           </Grid>
-        </Container>
+        </Grid>
       </Grid>
     );
   }
 
   return (
     <Grid item xs={12} md={12} lg={12}>
-      <Container maxWidth="xl">
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={12} lg={6}>
-            <StyledPaper>
-              <BlockInfo blockHeight={blockHeight} />
-            </StyledPaper>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            md={12}
-            lg={6}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: theme.spacing(3),
-            }}
-          >
-            <StyledPaper>
-              <BlockParts
-                blockHeight={blockHeight}
-                type="kernels"
-                itemsPerPage={5}
-              />
-            </StyledPaper>
-            <StyledPaper>
-              <BlockParts
-                blockHeight={blockHeight}
-                type="outputs"
-                itemsPerPage={5}
-              />
-            </StyledPaper>
-            <StyledPaper>
-              <BlockParts
-                blockHeight={blockHeight}
-                type="inputs"
-                itemsPerPage={5}
-              />
-            </StyledPaper>
-          </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={12} lg={6}>
+          <StyledPaper>
+            <BlockInfo blockHeight={blockHeight} />
+          </StyledPaper>
         </Grid>
-      </Container>
+        <Grid
+          item
+          xs={12}
+          md={12}
+          lg={6}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: theme.spacing(3),
+          }}
+        >
+          <StyledPaper>
+            <BlockParts
+              blockHeight={blockHeight}
+              type="kernels"
+              itemsPerPage={5}
+            />
+          </StyledPaper>
+          <StyledPaper>
+            <BlockParts
+              blockHeight={blockHeight}
+              type="outputs"
+              itemsPerPage={5}
+            />
+          </StyledPaper>
+          <StyledPaper>
+            <BlockParts
+              blockHeight={blockHeight}
+              type="inputs"
+              itemsPerPage={5}
+            />
+          </StyledPaper>
+        </Grid>
+      </Grid>
     </Grid>
   );
 }
