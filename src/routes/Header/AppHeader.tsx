@@ -3,21 +3,18 @@ import TopBar from './TopBar';
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 
-const darkBg = 'rgb(25, 14, 43, 0.95)';
+const darkBg = 'rgb(20, 16, 35, 0.95)';
 const lightBg = 'rgba(0,0,0,0.1)';
 
 function AppHeader() {
   const [bgColor, setBgColor] = useState(lightBg);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
         setBgColor(darkBg);
-        setIsScrolled(true);
       } else {
         setBgColor(lightBg);
-        setIsScrolled(false);
       }
     };
 
@@ -36,12 +33,11 @@ function AppHeader() {
         top: 0,
         width: '100%',
         backgroundColor: bgColor,
-        transition: 'background-color 0.3s ease',
         zIndex: 1000,
       }}
     >
       <TopBar />
-      <Header isScrolled={isScrolled} />
+      <Header />
     </Box>
   );
 }

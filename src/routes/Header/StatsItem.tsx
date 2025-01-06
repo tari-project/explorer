@@ -26,15 +26,9 @@ interface Props {
   label: string;
   value: string;
   lowerCase?: boolean;
-  isScrolled: boolean;
 }
 
-export default function StatsItem({
-  label,
-  value,
-  lowerCase,
-  isScrolled,
-}: Props) {
+export default function StatsItem({ label, value, lowerCase }: Props) {
   return (
     <Box
       style={{
@@ -50,7 +44,7 @@ export default function StatsItem({
         style={{
           textTransform: lowerCase ? 'lowercase' : 'uppercase',
           fontFamily: 'AvenirHeavy',
-          fontSize: isScrolled ? '18px' : '24px',
+          fontSize: '24px',
           color: '#fff',
           textAlign: 'center',
           transition: 'font-size 0.3s ease-in-out',
