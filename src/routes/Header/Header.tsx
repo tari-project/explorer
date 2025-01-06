@@ -36,11 +36,7 @@ import SearchField from './SearchField';
 import { useState } from 'react';
 import { formatHash } from '../../utils/helpers';
 
-interface HeaderProps {
-  isScrolled: boolean;
-}
-
-function Header({ isScrolled }: HeaderProps) {
+function Header() {
   const { data } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -78,9 +74,8 @@ function Header({ isScrolled }: HeaderProps) {
               justifyContent: 'space-between',
               alignItems: 'center',
               width: '100%',
-              paddingTop: isScrolled ? theme.spacing(1) : theme.spacing(3),
-              paddingBottom: isScrolled ? theme.spacing(0) : theme.spacing(3),
-              transition: 'padding 0.3s ease-in-out, height 0.3s ease-in-out',
+              paddingTop: theme.spacing(3),
+              paddingBottom: theme.spacing(3),
             }}
           >
             {isMobile ? (
@@ -90,7 +85,7 @@ function Header({ isScrolled }: HeaderProps) {
                     <Link to="/">
                       <Box
                         style={{
-                          marginTop: isScrolled ? '0' : '10px',
+                          marginTop: '10px',
                           transition: 'margin 0.3s ease-in-out',
                         }}
                       >
@@ -129,7 +124,7 @@ function Header({ isScrolled }: HeaderProps) {
                   <Link to="/">
                     <Box
                       style={{
-                        marginTop: isScrolled ? '0' : '10px',
+                        marginTop: '10px',
                         transition: 'margin 0.3s ease-in-out',
                       }}
                     >
@@ -149,7 +144,6 @@ function Header({ isScrolled }: HeaderProps) {
                     <StatsItem
                       label="RandomX Hash Rate"
                       value={formattedMoneroHashRate}
-                      isScrolled={isScrolled}
                     />
                     <Divider
                       orientation="vertical"
@@ -159,7 +153,6 @@ function Header({ isScrolled }: HeaderProps) {
                     <StatsItem
                       label="Sha3 Hash Rate"
                       value={formattedSha3HashRate}
-                      isScrolled={isScrolled}
                     />
                     <Divider
                       orientation="vertical"
@@ -169,7 +162,6 @@ function Header({ isScrolled }: HeaderProps) {
                     <StatsItem
                       label="Avg Block Time"
                       value={formattedAverageBlockTime}
-                      isScrolled={isScrolled}
                       lowerCase
                     />
                     <Divider
@@ -180,7 +172,6 @@ function Header({ isScrolled }: HeaderProps) {
                     <StatsItem
                       label="Block Height"
                       value={formattedBlockHeight}
-                      isScrolled={isScrolled}
                     />
                   </Box>
                 </Grid>
