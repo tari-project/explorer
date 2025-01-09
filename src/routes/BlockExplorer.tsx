@@ -54,9 +54,11 @@ function BlockExplorerPage() {
         }}
       >
         <GradientPaper>
+          <InnerHeading>Recent Blocks</InnerHeading>
           <BlockWidget />
         </GradientPaper>
         <GradientPaper>
+          <InnerHeading>Proof of Work Split</InnerHeading>
           <POWChart />
         </GradientPaper>
         <GradientPaper>

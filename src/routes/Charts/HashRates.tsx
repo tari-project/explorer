@@ -26,6 +26,8 @@ import { chartColor } from '../../theme/colors';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
 import { formatHash } from '../../utils/helpers';
 import { useState, useEffect } from 'react';
+import { Alert, Skeleton } from '@mui/material';
+import { TransparentBg } from '../../components/StyledComponents';
 
 interface HashRatesProps {
   type: 'RandomX' | 'Sha3';
@@ -37,7 +39,7 @@ interface Display {
 }
 
 const HashRates: React.FC<HashRatesProps> = ({ type }) => {
-  const { data } = useAllBlocks();
+  const { data, isLoading, isError, error } = useAllBlocks();
   const theme = useTheme();
   const tip = data?.tipInfo?.metadata.best_block_height;
   const [display, setDisplay] = useState<Display[]>([
@@ -189,6 +191,20 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
       },
     ],
   };
+
+  if (isError) {
+    return (
+      <TransparentBg>
+        <Alert severity="error" variant="outlined">
+          {error?.message}
+        </Alert>
+      </TransparentBg>
+    );
+  }
+
+  if (isLoading) {
+    return <Skeleton variant="rounded" height={300} />;
+  }
 
   return <ReactEcharts option={option} />;
 };

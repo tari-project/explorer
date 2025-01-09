@@ -24,7 +24,8 @@ import ReactEcharts from 'echarts-for-react';
 import { useTheme } from '@mui/material/styles';
 import { chartColor } from '../../theme/colors';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
-import { InnerHeading } from '../../components/StyledComponents';
+import { Alert, Skeleton } from '@mui/material';
+import { TransparentBg } from '../../components/StyledComponents';
 
 interface AlgoSplit {
   monero10: number;
@@ -39,7 +40,7 @@ interface AlgoSplit {
 
 const ProofOfWork = () => {
   const theme = useTheme();
-  const { data } = useAllBlocks();
+  const { data, isError, isLoading, error } = useAllBlocks();
 
   function calculatePercentage(monero: number, sha: number) {
     const total = monero + sha;
@@ -170,12 +171,21 @@ const ProofOfWork = () => {
     ],
   };
 
-  return (
-    <>
-      <InnerHeading>Proof of Work Split</InnerHeading>
-      <ReactEcharts option={option} />
-    </>
-  );
+  if (isError) {
+    return (
+      <TransparentBg>
+        <Alert severity="error" variant="outlined">
+          {error?.message}
+        </Alert>
+      </TransparentBg>
+    );
+  }
+
+  if (isLoading) {
+    return <Skeleton variant="rounded" height={300} />;
+  }
+
+  return <ReactEcharts option={option} />;
 };
 
 export default ProofOfWork;

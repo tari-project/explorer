@@ -24,13 +24,15 @@ import ReactEcharts from 'echarts-for-react';
 import { useTheme } from '@mui/material/styles';
 import { chartColor } from '../../theme/colors';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
+import { Alert, Skeleton } from '@mui/material';
+import { TransparentBg } from '../../components/StyledComponents';
 
 interface BlockTimesProps {
   type: 'RandomX' | 'Sha3';
 }
 
 const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
-  const { data } = useAllBlocks();
+  const { data, isLoading, isError, error } = useAllBlocks();
   const theme = useTheme();
   const tip = data?.tipInfo?.metadata.best_block_height;
   const noOfBlocks = 60;
@@ -152,6 +154,20 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
       },
     ],
   };
+
+  if (isError) {
+    return (
+      <TransparentBg>
+        <Alert severity="error" variant="outlined">
+          {error?.message}
+        </Alert>
+      </TransparentBg>
+    );
+  }
+
+  if (isLoading) {
+    return <Skeleton variant="rounded" height={300} />;
+  }
 
   return <ReactEcharts option={option} />;
 };

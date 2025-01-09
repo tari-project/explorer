@@ -165,3 +165,14 @@ export const TransparentDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.divider,
   background: 'none',
 }));
+
+export const TransparentBg = styled(Box)(
+  ({ theme, height }: { theme: any; height?: any }) => ({
+    height: height || '300px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+    borderRadius: theme.spacing(1),
+  })
+);
