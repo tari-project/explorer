@@ -24,7 +24,7 @@ import Alert from '@mui/material/Alert';
 
 function Error({ message }: { message: String }) {
   return (
-    <Alert severity="error" variant="standard">
+    <Alert severity="error" variant="outlined">
       {message}
     </Alert>
   );

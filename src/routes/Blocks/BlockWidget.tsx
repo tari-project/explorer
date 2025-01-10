@@ -23,24 +23,30 @@
 import { Fragment } from 'react';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
 import {
-  InnerHeading,
   TypographyData,
   TransparentButton,
+  TransparentBg,
 } from '../../components/StyledComponents';
-import { Typography, Grid, Divider } from '@mui/material';
+import {
+  Typography,
+  Grid,
+  Divider,
+  Button,
+  Skeleton,
+  Alert,
+} from '@mui/material';
 import {
   toHexString,
   shortenString,
   formatTimestamp,
 } from '../../utils/helpers';
 import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import CopyToClipboard from '../../components/CopyToClipboard';
 import { useMediaQuery } from '@mui/material';
 
 function BlockWidget() {
-  const { data } = useAllBlocks();
+  const { data, isLoading, isError, error } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const desktopCount = 9;
@@ -49,6 +55,30 @@ function BlockWidget() {
   function Mobile() {
     const col1 = 4;
     const col2 = 8;
+
+    if (isError) {
+      return (
+        <TransparentBg>
+          <Alert severity="error" variant="outlined">
+            {error?.message}
+          </Alert>
+        </TransparentBg>
+      );
+    }
+
+    if (isLoading) {
+      const loaderHeight = 300;
+      const renderSkeleton = Array.from({ length: mobileCount }, (_, index) => (
+        <Grid item xs={12} key={index}>
+          <Skeleton variant="rounded" height={loaderHeight} />
+        </Grid>
+      ));
+      return (
+        <Grid container spacing={2} pl={0} pr={0}>
+          {renderSkeleton}
+        </Grid>
+      );
+    }
 
     return (
       <Grid container spacing={2} pl={2} pr={2}>
@@ -130,6 +160,11 @@ function BlockWidget() {
               </Grid>
             </Fragment>
           ))}
+        <Grid item xs={12}>
+          <TransparentButton href="/blocks/" variant="text" fullWidth>
+            View All Blocks
+          </TransparentButton>
+        </Grid>
       </Grid>
     );
   }
@@ -141,6 +176,35 @@ function BlockWidget() {
     const col4 = 4;
     const col5 = 1;
     const col6 = 1;
+
+    if (isError) {
+      return (
+        <TransparentBg height="850px">
+          <Alert severity="error" variant="outlined">
+            {error?.message}
+          </Alert>
+        </TransparentBg>
+      );
+    }
+
+    if (isLoading) {
+      const loaderHeight = 60;
+      const renderSkeleton = Array.from(
+        { length: desktopCount + 2 },
+        (_, index) => (
+          <Grid item xs={12} key={index}>
+            <Skeleton variant="rounded" height={loaderHeight} />
+          </Grid>
+        )
+      );
+      return (
+        <>
+          <Grid container spacing={2} pl={0} pr={0} pb={2}>
+            {renderSkeleton}
+          </Grid>
+        </>
+      );
+    }
 
     return (
       <>
@@ -238,21 +302,18 @@ function BlockWidget() {
                 </Grid>
               </Fragment>
             ))}
+          <Grid item xs={12}>
+            <Divider />
+            <TransparentButton href="/blocks/" variant="text" fullWidth>
+              View All Blocks
+            </TransparentButton>
+          </Grid>
         </Grid>
       </>
     );
   }
 
-  return (
-    <>
-      <InnerHeading>Recent Blocks</InnerHeading>
-      {isMobile ? <Mobile /> : <Desktop />}
-      <Divider />
-      <TransparentButton href="/blocks/" variant="text" fullWidth>
-        View All Blocks
-      </TransparentButton>
-    </>
-  );
+  return <>{isMobile ? <Mobile /> : <Desktop />}</>;
 }
 
 export default BlockWidget;

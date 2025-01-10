@@ -25,16 +25,17 @@ import { useAllBlocks } from '../../api/hooks/useBlocks';
 import {
   InnerHeading,
   TypographyData,
+  TransparentBg,
 } from '../../components/StyledComponents';
-import { Typography, Grid, Divider, Alert } from '@mui/material';
+import { Typography, Grid, Divider, Alert, Skeleton } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import FetchStatusCheck from '../../components/FetchStatusCheck';
 
 function VNTable() {
-  const { data, isError, isLoading } = useAllBlocks();
+  const { data, isError, isLoading, error } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const Title = () => <InnerHeading>Active Validator Nodes</InnerHeading>;
 
   function Mobile() {
     const col1 = 4;
@@ -100,14 +101,31 @@ function VNTable() {
     );
   }
 
+  if (isError) {
+    return (
+      <>
+        <Title />
+        <TransparentBg>
+          <Alert severity="error" variant="outlined">
+            {error?.message}
+          </Alert>
+        </TransparentBg>
+      </>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <>
+        <Title />
+        <Skeleton variant="rounded" width="100%" height={200} />
+      </>
+    );
+  }
+
   return (
     <>
-      <InnerHeading>Active Validator Nodes</InnerHeading>
-      <FetchStatusCheck
-        errorMessage="error"
-        isError={isError}
-        isLoading={isLoading}
-      />
+      <Title />
       {data?.activeVns.length === 0 && !isLoading && !isError ? (
         <Alert severity="info" variant="outlined">
           Coming Soon
