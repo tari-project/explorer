@@ -27,23 +27,24 @@ import {
   TypographyData,
   TransparentButton,
   TransparentDivider,
+  TransparentBg,
 } from '../../components/StyledComponents';
-import { Typography, Grid, Alert } from '@mui/material';
+import { Typography, Grid, Alert, Skeleton } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import FetchStatusCheck from '../../components/FetchStatusCheck';
 import { toHexString, shortenString } from '../../utils/helpers';
 import CopyToClipboard from '../../components/CopyToClipboard';
 
 function MempoolTable() {
-  const { data, isError, isLoading } = useAllBlocks();
+  const { data, isError, isLoading, error } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const Title = () => (
+    <InnerHeading>Mempool ({data?.mempool.length || '0'})</InnerHeading>
+  );
 
   const desktopCount = 5;
   const mobileCount = 5;
-
-  console.log('data', data?.mempool || 'no data');
 
   function Mobile() {
     const col1 = 4;
@@ -226,14 +227,31 @@ function MempoolTable() {
     );
   }
 
+  if (isError) {
+    return (
+      <>
+        <Title />
+        <TransparentBg>
+          <Alert severity="error" variant="outlined">
+            {error?.message}
+          </Alert>
+        </TransparentBg>
+      </>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <>
+        <Title />
+        <Skeleton variant="rounded" width="100%" height={200} />
+      </>
+    );
+  }
+
   return (
     <>
-      <InnerHeading>Mempool ({data?.mempool.length || '0'})</InnerHeading>
-      <FetchStatusCheck
-        errorMessage="Error Message"
-        isError={isError}
-        isLoading={isLoading}
-      />
+      <Title />
       {data?.mempool.length === 0 && !isLoading && !isError ? (
         <Alert severity="info" variant="outlined">
           Mempool is empty
