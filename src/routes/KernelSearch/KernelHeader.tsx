@@ -81,8 +81,8 @@ function KernelHeader() {
             <Typography
               variant="h1"
               style={{
-                fontFamily: '"AvenirHeavy", sans-serif',
-                fontSize: 40,
+                fontFamily: '"DrukHeavy", sans-serif',
+                fontSize: 60,
               }}
             >
               {status}

@@ -3,7 +3,7 @@ import TopBar from './TopBar';
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 
-const darkBg = 'rgb(20, 16, 35, 0.95)';
+const darkBg = 'rgb(25, 25, 25, 0.95)';
 const lightBg = 'rgba(0,0,0,0.1)';
 
 function AppHeader() {

@@ -86,12 +86,13 @@ export const PageHeading = styled(Typography)(({ theme }) => ({
 }));
 
 export const InnerHeading = styled(Typography)(({ theme }) => ({
-  fontSize: theme.typography.h6.fontSize,
+  fontSize: theme.typography.h3.fontSize,
+  fontFamily: "'DrukHeavy', sans-serif",
   textTransform: 'uppercase',
   borderBottom: `1px solid ${theme.palette.divider}`,
   padding: theme.spacing(2),
   marginBottom: theme.spacing(2),
-  letterSpacing: '1.5px',
+  // letterSpacing: '1.5px',
 }));
 
 export const DataTableCell = styled(TableCell)(() => ({

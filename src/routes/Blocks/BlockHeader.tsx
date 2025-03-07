@@ -87,8 +87,8 @@ function BlockHeader() {
             <Typography
               variant="h1"
               style={{
-                fontFamily: '"AvenirHeavy", sans-serif',
-                fontSize: isMobile ? 40 : 60,
+                fontFamily: '"DrukHeavy", sans-serif',
+                fontSize: isMobile ? 60 : 80,
               }}
             >
               {data?.height}
@@ -114,8 +114,8 @@ function BlockHeader() {
             <Typography
               variant="h1"
               style={{
-                fontFamily: '"AvenirHeavy", sans-serif',
-                fontSize: isMobile ? 40 : 60,
+                fontFamily: '"DrukHeavy", sans-serif',
+                fontSize: isMobile ? 60 : 80,
               }}
             >
               {heightOrHash.length > 30

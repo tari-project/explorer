@@ -48,6 +48,20 @@ export const tariPurple = {
   950: '#311951',
 };
 
+export const tariGreen = {
+  50: '#ffffe4',
+  100: '#fdffc5',
+  200: '#f7ff92',
+  300: '#eeff53',
+  400: '#DFFB20',
+  500: '#c9eb00',
+  600: '#95b500',
+  700: '#718902',
+  800: '#596c08',
+  900: '#4b5b0c',
+  950: '#273300',
+};
+
 export const teal = {
   50: '#F1FAF9',
   100: '#DBF2F1',
@@ -158,8 +172,8 @@ export const darkAlpha = {
 
 export const chartColor = {
   1: '#FFA5CB',
-  2: '#A155B9',
-  3: '#16BFD6',
+  2: '#DE9449',
+  3: tariGreen[500],
   4: '#165BAA',
   5: '#1DDD8D',
 };

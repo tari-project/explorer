@@ -43,8 +43,8 @@ export default function StatsItem({ label, value, lowerCase }: Props) {
         variant="body1"
         style={{
           textTransform: lowerCase ? 'lowercase' : 'uppercase',
-          fontFamily: 'AvenirHeavy',
-          fontSize: '24px',
+          fontFamily: 'DrukHeavy',
+          fontSize: '30px',
           color: '#fff',
           textAlign: 'center',
           transition: 'font-size 0.3s ease-in-out',
@@ -54,7 +54,7 @@ export default function StatsItem({ label, value, lowerCase }: Props) {
       </Typography>
       <Typography
         style={{
-          fontSize: '12px',
+          fontSize: '11px',
           color: '#fff',
           textAlign: 'center',
         }}

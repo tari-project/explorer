@@ -23,13 +23,12 @@
 import { ThemeOptions } from '@mui/material/styles';
 import {
   tariPurple,
+  tariGreen,
   blue,
   red,
   green,
   orange,
   grey,
-  teal,
-  gothic,
 } from './colors';
 
 export const componentSettings: ThemeOptions = {
@@ -38,19 +37,23 @@ export const componentSettings: ThemeOptions = {
   },
   spacing: 8,
   typography: {
-    fontFamily: '"AvenirMedium", sans-serif',
-    fontSize: 14,
-    body1: {},
+    fontFamily: '"PoppinsRegular", sans-serif',
+    fontSize: 12,
+    body1: {
+      letterSpacing: '0.5px',
+    },
     body2: {
       lineHeight: '1.5rem',
     },
     h1: {
       fontSize: '2.2rem',
       lineHeight: '3.2rem',
+      fontFamily: '"DrukHeavy", sans-serif',
     },
     h2: {
       fontSize: '1.9rem',
       lineHeight: '2.9rem',
+      fontFamily: '"DrukHeavy", sans-serif',
     },
     h3: {
       fontSize: '1.6rem',
@@ -65,7 +68,7 @@ export const componentSettings: ThemeOptions = {
       lineHeight: '2em',
     },
     h6: {
-      fontSize: '0.875rem',
+      fontSize: '0.75rem',
       lineHeight: '1.8rem',
     },
   },
@@ -136,9 +139,9 @@ export const light: ThemeOptions = {
       light: tariPurple[500],
     },
     secondary: {
-      main: gothic[400],
-      dark: gothic[500],
-      light: teal[400],
+      main: tariGreen[500],
+      dark: tariGreen[600],
+      light: tariGreen[400],
     },
     divider: 'rgba(0,0,0,0.04)',
     text: {
@@ -186,9 +189,9 @@ export const dark: ThemeOptions = {
       light: tariPurple[50],
     },
     secondary: {
-      main: teal[400],
-      dark: teal[300],
-      light: gothic[400],
+      main: tariGreen[500],
+      dark: tariGreen[400],
+      light: tariGreen[600],
     },
     divider: 'rgba(255,255,255,0.04)',
     text: {
