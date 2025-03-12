@@ -25,9 +25,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Outlet } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import { darkTheme, lightTheme } from './themes';
-import AppHeader from '../routes/Header/AppHeader';
+import { lightTheme } from './themes';
+import Header from '../components/Header/Header';
 
 import HeaderTitle from '../routes/Header/HeaderTitle';
 
@@ -44,29 +43,26 @@ export default function PageLayout({
 }: PageLayoutProps) {
   return (
     <>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={lightTheme}>
         <CssBaseline />
-        <Grid container spacing={0} className="main-bg">
-          <AppHeader />
-          {customHeader ? (
-            customHeader
-          ) : (
-            <HeaderTitle title={title || ''} subTitle={subTitle || ''} />
-          )}
-          <ThemeProvider theme={lightTheme}>
-            <Box
-              style={{
-                width: '100%',
-                paddingTop: lightTheme.spacing(5),
-                paddingBottom: lightTheme.spacing(5),
-                background: lightTheme.palette.background.default,
-              }}
-            >
-              <Container maxWidth="xl">
-                <Outlet />
-              </Container>
-            </Box>
-          </ThemeProvider>
+        <Grid
+          container
+          spacing={0}
+          className="main-bg"
+          style={{
+            minHeight: '100vh',
+            paddingBottom: lightTheme.spacing(6),
+          }}
+        >
+          <Container maxWidth="xl">
+            <Header />
+            {customHeader ? (
+              customHeader
+            ) : (
+              <HeaderTitle title={title || ''} subTitle={subTitle || ''} />
+            )}
+            <Outlet />
+          </Container>
         </Grid>
       </ThemeProvider>
     </>

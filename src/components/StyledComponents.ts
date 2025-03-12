@@ -69,11 +69,12 @@ export const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 
 export const GradientPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
+  padding: theme.spacing(5),
   boxShadow: '10px 14px 28px rgba(35, 11, 73, 0.05)',
-  border: '1px solid rgba(255, 255, 255, 0.10);',
-  background: 'rgba(255,255,255,0.04)',
+  background: 'rgba(255, 255, 255, 0.80)',
   color: theme.palette.text.primary,
+  backdropFilter: 'blur(15px)',
+  borderRadius: '40px',
 }));
 
 export const PageHeading = styled(Typography)(({ theme }) => ({

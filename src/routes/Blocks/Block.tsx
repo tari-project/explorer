@@ -21,7 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Grid from '@mui/material/Grid';
-import { StyledPaper } from '../../components/StyledComponents';
+import { GradientPaper } from '../../components/StyledComponents';
 import { useTheme } from '@mui/material/styles';
 import BlockInfo from './BlockInfo';
 import { useLocation } from 'react-router-dom';
@@ -40,13 +40,13 @@ function Block() {
       <Grid item xs={12} md={12} lg={12}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={12} lg={12}>
-            <StyledPaper>
+            <GradientPaper>
               <FetchStatusCheck
                 isError={isError}
                 isLoading={isLoading}
                 errorMessage={error?.message || 'Error retrieving data'}
               />
-            </StyledPaper>
+            </GradientPaper>
           </Grid>
         </Grid>
       </Grid>
@@ -57,9 +57,9 @@ function Block() {
     <Grid item xs={12} md={12} lg={12}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={12} lg={6}>
-          <StyledPaper>
+          <GradientPaper>
             <BlockInfo blockHeight={blockHeight} />
-          </StyledPaper>
+          </GradientPaper>
         </Grid>
         <Grid
           item
@@ -72,27 +72,27 @@ function Block() {
             gap: theme.spacing(3),
           }}
         >
-          <StyledPaper>
+          <GradientPaper>
             <BlockParts
               blockHeight={blockHeight}
               type="kernels"
               itemsPerPage={5}
             />
-          </StyledPaper>
-          <StyledPaper>
+          </GradientPaper>
+          <GradientPaper>
             <BlockParts
               blockHeight={blockHeight}
               type="outputs"
               itemsPerPage={5}
             />
-          </StyledPaper>
-          <StyledPaper>
+          </GradientPaper>
+          <GradientPaper>
             <BlockParts
               blockHeight={blockHeight}
               type="inputs"
               itemsPerPage={5}
             />
-          </StyledPaper>
+          </GradientPaper>
         </Grid>
       </Grid>
     </Grid>

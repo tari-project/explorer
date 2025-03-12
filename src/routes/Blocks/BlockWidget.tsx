@@ -24,7 +24,6 @@ import { Fragment } from 'react';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
 import {
   TypographyData,
-  TransparentButton,
   TransparentBg,
 } from '../../components/StyledComponents';
 import {
@@ -48,7 +47,7 @@ import { useMediaQuery } from '@mui/material';
 function BlockWidget() {
   const { data, isLoading, isError, error } = useAllBlocks();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const desktopCount = 9;
   const mobileCount = 5;
 
@@ -91,15 +90,7 @@ function BlockWidget() {
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>
-                  <Link
-                    style={{
-                      color: theme.palette.secondary.main,
-                      fontWeight: 600,
-                    }}
-                    to={`/blocks/${block.height}`}
-                  >
-                    {block.height}{' '}
-                  </Link>
+                  <Link to={`/blocks/${block.height}`}>{block.height} </Link>
                 </TypographyData>
               </Grid>
 
@@ -161,9 +152,14 @@ function BlockWidget() {
             </Fragment>
           ))}
         <Grid item xs={12}>
-          <TransparentButton href="/blocks/" variant="text" fullWidth>
+          <Button
+            href="/blocks/"
+            color="secondary"
+            variant="contained"
+            style={{ minWidth: isMobile ? '100%' : '250px' }}
+          >
             View All Blocks
-          </TransparentButton>
+          </Button>
         </Grid>
       </Grid>
     );
@@ -255,15 +251,7 @@ function BlockWidget() {
                 </Grid>
                 <Grid item xs={col1} md={col1} lg={col1}>
                   <TypographyData>
-                    <Link
-                      style={{
-                        color: theme.palette.secondary.main,
-                        fontWeight: 600,
-                      }}
-                      to={`/blocks/${block.height}`}
-                    >
-                      {block.height}{' '}
-                    </Link>
+                    <Link to={`/blocks/${block.height}`}>{block.height} </Link>
                   </TypographyData>
                 </Grid>
                 <Grid item xs={col2} md={col2} lg={col2}>
@@ -302,11 +290,25 @@ function BlockWidget() {
                 </Grid>
               </Fragment>
             ))}
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: theme.spacing(3),
+            }}
+          >
             <Divider />
-            <TransparentButton href="/blocks/" variant="text" fullWidth>
+            <Button
+              href="/blocks/"
+              color="secondary"
+              variant="contained"
+              style={{ minWidth: isMobile ? '100%' : '250px' }}
+            >
               View All Blocks
-            </TransparentButton>
+            </Button>
           </Grid>
         </Grid>
       </>

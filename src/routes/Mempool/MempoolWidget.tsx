@@ -25,11 +25,10 @@ import { useAllBlocks } from '../../api/hooks/useBlocks';
 import {
   InnerHeading,
   TypographyData,
-  TransparentButton,
   TransparentDivider,
   TransparentBg,
 } from '../../components/StyledComponents';
-import { Typography, Grid, Alert, Skeleton } from '@mui/material';
+import { Typography, Grid, Alert, Skeleton, Button, Box } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { toHexString, shortenString } from '../../utils/helpers';
@@ -261,9 +260,18 @@ function MempoolTable() {
       ) : (
         <Desktop />
       )}
-      <TransparentButton href="/mempool/" variant="text" fullWidth>
-        View Mempool
-      </TransparentButton>
+      <Box
+        style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}
+      >
+        <Button
+          href="/mempool/"
+          color="secondary"
+          variant="contained"
+          style={{ minWidth: isMobile ? '100%' : '250px' }}
+        >
+          View Mempool
+        </Button>
+      </Box>
     </>
   );
 }

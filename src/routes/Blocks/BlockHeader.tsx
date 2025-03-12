@@ -31,6 +31,7 @@ import {
 } from '../../api/hooks/useBlocks';
 import { shortenString } from '../../utils/helpers';
 import { useMediaQuery } from '@mui/material';
+import { GradientPaper } from '../../components/StyledComponents';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -125,11 +126,10 @@ function BlockHeader() {
           </Box>
         )}
       </Container>
-      <Box
+      <GradientPaper
         style={{
-          backgroundColor: theme.palette.divider,
-          width: '100%',
-          borderTop: `1px solid ${theme.palette.divider}`,
+          padding: '0',
+          marginBottom: theme.spacing(3),
         }}
       >
         <Container maxWidth="xl">
@@ -187,7 +187,7 @@ function BlockHeader() {
             </Box>
           </Box>
         </Container>
-      </Box>
+      </GradientPaper>
     </>
   );
 }

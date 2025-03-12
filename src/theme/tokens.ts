@@ -82,8 +82,10 @@ export const componentSettings: ThemeOptions = {
     MuiButton: {
       defaultProps: {
         size: 'large',
+        disableElevation: true,
         sx: {
           textTransform: 'none',
+          borderRadius: 4,
         },
       },
     },
@@ -184,14 +186,14 @@ export const dark: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
-      main: tariPurple[500],
-      dark: tariPurple[400],
-      light: tariPurple[50],
-    },
-    secondary: {
       main: tariGreen[500],
       dark: tariGreen[400],
       light: tariGreen[600],
+    },
+    secondary: {
+      main: tariPurple[500],
+      dark: tariPurple[400],
+      light: tariPurple[50],
     },
     divider: 'rgba(255,255,255,0.04)',
     text: {

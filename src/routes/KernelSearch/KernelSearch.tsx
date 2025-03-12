@@ -20,7 +20,7 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { StyledPaper } from '../../components/StyledComponents';
+import { GradientPaper } from '../../components/StyledComponents';
 import { Grid } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { useSearchByKernel } from '../../api/hooks/useBlocks';
@@ -45,13 +45,13 @@ function KernelsPage() {
   if (isLoading || isError) {
     return (
       <Grid item xs={12} md={12} lg={12}>
-        <StyledPaper>
+        <GradientPaper>
           <FetchStatusCheck
             isError={isError}
             isLoading={isLoading}
             errorMessage={error?.message || 'Error retrieving data'}
           />
-        </StyledPaper>
+        </GradientPaper>
       </Grid>
     );
   }
@@ -63,9 +63,9 @@ function KernelsPage() {
 
   return (
     <Grid item xs={12} md={12} lg={12}>
-      <StyledPaper>
+      <GradientPaper>
         <BlockTable data={data?.items || []} />
-      </StyledPaper>
+      </GradientPaper>
     </Grid>
   );
 }

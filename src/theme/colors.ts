@@ -172,7 +172,7 @@ export const darkAlpha = {
 
 export const chartColor = {
   1: '#FFA5CB',
-  2: '#DE9449',
+  2: tariPurple[500],
   3: tariGreen[500],
   4: '#165BAA',
   5: '#1DDD8D',
