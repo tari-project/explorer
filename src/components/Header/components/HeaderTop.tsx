@@ -2,13 +2,13 @@ import { useState } from 'react';
 import numeral from 'numeral';
 import TariLogo from '../../../assets/TariLogo';
 import { useTheme } from '@mui/material/styles';
-import StatsItem from '../../../routes/Header/StatsItem';
+import StatsItem from './StatsItem';
 import { Divider, Fade, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from '@mui/material';
 import { useAllBlocks } from '../../../api/hooks/useBlocks';
-import StatsDialog from '../../../routes/Header/StatsDialog';
-import SearchField from '../../../routes/Header/SearchField';
+import StatsDialog from './StatsDialog';
+import SearchField from './SearchField';
 import { formatHash } from '../../../utils/helpers';
 import {
   StyledContainer,

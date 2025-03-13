@@ -26,7 +26,7 @@ import { useMediaQuery } from '@mui/material';
 import { useAllBlocks } from '../../../api/hooks/useBlocks';
 import { toHexString, shortenString } from '../../../utils/helpers';
 import CopyToClipboard from '../../../components/CopyToClipboard';
-import SearchField from '../../../routes/Header/SearchField';
+import SearchField from './SearchField';
 import { useState } from 'react';
 import { StyledContainer, InnerBox } from './HeaderBottom.styles';
 

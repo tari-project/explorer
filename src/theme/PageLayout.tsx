@@ -27,8 +27,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { lightTheme } from './themes';
 import Header from '../components/Header/Header';
-
-import HeaderTitle from '../routes/Header/HeaderTitle';
+import HeaderTitle from '../components/Header/components/HeaderTitle';
 
 interface PageLayoutProps {
   title?: string;

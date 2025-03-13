@@ -1,4 +1,4 @@
-import { HeaderDark } from './styles';
+import { HeaderDark } from './Header.styles';
 import HeaderBottom from './components/HeaderBottom';
 import HeaderTop from './components/HeaderTop';
 import { darkTheme } from '../../theme/themes';
