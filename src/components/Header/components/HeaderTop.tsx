@@ -16,11 +16,13 @@ import {
   MobileBox,
   DesktopBox,
 } from './HeaderTop.styles';
+import MinersCTA from './MinersCTA';
 
 function HeaderTop() {
   const { data } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const showMinersCTA = useMediaQuery(theme.breakpoints.up('xl'));
   const [isExpanded, setIsExpanded] = useState(false);
   const values = data?.blockTimes || [];
   const sum = values.reduce(
@@ -104,6 +106,13 @@ function HeaderTop() {
               />
               <StatsItem label="Block Height" value={formattedBlockHeight} />
             </DesktopBox>
+            {showMinersCTA && (
+              <MinersCTA
+                theme="dark"
+                buttonText="Start Earning"
+                noBackground={false}
+              />
+            )}
           </StyledContainer>
           <Divider />
         </>

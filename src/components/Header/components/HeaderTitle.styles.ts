@@ -3,12 +3,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 export const StyledContainer = styled(Box)(({ theme }) => ({
-  marginTop: theme.breakpoints.down('sm')
-    ? theme.spacing(6)
-    : theme.spacing(14),
-  marginBottom: theme.breakpoints.down('sm')
-    ? theme.spacing(4)
-    : theme.spacing(12),
+  marginTop: theme.spacing(10),
+  marginBottom: theme.spacing(10),
   color: theme.palette.text.primary,
   display: 'flex',
   flexDirection: 'column',
@@ -17,9 +13,9 @@ export const StyledContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-export const StyledTitle = styled(Typography)(({ theme }) => ({
+export const StyledTitle = styled(Typography)(() => ({
   fontFamily: '"DrukHeavy", sans-serif',
-  fontSize: theme.breakpoints.down('sm') ? 60 : 80,
+  fontSize: 80,
   textTransform: 'uppercase',
 }));
 
