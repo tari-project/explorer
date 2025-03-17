@@ -69,7 +69,7 @@ export const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 
 export const GradientPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(5),
+  padding: theme.spacing(4),
   boxShadow: '10px 14px 28px rgba(35, 11, 73, 0.05)',
   background: 'rgba(255, 255, 255, 0.80)',
   color: theme.palette.text.primary,
@@ -93,7 +93,6 @@ export const InnerHeading = styled(Typography)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.divider}`,
   padding: theme.spacing(2),
   marginBottom: theme.spacing(2),
-  // letterSpacing: '1.5px',
 }));
 
 export const DataTableCell = styled(TableCell)(() => ({
