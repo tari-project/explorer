@@ -132,7 +132,7 @@ function BlockTable() {
               </Stack>
             </Grid>
             <Grid item xs={12}>
-              <Divider color={theme.palette.background.paper} />
+              <Divider />
             </Grid>
           </Fragment>
         )
@@ -208,7 +208,7 @@ function BlockTable() {
               </Link>
             </Grid>
             <Grid item xs={12}>
-              <Divider color={theme.palette.background.paper} />
+              <Divider />
             </Grid>
           </Fragment>
         ))}
@@ -266,7 +266,7 @@ function BlockTable() {
         (_, index) => (
           <Fragment key={index}>
             <Grid item xs={12} pl={2} pr={2}>
-              <Divider color={theme.palette.background.paper} />
+              <Divider />
             </Grid>
             <Grid item p={2} xs={12}>
               <SkeletonLoader height={loaderHeight} />
@@ -290,7 +290,7 @@ function BlockTable() {
           {data?.headers.map((block: any, index: number) => (
             <Fragment key={index}>
               <Grid item xs={12}>
-                <Divider color={theme.palette.background.paper} />
+                <Divider />
               </Grid>
               <Grid item xs={col1} md={col1} lg={col1}>
                 <TypographyData>

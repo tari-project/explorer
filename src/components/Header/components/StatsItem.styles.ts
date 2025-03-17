@@ -17,6 +17,7 @@ export const ValueTypography = styled(Typography)<{ lowerCase?: boolean }>(
     color: '#fff',
     textAlign: 'center',
     transition: 'font-size 0.3s ease-in-out',
+    lineHeight: '1.1',
   })
 );
 

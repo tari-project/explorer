@@ -125,7 +125,7 @@ function BlockTable({ data }: { data: any }) {
                   </Link>
                 </Grid>
                 <Grid item xs={12}>
-                  <Divider color={theme.palette.background.paper} />
+                  <Divider />
                 </Grid>
               </Fragment>
             );
@@ -190,7 +190,7 @@ function BlockTable({ data }: { data: any }) {
               return (
                 <Fragment key={index}>
                   <Grid item xs={12}>
-                    <Divider color={theme.palette.background.paper} />
+                    <Divider />
                   </Grid>
                   <Grid item xs={col1} md={col1} lg={col1}>
                     <TypographyData>

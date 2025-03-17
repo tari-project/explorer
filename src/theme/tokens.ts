@@ -195,7 +195,7 @@ export const dark: ThemeOptions = {
       dark: tariPurple[400],
       light: tariPurple[50],
     },
-    divider: 'rgba(255,255,255,0.04)',
+    divider: 'rgba(255,255,255,0.08)',
     text: {
       primary: '#FFFFFF',
       secondary: grey[300],

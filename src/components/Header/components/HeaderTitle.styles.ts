@@ -15,7 +15,7 @@ export const StyledContainer = styled(Box)(({ theme }) => ({
 
 export const StyledTitle = styled(Typography)(() => ({
   fontFamily: '"DrukHeavy", sans-serif',
-  fontSize: 80,
+  fontSize: 70,
   textTransform: 'uppercase',
 }));
 

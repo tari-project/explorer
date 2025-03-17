@@ -33,11 +33,9 @@ import {
   formatTimestamp,
 } from '../../utils/helpers';
 import CopyToClipboard from '../../components/CopyToClipboard';
-import { useTheme } from '@mui/material/styles';
 
 function BlockInfo({ blockHeight }: { blockHeight: any }) {
   const { data } = useGetBlockByHeightOrHash(blockHeight);
-  const theme = useTheme();
   const { header } = data ?? {};
   const items = [
     {
@@ -134,7 +132,7 @@ function BlockInfo({ blockHeight }: { blockHeight: any }) {
                 </TypographyData>
               </Grid>
               <Grid item xs={12}>
-                <Divider color={theme.palette.background.paper} />
+                <Divider />
               </Grid>
             </Fragment>
           ) : (
@@ -146,7 +144,7 @@ function BlockInfo({ blockHeight }: { blockHeight: any }) {
                 <TypographyData>{item.value}</TypographyData>
               </Grid>
               <Grid item xs={12}>
-                <Divider color={theme.palette.background.paper} />
+                <Divider />
               </Grid>
             </Fragment>
           )
