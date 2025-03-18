@@ -54,7 +54,7 @@ function MempoolTable() {
         {data?.mempool.slice(0, mobileCount).map((item: any, index: number) => (
           <Fragment key={index}>
             <Grid item xs={col1}>
-              <Typography variant="body2">Excess</Typography>
+              <Typography variant="h6">Excess</Typography>
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>
@@ -70,7 +70,7 @@ function MempoolTable() {
             </Grid>
 
             <Grid item xs={col1}>
-              <Typography variant="body2">Total Fees</Typography>
+              <Typography variant="h6">Total Fees</Typography>
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>
@@ -79,7 +79,7 @@ function MempoolTable() {
             </Grid>
 
             <Grid item xs={col1}>
-              <Typography variant="body2">Outputs</Typography>
+              <Typography variant="h6">Outputs</Typography>
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>
@@ -88,7 +88,7 @@ function MempoolTable() {
             </Grid>
 
             <Grid item xs={col1}>
-              <Typography variant="body2">Kernels</Typography>
+              <Typography variant="h6">Kernels</Typography>
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>
@@ -97,7 +97,7 @@ function MempoolTable() {
             </Grid>
 
             <Grid item xs={col1}>
-              <Typography variant="body2">Inputs</Typography>
+              <Typography variant="h6">Inputs</Typography>
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>
@@ -125,10 +125,10 @@ function MempoolTable() {
       <>
         <Grid container spacing={2} pl={2} pr={2} pb={2} pt={2}>
           <Grid item xs={col1} md={col1} lg={col1}>
-            <Typography variant="body2">Excess</Typography>
+            <Typography variant="h6">Excess</Typography>
           </Grid>
           <Grid item xs={col2} md={col2} lg={col2}>
-            <Typography variant="body2">Total Fees</Typography>
+            <Typography variant="h6">Total Fees</Typography>
           </Grid>
           <Grid
             item
@@ -137,7 +137,7 @@ function MempoolTable() {
             lg={col3}
             style={{ textAlign: 'center' }}
           >
-            <Typography variant="body2">Outputs</Typography>
+            <Typography variant="h6">Outputs</Typography>
           </Grid>
           <Grid
             item
@@ -146,7 +146,7 @@ function MempoolTable() {
             lg={col4}
             style={{ textAlign: 'center' }}
           >
-            <Typography variant="body2">Kernels</Typography>
+            <Typography variant="h6">Kernels</Typography>
           </Grid>
           <Grid
             item
@@ -155,7 +155,7 @@ function MempoolTable() {
             lg={col5}
             style={{ textAlign: 'center' }}
           >
-            <Typography variant="body2">Inputs</Typography>
+            <Typography variant="h6">Inputs</Typography>
           </Grid>
         </Grid>
         <Grid container spacing={2} pl={2} pr={2} pb={2}>

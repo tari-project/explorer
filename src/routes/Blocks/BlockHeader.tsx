@@ -40,6 +40,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   '&:hover': {
     backgroundColor: 'transparent',
   },
+  fontFamily: theme.typography.h6.fontFamily,
 }));
 
 function BlockHeader() {
@@ -82,7 +83,7 @@ function BlockHeader() {
               gap: theme.spacing(1),
             }}
           >
-            <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
+            <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
               Block at Height
             </Typography>
             <Typography
@@ -108,7 +109,7 @@ function BlockHeader() {
               gap: theme.spacing(1),
             }}
           >
-            <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
+            <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
               {isFetching && 'Searching...'}
               {isError && 'Block not found'}
             </Typography>

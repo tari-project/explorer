@@ -86,7 +86,7 @@ function BlockWidget() {
           .map((block: any, index: number) => (
             <Fragment key={index}>
               <Grid item xs={col1}>
-                <Typography variant="body2">Height</Typography>
+                <Typography variant="h6">Height</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>
@@ -95,7 +95,7 @@ function BlockWidget() {
               </Grid>
 
               <Grid item xs={col1}>
-                <Typography variant="body2">Timestamp</Typography>
+                <Typography variant="h6">Timestamp</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>
@@ -104,7 +104,7 @@ function BlockWidget() {
               </Grid>
 
               <Grid item xs={col1}>
-                <Typography variant="body2">Proof of Work</Typography>
+                <Typography variant="h6">Proof of Work</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>
@@ -113,7 +113,7 @@ function BlockWidget() {
               </Grid>
 
               <Grid item xs={col1}>
-                <Typography variant="body2">Hash</Typography>
+                <Typography variant="h6">Hash</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>
@@ -123,14 +123,14 @@ function BlockWidget() {
               </Grid>
 
               <Grid item xs={col1}>
-                <Typography variant="body2">Kernels</Typography>
+                <Typography variant="h6">Kernels</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>{block.kernels}</TypographyData>
               </Grid>
 
               <Grid item xs={col1}>
-                <Typography variant="body2">Outputs</Typography>
+                <Typography variant="h6">Outputs</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>{block.outputs}</TypographyData>
@@ -206,16 +206,16 @@ function BlockWidget() {
       <>
         <Grid container spacing={2} pl={2} pr={2} pb={2} pt={2}>
           <Grid item xs={col1} md={col1} lg={col1}>
-            <Typography variant="body2">Height</Typography>
+            <Typography variant="h6">Height</Typography>
           </Grid>
           <Grid item xs={col2} md={col2} lg={col2}>
-            <Typography variant="body2">Time</Typography>
+            <Typography variant="h6">Time</Typography>
           </Grid>
           <Grid item xs={col3} md={col3} lg={col3}>
-            <Typography variant="body2">Proof of Work</Typography>
+            <Typography variant="h6">Proof of Work</Typography>
           </Grid>
           <Grid item xs={col4} md={col4} lg={col4}>
-            <Typography variant="body2">Hash</Typography>
+            <Typography variant="h6">Hash</Typography>
           </Grid>
           <Grid
             item
@@ -224,7 +224,7 @@ function BlockWidget() {
             lg={col5}
             style={{ textAlign: 'center' }}
           >
-            <Typography variant="body2">Kernels</Typography>
+            <Typography variant="h6">Kernels</Typography>
           </Grid>
           <Grid
             item
@@ -233,7 +233,7 @@ function BlockWidget() {
             lg={col6}
             style={{ textAlign: 'center' }}
           >
-            <Typography variant="body2">Outputs</Typography>
+            <Typography variant="h6">Outputs</Typography>
           </Grid>
         </Grid>
         <Grid container spacing={2} pl={2} pr={2} pb={2}>

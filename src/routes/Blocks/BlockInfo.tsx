@@ -123,7 +123,7 @@ function BlockInfo({ blockHeight }: { blockHeight: any }) {
           item.copy ? (
             <Fragment key={index}>
               <Grid item xs={12} md={4} lg={4}>
-                <Typography variant="body2">{item.label}</Typography>
+                <Typography variant="h5">{item.label}</Typography>
               </Grid>
               <Grid item xs={12} md={8} lg={8}>
                 <TypographyData>
@@ -138,7 +138,7 @@ function BlockInfo({ blockHeight }: { blockHeight: any }) {
           ) : (
             <Fragment key={index}>
               <Grid item xs={12} md={4} lg={4}>
-                <Typography variant="body2">{item.label}</Typography>
+                <Typography variant="h5">{item.label}</Typography>
               </Grid>
               <Grid item xs={12} md={8} lg={8}>
                 <TypographyData>{item.value}</TypographyData>

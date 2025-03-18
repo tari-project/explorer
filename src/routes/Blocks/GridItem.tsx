@@ -45,7 +45,7 @@ function GridItem(
       }}
     >
       <Grid item xs={12} md={4} lg={4} p={2}>
-        <Typography variant="body2">{label}</Typography>
+        <Typography variant="h5">{label}</Typography>
       </Grid>
       <Grid item xs={12} md={8} lg={8} p={2}>
         <TypographyData>

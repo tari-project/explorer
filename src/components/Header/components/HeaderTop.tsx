@@ -109,7 +109,7 @@ function HeaderTop() {
             {showMinersCTA && (
               <MinersCTA
                 theme="dark"
-                buttonText="Start Earning"
+                buttonText="Tari.com"
                 noBackground={false}
               />
             )}

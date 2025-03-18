@@ -64,12 +64,14 @@ export const componentSettings: ThemeOptions = {
       lineHeight: '2.3rem',
     },
     h5: {
-      fontSize: '1rem',
-      lineHeight: '2em',
+      fontSize: '14px',
+      fontFamily: '"PoppinsSemiBold", sans-serif',
+      lineHeight: '1.4rem',
     },
     h6: {
       fontSize: '0.75rem',
       lineHeight: '1.8rem',
+      fontFamily: '"PoppinsSemiBold", sans-serif',
     },
   },
   transitions: {
@@ -86,6 +88,8 @@ export const componentSettings: ThemeOptions = {
         sx: {
           textTransform: 'none',
           borderRadius: 4,
+          fontFamily: '"PoppinsSemiBold", sans-serif',
+          fontSize: 14,
         },
       },
     },

@@ -57,7 +57,7 @@ function GenerateAccordion({
         aria-controls={expandedPanel + '-content'}
         id={expandedPanel + '-header'}
       >
-        <Typography variant="h6">
+        <Typography variant="h5">
           {tabName} {adjustedIndex}
         </Typography>
       </AccordionSummary>

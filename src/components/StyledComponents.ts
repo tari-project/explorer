@@ -54,7 +54,8 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
 }));
 
 export const TypographyData = styled(Typography)(({ theme }) => ({
-  fontFamily: "'Courier New', Courier, monospace",
+  // fontFamily: "'Courier New', Courier, monospace",
+  fontFamily: "'PoppinsRegular', sans-serif",
   color: theme.palette.text.primary,
   fontSize: '0.875rem',
   '& a': {
@@ -96,7 +97,8 @@ export const InnerHeading = styled(Typography)(({ theme }) => ({
 }));
 
 export const DataTableCell = styled(TableCell)(() => ({
-  fontFamily: "'Courier New', Courier, monospace",
+  // fontFamily: "'Courier New', Courier, monospace",
+  fontFamily: "'PoppinsRegular', sans-serif",
 }));
 
 export const CodeBlock = styled(Box)(({ theme }) => ({
@@ -111,7 +113,8 @@ export const BoxHeading = styled(Box)(({ theme }) => ({
   backgroundColor: '#fafafa',
   borderRadius: theme.shape.borderRadius,
   padding: theme.spacing(3),
-  fontFamily: "'Courier New', Courier, monospace",
+  // fontFamily: "'Courier New', Courier, monospace",
+  fontFamily: "'PoppinsRegular', sans-serif",
   boxShadow: '0px 5px 5px rgba(35, 11, 73, 0.10)',
   margin: '10px 5px',
 }));
@@ -148,7 +151,8 @@ export const GridDataCell = styled(Box)(({ theme, className }) => ({
   fontSize: '0.875rem',
   color: theme.palette.text.primary,
   borderBottom: `1px solid ${theme.palette.divider}`,
-  fontFamily: "'Courier New', Courier, monospace",
+  // fontFamily: "'Courier New', Courier, monospace",
+  fontFamily: "'PoppinsRegular', sans-serif",
   gridArea: `${className}`,
 }));
 
