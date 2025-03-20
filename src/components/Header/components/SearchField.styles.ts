@@ -12,6 +12,8 @@ export const SearchIconButton = styled(IconButton)({
   padding: 0,
   borderRadius: 40,
   background: 'none',
+  height: '40px',
+  width: '40px',
 });
 
 export const CloseIconButton = styled(IconButton)({
