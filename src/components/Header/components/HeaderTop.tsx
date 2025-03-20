@@ -15,6 +15,7 @@ import {
   LogoBox,
   MobileBox,
   DesktopBox,
+  LogoBoxMobile,
 } from './HeaderTop.styles';
 import MinersCTA from './MinersCTA';
 
@@ -48,9 +49,9 @@ function HeaderTop() {
           {!isExpanded && (
             <Fade in={!isExpanded}>
               <Link to="/">
-                <LogoBox>
+                <LogoBoxMobile>
                   <TariLogo fill={theme.palette.text.primary} />
-                </LogoBox>
+                </LogoBoxMobile>
               </Link>
             </Fade>
           )}

@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 `;
 
 const BaseHeader = styled(motion.div)`
-  padding: 14px 20px 14px 30px;
+  padding: 14px 20px 10px 30px;
   pointer-events: auto;
   display: flex;
   width: 100%;

@@ -13,6 +13,13 @@ export const LogoBox = styled(Box)(() => ({
   transition: 'margin 0.3s ease-in-out',
 }));
 
+export const LogoBoxMobile = styled(Box)(() => ({
+  marginTop: '10px',
+  marginLeft: '-25px',
+  transition: 'margin 0.3s ease-in-out',
+  scale: '0.8',
+}));
+
 export const MobileBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'flex-end',

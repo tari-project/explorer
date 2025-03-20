@@ -44,6 +44,8 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   boxShadow: '1px 5px 28px rgba(35, 11, 73, 0.05)',
   borderRadius: theme.shape.borderRadius,
   marginBottom: theme.spacing(1),
+  marginLeft: theme.spacing(1),
+  marginRight: theme.spacing(1),
   border: '1px solid #f8f8f8',
   '&:hover': {
     backgroundColor: '#fafafc',
@@ -54,7 +56,6 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
 }));
 
 export const TypographyData = styled(Typography)(({ theme }) => ({
-  // fontFamily: "'Courier New', Courier, monospace",
   fontFamily: "'PoppinsRegular', sans-serif",
   color: theme.palette.text.primary,
   fontSize: '0.875rem',
@@ -71,6 +72,12 @@ export const StyledPaper = styled(Paper)(({ theme }) => ({
 
 export const GradientPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
+  [theme.breakpoints.down('sm')]: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
   boxShadow: '10px 14px 28px rgba(35, 11, 73, 0.05)',
   background: 'rgba(255, 255, 255, 0.80)',
   color: theme.palette.text.primary,
@@ -97,7 +104,6 @@ export const InnerHeading = styled(Typography)(({ theme }) => ({
 }));
 
 export const DataTableCell = styled(TableCell)(() => ({
-  // fontFamily: "'Courier New', Courier, monospace",
   fontFamily: "'PoppinsRegular', sans-serif",
 }));
 
@@ -113,7 +119,6 @@ export const BoxHeading = styled(Box)(({ theme }) => ({
   backgroundColor: '#fafafa',
   borderRadius: theme.shape.borderRadius,
   padding: theme.spacing(3),
-  // fontFamily: "'Courier New', Courier, monospace",
   fontFamily: "'PoppinsRegular', sans-serif",
   boxShadow: '0px 5px 5px rgba(35, 11, 73, 0.10)',
   margin: '10px 5px',
@@ -151,7 +156,6 @@ export const GridDataCell = styled(Box)(({ theme, className }) => ({
   fontSize: '0.875rem',
   color: theme.palette.text.primary,
   borderBottom: `1px solid ${theme.palette.divider}`,
-  // fontFamily: "'Courier New', Courier, monospace",
   fontFamily: "'PoppinsRegular', sans-serif",
   gridArea: `${className}`,
 }));

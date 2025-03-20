@@ -165,6 +165,10 @@ function Inputs({
             showLastButton
             color="primary"
             variant="outlined"
+            style={{
+              marginLeft: theme.spacing(1),
+              marginRight: theme.spacing(1),
+            }}
           />
         )}
       </Box>
