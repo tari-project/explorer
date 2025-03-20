@@ -10,6 +10,7 @@ import {
 } from './MinersCTA.styles';
 import ArrowIcon from '../images/ArrowIcon';
 import { useMinerStats } from '../../../api/hooks/useMinerStats';
+import { getOS } from '../../../utils/getOs';
 
 const NumberFlow = lazy(() => import('@number-flow/react'));
 
@@ -26,6 +27,8 @@ export default function MinersCTA({ theme, buttonText, noBackground }: Props) {
   const countValue = data?.totalMiners ?? 0;
   const [numberWidth, setNumberWidth] = useState(26);
   const numberRef = useRef<HTMLSpanElement>(null);
+  const [downloadLink, setDownloadLink] = useState('https://airdrop.tari.com/');
+  const os = getOS();
 
   useEffect(() => {
     if (numberRef.current) {
@@ -34,8 +37,24 @@ export default function MinersCTA({ theme, buttonText, noBackground }: Props) {
     }
   }, [countValue]);
 
+  useEffect(() => {
+    switch (os) {
+      case 'Windows':
+        setDownloadLink('https://airdrop.tari.com/api/miner/download/windows');
+        break;
+      case 'MacOS':
+        setDownloadLink('https://airdrop.tari.com/api/miner/download/macos');
+        break;
+      case 'Linux':
+        setDownloadLink('https://airdrop.tari.com/api/miner/download/linux');
+        break;
+      default:
+        setDownloadLink('https://airdrop.tari.com/');
+    }
+  }, [os]);
+
   const handleDownloadClick = () => {
-    console.log('Download button clicked');
+    window.open(downloadLink, '_blank');
   };
 
   return (
@@ -63,7 +82,7 @@ export default function MinersCTA({ theme, buttonText, noBackground }: Props) {
       <ButtonWrapper>
         <Button
           $theme={theme}
-          href="https://tari.com/"
+          href={downloadLink}
           onClick={handleDownloadClick}
           target="_blank"
         >

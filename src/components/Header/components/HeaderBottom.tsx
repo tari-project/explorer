@@ -20,18 +20,14 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
-import { useAllBlocks } from '../../../api/hooks/useBlocks';
-import { toHexString, shortenString } from '../../../utils/helpers';
-import CopyToClipboard from '../../../components/CopyToClipboard';
 import SearchField from './SearchField';
 import { useState } from 'react';
-import { StyledContainer, InnerBox } from './HeaderBottom.styles';
+import { StyledContainer } from './HeaderBottom.styles';
+import StatsBox from './StatsBox';
 
 export default function HeaderBottom() {
-  const { data } = useAllBlocks();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [isExpanded, setIsExpanded] = useState(false);
@@ -40,31 +36,7 @@ export default function HeaderBottom() {
     <StyledContainer>
       {!isMobile && (
         <>
-          <InnerBox>
-            <Typography variant="body2">
-              <strong>TIP:</strong>
-            </Typography>
-            <Typography variant="body2">
-              <strong>Height:</strong>{' '}
-              {data?.tipInfo?.metadata?.best_block_height}
-            </Typography>
-            <Typography variant="body2">
-              <strong>Best Block:</strong>{' '}
-              {shortenString(
-                toHexString(data?.tipInfo.metadata.best_block_hash.data)
-              )}
-              <CopyToClipboard
-                copy={toHexString(data?.tipInfo.metadata.best_block_hash?.data)}
-              />
-            </Typography>
-            <Typography variant="body2">
-              <strong>Pruned Height:</strong>{' '}
-              {data?.tipInfo.metadata.pruned_height}
-            </Typography>
-            <Typography variant="body2">
-              <strong>Version:</strong> {data?.version}
-            </Typography>
-          </InnerBox>
+          <StatsBox />
           <SearchField isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
         </>
       )}

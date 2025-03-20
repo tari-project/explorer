@@ -20,7 +20,7 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, Box } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Outlet } from 'react-router-dom';
 import Container from '@mui/material/Container';
@@ -28,6 +28,7 @@ import Grid from '@mui/material/Grid';
 import { lightTheme } from './themes';
 import Header from '../components/Header/Header';
 import HeaderTitle from '../components/Header/components/HeaderTitle';
+import VersionInfo from '../components/VersionInfo/VersionInfo';
 
 interface PageLayoutProps {
   title?: string;
@@ -61,6 +62,8 @@ export default function PageLayout({
               <HeaderTitle title={title || ''} subTitle={subTitle || ''} />
             )}
             <Outlet />
+            <Box height={40} />
+            <VersionInfo />
           </Container>
         </Grid>
       </ThemeProvider>
