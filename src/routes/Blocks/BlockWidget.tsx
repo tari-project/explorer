@@ -80,7 +80,7 @@ function BlockWidget() {
     }
 
     return (
-      <Grid container spacing={2} pl={2} pr={2}>
+      <Grid container spacing={2} pl={0} pr={0}>
         {data?.headers
           .slice(0, mobileCount)
           .map((block: any, index: number) => (
@@ -204,7 +204,7 @@ function BlockWidget() {
 
     return (
       <>
-        <Grid container spacing={2} pl={2} pr={2} pb={2} pt={2}>
+        <Grid container spacing={2} pl={0} pr={0} pb={2} pt={2}>
           <Grid item xs={col1} md={col1} lg={col1}>
             <Typography variant="h6">Height</Typography>
           </Grid>
@@ -236,7 +236,7 @@ function BlockWidget() {
             <Typography variant="h6">Outputs</Typography>
           </Grid>
         </Grid>
-        <Grid container spacing={2} pl={2} pr={2} pb={2}>
+        <Grid container spacing={2} pl={0} pr={0} pb={2}>
           {data?.headers
             .slice(0, desktopCount)
             .map((block: any, index: number) => (

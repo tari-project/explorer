@@ -139,14 +139,14 @@ function BlockTable() {
       );
 
       return (
-        <Grid container spacing={2} pl={2} pr={2}>
+        <Grid container spacing={2} pl={0} pr={0}>
           {renderSkeleton}
         </Grid>
       );
     }
 
     return (
-      <Grid container spacing={2} pl={2} pr={2} {...motionProps()}>
+      <Grid container spacing={2} pl={0} pr={0} {...motionProps()}>
         {data?.headers.map((block: any, index: number) => (
           <Fragment key={index}>
             <Grid item xs={col1}>
@@ -225,7 +225,7 @@ function BlockTable() {
     const col6 = 1;
 
     const Header = () => (
-      <Grid container spacing={2} pl={2} pr={2} pb={2} pt={2}>
+      <Grid container spacing={2} pl={0} pr={0} pb={2} pt={2}>
         <Grid item xs={col1} md={col1} lg={col1}>
           <Typography variant="h6">Height</Typography>
         </Grid>
@@ -265,7 +265,7 @@ function BlockTable() {
         { length: blocksPerPage },
         (_, index) => (
           <Fragment key={index}>
-            <Grid item xs={12} pl={2} pr={2}>
+            <Grid item xs={12} pl={0} pr={0}>
               <Divider />
             </Grid>
             <Grid item p={2} xs={12}>
@@ -286,7 +286,7 @@ function BlockTable() {
     return (
       <>
         <Header />
-        <Grid container spacing={2} pl={2} pr={2} pb={2} {...motionProps()}>
+        <Grid container spacing={2} pl={0} pr={0} pb={2} {...motionProps()}>
           {data?.headers.map((block: any, index: number) => (
             <Fragment key={index}>
               <Grid item xs={12}>
@@ -348,7 +348,6 @@ function BlockTable() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: theme.spacing(2),
           gap: theme.spacing(2),
           flexDirection: isMobile ? 'column' : 'row',
         }}

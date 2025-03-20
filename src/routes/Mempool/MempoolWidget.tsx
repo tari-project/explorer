@@ -50,7 +50,7 @@ function MempoolTable() {
     const col2 = 8;
 
     return (
-      <Grid container spacing={2} pl={2} pr={2}>
+      <Grid container spacing={2} pl={0} pr={0}>
         {data?.mempool.slice(0, mobileCount).map((item: any, index: number) => (
           <Fragment key={index}>
             <Grid item xs={col1}>
@@ -123,7 +123,7 @@ function MempoolTable() {
 
     return (
       <>
-        <Grid container spacing={2} pl={2} pr={2} pb={2} pt={2}>
+        <Grid container spacing={2} pl={0} pr={0} pb={2} pt={2}>
           <Grid item xs={col1} md={col1} lg={col1}>
             <Typography variant="h6">Excess</Typography>
           </Grid>
@@ -158,7 +158,7 @@ function MempoolTable() {
             <Typography variant="h6">Inputs</Typography>
           </Grid>
         </Grid>
-        <Grid container spacing={2} pl={2} pr={2} pb={2}>
+        <Grid container spacing={2} pl={0} pr={0} pb={2}>
           {data?.mempool
             .slice(0, desktopCount)
             .map((item: any, index: number) => (

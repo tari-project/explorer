@@ -44,8 +44,6 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   boxShadow: '1px 5px 28px rgba(35, 11, 73, 0.05)',
   borderRadius: theme.shape.borderRadius,
   marginBottom: theme.spacing(1),
-  marginLeft: theme.spacing(1),
-  marginRight: theme.spacing(1),
   border: '1px solid #f8f8f8',
   '&:hover': {
     backgroundColor: '#fafafc',
@@ -72,17 +70,14 @@ export const StyledPaper = styled(Paper)(({ theme }) => ({
 
 export const GradientPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
-  [theme.breakpoints.down('sm')]: {
-    paddingLeft: theme.spacing(0.5),
-    paddingRight: theme.spacing(0.5),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-  },
   boxShadow: '10px 14px 28px rgba(35, 11, 73, 0.05)',
   background: 'rgba(255, 255, 255, 0.80)',
   color: theme.palette.text.primary,
   backdropFilter: 'blur(15px)',
-  borderRadius: '40px',
+  borderRadius: '30px',
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(2),
+  },
 }));
 
 export const PageHeading = styled(Typography)(({ theme }) => ({
@@ -99,7 +94,7 @@ export const InnerHeading = styled(Typography)(({ theme }) => ({
   fontFamily: "'DrukHeavy', sans-serif",
   textTransform: 'uppercase',
   borderBottom: `1px solid ${theme.palette.divider}`,
-  padding: theme.spacing(2),
+  paddingBottom: theme.spacing(1),
   marginBottom: theme.spacing(2),
 }));
 
@@ -144,7 +139,7 @@ export const DialogContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const GridHeadCell = styled(Box)(({ theme, className }) => ({
-  padding: theme.spacing(2),
+  // padding: theme.spacing(2),
   fontSize: '0.875rem',
   color: theme.palette.text.primary,
   borderBottom: `1px solid ${theme.palette.divider}`,
@@ -152,7 +147,7 @@ export const GridHeadCell = styled(Box)(({ theme, className }) => ({
 }));
 
 export const GridDataCell = styled(Box)(({ theme, className }) => ({
-  padding: theme.spacing(2),
+  // padding: theme.spacing(2),
   fontSize: '0.875rem',
   color: theme.palette.text.primary,
   borderBottom: `1px solid ${theme.palette.divider}`,

@@ -118,7 +118,7 @@ function BlockInfo({ blockHeight }: { blockHeight: any }) {
   return (
     <>
       <InnerHeading>Header</InnerHeading>
-      <Grid container spacing={2} pl={2} pr={2}>
+      <Grid container spacing={2} pl={0} pr={0}>
         {items.map((item, index) =>
           item.copy ? (
             <Fragment key={index}>
