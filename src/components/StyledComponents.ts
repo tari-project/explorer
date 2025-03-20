@@ -73,8 +73,8 @@ export const StyledPaper = styled(Paper)(({ theme }) => ({
 export const GradientPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
   [theme.breakpoints.down('sm')]: {
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },

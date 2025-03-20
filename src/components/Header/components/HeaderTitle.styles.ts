@@ -5,6 +5,10 @@ import Typography from '@mui/material/Typography';
 export const StyledContainer = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(10),
   marginBottom: theme.spacing(10),
+  [theme.breakpoints.down('sm')]: {
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(4),
+  },
   color: theme.palette.text.primary,
   display: 'flex',
   flexDirection: 'column',
@@ -13,9 +17,12 @@ export const StyledContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-export const StyledTitle = styled(Typography)(() => ({
+export const StyledTitle = styled(Typography)(({ theme }) => ({
   fontFamily: '"DrukHeavy", sans-serif',
   fontSize: 70,
+  [theme.breakpoints.down('sm')]: {
+    fontSize: 40,
+  },
   textTransform: 'uppercase',
 }));
 
