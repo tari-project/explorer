@@ -54,7 +54,7 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
 }));
 
 export const TypographyData = styled(Typography)(({ theme }) => ({
-  fontFamily: "'Courier New', Courier, monospace",
+  fontFamily: "'PoppinsRegular', sans-serif",
   color: theme.palette.text.primary,
   fontSize: '0.875rem',
   '& a': {
@@ -69,11 +69,15 @@ export const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 
 export const GradientPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
+  padding: theme.spacing(4),
   boxShadow: '10px 14px 28px rgba(35, 11, 73, 0.05)',
-  border: '1px solid rgba(255, 255, 255, 0.10);',
-  background: 'rgba(255,255,255,0.04)',
+  background: 'rgba(255, 255, 255, 0.80)',
   color: theme.palette.text.primary,
+  backdropFilter: 'blur(15px)',
+  borderRadius: '30px',
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(2),
+  },
 }));
 
 export const PageHeading = styled(Typography)(({ theme }) => ({
@@ -86,16 +90,16 @@ export const PageHeading = styled(Typography)(({ theme }) => ({
 }));
 
 export const InnerHeading = styled(Typography)(({ theme }) => ({
-  fontSize: theme.typography.h6.fontSize,
+  fontSize: theme.typography.h3.fontSize,
+  fontFamily: "'DrukHeavy', sans-serif",
   textTransform: 'uppercase',
   borderBottom: `1px solid ${theme.palette.divider}`,
-  padding: theme.spacing(2),
+  paddingBottom: theme.spacing(1),
   marginBottom: theme.spacing(2),
-  letterSpacing: '1.5px',
 }));
 
 export const DataTableCell = styled(TableCell)(() => ({
-  fontFamily: "'Courier New', Courier, monospace",
+  fontFamily: "'PoppinsRegular', sans-serif",
 }));
 
 export const CodeBlock = styled(Box)(({ theme }) => ({
@@ -110,7 +114,7 @@ export const BoxHeading = styled(Box)(({ theme }) => ({
   backgroundColor: '#fafafa',
   borderRadius: theme.shape.borderRadius,
   padding: theme.spacing(3),
-  fontFamily: "'Courier New', Courier, monospace",
+  fontFamily: "'PoppinsRegular', sans-serif",
   boxShadow: '0px 5px 5px rgba(35, 11, 73, 0.10)',
   margin: '10px 5px',
 }));
@@ -135,7 +139,7 @@ export const DialogContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const GridHeadCell = styled(Box)(({ theme, className }) => ({
-  padding: theme.spacing(2),
+  // padding: theme.spacing(2),
   fontSize: '0.875rem',
   color: theme.palette.text.primary,
   borderBottom: `1px solid ${theme.palette.divider}`,
@@ -143,11 +147,11 @@ export const GridHeadCell = styled(Box)(({ theme, className }) => ({
 }));
 
 export const GridDataCell = styled(Box)(({ theme, className }) => ({
-  padding: theme.spacing(2),
+  // padding: theme.spacing(2),
   fontSize: '0.875rem',
   color: theme.palette.text.primary,
   borderBottom: `1px solid ${theme.palette.divider}`,
-  fontFamily: "'Courier New', Courier, monospace",
+  fontFamily: "'PoppinsRegular', sans-serif",
   gridArea: `${className}`,
 }));
 

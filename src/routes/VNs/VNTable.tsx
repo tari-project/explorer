@@ -42,7 +42,7 @@ function VNTable() {
     const col2 = 8;
 
     return (
-      <Grid container spacing={2} pl={2} pr={2}>
+      <Grid container spacing={2} pl={0} pr={0}>
         {data?.activeVns.map((_: any, index: number) => (
           <Fragment key={index}>
             <Grid item xs={col1}>
@@ -60,7 +60,7 @@ function VNTable() {
             </Grid>
 
             <Grid item xs={12}>
-              <Divider color={theme.palette.background.paper} />
+              <Divider />
             </Grid>
           </Fragment>
         ))}
@@ -74,7 +74,7 @@ function VNTable() {
 
     return (
       <>
-        <Grid container spacing={2} pl={2} pr={2} pb={2} pt={2}>
+        <Grid container spacing={2} pl={0} pr={0} pb={2} pt={2}>
           <Grid item xs={col1} md={col1} lg={col1}>
             <Typography variant="body2">Public Key</Typography>
           </Grid>
@@ -82,11 +82,11 @@ function VNTable() {
             <Typography variant="body2">Shard Key</Typography>
           </Grid>
         </Grid>
-        <Grid container spacing={2} pl={2} pr={2} pb={2}>
+        <Grid container spacing={2} pl={0} pr={0} pb={2}>
           {data?.activeVns.map((_: any, index: number) => (
             <Fragment key={index}>
               <Grid item xs={12}>
-                <Divider color={theme.palette.background.paper} />
+                <Divider />
               </Grid>
               <Grid item xs={col1} md={col1} lg={col1}>
                 <TypographyData>Pubkey Data</TypographyData>

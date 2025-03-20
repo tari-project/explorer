@@ -132,25 +132,25 @@ function BlockTable() {
               </Stack>
             </Grid>
             <Grid item xs={12}>
-              <Divider color={theme.palette.background.paper} />
+              <Divider />
             </Grid>
           </Fragment>
         )
       );
 
       return (
-        <Grid container spacing={2} pl={2} pr={2}>
+        <Grid container spacing={2} pl={0} pr={0}>
           {renderSkeleton}
         </Grid>
       );
     }
 
     return (
-      <Grid container spacing={2} pl={2} pr={2} {...motionProps()}>
+      <Grid container spacing={2} pl={0} pr={0} {...motionProps()}>
         {data?.headers.map((block: any, index: number) => (
           <Fragment key={index}>
             <Grid item xs={col1}>
-              <Typography variant="body2">Height</Typography>
+              <Typography variant="h6">Height</Typography>
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>
@@ -159,7 +159,7 @@ function BlockTable() {
             </Grid>
 
             <Grid item xs={col1}>
-              <Typography variant="body2">Timestamp</Typography>
+              <Typography variant="h6">Timestamp</Typography>
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>
@@ -168,7 +168,7 @@ function BlockTable() {
             </Grid>
 
             <Grid item xs={col1}>
-              <Typography variant="body2">Proof of Work</Typography>
+              <Typography variant="h6">Proof of Work</Typography>
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>
@@ -177,7 +177,7 @@ function BlockTable() {
             </Grid>
 
             <Grid item xs={col1}>
-              <Typography variant="body2">Hash</Typography>
+              <Typography variant="h6">Hash</Typography>
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>
@@ -187,14 +187,14 @@ function BlockTable() {
             </Grid>
 
             <Grid item xs={col1}>
-              <Typography variant="body2">Kernels</Typography>
+              <Typography variant="h6">Kernels</Typography>
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>{block.kernels}</TypographyData>
             </Grid>
 
             <Grid item xs={col1}>
-              <Typography variant="body2">Outputs</Typography>
+              <Typography variant="h6">Outputs</Typography>
             </Grid>
             <Grid item xs={col2}>
               <TypographyData>{block.outputs}</TypographyData>
@@ -208,7 +208,7 @@ function BlockTable() {
               </Link>
             </Grid>
             <Grid item xs={12}>
-              <Divider color={theme.palette.background.paper} />
+              <Divider />
             </Grid>
           </Fragment>
         ))}
@@ -225,18 +225,18 @@ function BlockTable() {
     const col6 = 1;
 
     const Header = () => (
-      <Grid container spacing={2} pl={2} pr={2} pb={2} pt={2}>
+      <Grid container spacing={2} pl={0} pr={0} pb={2} pt={2}>
         <Grid item xs={col1} md={col1} lg={col1}>
-          <Typography variant="body2">Height</Typography>
+          <Typography variant="h6">Height</Typography>
         </Grid>
         <Grid item xs={col2} md={col2} lg={col2}>
-          <Typography variant="body2">Time</Typography>
+          <Typography variant="h6">Time</Typography>
         </Grid>
         <Grid item xs={col3} md={col3} lg={col3}>
-          <Typography variant="body2">Proof of Work</Typography>
+          <Typography variant="h6">Proof of Work</Typography>
         </Grid>
         <Grid item xs={col4} md={col4} lg={col4}>
-          <Typography variant="body2">Hash</Typography>
+          <Typography variant="h6">Hash</Typography>
         </Grid>
         <Grid
           item
@@ -245,7 +245,7 @@ function BlockTable() {
           lg={col5}
           style={{ textAlign: 'center' }}
         >
-          <Typography variant="body2">Kernels</Typography>
+          <Typography variant="h6">Kernels</Typography>
         </Grid>
         <Grid
           item
@@ -254,7 +254,7 @@ function BlockTable() {
           lg={col6}
           style={{ textAlign: 'center' }}
         >
-          <Typography variant="body2">Outputs</Typography>
+          <Typography variant="h6">Outputs</Typography>
         </Grid>
       </Grid>
     );
@@ -265,8 +265,8 @@ function BlockTable() {
         { length: blocksPerPage },
         (_, index) => (
           <Fragment key={index}>
-            <Grid item xs={12} pl={2} pr={2}>
-              <Divider color={theme.palette.background.paper} />
+            <Grid item xs={12} pl={0} pr={0}>
+              <Divider />
             </Grid>
             <Grid item p={2} xs={12}>
               <SkeletonLoader height={loaderHeight} />
@@ -286,11 +286,11 @@ function BlockTable() {
     return (
       <>
         <Header />
-        <Grid container spacing={2} pl={2} pr={2} pb={2} {...motionProps()}>
+        <Grid container spacing={2} pl={0} pr={0} pb={2} {...motionProps()}>
           {data?.headers.map((block: any, index: number) => (
             <Fragment key={index}>
               <Grid item xs={12}>
-                <Divider color={theme.palette.background.paper} />
+                <Divider />
               </Grid>
               <Grid item xs={col1} md={col1} lg={col1}>
                 <TypographyData>
@@ -348,7 +348,6 @@ function BlockTable() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: theme.spacing(2),
           gap: theme.spacing(2),
           flexDirection: isMobile ? 'column' : 'row',
         }}

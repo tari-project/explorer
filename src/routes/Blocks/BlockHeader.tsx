@@ -31,6 +31,7 @@ import {
 } from '../../api/hooks/useBlocks';
 import { shortenString } from '../../utils/helpers';
 import { useMediaQuery } from '@mui/material';
+import { GradientPaper } from '../../components/StyledComponents';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -39,6 +40,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   '&:hover': {
     backgroundColor: 'transparent',
   },
+  fontFamily: theme.typography.h6.fontFamily,
 }));
 
 function BlockHeader() {
@@ -81,14 +83,14 @@ function BlockHeader() {
               gap: theme.spacing(1),
             }}
           >
-            <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
+            <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
               Block at Height
             </Typography>
             <Typography
               variant="h1"
               style={{
-                fontFamily: '"AvenirHeavy", sans-serif',
-                fontSize: isMobile ? 40 : 60,
+                fontFamily: '"DrukHeavy", sans-serif',
+                fontSize: isMobile ? 60 : 80,
               }}
             >
               {data?.height}
@@ -107,15 +109,15 @@ function BlockHeader() {
               gap: theme.spacing(1),
             }}
           >
-            <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
+            <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
               {isFetching && 'Searching...'}
               {isError && 'Block not found'}
             </Typography>
             <Typography
               variant="h1"
               style={{
-                fontFamily: '"AvenirHeavy", sans-serif',
-                fontSize: isMobile ? 40 : 60,
+                fontFamily: '"DrukHeavy", sans-serif',
+                fontSize: isMobile ? 60 : 80,
               }}
             >
               {heightOrHash.length > 30
@@ -125,11 +127,10 @@ function BlockHeader() {
           </Box>
         )}
       </Container>
-      <Box
+      <GradientPaper
         style={{
-          backgroundColor: theme.palette.divider,
-          width: '100%',
-          borderTop: `1px solid ${theme.palette.divider}`,
+          padding: '0',
+          marginBottom: theme.spacing(3),
         }}
       >
         <Container maxWidth="xl">
@@ -187,7 +188,7 @@ function BlockHeader() {
             </Box>
           </Box>
         </Container>
-      </Box>
+      </GradientPaper>
     </>
   );
 }

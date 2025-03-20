@@ -33,11 +33,9 @@ import {
   formatTimestamp,
 } from '../../utils/helpers';
 import CopyToClipboard from '../../components/CopyToClipboard';
-import { useTheme } from '@mui/material/styles';
 
 function BlockInfo({ blockHeight }: { blockHeight: any }) {
   const { data } = useGetBlockByHeightOrHash(blockHeight);
-  const theme = useTheme();
   const { header } = data ?? {};
   const items = [
     {
@@ -120,12 +118,12 @@ function BlockInfo({ blockHeight }: { blockHeight: any }) {
   return (
     <>
       <InnerHeading>Header</InnerHeading>
-      <Grid container spacing={2} pl={2} pr={2}>
+      <Grid container spacing={2} pl={0} pr={0}>
         {items.map((item, index) =>
           item.copy ? (
             <Fragment key={index}>
               <Grid item xs={12} md={4} lg={4}>
-                <Typography variant="body2">{item.label}</Typography>
+                <Typography variant="h5">{item.label}</Typography>
               </Grid>
               <Grid item xs={12} md={8} lg={8}>
                 <TypographyData>
@@ -134,19 +132,19 @@ function BlockInfo({ blockHeight }: { blockHeight: any }) {
                 </TypographyData>
               </Grid>
               <Grid item xs={12}>
-                <Divider color={theme.palette.background.paper} />
+                <Divider />
               </Grid>
             </Fragment>
           ) : (
             <Fragment key={index}>
               <Grid item xs={12} md={4} lg={4}>
-                <Typography variant="body2">{item.label}</Typography>
+                <Typography variant="h5">{item.label}</Typography>
               </Grid>
               <Grid item xs={12} md={8} lg={8}>
                 <TypographyData>{item.value}</TypographyData>
               </Grid>
               <Grid item xs={12}>
-                <Divider color={theme.palette.background.paper} />
+                <Divider />
               </Grid>
             </Fragment>
           )

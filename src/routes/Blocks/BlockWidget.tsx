@@ -24,7 +24,6 @@ import { Fragment } from 'react';
 import { useAllBlocks } from '../../api/hooks/useBlocks';
 import {
   TypographyData,
-  TransparentButton,
   TransparentBg,
 } from '../../components/StyledComponents';
 import {
@@ -48,7 +47,7 @@ import { useMediaQuery } from '@mui/material';
 function BlockWidget() {
   const { data, isLoading, isError, error } = useAllBlocks();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const desktopCount = 9;
   const mobileCount = 5;
 
@@ -81,30 +80,22 @@ function BlockWidget() {
     }
 
     return (
-      <Grid container spacing={2} pl={2} pr={2}>
+      <Grid container spacing={2} pl={0} pr={0}>
         {data?.headers
           .slice(0, mobileCount)
           .map((block: any, index: number) => (
             <Fragment key={index}>
               <Grid item xs={col1}>
-                <Typography variant="body2">Height</Typography>
+                <Typography variant="h6">Height</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>
-                  <Link
-                    style={{
-                      color: theme.palette.secondary.main,
-                      fontWeight: 600,
-                    }}
-                    to={`/blocks/${block.height}`}
-                  >
-                    {block.height}{' '}
-                  </Link>
+                  <Link to={`/blocks/${block.height}`}>{block.height} </Link>
                 </TypographyData>
               </Grid>
 
               <Grid item xs={col1}>
-                <Typography variant="body2">Timestamp</Typography>
+                <Typography variant="h6">Timestamp</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>
@@ -113,7 +104,7 @@ function BlockWidget() {
               </Grid>
 
               <Grid item xs={col1}>
-                <Typography variant="body2">Proof of Work</Typography>
+                <Typography variant="h6">Proof of Work</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>
@@ -122,7 +113,7 @@ function BlockWidget() {
               </Grid>
 
               <Grid item xs={col1}>
-                <Typography variant="body2">Hash</Typography>
+                <Typography variant="h6">Hash</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>
@@ -132,14 +123,14 @@ function BlockWidget() {
               </Grid>
 
               <Grid item xs={col1}>
-                <Typography variant="body2">Kernels</Typography>
+                <Typography variant="h6">Kernels</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>{block.kernels}</TypographyData>
               </Grid>
 
               <Grid item xs={col1}>
-                <Typography variant="body2">Outputs</Typography>
+                <Typography variant="h6">Outputs</Typography>
               </Grid>
               <Grid item xs={col2}>
                 <TypographyData>{block.outputs}</TypographyData>
@@ -161,9 +152,14 @@ function BlockWidget() {
             </Fragment>
           ))}
         <Grid item xs={12}>
-          <TransparentButton href="/blocks/" variant="text" fullWidth>
+          <Button
+            href="/blocks/"
+            color="secondary"
+            variant="contained"
+            style={{ minWidth: isMobile ? '100%' : '250px' }}
+          >
             View All Blocks
-          </TransparentButton>
+          </Button>
         </Grid>
       </Grid>
     );
@@ -208,18 +204,18 @@ function BlockWidget() {
 
     return (
       <>
-        <Grid container spacing={2} pl={2} pr={2} pb={2} pt={2}>
+        <Grid container spacing={2} pl={0} pr={0} pb={2} pt={2}>
           <Grid item xs={col1} md={col1} lg={col1}>
-            <Typography variant="body2">Height</Typography>
+            <Typography variant="h6">Height</Typography>
           </Grid>
           <Grid item xs={col2} md={col2} lg={col2}>
-            <Typography variant="body2">Time</Typography>
+            <Typography variant="h6">Time</Typography>
           </Grid>
           <Grid item xs={col3} md={col3} lg={col3}>
-            <Typography variant="body2">Proof of Work</Typography>
+            <Typography variant="h6">Proof of Work</Typography>
           </Grid>
           <Grid item xs={col4} md={col4} lg={col4}>
-            <Typography variant="body2">Hash</Typography>
+            <Typography variant="h6">Hash</Typography>
           </Grid>
           <Grid
             item
@@ -228,7 +224,7 @@ function BlockWidget() {
             lg={col5}
             style={{ textAlign: 'center' }}
           >
-            <Typography variant="body2">Kernels</Typography>
+            <Typography variant="h6">Kernels</Typography>
           </Grid>
           <Grid
             item
@@ -237,10 +233,10 @@ function BlockWidget() {
             lg={col6}
             style={{ textAlign: 'center' }}
           >
-            <Typography variant="body2">Outputs</Typography>
+            <Typography variant="h6">Outputs</Typography>
           </Grid>
         </Grid>
-        <Grid container spacing={2} pl={2} pr={2} pb={2}>
+        <Grid container spacing={2} pl={0} pr={0} pb={2}>
           {data?.headers
             .slice(0, desktopCount)
             .map((block: any, index: number) => (
@@ -255,15 +251,7 @@ function BlockWidget() {
                 </Grid>
                 <Grid item xs={col1} md={col1} lg={col1}>
                   <TypographyData>
-                    <Link
-                      style={{
-                        color: theme.palette.secondary.main,
-                        fontWeight: 600,
-                      }}
-                      to={`/blocks/${block.height}`}
-                    >
-                      {block.height}{' '}
-                    </Link>
+                    <Link to={`/blocks/${block.height}`}>{block.height} </Link>
                   </TypographyData>
                 </Grid>
                 <Grid item xs={col2} md={col2} lg={col2}>
@@ -302,11 +290,25 @@ function BlockWidget() {
                 </Grid>
               </Fragment>
             ))}
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: theme.spacing(3),
+            }}
+          >
             <Divider />
-            <TransparentButton href="/blocks/" variant="text" fullWidth>
+            <Button
+              href="/blocks/"
+              color="secondary"
+              variant="contained"
+              style={{ minWidth: isMobile ? '100%' : '250px' }}
+            >
               View All Blocks
-            </TransparentButton>
+            </Button>
           </Grid>
         </Grid>
       </>
