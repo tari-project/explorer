@@ -27,6 +27,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { lightTheme } from './themes';
 import Header from '../components/Header/Header';
+import VersionInfo from '../components/VersionInfo/VersionInfo';
 
 export default function MainLayout() {
   return (
@@ -37,6 +38,7 @@ export default function MainLayout() {
           <Container maxWidth="xl">
             <Header />
             <Outlet />
+            <VersionInfo />
           </Container>
         </Grid>
       </ThemeProvider>

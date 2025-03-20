@@ -7,9 +7,3 @@ export const StyledContainer = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
   width: '100%',
 }));
-
-export const InnerBox = styled(Box)({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '20px',
-});
