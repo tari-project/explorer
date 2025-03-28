@@ -1,20 +1,15 @@
-import TariLogo from '../../../assets/TariLogo';
-import { useTheme } from '@mui/material/styles';
 import { Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { StyledContainer, LogoBox } from './HeaderTop.styles';
+import { StyledContainer } from './HeaderTop.styles';
 import MinersCTA from '../MinersCTA/MinersCTA';
+import Logo from '../../../assets/images/tari-logo.svg';
 
 function HeaderTop() {
-  const theme = useTheme();
-
   return (
     <>
       <StyledContainer>
         <Link to="/">
-          <LogoBox>
-            <TariLogo fill={theme.palette.text.primary} />
-          </LogoBox>
+          <img src={Logo} alt="Tari Logo" />
         </Link>
         <MinersCTA
           theme="dark"

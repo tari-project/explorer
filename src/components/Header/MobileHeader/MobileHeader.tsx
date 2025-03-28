@@ -8,13 +8,14 @@ import {
   Wrapper,
   IconsContainer,
 } from './styles';
-import TariLogo from '../../../assets/TariLogo';
 import MobileMenuButton from '../MobileMenuButton/MobileMenuButton';
 import { useMainStore } from '../../../services/stores/useMainStore';
 import MinersCTA from '../MinersCTA/MinersCTA';
 import { SocialIconButtons } from '../../SocialLinks/SocialLinks';
 import MobileNavigation from './MobileNavigation/MobileNavigation';
 import SearchField from '../SearchField/SearchField';
+import Logo from '../../../assets/images/tari-logo.svg';
+import { Link } from 'react-router-dom';
 
 export default function MobileHeader() {
   const { showMobileMenu, setShowMobileMenu } = useMainStore();
@@ -37,7 +38,19 @@ export default function MobileHeader() {
       <Wrapper $open={showMobileMenu}>
         <Inside>
           <HeaderTop $open={showMobileMenu}>
-            {!isExpanded && <TariLogo fill="#FFF" />}
+            {!isExpanded && (
+              <Link to="/">
+                <img
+                  src={Logo}
+                  alt="Tari Logo"
+                  style={{
+                    scale: '0.85',
+                    transformOrigin: 'left',
+                    paddingTop: '5px',
+                  }}
+                />
+              </Link>
+            )}
             <IconsContainer>
               <SearchField
                 isExpanded={isExpanded}

@@ -29,7 +29,7 @@ export const Inside = styled('div')({
 
 export const HeaderTop = styled(motion.div)<{ $open: boolean }>(
   ({ $open }) => ({
-    padding: '14px 20px 14px 30px',
+    padding: '14px 20px',
     pointerEvents: 'auto',
     display: 'flex',
     justifyContent: 'space-between',
@@ -94,4 +94,9 @@ export const IconsContainer = styled('div')({
   alignItems: 'center',
   width: '100%',
   justifyContent: 'flex-end',
+});
+
+export const LogoContainer = styled('div')({
+  scale: 0.8,
+  transformOrigin: 'center',
 });
