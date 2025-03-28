@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
-import headerBgImage from './images/header-bg.png';
+import headerBgImage from '../Header/images/header-bg.png';
 
 export const Wrapper = styled.div`
   width: 100%;

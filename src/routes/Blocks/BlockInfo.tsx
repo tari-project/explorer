@@ -26,7 +26,7 @@ import {
   InnerHeading,
   TypographyData,
 } from '../../components/StyledComponents';
-import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
+import { useGetBlockByHeightOrHash } from '../../services/api/hooks/useBlocks';
 import {
   toHexString,
   shortenString,

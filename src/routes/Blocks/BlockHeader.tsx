@@ -28,7 +28,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   useAllBlocks,
   useGetBlockByHeightOrHash,
-} from '../../api/hooks/useBlocks';
+} from '../../services/api/hooks/useBlocks';
 import { shortenString } from '../../utils/helpers';
 import { useMediaQuery } from '@mui/material';
 import { GradientPaper } from '../../components/StyledComponents';

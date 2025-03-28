@@ -9,7 +9,7 @@ import {
   Wrapper,
 } from './MinersCTA.styles';
 import ArrowIcon from '../images/ArrowIcon';
-import { useMinerStats } from '../../../api/hooks/useMinerStats';
+import { useMinerStats } from '../../../services/api/hooks/useMinerStats';
 import { getOS } from '../../../utils/getOs';
 
 const NumberFlow = lazy(() => import('@number-flow/react'));

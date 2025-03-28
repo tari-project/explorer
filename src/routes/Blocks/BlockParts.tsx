@@ -26,7 +26,7 @@ import Box from '@mui/material/Box';
 import {
   useGetBlockByHeightOrHash,
   useGetPaginatedData,
-} from '../../api/hooks/useBlocks';
+} from '../../services/api/hooks/useBlocks';
 import { useTheme } from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
 import GenerateAccordion from './GenerateAccordion';

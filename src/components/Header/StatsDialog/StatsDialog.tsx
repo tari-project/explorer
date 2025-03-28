@@ -6,9 +6,9 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { IoAnalyticsOutline } from 'react-icons/io5';
-import { useAllBlocks } from '../../../api/hooks/useBlocks';
+import { useAllBlocks } from '../../../services/api/hooks/useBlocks';
 import { toHexString, shortenString } from '../../../utils/helpers';
-import CopyToClipboard from '../../../components/CopyToClipboard';
+import CopyToClipboard from '../../CopyToClipboard';
 import { BootstrapDialog, StyledDialogTitle } from './StatsDialog.styles';
 
 function StatsDialog() {
