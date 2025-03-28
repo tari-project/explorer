@@ -7,7 +7,7 @@ export const Wrapper = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     flexWrap: 'wrap',
     '& > *': {
-      width: '47%',
+      width: '45%',
     },
   },
   [theme.breakpoints.up('md')]: {
