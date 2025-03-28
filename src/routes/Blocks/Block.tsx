@@ -25,7 +25,7 @@ import { GradientPaper } from '../../components/StyledComponents';
 import { useTheme } from '@mui/material/styles';
 import BlockInfo from './BlockInfo';
 import { useLocation } from 'react-router-dom';
-import { useGetBlockByHeightOrHash } from '../../api/hooks/useBlocks';
+import { useGetBlockByHeightOrHash } from '../../services/api/hooks/useBlocks';
 import FetchStatusCheck from '../../components/FetchStatusCheck';
 import BlockParts from './BlockParts';
 

@@ -21,7 +21,10 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { useState, useEffect, Fragment } from 'react';
-import { useAllBlocks, useGetBlocksByParam } from '../../api/hooks/useBlocks';
+import {
+  useAllBlocks,
+  useGetBlocksByParam,
+} from '../../services/api/hooks/useBlocks';
 import {
   InnerHeading,
   TypographyData,

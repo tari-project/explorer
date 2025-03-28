@@ -21,7 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Fragment } from 'react';
-import { useAllBlocks } from '../../api/hooks/useBlocks';
+import { useAllBlocks } from '../../services/api/hooks/useBlocks';
 import {
   TypographyData,
   TransparentBg,

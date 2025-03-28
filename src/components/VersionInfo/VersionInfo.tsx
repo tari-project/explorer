@@ -1,5 +1,5 @@
 import Typography from '@mui/material/Typography';
-import { useAllBlocks } from '../../api/hooks/useBlocks';
+import { useAllBlocks } from '../../services/api/hooks/useBlocks';
 // import { toHexString, shortenString } from '../../utils/helpers';
 // import CopyToClipboard from '../CopyToClipboard';
 import { InnerBox } from './VersionInfo.styles';

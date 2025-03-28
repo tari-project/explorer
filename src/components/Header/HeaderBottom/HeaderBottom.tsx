@@ -22,10 +22,10 @@
 
 import { useTheme } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
-import SearchField from './SearchField';
+import SearchField from '../SearchField/SearchField';
 import { useState } from 'react';
 import { StyledContainer } from './HeaderBottom.styles';
-import StatsBox from './StatsBox';
+import StatsBox from '../StatsBox/StatsBox';
 
 export default function HeaderBottom() {
   const theme = useTheme();

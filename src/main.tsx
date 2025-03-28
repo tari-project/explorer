@@ -25,7 +25,7 @@ import * as ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { queryClient } from './api/queryClient';
+import { queryClient } from './services/api/queryClient';
 import App from './App';
 
 const router = createBrowserRouter([

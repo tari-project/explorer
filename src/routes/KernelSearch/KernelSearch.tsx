@@ -23,7 +23,7 @@
 import { GradientPaper } from '../../components/StyledComponents';
 import { Grid } from '@mui/material';
 import { useLocation } from 'react-router-dom';
-import { useSearchByKernel } from '../../api/hooks/useBlocks';
+import { useSearchByKernel } from '../../services/api/hooks/useBlocks';
 import FetchStatusCheck from '../../components/FetchStatusCheck';
 import BlockTable from './BlockTable';
 
