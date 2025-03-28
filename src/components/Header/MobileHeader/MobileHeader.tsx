@@ -65,7 +65,7 @@ export default function MobileHeader() {
         <Menu>
           <MenuHolder>
             <MobileNavigation />
-            <MinersCTA theme="dark" buttonText={`Download`} />
+            <MinersCTA theme="dark" buttonText={`Download Tari Universe`} />
             <SocialLinks>
               <SocialIconButtons />
             </SocialLinks>
