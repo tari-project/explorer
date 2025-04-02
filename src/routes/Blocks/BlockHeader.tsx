@@ -28,10 +28,10 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   useAllBlocks,
   useGetBlockByHeightOrHash,
-} from '../../services/api/hooks/useBlocks';
-import { shortenString } from '../../utils/helpers';
+} from '@services/api/hooks/useBlocks';
+import { shortenString } from '@utils/helpers';
 import { useMediaQuery } from '@mui/material';
-import { GradientPaper } from '../../components/StyledComponents';
+import { GradientPaper } from '@components/StyledComponents';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.text.primary,

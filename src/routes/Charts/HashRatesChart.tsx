@@ -22,10 +22,10 @@
 
 import ReactEcharts from 'echarts-for-react';
 import { useTheme } from '@mui/material/styles';
-import { chartColor } from '../../theme/colors';
-import { useAllBlocks } from '../../services/api/hooks/useBlocks';
-import { InnerHeading } from '../../components/StyledComponents';
-import { formatHash } from '../../utils/helpers';
+import { chartColor } from '@theme/colors';
+import { useAllBlocks } from '@services/api/hooks/useBlocks';
+import { InnerHeading } from '@components/StyledComponents';
+import { formatHash } from '@utils/helpers';
 
 const HashRates = () => {
   const { data } = useAllBlocks();

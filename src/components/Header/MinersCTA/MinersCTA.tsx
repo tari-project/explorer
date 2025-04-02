@@ -9,8 +9,12 @@ import {
   Wrapper,
 } from './MinersCTA.styles';
 import ArrowIcon from '../images/ArrowIcon';
-import { useMinerStats } from '../../../services/api/hooks/useMinerStats';
-import { getOS } from '../../../utils/getOs';
+import { useMinerStats } from '@services/api/hooks/useMinerStats';
+import { getOS } from '@utils/getOs';
+import { DOWNLOAD_LINKS } from '@utils/downloadLinks';
+import DownloadModal from './DownloadModal/DownloadModal';
+import { useMainStore } from '@services/stores/useMainStore';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 const NumberFlow = lazy(() => import('@number-flow/react'));
 
@@ -27,8 +31,15 @@ export default function MinersCTA({ theme, buttonText, noBackground }: Props) {
   const countValue = data?.totalMiners ?? 0;
   const [numberWidth, setNumberWidth] = useState(26);
   const numberRef = useRef<HTMLSpanElement>(null);
-  const [downloadLink, setDownloadLink] = useState('https://airdrop.tari.com/');
+  const [downloadLink, setDownloadLink] = useState(DOWNLOAD_LINKS.default);
   const os = getOS();
+
+  const muiTheme = useTheme();
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
+
+  const setShowDownloadModal = useMainStore(
+    (state) => state.setShowDownloadModal
+  );
 
   useEffect(() => {
     if (numberRef.current) {
@@ -40,55 +51,64 @@ export default function MinersCTA({ theme, buttonText, noBackground }: Props) {
   useEffect(() => {
     switch (os) {
       case 'Windows':
-        setDownloadLink('https://airdrop.tari.com/api/miner/download/windows');
+        setDownloadLink(DOWNLOAD_LINKS.windows);
         break;
       case 'MacOS':
-        setDownloadLink('https://airdrop.tari.com/api/miner/download/macos');
+        setDownloadLink(DOWNLOAD_LINKS.mac);
         break;
       case 'Linux':
-        setDownloadLink('https://airdrop.tari.com/api/miner/download/linux');
+        setDownloadLink(DOWNLOAD_LINKS.linux);
         break;
       default:
-        setDownloadLink('https://airdrop.tari.com/');
+        setDownloadLink(DOWNLOAD_LINKS.default);
     }
   }, [os]);
 
   const handleDownloadClick = () => {
     window.open(downloadLink, '_blank');
+    if (os === 'Windows' || os === 'MacOS' || os === 'Linux') {
+      setShowDownloadModal(true);
+      setTimeout(() => {
+        setShowDownloadModal(false);
+      }, 20000);
+    }
   };
 
   return (
-    <Wrapper $theme={theme} $noBackground={noBackground}>
-      <TextWrapper>
-        <Dot $theme={theme} />
-        <Text $theme={theme}>
-          <NumberWrapper style={{ width: `${numberWidth}px` }}>
-            <span ref={numberRef}>
-              <Suspense fallback={<div>Loading...</div>}>
-                <NumberFlow
-                  value={countValue}
-                  format={{
-                    notation: countValue > 10000 ? 'compact' : 'standard',
-                    compactDisplay: 'short',
-                    maximumFractionDigits: 1,
-                  }}
-                />
-              </Suspense>
-            </span>
-          </NumberWrapper>
-          active miners
-        </Text>
-      </TextWrapper>
-      <ButtonWrapper>
-        <Button
-          $theme={theme}
-          href={downloadLink}
-          onClick={handleDownloadClick}
-          target="_blank"
-        >
-          <span>{buttonText}</span> <ArrowIcon className="arrow-icon" />
-        </Button>
-      </ButtonWrapper>
-    </Wrapper>
+    <>
+      {!isMobile && <DownloadModal />}
+      <Wrapper $theme={theme} $noBackground={noBackground}>
+        <TextWrapper>
+          <Dot $theme={theme} />
+          <Text $theme={theme}>
+            <NumberWrapper style={{ width: `${numberWidth}px` }}>
+              <span ref={numberRef}>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <NumberFlow
+                    value={countValue}
+                    format={{
+                      notation: countValue > 10000 ? 'compact' : 'standard',
+                      compactDisplay: 'short',
+                      maximumFractionDigits: 1,
+                    }}
+                  />
+                </Suspense>
+              </span>
+            </NumberWrapper>
+            active miners
+          </Text>
+        </TextWrapper>
+        <ButtonWrapper>
+          <Button
+            $theme={theme}
+            href={downloadLink}
+            onClick={handleDownloadClick}
+            target="_blank"
+          >
+            <span>{buttonText}</span> <ArrowIcon className="arrow-icon" />
+          </Button>
+        </ButtonWrapper>
+      </Wrapper>
+    </>
   );
 }

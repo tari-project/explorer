@@ -24,11 +24,8 @@ import { useState, useEffect, Fragment } from 'react';
 import {
   useAllBlocks,
   useGetBlocksByParam,
-} from '../../services/api/hooks/useBlocks';
-import {
-  InnerHeading,
-  TypographyData,
-} from '../../components/StyledComponents';
+} from '@services/api/hooks/useBlocks';
+import { InnerHeading, TypographyData } from '@components/StyledComponents';
 import {
   Typography,
   Grid,
@@ -41,16 +38,12 @@ import {
   Stack,
 } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import {
-  toHexString,
-  shortenString,
-  formatTimestamp,
-} from '../../utils/helpers';
+import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 import { useTheme } from '@mui/material/styles';
-import CopyToClipboard from '../../components/CopyToClipboard';
+import CopyToClipboard from '@components/CopyToClipboard';
 import { useMediaQuery } from '@mui/material';
 import SkeletonLoader from './SkeletonLoader';
 

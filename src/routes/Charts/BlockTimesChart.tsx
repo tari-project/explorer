@@ -22,9 +22,9 @@
 
 import ReactEcharts from 'echarts-for-react';
 import { useTheme } from '@mui/material/styles';
-import { chartColor } from '../../theme/colors';
-import { useAllBlocks } from '../../services/api/hooks/useBlocks';
-import { InnerHeading } from '../../components/StyledComponents';
+import { chartColor } from '@theme/colors';
+import { useAllBlocks } from '@services/api/hooks/useBlocks';
+import { InnerHeading } from '@components/StyledComponents';
 
 const BlockTimes = () => {
   const { data } = useAllBlocks();

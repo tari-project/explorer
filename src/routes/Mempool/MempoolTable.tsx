@@ -21,11 +21,8 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Fragment, useState } from 'react';
-import { useAllBlocks } from '../../services/api/hooks/useBlocks';
-import {
-  InnerHeading,
-  TypographyData,
-} from '../../components/StyledComponents';
+import { useAllBlocks } from '@services/api/hooks/useBlocks';
+import { InnerHeading, TypographyData } from '@components/StyledComponents';
 import {
   Typography,
   Grid,
@@ -39,9 +36,9 @@ import {
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import FetchStatusCheck from '../../components/FetchStatusCheck';
-import { toHexString, shortenString } from '../../utils/helpers';
-import CopyToClipboard from '../../components/CopyToClipboard';
+import FetchStatusCheck from '@components/FetchStatusCheck';
+import { toHexString, shortenString } from '@utils/helpers';
+import CopyToClipboard from '@components/CopyToClipboard';
 
 function MempoolTable() {
   const { data, isError, isLoading } = useAllBlocks();

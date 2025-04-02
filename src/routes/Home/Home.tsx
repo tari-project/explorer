@@ -20,7 +20,7 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { GradientPaper } from '../../components/StyledComponents';
+import { GradientPaper } from '@components/StyledComponents';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container } from '@mui/material';
 import BlockTimesChart from '../Charts/BlockTimesChart';

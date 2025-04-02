@@ -21,16 +21,16 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { useState } from 'react';
-import { InnerHeading } from '../../components/StyledComponents';
+import { InnerHeading } from '@components/StyledComponents';
 import Box from '@mui/material/Box';
 import {
   useGetBlockByHeightOrHash,
   useGetPaginatedData,
-} from '../../services/api/hooks/useBlocks';
+} from '@services/api/hooks/useBlocks';
 import { useTheme } from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
 import GenerateAccordion from './GenerateAccordion';
-import FetchStatusCheck from '../../components/FetchStatusCheck';
+import FetchStatusCheck from '@components/FetchStatusCheck';
 import { inputItems } from './Data/Inputs';
 import { outputItems } from './Data/Outputs';
 import { kernelItems } from './Data/Kernels';

@@ -20,17 +20,17 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import MainLayout from './theme/MainLayout';
-import PageLayout from './theme/PageLayout';
-import BlockExplorerPage from './routes/BlockExplorer';
-import BlocksPage from './routes/Blocks/BlocksPage';
-import MempoolPage from './routes/Mempool/MempoolPage';
-import KernelSearch from './routes/KernelSearch/KernelSearch';
-import VNPage from './routes/VNs/VNPage';
-import Block from './routes/Blocks/Block';
+import MainLayout from '@theme/MainLayout';
+import PageLayout from '@theme/PageLayout';
+import BlockExplorerPage from '@routes/BlockExplorer';
+import BlocksPage from '@routes/Blocks/BlocksPage';
+import MempoolPage from '@routes/Mempool/MempoolPage';
+import KernelSearch from '@routes/KernelSearch/KernelSearch';
+import VNPage from '@routes/VNs/VNPage';
+import Block from '@routes/Blocks/Block';
 import { Routes, Route } from 'react-router-dom';
-import BlockHeader from './routes/Blocks/BlockHeader';
-import KernelHeader from './routes/KernelSearch/KernelHeader';
+import BlockHeader from '@routes/Blocks/BlockHeader';
+import KernelHeader from '@routes/KernelSearch/KernelHeader';
 
 function App() {
   return (

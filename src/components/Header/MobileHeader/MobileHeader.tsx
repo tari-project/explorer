@@ -9,12 +9,12 @@ import {
   IconsContainer,
 } from './styles';
 import MobileMenuButton from '../MobileMenuButton/MobileMenuButton';
-import { useMainStore } from '../../../services/stores/useMainStore';
+import { useMainStore } from '@services/stores/useMainStore';
 import MinersCTA from '../MinersCTA/MinersCTA';
-import { SocialIconButtons } from '../../SocialLinks/SocialLinks';
+import { SocialIconButtons } from '@components/SocialLinks/SocialLinks';
 import MobileNavigation from './MobileNavigation/MobileNavigation';
 import SearchField from '../SearchField/SearchField';
-import Logo from '../../../assets/images/tari-logo.svg';
+import Logo from '@assets/images/tari-logo.svg';
 import { Link } from 'react-router-dom';
 
 export default function MobileHeader() {

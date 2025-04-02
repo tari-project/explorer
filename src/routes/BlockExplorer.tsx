@@ -20,7 +20,7 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { GradientPaper } from '../components/StyledComponents';
+import { GradientPaper } from '@components/StyledComponents';
 import { Grid } from '@mui/material';
 import MempoolWidget from './Mempool/MempoolWidget';
 import VNTable from './VNs/VNTable';
@@ -29,7 +29,7 @@ import BlockTimes from './Charts/BlockTimes';
 import HashRates from './Charts/HashRates';
 import POWChart from './Charts/POWChart';
 import { useTheme } from '@mui/material/styles';
-import { InnerHeading } from '../components/StyledComponents';
+import { InnerHeading } from '@components/StyledComponents';
 
 function BlockExplorerPage() {
   const theme = useTheme();

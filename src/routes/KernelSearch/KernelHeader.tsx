@@ -23,7 +23,7 @@
 import { Box, Container, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useLocation } from 'react-router-dom';
-import { useSearchByKernel } from '../../services/api/hooks/useBlocks';
+import { useSearchByKernel } from '@services/api/hooks/useBlocks';
 import { useMediaQuery } from '@mui/material';
 
 function KernelHeader() {
