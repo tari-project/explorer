@@ -21,12 +21,12 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Fragment } from 'react';
-import { useAllBlocks } from '../../services/api/hooks/useBlocks';
+import { useAllBlocks } from '@services/api/hooks/useBlocks';
 import {
   InnerHeading,
   TypographyData,
   TransparentBg,
-} from '../../components/StyledComponents';
+} from '@components/StyledComponents';
 import { Typography, Grid, Divider, Alert, Skeleton } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';

@@ -21,18 +21,18 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Fragment } from 'react';
-import { useAllBlocks } from '../../services/api/hooks/useBlocks';
+import { useAllBlocks } from '@services/api/hooks/useBlocks';
 import {
   InnerHeading,
   TypographyData,
   TransparentDivider,
   TransparentBg,
-} from '../../components/StyledComponents';
+} from '@components/StyledComponents';
 import { Typography, Grid, Alert, Skeleton, Button, Box } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { toHexString, shortenString } from '../../utils/helpers';
-import CopyToClipboard from '../../components/CopyToClipboard';
+import { toHexString, shortenString } from '@utils/helpers';
+import CopyToClipboard from '@components/CopyToClipboard';
 
 function MempoolTable() {
   const { data, isError, isLoading, error } = useAllBlocks();

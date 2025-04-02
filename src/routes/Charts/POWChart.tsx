@@ -22,10 +22,10 @@
 
 import ReactEcharts from 'echarts-for-react';
 import { useTheme } from '@mui/material/styles';
-import { chartColor } from '../../theme/colors';
-import { useAllBlocks } from '../../services/api/hooks/useBlocks';
+import { chartColor } from '@theme/colors';
+import { useAllBlocks } from '@services/api/hooks/useBlocks';
 import { Alert, Skeleton } from '@mui/material';
-import { TransparentBg } from '../../components/StyledComponents';
+import { TransparentBg } from '@components/StyledComponents';
 
 interface AlgoSplit {
   monero10: number;

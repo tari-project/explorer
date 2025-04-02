@@ -1,8 +1,8 @@
 import { Wrapper } from './StatsBox.styles';
 import numeral from 'numeral';
 import StatsItem from './StatsItem/StatsItem';
-import { useAllBlocks } from '../../../services/api/hooks/useBlocks';
-import { formatHash } from '../../../utils/helpers';
+import { useAllBlocks } from '@services/api/hooks/useBlocks';
+import { formatHash } from '@utils/helpers';
 
 function StatsBox() {
   const { data } = useAllBlocks();
@@ -22,6 +22,7 @@ function StatsBox() {
   ).format('0,0');
   const formattedMoneroHashRate = formatHash(latestMoneroHashRate);
   const formattedSha3HashRate = formatHash(latestShaHashRate);
+
   return (
     <Wrapper>
       <StatsItem label="RandomX Hash Rate" value={formattedMoneroHashRate} />

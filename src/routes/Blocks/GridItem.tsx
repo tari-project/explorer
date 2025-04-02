@@ -21,11 +21,11 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Fragment } from 'react';
-import { TypographyData } from '../../components/StyledComponents';
+import { TypographyData } from '@components/StyledComponents';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { shortenString } from '../../utils/helpers';
-import CopyToClipboard from '../../components/CopyToClipboard';
+import { shortenString } from '@utils/helpers';
+import CopyToClipboard from '@components/CopyToClipboard';
 
 function GridItem(
   label: string,

@@ -1,4 +1,4 @@
-import { useMainStore } from '../../services/stores/useMainStore';
+import { useMainStore } from '@services/stores/useMainStore';
 import DiscordIcon from './icons/DiscordIcon';
 import GithubIcon from './icons/GithubIcon';
 import InstagramIcon from './icons/InstagramIcon';

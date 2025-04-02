@@ -22,12 +22,12 @@
 
 import ReactEcharts from 'echarts-for-react';
 import { useTheme } from '@mui/material/styles';
-import { chartColor } from '../../theme/colors';
-import { useAllBlocks } from '../../services/api/hooks/useBlocks';
-import { formatHash } from '../../utils/helpers';
+import { chartColor } from '@theme/colors';
+import { useAllBlocks } from '@services/api/hooks/useBlocks';
+import { formatHash } from '@utils/helpers';
 import { useState, useEffect } from 'react';
 import { Alert, Skeleton } from '@mui/material';
-import { TransparentBg } from '../../components/StyledComponents';
+import { TransparentBg } from '@components/StyledComponents';
 
 interface HashRatesProps {
   type: 'RandomX' | 'Sha3';

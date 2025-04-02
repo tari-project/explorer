@@ -21,21 +21,14 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { useState, Fragment } from 'react';
-import {
-  InnerHeading,
-  TypographyData,
-} from '../../components/StyledComponents';
+import { InnerHeading, TypographyData } from '@components/StyledComponents';
 import { Typography, Grid, Divider, Pagination } from '@mui/material';
-import {
-  toHexString,
-  shortenString,
-  formatTimestamp,
-} from '../../utils/helpers';
+import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
-import CopyToClipboard from '../../components/CopyToClipboard';
+import CopyToClipboard from '@components/CopyToClipboard';
 import { useMediaQuery } from '@mui/material';
 
 function BlockTable({ data }: { data: any }) {

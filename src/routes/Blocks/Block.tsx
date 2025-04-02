@@ -21,12 +21,12 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Grid from '@mui/material/Grid';
-import { GradientPaper } from '../../components/StyledComponents';
+import { GradientPaper } from '@components/StyledComponents';
 import { useTheme } from '@mui/material/styles';
 import BlockInfo from './BlockInfo';
 import { useLocation } from 'react-router-dom';
-import { useGetBlockByHeightOrHash } from '../../services/api/hooks/useBlocks';
-import FetchStatusCheck from '../../components/FetchStatusCheck';
+import { useGetBlockByHeightOrHash } from '@services/api/hooks/useBlocks';
+import FetchStatusCheck from '@components/FetchStatusCheck';
 import BlockParts from './BlockParts';
 
 function Block() {

@@ -1,5 +1,5 @@
 import { IconContainer, Line, Wrapper } from './styles';
-import { useMainStore } from '../../../services/stores/useMainStore';
+import { useMainStore } from '@services/stores/useMainStore';
 
 const topLineVariants = {
   closed: {

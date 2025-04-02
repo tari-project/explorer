@@ -26,9 +26,9 @@ import { Outlet } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { lightTheme } from './themes';
-import Header from '../components/Header/Header';
-import HeaderTitle from '../components/Header/HeaderTitle/HeaderTitle';
-import VersionInfo from '../components/VersionInfo/VersionInfo';
+import Header from '@components/Header/Header';
+import HeaderTitle from '@components/Header/HeaderTitle/HeaderTitle';
+import VersionInfo from '@components/VersionInfo/VersionInfo';
 
 interface PageLayoutProps {
   title?: string;

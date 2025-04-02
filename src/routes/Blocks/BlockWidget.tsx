@@ -21,11 +21,8 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Fragment } from 'react';
-import { useAllBlocks } from '../../services/api/hooks/useBlocks';
-import {
-  TypographyData,
-  TransparentBg,
-} from '../../components/StyledComponents';
+import { useAllBlocks } from '@services/api/hooks/useBlocks';
+import { TypographyData, TransparentBg } from '@components/StyledComponents';
 import {
   Typography,
   Grid,
@@ -34,14 +31,10 @@ import {
   Skeleton,
   Alert,
 } from '@mui/material';
-import {
-  toHexString,
-  shortenString,
-  formatTimestamp,
-} from '../../utils/helpers';
+import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import CopyToClipboard from '../../components/CopyToClipboard';
+import CopyToClipboard from '@components/CopyToClipboard';
 import { useMediaQuery } from '@mui/material';
 
 function BlockWidget() {
