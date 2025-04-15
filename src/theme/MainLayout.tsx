@@ -28,12 +28,14 @@ import Grid from '@mui/material/Grid';
 import { lightTheme } from './themes';
 import Header from '@components/Header/Header';
 import VersionInfo from '@components/VersionInfo/VersionInfo';
+import Banner from '@components/Banner/Banner';
 
 export default function MainLayout() {
   return (
     <>
       <ThemeProvider theme={lightTheme}>
         <CssBaseline />
+        <Banner />
         <Grid container spacing={0} className="main-bg">
           <Container maxWidth="xl">
             <Header />

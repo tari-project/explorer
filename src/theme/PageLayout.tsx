@@ -29,6 +29,7 @@ import { lightTheme } from './themes';
 import Header from '@components/Header/Header';
 import HeaderTitle from '@components/Header/HeaderTitle/HeaderTitle';
 import VersionInfo from '@components/VersionInfo/VersionInfo';
+import Banner from '@components/Banner/Banner';
 
 interface PageLayoutProps {
   title?: string;
@@ -45,6 +46,7 @@ export default function PageLayout({
     <>
       <ThemeProvider theme={lightTheme}>
         <CssBaseline />
+        <Banner />
         <Grid
           container
           spacing={0}

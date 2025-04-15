@@ -67,7 +67,7 @@ export const Menu = styled(motion.div)({
   left: 0,
   zIndex: 98,
   padding: '30px',
-  paddingTop: '100px',
+  paddingTop: '160px',
 });
 
 export const MenuHolder = styled('div')({
