@@ -22,52 +22,18 @@
 
 import { GradientPaper } from '@components/StyledComponents';
 import { Grid } from '@mui/material';
-import { useLocation } from 'react-router-dom';
-import { useSearchByKernel } from '@services/api/hooks/useBlocks';
-import FetchStatusCheck from '@components/FetchStatusCheck';
-import BlockTable from './BlockTable';
+import MempoolTable from '@components/Mempool/MempoolTable';
 
-function KernelsPage() {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-
-  const noncesParams = params.get('nonces');
-  const nonces = noncesParams ? noncesParams.split(',') : [];
-
-  const signaturesParams = params.get('signatures');
-  const signatures = signaturesParams ? signaturesParams.split(',') : [];
-
-  const { data, isLoading, isError, error } = useSearchByKernel(
-    nonces,
-    signatures
-  );
-
-  if (isLoading || isError) {
-    return (
+function MempoolPage() {
+  return (
+    <>
       <Grid item xs={12} md={12} lg={12}>
         <GradientPaper>
-          <FetchStatusCheck
-            isError={isError}
-            isLoading={isLoading}
-            errorMessage={error?.message || 'Error retrieving data'}
-          />
+          <MempoolTable />
         </GradientPaper>
       </Grid>
-    );
-  }
-
-  // if (data?.items.length === 1) {
-  //   const blockHeight = data.items[0].block.header.height;
-  //   window.location.replace(`/blocks/${blockHeight}`);
-  // }
-
-  return (
-    <Grid item xs={12} md={12} lg={12}>
-      <GradientPaper>
-        <BlockTable data={data?.items || []} />
-      </GradientPaper>
-    </Grid>
+    </>
   );
 }
 
-export default KernelsPage;
+export default MempoolPage;

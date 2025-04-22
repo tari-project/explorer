@@ -22,12 +22,12 @@
 
 import { GradientPaper } from '@components/StyledComponents';
 import { Grid } from '@mui/material';
-import MempoolWidget from './Mempool/MempoolWidget';
-import VNTable from './VNs/VNTable';
-import BlockWidget from './Blocks/BlockWidget';
-import BlockTimes from './Charts/BlockTimes';
-import HashRates from './Charts/HashRates';
-import POWChart from './Charts/POWChart';
+import MempoolWidget from '@components/Mempool/MempoolWidget';
+import VNTable from '@components/VNs/VNTable';
+import BlockWidget from '@components/Blocks/BlockWidget';
+import BlockTimes from '@components/Charts/BlockTimes';
+import HashRates from '@components/Charts/HashRates';
+import POWChart from '@components/Charts/POWChart';
 import { useTheme } from '@mui/material/styles';
 import { InnerHeading } from '@components/StyledComponents';
 

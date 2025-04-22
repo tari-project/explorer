@@ -22,15 +22,15 @@
 
 import MainLayout from '@theme/MainLayout';
 import PageLayout from '@theme/PageLayout';
-import BlockExplorerPage from '@routes/BlockExplorer';
-import BlocksPage from '@routes/Blocks/BlocksPage';
-import MempoolPage from '@routes/Mempool/MempoolPage';
-import KernelSearch from '@routes/KernelSearch/KernelSearch';
-import VNPage from '@routes/VNs/VNPage';
-import Block from '@routes/Blocks/Block';
+import BlockExplorerPage from '@routes/BlockExplorerPage';
+import BlocksPage from '@routes/BlocksPage';
+import MempoolPage from '@routes/MempoolPage';
+import KernelSearch from '@routes/KernelSearchPage';
+import VNPage from '@routes/VNPage';
+import Block from '@components/Blocks/Block';
 import { Routes, Route } from 'react-router-dom';
-import BlockHeader from '@routes/Blocks/BlockHeader';
-import KernelHeader from '@routes/KernelSearch/KernelHeader';
+import BlockHeader from '@components/Blocks/BlockHeader';
+import KernelHeader from '@components/KernelSearch/KernelHeader';
 
 function App() {
   return (
@@ -39,7 +39,9 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<BlockExplorerPage />} />
           {/* <Route path="*" element={<ErrorPage />} /> */}
-          <Route path="vns" element={<VNPage />} />
+        </Route>
+        <Route path="vns" element={<PageLayout title="Validator Nodes" />}>
+          <Route index element={<VNPage />} />
         </Route>
         <Route path="blocks" element={<PageLayout title="Blocks" />}>
           <Route index element={<BlocksPage />} />

@@ -20,13 +20,14 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { Box, Container, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { GradientPaper } from '@components/StyledComponents';
+import { Grid } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { useSearchByKernel } from '@services/api/hooks/useBlocks';
-import { useMediaQuery } from '@mui/material';
+import FetchStatusCheck from '@components/FetchStatusCheck';
+import BlockTable from '@components/KernelSearch/BlockTable';
 
-function KernelHeader() {
+function KernelsPage() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
@@ -36,62 +37,37 @@ function KernelHeader() {
   const signaturesParams = params.get('signatures');
   const signatures = signaturesParams ? signaturesParams.split(',') : [];
 
-  const { isFetching, isError, isSuccess, data } = useSearchByKernel(
+  const { data, isLoading, isError, error } = useSearchByKernel(
     nonces,
     signatures
   );
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  let status = '';
-  switch (true) {
-    case isFetching:
-      status = 'Searching...';
-      break;
-    case isError:
-      status = 'Block not found';
-      break;
-    case isSuccess:
-      status = `Block${data.items.length > 1 ? 's' : ''} found`;
-      break;
-    default:
-      status = '';
+  if (isLoading || isError) {
+    return (
+      <Grid item xs={12} md={12} lg={12}>
+        <GradientPaper>
+          <FetchStatusCheck
+            isError={isError}
+            isLoading={isLoading}
+            errorMessage={error?.message || 'Error retrieving data'}
+          />
+        </GradientPaper>
+      </Grid>
+    );
   }
 
+  // if (data?.items.length === 1) {
+  //   const blockHeight = data.items[0].block.header.height;
+  //   window.location.replace(`/blocks/${blockHeight}`);
+  // }
+
   return (
-    <>
-      {!isMobile ? (
-        <Container maxWidth="xl">
-          <Box
-            style={{
-              marginTop: theme.spacing(10),
-              marginBottom: theme.spacing(10),
-              color: theme.palette.text.primary,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: theme.spacing(1),
-            }}
-          >
-            <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
-              Kernel Search
-            </Typography>
-            <Typography
-              variant="h1"
-              style={{
-                fontFamily: '"DrukHeavy", sans-serif',
-                fontSize: 60,
-              }}
-            >
-              {status}
-            </Typography>
-          </Box>
-        </Container>
-      ) : null}
-    </>
+    <Grid item xs={12} md={12} lg={12}>
+      <GradientPaper>
+        <BlockTable data={data?.items || []} />
+      </GradientPaper>
+    </Grid>
   );
 }
 
-export default KernelHeader;
+export default KernelsPage;
