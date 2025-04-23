@@ -22,18 +22,18 @@
 
 import { GradientPaper } from '@components/StyledComponents';
 import { Grid } from '@mui/material';
-import MempoolTable from './MempoolTable';
+import BlockTable from '@components/Blocks/BlockTable';
 
-function MempoolPage() {
+function BlocksPage() {
   return (
     <>
       <Grid item xs={12} md={12} lg={12}>
         <GradientPaper>
-          <MempoolTable />
+          <BlockTable />
         </GradientPaper>
       </Grid>
     </>
   );
 }
 
-export default MempoolPage;
+export default BlocksPage;

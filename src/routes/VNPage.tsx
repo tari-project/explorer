@@ -22,7 +22,7 @@
 
 import { GradientPaper } from '@components/StyledComponents';
 import { Grid } from '@mui/material';
-import VNTable from './VNTable';
+import VNTable from '@components/VNs/VNTable';
 
 function VNPage() {
   return (
