@@ -6,7 +6,7 @@ export default function Banner() {
       <Holder>
         <Text>
           Tari is in Testnet.{' '}
-          <GradientText>Mainnet launches in April 2025!</GradientText>
+          <GradientText>Mainnet launches in May 2025!</GradientText>
         </Text>
       </Holder>
     </Wrapper>
