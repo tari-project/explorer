@@ -220,5 +220,5 @@ export const NumberWrapperSml = styled('span')`
   text-transform: lowercase;
 
   transition: width 0.3s ease;
-  min-width: 34px;
+  min-width: 10px;
 `;
