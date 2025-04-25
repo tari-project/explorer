@@ -93,7 +93,7 @@ export default function MinersCTA({
         >
           <NumberWrapperSml
             style={{
-              width: `${numberWidth}px`,
+              width: 'auto',
             }}
           >
             <span ref={numberRef}>
@@ -101,7 +101,7 @@ export default function MinersCTA({
                 <NumberFlow
                   value={countValue}
                   format={{
-                    notation: countValue > 10000 ? 'compact' : 'standard',
+                    notation: countValue > 1000 ? 'compact' : 'standard',
                     compactDisplay: 'short',
                     maximumFractionDigits: 1,
                   }}
