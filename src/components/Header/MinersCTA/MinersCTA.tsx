@@ -14,29 +14,33 @@ import { getOS } from '@utils/getOs';
 import { DOWNLOAD_LINKS } from '@utils/downloadLinks';
 import DownloadModal from './DownloadModal/DownloadModal';
 import { useMainStore } from '@services/stores/useMainStore';
-import { useMediaQuery, useTheme } from '@mui/material';
 
 const NumberFlow = lazy(() => import('@number-flow/react'));
 
 interface Props {
   theme: 'light' | 'dark';
-  buttonText: string;
+  buttonText?: string;
   hoverAnimation?: boolean;
   hoverText?: string;
   noBackground?: boolean;
+  minersOnly?: boolean;
+  buttonOnly?: boolean;
 }
 
-export default function MinersCTA({ theme, buttonText, noBackground }: Props) {
+export default function MinersCTA({
+  theme,
+  buttonText = 'Download Tari Universe',
+  noBackground,
+  minersOnly = false,
+  buttonOnly = false,
+}: Props) {
   const { data } = useMinerStats();
   const countValue = data?.totalMiners ?? 0;
   const [numberWidth, setNumberWidth] = useState(26);
   const numberRef = useRef<HTMLSpanElement>(null);
   const [downloadLink, setDownloadLink] = useState(DOWNLOAD_LINKS.default);
   const os = getOS();
-
-  const muiTheme = useTheme();
-  const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
-
+  const isMobile = useMainStore((state) => state.isMobile);
   const setShowDownloadModal = useMainStore(
     (state) => state.setShowDownloadModal
   );
@@ -73,6 +77,46 @@ export default function MinersCTA({ theme, buttonText, noBackground }: Props) {
       }, 20000);
     }
   };
+
+  if (minersOnly) {
+    return (
+      <TextWrapper>
+        <Dot $theme={theme} />
+        <Text $theme={theme}>
+          <NumberWrapper style={{ width: `${numberWidth}px` }}>
+            <span ref={numberRef}>
+              <Suspense fallback={<div>Loading...</div>}>
+                <NumberFlow
+                  value={countValue}
+                  format={{
+                    notation: countValue > 10000 ? 'compact' : 'standard',
+                    compactDisplay: 'short',
+                    maximumFractionDigits: 1,
+                  }}
+                />
+              </Suspense>
+            </span>
+          </NumberWrapper>
+          active miners
+        </Text>
+      </TextWrapper>
+    );
+  }
+
+  if (buttonOnly) {
+    return (
+      <ButtonWrapper>
+        <Button
+          $theme={theme}
+          href={downloadLink}
+          onClick={handleDownloadClick}
+          target="_blank"
+        >
+          <span>{buttonText}</span> <ArrowIcon className="arrow-icon" />
+        </Button>
+      </ButtonWrapper>
+    );
+  }
 
   return (
     <>

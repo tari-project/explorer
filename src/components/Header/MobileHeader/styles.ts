@@ -32,6 +32,7 @@ export const HeaderTop = styled(motion.div)<{ $open: boolean }>(
     padding: '14px 20px',
     pointerEvents: 'auto',
     display: 'flex',
+    gap: '16px',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
@@ -89,12 +90,16 @@ export const SocialLinks = styled('div')({
   width: '100%',
 });
 
-export const IconsContainer = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  width: '100%',
-  justifyContent: 'flex-end',
-});
+export const IconsContainer = styled('div')<{ $isExpanded: boolean }>(
+  ({ $isExpanded }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    ...($isExpanded && {
+      width: '100%',
+    }),
+  })
+);
 
 export const LogoContainer = styled('div')({
   scale: 0.8,

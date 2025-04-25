@@ -34,18 +34,18 @@ import {
   FormControl,
 } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import FetchStatusCheck from '@components/FetchStatusCheck';
 import { toHexString, shortenString } from '@utils/helpers';
 import CopyToClipboard from '@components/CopyToClipboard';
+import { useMainStore } from '@services/stores/useMainStore';
 
 function MempoolTable() {
   const { data, isError, isLoading } = useAllBlocks();
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMainStore((state) => state.isMobile);
   const totalItems = data?.mempool.length || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 

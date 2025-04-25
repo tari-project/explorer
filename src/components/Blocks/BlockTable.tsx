@@ -44,8 +44,8 @@ import { motion } from 'framer-motion';
 
 import { useTheme } from '@mui/material/styles';
 import CopyToClipboard from '@components/CopyToClipboard';
-import { useMediaQuery } from '@mui/material';
 import SkeletonLoader from './SkeletonLoader';
+import { useMainStore } from '@services/stores/useMainStore';
 
 function BlockTable() {
   const { data: tipData } = useAllBlocks();
@@ -57,7 +57,7 @@ function BlockTable() {
   const [prevDisabled, setPrevDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMainStore((state) => state.isMobile);
 
   const motionProps = () => ({
     component: motion.div,

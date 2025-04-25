@@ -14,11 +14,12 @@ import MinersCTA from '../MinersCTA/MinersCTA';
 import { SocialIconButtons } from '@components/SocialLinks/SocialLinks';
 import MobileNavigation from './MobileNavigation/MobileNavigation';
 import SearchField from '../SearchField/SearchField';
-import Logo from '@assets/images/tari-logo.svg';
+import Gem from '@assets/images/tari-gem.svg';
 import { Link } from 'react-router-dom';
 
 export default function MobileHeader() {
-  const { showMobileMenu, setShowMobileMenu } = useMainStore();
+  const showMobileMenu = useMainStore((state) => state.showMobileMenu);
+  const setShowMobileMenu = useMainStore((state) => state.setShowMobileMenu);
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
@@ -39,19 +40,28 @@ export default function MobileHeader() {
         <Inside>
           <HeaderTop $open={showMobileMenu}>
             {!isExpanded && (
-              <Link to="/">
-                <img
-                  src={Logo}
-                  alt="Tari Logo"
-                  style={{
-                    scale: '0.85',
-                    transformOrigin: 'left',
-                    paddingTop: '5px',
-                  }}
+              <>
+                <Link to="/">
+                  <img
+                    src={Gem}
+                    alt="Tari Logo"
+                    style={{
+                      scale: '0.85',
+                      transformOrigin: 'left',
+                      paddingTop: '5px',
+                    }}
+                  />
+                </Link>
+                <MinersCTA
+                  theme="dark"
+                  buttonText={`Download Tari Universe`}
+                  noBackground
+                  hoverAnimation={false}
+                  minersOnly
                 />
-              </Link>
+              </>
             )}
-            <IconsContainer>
+            <IconsContainer $isExpanded={isExpanded}>
               <SearchField
                 isExpanded={isExpanded}
                 setIsExpanded={setIsExpanded}
@@ -65,7 +75,11 @@ export default function MobileHeader() {
         <Menu>
           <MenuHolder>
             <MobileNavigation />
-            <MinersCTA theme="dark" buttonText={`Download Tari Universe`} />
+            <MinersCTA
+              theme="dark"
+              buttonText={`Download Tari Universe`}
+              buttonOnly
+            />
             <SocialLinks>
               <SocialIconButtons />
             </SocialLinks>

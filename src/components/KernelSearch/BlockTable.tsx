@@ -27,14 +27,12 @@ import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
 import CopyToClipboard from '@components/CopyToClipboard';
-import { useMediaQuery } from '@mui/material';
+import { useMainStore } from '@services/stores/useMainStore';
 
 function BlockTable({ data }: { data: any }) {
   const [page, setPage] = useState(1);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMainStore((state) => state.isMobile);
   const totalItems = data?.length || 0;
   const itemsPerPage = 10;
   const totalPages = Math.ceil(totalItems / itemsPerPage);

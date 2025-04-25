@@ -20,16 +20,14 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { useTheme } from '@mui/material/styles';
-import { useMediaQuery } from '@mui/material';
 import SearchField from '../SearchField/SearchField';
 import { useState } from 'react';
 import { StyledContainer } from './HeaderBottom.styles';
 import StatsBox from '../StatsBox/StatsBox';
+import { useMainStore } from '@services/stores/useMainStore';
 
 export default function HeaderBottom() {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMainStore((state) => state.isMobile);
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (

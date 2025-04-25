@@ -7,7 +7,7 @@ export const Wrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  height: '57px',
+  minHeight: '57px',
   backgroundColor: '#1e1e25',
   backgroundImage: `url(${backgroundImage})`,
   backgroundSize: 'cover',

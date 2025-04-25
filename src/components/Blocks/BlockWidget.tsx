@@ -35,12 +35,12 @@ import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import CopyToClipboard from '@components/CopyToClipboard';
-import { useMediaQuery } from '@mui/material';
+import { useMainStore } from '@services/stores/useMainStore';
 
 function BlockWidget() {
   const { data, isLoading, isError, error } = useAllBlocks();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMainStore((state) => state.isMobile);
   const desktopCount = 9;
   const mobileCount = 5;
 

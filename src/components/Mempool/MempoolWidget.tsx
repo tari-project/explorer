@@ -29,15 +29,13 @@ import {
   TransparentBg,
 } from '@components/StyledComponents';
 import { Typography, Grid, Alert, Skeleton, Button, Box } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { toHexString, shortenString } from '@utils/helpers';
 import CopyToClipboard from '@components/CopyToClipboard';
+import { useMainStore } from '@services/stores/useMainStore';
 
 function MempoolTable() {
   const { data, isError, isLoading, error } = useAllBlocks();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMainStore((state) => state.isMobile);
   const Title = () => (
     <InnerHeading>Mempool ({data?.mempool.length || '0'})</InnerHeading>
   );

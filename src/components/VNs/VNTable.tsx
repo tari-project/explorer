@@ -28,13 +28,11 @@ import {
   TransparentBg,
 } from '@components/StyledComponents';
 import { Typography, Grid, Divider, Alert, Skeleton } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { useMainStore } from '@services/stores/useMainStore';
 
 function VNTable() {
   const { data, isError, isLoading, error } = useAllBlocks();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMainStore((state) => state.isMobile);
   const Title = () => <InnerHeading>Active Validator Nodes</InnerHeading>;
 
   function Mobile() {
