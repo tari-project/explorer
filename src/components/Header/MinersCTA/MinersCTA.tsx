@@ -3,7 +3,9 @@ import {
   Button,
   ButtonWrapper,
   Dot,
+  DotSml,
   NumberWrapper,
+  NumberWrapperSml,
   Text,
   TextWrapper,
   Wrapper,
@@ -81,22 +83,32 @@ export default function MinersCTA({
   if (minersOnly) {
     return (
       <TextWrapper>
-        <Dot $theme={theme} />
-        <Text $theme={theme}>
-          <NumberWrapper style={{ width: `${numberWidth}px` }}>
+        <DotSml $theme={theme} />
+        <Text
+          $theme={theme}
+          style={{
+            fontSize: '13px',
+            letterSpacing: '0.1px',
+          }}
+        >
+          <NumberWrapperSml
+            style={{
+              width: 'auto',
+            }}
+          >
             <span ref={numberRef}>
               <Suspense fallback={<div>Loading...</div>}>
                 <NumberFlow
                   value={countValue}
                   format={{
-                    notation: countValue > 10000 ? 'compact' : 'standard',
+                    notation: countValue > 1000 ? 'compact' : 'standard',
                     compactDisplay: 'short',
                     maximumFractionDigits: 1,
                   }}
                 />
               </Suspense>
             </span>
-          </NumberWrapper>
+          </NumberWrapperSml>
           active miners
         </Text>
       </TextWrapper>

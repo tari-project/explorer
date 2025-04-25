@@ -88,6 +88,32 @@ export const Dot = styled('div')<{ $theme: 'light' | 'dark' }>`
   }
 `;
 
+export const DotSml = styled('div')<{ $theme: 'light' | 'dark' }>`
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(180deg, #0f9 0%, #b0d636 100%);
+  border-radius: 50%;
+
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  transform: translateY(-50%) translateY(1px);
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    border-radius: 50%;
+    z-index: -1;
+    animation: ${radarPulse} 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+`;
+
 export const Text = styled('div')<{ $theme: 'light' | 'dark' }>`
   color: #71ee73;
   font-family: var(--font-poppins), sans-serif;
@@ -184,4 +210,15 @@ export const NumberWrapper = styled('span')`
 
   transition: width 0.3s ease;
   min-width: 34px;
+`;
+
+export const NumberWrapperSml = styled('span')`
+  display: inline-block;
+  text-align: right;
+  margin-right: 4px;
+  margin-left: 14px;
+  text-transform: lowercase;
+
+  transition: width 0.3s ease;
+  min-width: 10px;
 `;

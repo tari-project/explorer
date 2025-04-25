@@ -29,10 +29,10 @@ export const Inside = styled('div')({
 
 export const HeaderTop = styled(motion.div)<{ $open: boolean }>(
   ({ $open }) => ({
-    padding: '14px 20px',
+    padding: '14px',
     pointerEvents: 'auto',
     display: 'flex',
-    gap: '16px',
+    gap: '8px',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
