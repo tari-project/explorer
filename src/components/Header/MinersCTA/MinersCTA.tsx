@@ -82,7 +82,13 @@ export default function MinersCTA({
     return (
       <TextWrapper>
         <Dot $theme={theme} />
-        <Text $theme={theme}>
+        <Text
+          $theme={theme}
+          style={{
+            fontSize: '13px',
+            letterSpacing: '0.1px',
+          }}
+        >
           <NumberWrapper style={{ width: `${numberWidth}px` }}>
             <span ref={numberRef}>
               <Suspense fallback={<div>Loading...</div>}>
