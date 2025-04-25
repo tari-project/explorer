@@ -31,8 +31,19 @@ import Block from '@components/Blocks/Block';
 import { Routes, Route } from 'react-router-dom';
 import BlockHeader from '@components/Blocks/BlockHeader';
 import KernelHeader from '@components/KernelSearch/KernelHeader';
+import { useMediaQuery, useTheme } from '@mui/material';
+import { useMainStore } from '@services/stores/useMainStore';
+import { useEffect } from 'react';
 
 function App() {
+  const theme = useTheme();
+  const setIsMobile = useMainStore((state) => state.setIsMobile);
+  const isMobileQuery = useMediaQuery(theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    setIsMobile(isMobileQuery);
+  }, [isMobileQuery, setIsMobile]);
+
   return (
     <>
       <Routes>

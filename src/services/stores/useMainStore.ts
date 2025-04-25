@@ -5,6 +5,8 @@ interface Store {
   setShowMobileMenu: (showMobileMenu: boolean) => void;
   showDownloadModal: boolean;
   setShowDownloadModal: (showDownloadModal: boolean) => void;
+  isMobile: boolean;
+  setIsMobile: (isMobile: boolean) => void;
 }
 
 export const useMainStore = create<Store>()((set) => ({
@@ -13,4 +15,6 @@ export const useMainStore = create<Store>()((set) => ({
   showDownloadModal: false,
   setShowDownloadModal: (showDownloadModal: boolean) =>
     set({ showDownloadModal }),
+  isMobile: false,
+  setIsMobile: (isMobile: boolean) => set({ isMobile }),
 }));
