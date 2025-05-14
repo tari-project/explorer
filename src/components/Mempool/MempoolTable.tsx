@@ -62,7 +62,17 @@ function MempoolTable() {
     setPage(1);
   };
 
-  console.log('data', data?.mempool || 'no data');
+  function isMempoolArray(mempool: any): mempool is Array<any> {
+    return Array.isArray(mempool);
+  }
+
+  if (!isMempoolArray(data?.mempool)) {
+    return (
+      <Alert severity="error" variant="outlined">
+        Invalid data format
+      </Alert>
+    );
+  }
 
   function Mobile() {
     const col1 = 4;
