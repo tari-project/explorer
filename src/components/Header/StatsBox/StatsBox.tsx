@@ -1,8 +1,9 @@
-import { Wrapper } from './StatsBox.styles';
 import numeral from 'numeral';
-import StatsItem from './StatsItem/StatsItem';
 import { useAllBlocks } from '@services/api/hooks/useBlocks';
 import { formatHash } from '@utils/helpers';
+import StatsDesktop from './StatsDesktop/StatsDesktop';
+import StatsMobile from './StatsMobile/StatsMobile';
+import { useMainStore } from '@services/stores/useMainStore';
 
 function StatsBox() {
   const { data } = useAllBlocks();
@@ -11,6 +12,7 @@ function StatsBox() {
     (accumulator: number, currentValue: number) => accumulator + currentValue,
     0
   );
+  const isMobile = useMainStore((state) => state.isMobile);
 
   const latestMoneroHashRate = data?.currentMoneroHashRate ?? 0;
   const latestShaHashRate = data?.currentShaHashRate ?? 0;
@@ -23,17 +25,20 @@ function StatsBox() {
   const formattedMoneroHashRate = formatHash(latestMoneroHashRate);
   const formattedSha3HashRate = formatHash(latestShaHashRate);
 
-  return (
-    <Wrapper>
-      <StatsItem label="RandomX Hash Rate" value={formattedMoneroHashRate} />
-      <StatsItem label="Sha3 Hash Rate" value={formattedSha3HashRate} />
-      <StatsItem
-        label="Avg Block Time"
-        value={formattedAverageBlockTime}
-        lowerCase
-      />
-      <StatsItem label="Block Height" value={formattedBlockHeight} />
-    </Wrapper>
+  return isMobile ? (
+    <StatsMobile
+      moneroHashRate={formattedMoneroHashRate}
+      shaHashRate={formattedSha3HashRate}
+      averageBlockTime={formattedAverageBlockTime}
+      blockHeight={formattedBlockHeight}
+    />
+  ) : (
+    <StatsDesktop
+      moneroHashRate={formattedMoneroHashRate}
+      shaHashRate={formattedSha3HashRate}
+      averageBlockTime={formattedAverageBlockTime}
+      blockHeight={formattedBlockHeight}
+    />
   );
 }
 

@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { styled } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
 
 export const Wrapper = styled(motion.div)<{}>(() => ({
   display: 'flex',
+  alignItems: 'center',
   flexDirection: 'column',
   gap: '10px',
   width: '100%',
@@ -13,7 +15,7 @@ export const Wrapper = styled(motion.div)<{}>(() => ({
   transition: 'height 0.3s ease',
 }));
 
-export const NavLink = styled('button')(() => ({
+export const NavLink = styled(Link)(() => ({
   color: '#fff',
   fontFamily: 'var(--font-poppins), sans-serif',
   fontSize: '18px',
