@@ -65,9 +65,11 @@ function StatsDialog() {
             <strong>Pruned Height:</strong>{' '}
             {data?.tipInfo.metadata.pruned_height}
           </Typography>
-          <Typography gutterBottom variant="body2">
-            <strong>Version:</strong> {data?.version}
-          </Typography>
+          {data?.version && (
+            <Typography gutterBottom variant="body2">
+              <strong>Version:</strong> {data?.version}
+            </Typography>
+          )}
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
