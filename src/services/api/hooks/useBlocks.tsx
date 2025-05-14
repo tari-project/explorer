@@ -50,6 +50,7 @@ export const useGetBlocksByParam = (from: number, limit: number) => {
     onError: (error: apiError) => {
       error;
     },
+    refetchInterval: 120000,
   });
 };
 
