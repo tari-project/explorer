@@ -43,6 +43,10 @@ function MempoolTable() {
   const desktopCount = 5;
   const mobileCount = 5;
 
+  function isMempoolArray(mempool: any): mempool is Array<any> {
+    return Array.isArray(mempool);
+  }
+
   function Mobile() {
     const col1 = 4;
     const col2 = 8;
@@ -243,6 +247,14 @@ function MempoolTable() {
         <Title />
         <Skeleton variant="rounded" width="100%" height={200} />
       </>
+    );
+  }
+
+  if (!isMempoolArray(data?.mempool)) {
+    return (
+      <Alert severity="error" variant="outlined">
+        Invalid data format
+      </Alert>
     );
   }
 

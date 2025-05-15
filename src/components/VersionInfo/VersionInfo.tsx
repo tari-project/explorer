@@ -27,9 +27,11 @@ function VersionInfo() {
       <Typography variant="body2">
         <strong>Pruned Height:</strong> {data?.tipInfo.metadata.pruned_height}
       </Typography> */}
-      <Typography variant="body2" color="GrayText">
-        <strong>Version:</strong> {data?.version}
-      </Typography>
+      {data?.version && (
+        <Typography variant="body2" color="GrayText">
+          <strong>Version:</strong> {data?.version}
+        </Typography>
+      )}
     </InnerBox>
   );
 }

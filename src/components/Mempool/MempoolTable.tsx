@@ -22,7 +22,7 @@
 
 import { Fragment, useState } from 'react';
 import { useAllBlocks } from '@services/api/hooks/useBlocks';
-import { InnerHeading, TypographyData } from '@components/StyledComponents';
+import { TypographyData } from '@components/StyledComponents';
 import {
   Typography,
   Grid,
@@ -64,14 +64,6 @@ function MempoolTable() {
 
   function isMempoolArray(mempool: any): mempool is Array<any> {
     return Array.isArray(mempool);
-  }
-
-  if (!isMempoolArray(data?.mempool)) {
-    return (
-      <Alert severity="error" variant="outlined">
-        Invalid data format
-      </Alert>
-    );
   }
 
   function Mobile() {
@@ -257,15 +249,27 @@ function MempoolTable() {
     );
   }
 
-  return (
-    <>
-      <InnerHeading>Mempool</InnerHeading>
+  if (isLoading || isError) {
+    return (
       <FetchStatusCheck
-        errorMessage="Error Message"
+        errorMessage="Error fetching mempool data"
         isError={isError}
         isLoading={isLoading}
       />
-      {data?.mempool.length === 0 && !isLoading && !isError ? (
+    );
+  }
+
+  if (!isMempoolArray(data?.mempool)) {
+    return (
+      <Alert severity="error" variant="outlined">
+        Invalid data format
+      </Alert>
+    );
+  }
+
+  return (
+    <>
+      {data?.mempool.length === 0 ? (
         <Alert severity="info" variant="outlined">
           Mempool is empty
         </Alert>
@@ -275,7 +279,7 @@ function MempoolTable() {
         <Desktop />
       )}
 
-      {data?.mempool.length > 0 && !isLoading && !isError && (
+      {data?.mempool.length > 0 && (
         <>
           <Divider />
           <Box

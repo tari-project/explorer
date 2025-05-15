@@ -22,7 +22,7 @@
 
 import { GradientPaper } from '@components/StyledComponents';
 import { Grid } from '@mui/material';
-// import MempoolWidget from '@components/Mempool/MempoolWidget';
+import MempoolWidget from '@components/Mempool/MempoolWidget';
 import VNTable from '@components/VNs/VNTable';
 import BlockWidget from '@components/Blocks/BlockWidget';
 import BlockTimes from '@components/Charts/BlockTimes';
@@ -61,9 +61,9 @@ function BlockExplorerPage() {
           <InnerHeading>Proof of Work Split</InnerHeading>
           <POWChart />
         </GradientPaper>
-        {/* <GradientPaper>
+        <GradientPaper>
           <MempoolWidget />
-        </GradientPaper> */}
+        </GradientPaper>
       </Grid>
       <Grid
         item
