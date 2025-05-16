@@ -35,8 +35,7 @@ export const StatsWrapperSml = styled(Box)(() => ({
   bottom: '0',
   left: '0',
   right: '0',
-  // background: 'rgba(29, 25, 40, 0.9)',
-  background: 'rgba(255, 255, 255, 0.8)',
+  background: 'rgba(29, 25, 40, 0.9)',
   backdropFilter: 'blur(10px)',
   boxShadow: '0px -4px 20px rgba(0, 0, 0, 0.05)',
 }));

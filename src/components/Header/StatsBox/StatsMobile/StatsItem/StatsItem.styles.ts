@@ -13,7 +13,7 @@ export const ValueTypography = styled(Typography)<{ lowerCase?: boolean }>(
     textTransform: lowerCase ? 'lowercase' : 'uppercase',
     fontFamily: 'DrukHeavy',
     fontSize: '22px',
-    color: '#111',
+    color: '#fff',
     textAlign: 'center',
     lineHeight: '0.9',
   })
@@ -21,7 +21,7 @@ export const ValueTypography = styled(Typography)<{ lowerCase?: boolean }>(
 
 export const LabelTypography = styled(Typography)({
   fontSize: '11px',
-  color: '#111',
+  color: '#cacaca',
   textAlign: 'center',
   lineHeight: '1.2',
 });
