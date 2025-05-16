@@ -33,10 +33,9 @@ export const HeaderTop = styled(motion.div)<{ $open: boolean }>(
     pointerEvents: 'auto',
     display: 'flex',
     gap: '8px',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
-    height: '65px',
     color: '#fff',
     position: 'relative',
     zIndex: 9,
@@ -54,6 +53,15 @@ export const HeaderTop = styled(motion.div)<{ $open: boolean }>(
     }),
   })
 );
+
+export const Inner = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '10px',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+});
 
 export const Menu = styled(motion.div)({
   boxShadow: '10px 10px 75px 0px rgba(0, 0, 0, 0.35)',

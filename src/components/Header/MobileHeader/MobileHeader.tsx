@@ -7,6 +7,7 @@ import {
   SocialLinks,
   Wrapper,
   IconsContainer,
+  Inner,
 } from './styles';
 import MobileMenuButton from '../MobileMenuButton/MobileMenuButton';
 import { useMainStore } from '@services/stores/useMainStore';
@@ -39,35 +40,37 @@ export default function MobileHeader() {
       <Wrapper $open={showMobileMenu}>
         <Inside>
           <HeaderTop $open={showMobileMenu}>
-            {!isExpanded && (
-              <>
-                <Link to="/">
-                  <img
-                    src={Gem}
-                    alt="Tari Logo"
-                    style={{
-                      scale: '0.85',
-                      transformOrigin: 'left',
-                      paddingTop: '5px',
-                    }}
+            <Inner>
+              {!isExpanded && (
+                <>
+                  <Link to="/">
+                    <img
+                      src={Gem}
+                      alt="Tari Logo"
+                      style={{
+                        scale: '0.85',
+                        transformOrigin: 'left',
+                        paddingTop: '5px',
+                      }}
+                    />
+                  </Link>
+                  <MinersCTA
+                    theme="dark"
+                    buttonText={`Download Tari Universe`}
+                    noBackground
+                    hoverAnimation={false}
+                    minersOnly
                   />
-                </Link>
-                <MinersCTA
-                  theme="dark"
-                  buttonText={`Download Tari Universe`}
-                  noBackground
-                  hoverAnimation={false}
-                  minersOnly
+                </>
+              )}
+              <IconsContainer $isExpanded={isExpanded}>
+                <SearchField
+                  isExpanded={isExpanded}
+                  setIsExpanded={setIsExpanded}
                 />
-              </>
-            )}
-            <IconsContainer $isExpanded={isExpanded}>
-              <SearchField
-                isExpanded={isExpanded}
-                setIsExpanded={setIsExpanded}
-              />
-              <MobileMenuButton />
-            </IconsContainer>
+                <MobileMenuButton />
+              </IconsContainer>
+            </Inner>
           </HeaderTop>
         </Inside>
       </Wrapper>
