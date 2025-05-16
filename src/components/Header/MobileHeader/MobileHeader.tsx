@@ -17,7 +17,6 @@ import MobileNavigation from './MobileNavigation/MobileNavigation';
 import SearchField from '../SearchField/SearchField';
 import Gem from '@assets/images/tari-gem.svg';
 import { Link } from 'react-router-dom';
-import StatsBox from '../StatsBox/StatsBox';
 
 export default function MobileHeader() {
   const showMobileMenu = useMainStore((state) => state.showMobileMenu);
@@ -72,7 +71,6 @@ export default function MobileHeader() {
                 <MobileMenuButton />
               </IconsContainer>
             </Inner>
-            {/* {!showMobileMenu && <StatsBox />} */}
           </HeaderTop>
         </Inside>
       </Wrapper>
