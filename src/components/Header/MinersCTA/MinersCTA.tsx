@@ -101,7 +101,7 @@ export default function MinersCTA({
                 <NumberFlow
                   value={countValue}
                   format={{
-                    notation: countValue > 1000 ? 'compact' : 'standard',
+                    notation: countValue > 100000 ? 'compact' : 'standard',
                     compactDisplay: 'short',
                     maximumFractionDigits: 1,
                   }}
@@ -143,7 +143,7 @@ export default function MinersCTA({
                   <NumberFlow
                     value={countValue}
                     format={{
-                      notation: countValue > 10000 ? 'compact' : 'standard',
+                      notation: countValue > 100000 ? 'compact' : 'standard',
                       compactDisplay: 'short',
                       maximumFractionDigits: 1,
                     }}
