@@ -30,6 +30,8 @@ import Header from '@components/Header/Header';
 import HeaderTitle from '@components/Header/HeaderTitle/HeaderTitle';
 import VersionInfo from '@components/VersionInfo/VersionInfo';
 import Banner from '@components/Banner/Banner';
+import { useMainStore } from '@services/stores/useMainStore';
+import StatsBox from '@components/Header/StatsMobile/StatsBox';
 
 interface PageLayoutProps {
   title?: string;
@@ -42,6 +44,7 @@ export default function PageLayout({
   subTitle,
   customHeader,
 }: PageLayoutProps) {
+  const isMobile = useMainStore((state) => state.isMobile);
   return (
     <>
       <ThemeProvider theme={lightTheme}>
@@ -67,6 +70,7 @@ export default function PageLayout({
             <Box height={40} />
             <VersionInfo />
           </Container>
+          {isMobile && <StatsBox />}
         </Grid>
       </ThemeProvider>
     </>

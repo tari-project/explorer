@@ -29,8 +29,11 @@ import { lightTheme } from './themes';
 import Header from '@components/Header/Header';
 import VersionInfo from '@components/VersionInfo/VersionInfo';
 import Banner from '@components/Banner/Banner';
+import { useMainStore } from '@services/stores/useMainStore';
+import StatsBox from '@components/Header/StatsMobile/StatsBox';
 
 export default function MainLayout() {
+  const isMobile = useMainStore((state) => state.isMobile);
   return (
     <>
       <ThemeProvider theme={lightTheme}>
@@ -42,6 +45,7 @@ export default function MainLayout() {
             <Outlet />
             <VersionInfo />
           </Container>
+          {isMobile && <StatsBox />}
         </Grid>
       </ThemeProvider>
     </>

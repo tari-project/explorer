@@ -72,7 +72,7 @@ export default function MobileHeader() {
                 <MobileMenuButton />
               </IconsContainer>
             </Inner>
-            {!showMobileMenu && <StatsBox />}
+            {/* {!showMobileMenu && <StatsBox />} */}
           </HeaderTop>
         </Inside>
       </Wrapper>
