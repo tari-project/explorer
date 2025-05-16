@@ -30,13 +30,21 @@ export const StatsWrapperSml = styled(Box)(() => ({
   justifyContent: 'center',
   width: '100%',
   borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-  paddingTop: '12px',
+  padding: '12px 32px',
+  position: 'sticky',
+  bottom: '0',
+  left: '0',
+  right: '0',
+  background: 'rgba(29, 25, 40, 0.9)',
+  backdropFilter: 'blur(10px)',
+  boxShadow: '0px -4px 20px rgba(0, 0, 0, 0.05)',
 }));
 
 export const StatsRowSml = styled(Box)(() => ({
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
   alignItems: 'center',
   width: '100%',
+  maxWidth: '500px',
   gap: '24px',
 }));

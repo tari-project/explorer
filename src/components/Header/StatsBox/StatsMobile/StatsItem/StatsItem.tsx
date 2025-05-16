@@ -5,7 +5,7 @@ import {
 } from './StatsItem.styles';
 
 interface Props {
-  label: string;
+  label: React.ReactNode;
   value: string;
   lowerCase?: boolean;
 }
@@ -13,8 +13,8 @@ interface Props {
 export default function StatsItem({ label, value, lowerCase }: Props) {
   return (
     <StyledBox>
-      <LabelTypography>{label}</LabelTypography>
       <ValueTypography lowerCase={lowerCase}>{value}</ValueTypography>
+      <LabelTypography>{label}</LabelTypography>
     </StyledBox>
   );
 }

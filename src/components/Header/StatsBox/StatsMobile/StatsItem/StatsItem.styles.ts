@@ -3,25 +3,25 @@ import { Box, Typography } from '@mui/material';
 
 export const StyledBox = styled(Box)({
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'column',
   alignItems: 'center',
-  gap: '8px',
+  gap: '4px',
 });
 
 export const ValueTypography = styled(Typography)<{ lowerCase?: boolean }>(
   ({ lowerCase }) => ({
     textTransform: lowerCase ? 'lowercase' : 'uppercase',
     fontFamily: 'DrukHeavy',
-    fontSize: '18px',
+    fontSize: '22px',
     color: '#fff',
     textAlign: 'center',
-    transition: 'font-size 0.3s ease-in-out',
     lineHeight: '0.9',
   })
 );
 
 export const LabelTypography = styled(Typography)({
   fontSize: '11px',
-  color: '#fff',
+  color: '#cacaca',
   textAlign: 'center',
+  lineHeight: '1.2',
 });

@@ -34,7 +34,7 @@ export default function HeaderBottom() {
     <StyledContainer>
       {!isMobile && (
         <>
-          <StatsBox />
+          <StatsBox variant="desktop" />
           <SearchField isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
         </>
       )}

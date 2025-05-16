@@ -31,7 +31,7 @@ import HeaderTitle from '@components/Header/HeaderTitle/HeaderTitle';
 import VersionInfo from '@components/VersionInfo/VersionInfo';
 import Banner from '@components/Banner/Banner';
 import { useMainStore } from '@services/stores/useMainStore';
-import StatsBox from '@components/Header/StatsMobile/StatsBox';
+import StatsBox from '@components/Header/StatsBox/StatsBox';
 
 interface PageLayoutProps {
   title?: string;
@@ -70,8 +70,8 @@ export default function PageLayout({
             <Box height={40} />
             <VersionInfo />
           </Container>
-          {isMobile && <StatsBox />}
         </Grid>
+        {isMobile && <StatsBox variant="mobile" />}
       </ThemeProvider>
     </>
   );

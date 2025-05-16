@@ -17,12 +17,47 @@ function StatsMobile({
   return (
     <StatsWrapperSml>
       <StatsRowSml>
-        <StatsItem label="RandomX Hash" value={moneroHashRate} />
-        <StatsItem label="Sha3 Hash" value={shaHashRate} />
-      </StatsRowSml>
-      <StatsRowSml>
-        <StatsItem label="Avg Block Time" value={averageBlockTime} lowerCase />
-        <StatsItem label="Block Height" value={blockHeight} />
+        <StatsItem
+          label={
+            <>
+              RandomX
+              <br />
+              Hash Rate
+            </>
+          }
+          value={moneroHashRate}
+        />
+        <StatsItem
+          label={
+            <>
+              Sha3
+              <br />
+              Hash Rate
+            </>
+          }
+          value={shaHashRate}
+        />
+        <StatsItem
+          label={
+            <>
+              Avg Block
+              <br />
+              Time
+            </>
+          }
+          value={averageBlockTime}
+          lowerCase
+        />
+        <StatsItem
+          label={
+            <>
+              Tip
+              <br />
+              Height
+            </>
+          }
+          value={blockHeight}
+        />
       </StatsRowSml>
     </StatsWrapperSml>
   );

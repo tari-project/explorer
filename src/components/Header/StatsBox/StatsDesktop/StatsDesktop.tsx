@@ -1,5 +1,5 @@
-import { Wrapper } from '../StatsBox.styles';
-import StatsItem from '../StatsItem/StatsItem';
+import { Wrapper } from './StatsBox.styles';
+import StatsItem from './StatsItem/StatsItem';
 
 interface StatsBoxProps {
   moneroHashRate: string;
