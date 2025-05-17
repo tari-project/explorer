@@ -11,7 +11,7 @@ interface StatsBoxProps {
 function StatsBox({ variant }: StatsBoxProps) {
   const { data } = useAllBlocks();
   const values = data?.blockTimes || [];
-  const targetTime = 4;
+  const targetTime = 2;
   const sum = values.reduce(
     (accumulator: number, currentValue: number) => accumulator + currentValue,
     0

@@ -24,20 +24,20 @@ import ReactEcharts from 'echarts-for-react';
 import { useTheme } from '@mui/material/styles';
 import { chartColor } from '@theme/colors';
 import { useAllBlocks } from '@services/api/hooks/useBlocks';
-import { Alert, Skeleton } from '@mui/material';
+import { Alert, Skeleton, Typography, Box } from '@mui/material';
 import { TransparentBg } from '@components/StyledComponents';
 
 interface BlockTimesProps {
-  type: 'RandomX' | 'Sha3';
+  type: 'RandomX' | 'Sha3' | 'All';
+  targetTime: number;
 }
 
-const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
+const BlockTimes: React.FC<BlockTimesProps> = ({ type, targetTime }) => {
   const { data, isLoading, isError, error } = useAllBlocks();
   const theme = useTheme();
   const tip = data?.tipInfo?.metadata.best_block_height;
   const noOfBlocks = 60;
   const zoomAmount = 30;
-  const targetTime = 4;
 
   const name = type;
   const colorMap: { [key: string]: string } = {
@@ -126,6 +126,7 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
     yAxis: {
       type: 'value',
       boundaryGap: ['10%', '10%'],
+      min: 0,
       axisLine: {
         lineStyle: {
           color: theme.palette.text.primary,
@@ -158,6 +159,26 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
         type: 'line',
         smooth: false,
         data: blockTimes,
+        markLine: {
+          silent: true,
+          symbol: 'none',
+          lineStyle: {
+            color: theme.palette.grey[300], // Light grey
+            width: 2,
+            type: 'dashed',
+          },
+          label: {
+            show: true,
+            formatter: '',
+            color: theme.palette.grey[600],
+            position: 'start',
+          },
+          data: [
+            {
+              yAxis: targetTime,
+            },
+          ],
+        },
       },
     ],
   };
@@ -176,7 +197,25 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
     return <Skeleton variant="rounded" height={300} />;
   }
 
-  return <ReactEcharts option={option} />;
+  return (
+    <>
+      <Box display="flex" alignItems="center" justifyContent="flex-end">
+        <Box
+          sx={{
+            width: 10,
+            height: 10,
+            borderRadius: '50%',
+            bgcolor: (theme) => theme.palette.grey[400],
+            mr: 1.2,
+          }}
+        />
+        <Typography variant="body2" color="text.primary">
+          Target Time: {targetTime}m
+        </Typography>
+      </Box>
+      <ReactEcharts option={option} />
+    </>
+  );
 };
 
 export default BlockTimes;
