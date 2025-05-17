@@ -37,6 +37,7 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
   const tip = data?.tipInfo?.metadata.best_block_height;
   const noOfBlocks = 60;
   const zoomAmount = 30;
+  const targetTime = 4;
 
   const name = type;
   const colorMap: { [key: string]: string } = {
@@ -51,8 +52,14 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type }) => {
     default: data?.blockTimes || [],
   };
 
+  // const color = colorMap[type] || colorMap['default'];
+  // const blockTimes = blockTimesMap[type] || blockTimesMap['default'];
+
   const color = colorMap[type] || colorMap['default'];
-  const blockTimes = blockTimesMap[type] || blockTimesMap['default'];
+  const rawBlockTimes = blockTimesMap[type] || blockTimesMap['default'];
+  const blockTimes = Array.isArray(rawBlockTimes)
+    ? rawBlockTimes.map((blockTime) => targetTime + blockTime)
+    : [];
 
   const blockNumbers = new Array();
   let blockItem = parseInt(tip, 10);
