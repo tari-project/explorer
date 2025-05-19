@@ -21,10 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Fragment } from 'react';
-import {
-  useAllBlocks,
-  useGetBlocksByParam,
-} from '@services/api/hooks/useBlocks';
+import { useAllBlocks } from '@services/api/hooks/useBlocks';
 import { TypographyData, TransparentBg } from '@components/StyledComponents';
 import {
   Typography,
@@ -41,14 +38,11 @@ import CopyToClipboard from '@components/CopyToClipboard';
 import { useMainStore } from '@services/stores/useMainStore';
 
 function BlockWidget() {
-  const { data: tipData } = useAllBlocks();
   const theme = useTheme();
-  const tip = tipData?.tipInfo?.metadata?.best_block_height;
-
+  const { data, isLoading, isError, error } = useAllBlocks();
   const isMobile = useMainStore((state) => state.isMobile);
   const desktopCount = 9;
   const mobileCount = 5;
-  const { data, isLoading, isError, error } = useGetBlocksByParam(tip || 0, 10);
 
   function Mobile() {
     const col1 = 4;

@@ -80,10 +80,7 @@ function BlockExplorerPage() {
           <InnerHeading>Block Times (Minutes)</InnerHeading>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <BlockTimes type="RandomX" />
-            </Grid>
-            <Grid item xs={12}>
-              <BlockTimes type="Sha3" />
+              <BlockTimes type="All" targetTime={2} />
             </Grid>
           </Grid>
         </GradientPaper>
