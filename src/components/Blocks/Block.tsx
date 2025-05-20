@@ -28,6 +28,7 @@ import { useLocation } from 'react-router-dom';
 import { useGetBlockByHeightOrHash } from '@services/api/hooks/useBlocks';
 import FetchStatusCheck from '@components/FetchStatusCheck';
 import BlockParts from './BlockParts';
+import BlockRewards from './BlockRewards';
 
 function Block() {
   const theme = useTheme();
@@ -72,6 +73,9 @@ function Block() {
             gap: theme.spacing(3),
           }}
         >
+          <GradientPaper>
+            <BlockRewards blockHeight={blockHeight} />
+          </GradientPaper>
           <GradientPaper>
             <BlockParts
               blockHeight={blockHeight}
