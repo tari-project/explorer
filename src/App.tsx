@@ -27,7 +27,7 @@ import BlocksPage from '@routes/BlocksPage';
 import MempoolPage from '@routes/MempoolPage';
 import KernelSearch from '@routes/KernelSearchPage';
 import VNPage from '@routes/VNPage';
-import Block from '@components/Blocks/Block';
+import BlockPage from '@routes/BlockPage';
 import { Routes, Route } from 'react-router-dom';
 import BlockHeader from '@components/Blocks/BlockHeader';
 import KernelHeader from '@components/KernelSearch/KernelHeader';
@@ -61,7 +61,7 @@ function App() {
           path="blocks/:blockHeight"
           element={<PageLayout customHeader={<BlockHeader />} />}
         >
-          <Route index element={<Block />} />
+          <Route index element={<BlockPage />} />
         </Route>
         <Route
           path="kernel_search"
