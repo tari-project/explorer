@@ -23,13 +23,14 @@
 import Grid from '@mui/material/Grid';
 import { GradientPaper } from '@components/StyledComponents';
 import { useTheme } from '@mui/material/styles';
-import BlockInfo from './BlockInfo';
+import BlockInfo from '@components/Blocks/BlockInfo';
 import { useLocation } from 'react-router-dom';
 import { useGetBlockByHeightOrHash } from '@services/api/hooks/useBlocks';
 import FetchStatusCheck from '@components/FetchStatusCheck';
-import BlockParts from './BlockParts';
+import BlockParts from '@components/Blocks/BlockParts';
+import BlockRewards from '@components/Blocks/BlockRewards';
 
-function Block() {
+function BlockPage() {
   const theme = useTheme();
   const { pathname } = useLocation();
   const blockHeight = pathname.split('/')[2];
@@ -56,9 +57,22 @@ function Block() {
   return (
     <Grid item xs={12} md={12} lg={12}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={12} lg={6}>
+        <Grid
+          item
+          xs={12}
+          md={12}
+          lg={6}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: theme.spacing(3),
+          }}
+        >
           <GradientPaper>
             <BlockInfo blockHeight={blockHeight} />
+          </GradientPaper>
+          <GradientPaper>
+            <BlockRewards blockHeight={blockHeight} />
           </GradientPaper>
         </Grid>
         <Grid
@@ -99,4 +113,4 @@ function Block() {
   );
 }
 
-export default Block;
+export default BlockPage;
