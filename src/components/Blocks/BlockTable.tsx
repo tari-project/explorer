@@ -46,6 +46,7 @@ import { useTheme } from '@mui/material/styles';
 import CopyToClipboard from '@components/CopyToClipboard';
 import SkeletonLoader from './SkeletonLoader';
 import { useMainStore } from '@services/stores/useMainStore';
+import { powCheck } from '@utils/helpers';
 
 function BlockTable() {
   const { data: tipData } = useAllBlocks();
@@ -167,9 +168,7 @@ function BlockTable() {
               <Typography variant="h6">Proof of Work</Typography>
             </Grid>
             <Grid item xs={col2}>
-              <TypographyData>
-                {block.pow.pow_algo === '0' ? 'RandomX' : 'SHA-3'}
-              </TypographyData>
+              <TypographyData>{powCheck(block.pow.pow_algo)}</TypographyData>
             </Grid>
 
             <Grid item xs={col1}>
@@ -213,9 +212,9 @@ function BlockTable() {
   }
 
   function Desktop() {
-    const col1 = 2;
-    const col2 = 3;
-    const col3 = 2;
+    const col1 = 1.5;
+    const col2 = 2.5;
+    const col3 = 3;
     const col4 = 3;
     const col5 = 1;
     const col6 = 1;
@@ -299,9 +298,7 @@ function BlockTable() {
                 </TypographyData>
               </Grid>
               <Grid item xs={col3} md={col3} lg={col3}>
-                <TypographyData>
-                  {block.pow.pow_algo === '0' ? 'RandomX' : 'SHA-3'}
-                </TypographyData>
+                <TypographyData>{powCheck(block.pow.pow_algo)}</TypographyData>
               </Grid>
               <Grid item xs={col4} md={col4} lg={col4}>
                 <TypographyData>
