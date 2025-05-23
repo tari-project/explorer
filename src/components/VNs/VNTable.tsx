@@ -22,13 +22,10 @@
 
 import { Fragment } from 'react';
 import { useAllBlocks } from '@services/api/hooks/useBlocks';
-import {
-  InnerHeading,
-  TypographyData,
-  TransparentBg,
-} from '@components/StyledComponents';
+import { TypographyData, TransparentBg } from '@components/StyledComponents';
 import { Typography, Grid, Divider, Alert, Skeleton } from '@mui/material';
 import { useMainStore } from '@services/stores/useMainStore';
+import InnerHeading from '@components/InnerHeading';
 
 function VNTable() {
   const { data, isError, isLoading, error } = useAllBlocks();

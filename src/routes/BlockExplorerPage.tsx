@@ -29,7 +29,7 @@ import BlockTimes from '@components/Charts/BlockTimes';
 import HashRates from '@components/Charts/HashRates';
 import POWChart from '@components/Charts/POWChart';
 import { useTheme } from '@mui/material/styles';
-import { InnerHeading } from '@components/StyledComponents';
+import InnerHeading from '@components/InnerHeading';
 
 function BlockExplorerPage() {
   const theme = useTheme();

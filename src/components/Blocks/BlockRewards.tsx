@@ -21,8 +21,9 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Typography, Grid } from '@mui/material';
-import { InnerHeading, TypographyData } from '@components/StyledComponents';
+import { TypographyData } from '@components/StyledComponents';
 import { useGetBlockByHeightOrHash } from '@services/api/hooks/useBlocks';
+import InnerHeading from '@components/InnerHeading';
 
 interface BlockRewardsProps {
   blockHeight: string;

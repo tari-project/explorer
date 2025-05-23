@@ -9,17 +9,17 @@ export const StyledBox = styled(Box)({
   minWidth: '108px',
 });
 
-export const ValueTypography = styled(Typography)<{ lowerCase?: boolean }>(
-  ({ lowerCase }) => ({
-    textTransform: lowerCase ? 'lowercase' : 'uppercase',
-    fontFamily: 'DrukHeavy',
-    fontSize: '30px',
-    color: '#fff',
-    textAlign: 'center',
-    transition: 'font-size 0.3s ease-in-out',
-    lineHeight: '0.9',
-  })
-);
+export const ValueTypography = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'lowerCase',
+})<{ lowerCase?: boolean }>(({ lowerCase }) => ({
+  textTransform: lowerCase ? 'lowercase' : 'uppercase',
+  fontFamily: 'DrukHeavy',
+  fontSize: '30px',
+  color: '#fff',
+  textAlign: 'center',
+  transition: 'font-size 0.3s ease-in-out',
+  lineHeight: '0.9',
+}));
 
 export const LabelTypography = styled(Typography)({
   fontSize: '11px',

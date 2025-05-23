@@ -21,7 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { useState, Fragment } from 'react';
-import { InnerHeading, TypographyData } from '@components/StyledComponents';
+import { TypographyData } from '@components/StyledComponents';
 import { Typography, Grid, Divider, Pagination } from '@mui/material';
 import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
 import { Link } from 'react-router-dom';
@@ -29,6 +29,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CopyToClipboard from '@components/CopyToClipboard';
 import { useMainStore } from '@services/stores/useMainStore';
+import InnerHeading from '@components/InnerHeading';
 
 function BlockTable({ data }: { data: any }) {
   const [page, setPage] = useState(1);

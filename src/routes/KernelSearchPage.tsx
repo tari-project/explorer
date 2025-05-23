@@ -56,10 +56,12 @@ function KernelsPage() {
     );
   }
 
-  // if (data?.items.length === 1) {
-  //   const blockHeight = data.items[0].block.header.height;
-  //   window.location.replace(`/blocks/${blockHeight}`);
-  // }
+  if (data?.items.length === 1) {
+    const blockHeight = data.items[0].block.header.height;
+    window.location.replace(
+      `/blocks/${blockHeight}?nonce=${noncesParams}&signature=${signaturesParams}`
+    );
+  }
 
   return (
     <Grid item xs={12} md={12} lg={12}>

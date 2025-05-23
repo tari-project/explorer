@@ -25,7 +25,8 @@ import {
   useAllBlocks,
   useGetBlocksByParam,
 } from '@services/api/hooks/useBlocks';
-import { InnerHeading, TypographyData } from '@components/StyledComponents';
+import { TypographyData } from '@components/StyledComponents';
+import InnerHeading from '@components/InnerHeading';
 import {
   Typography,
   Grid,

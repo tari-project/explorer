@@ -35,6 +35,7 @@ function GenerateAccordion({
   handleChange,
   expandedPanel,
   tabName,
+  isHighlighted,
 }: {
   items: any;
   adjustedIndex: number;
@@ -44,6 +45,7 @@ function GenerateAccordion({
   ) => (_: React.SyntheticEvent, isExpanded: boolean) => void;
   expandedPanel: string;
   tabName: string;
+  isHighlighted?: boolean;
 }) {
   return (
     <StyledAccordion
@@ -51,6 +53,7 @@ function GenerateAccordion({
       onChange={handleChange(`panel${adjustedIndex}`)}
       elevation={0}
       key={adjustedIndex}
+      isHighlighted={isHighlighted}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}

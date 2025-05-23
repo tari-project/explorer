@@ -28,6 +28,7 @@ import { useLocation } from 'react-router-dom';
 import { useGetBlockByHeightOrHash } from '@services/api/hooks/useBlocks';
 import FetchStatusCheck from '@components/FetchStatusCheck';
 import BlockParts from '@components/Blocks/BlockParts';
+import BlockPartsSearch from '@components/Blocks/BlockPartsSearch';
 import BlockRewards from '@components/Blocks/BlockRewards';
 
 function BlockPage() {
@@ -87,7 +88,7 @@ function BlockPage() {
           }}
         >
           <GradientPaper>
-            <BlockParts
+            <BlockPartsSearch
               blockHeight={blockHeight}
               type="kernels"
               itemsPerPage={5}

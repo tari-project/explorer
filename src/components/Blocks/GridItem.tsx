@@ -38,7 +38,6 @@ function GridItem(
   return (
     <Grid
       container
-      xs={12}
       style={{
         backgroundColor: subIndex % 2 === 1 ? '' : 'rgba(0, 0, 0, 0.02)',
         borderTop: showDivider ? `1px solid white` : 'none',
