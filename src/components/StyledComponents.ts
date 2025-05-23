@@ -30,6 +30,11 @@ import Accordion from '@mui/material/Accordion';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 
+interface StyledAccordionProps {
+  theme?: any;
+  isHighlighted?: boolean;
+}
+
 export const AccordionIconButton = styled(IconButton)(({ theme }) => ({
   backgroundColor: theme.palette.divider,
   color: theme.palette.primary.main,
@@ -39,12 +44,16 @@ export const AccordionIconButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-export const StyledAccordion = styled(Accordion)(({ theme }) => ({
+export const StyledAccordion = styled(Accordion, {
+  shouldForwardProp: (prop) => prop !== 'isHighlighted',
+})<StyledAccordionProps>(({ theme, isHighlighted }) => ({
   backgroundColor: theme.palette.background.paper,
-  boxShadow: '1px 5px 28px rgba(35, 11, 73, 0.05)',
+  boxShadow: isHighlighted
+    ? '1px 5px 28px rgba(35, 11, 73, 0.25)'
+    : '1px 5px 28px rgba(35, 11, 73, 0.05)',
   borderRadius: theme.shape.borderRadius,
   marginBottom: theme.spacing(1),
-  border: '1px solid #f8f8f8',
+  border: isHighlighted ? '1px solid #e1e1e1' : '1px solid #f8f8f8',
   '&:hover': {
     backgroundColor: '#fafafc',
   },
@@ -89,14 +98,14 @@ export const PageHeading = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-export const InnerHeading = styled(Typography)(({ theme }) => ({
-  fontSize: theme.typography.h3.fontSize,
-  fontFamily: "'DrukHeavy', sans-serif",
-  textTransform: 'uppercase',
-  borderBottom: `1px solid ${theme.palette.divider}`,
-  paddingBottom: theme.spacing(1),
-  marginBottom: theme.spacing(2),
-}));
+// export const InnerHeading = styled(Typography)(({ theme }) => ({
+//   fontSize: theme.typography.h3.fontSize,
+//   fontFamily: "'DrukHeavy', sans-serif",
+//   textTransform: 'uppercase',
+//   borderBottom: `1px solid ${theme.palette.divider}`,
+//   paddingBottom: theme.spacing(1),
+//   marginBottom: theme.spacing(2),
+// }));
 
 export const DataTableCell = styled(TableCell)(() => ({
   fontFamily: "'PoppinsRegular', sans-serif",

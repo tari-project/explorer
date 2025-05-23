@@ -23,7 +23,6 @@
 import { Fragment } from 'react';
 import { useAllBlocks } from '@services/api/hooks/useBlocks';
 import {
-  InnerHeading,
   TypographyData,
   TransparentDivider,
   TransparentBg,
@@ -32,6 +31,7 @@ import { Typography, Grid, Alert, Skeleton, Button, Box } from '@mui/material';
 import { toHexString, shortenString } from '@utils/helpers';
 import CopyToClipboard from '@components/CopyToClipboard';
 import { useMainStore } from '@services/stores/useMainStore';
+import InnerHeading from '@components/InnerHeading';
 
 function MempoolTable() {
   const { data, isError, isLoading, error } = useAllBlocks();
