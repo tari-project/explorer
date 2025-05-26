@@ -59,7 +59,7 @@ const ProofOfWork = () => {
     }
     return [moneroPercentage, shaPercentage, tariPercentage];
   }
-console.debug(data);
+
   const moneroRx = {
     10: calculatePercentage(data?.algoSplit.moneroRx10, data?.algoSplit.sha3X10, data?.algoSplit.tariRx10)[0],
     20: calculatePercentage(data?.algoSplit.moneroRx20, data?.algoSplit.sha3X20, data?.algoSplit.tariRx20)[0],
