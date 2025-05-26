@@ -4,6 +4,7 @@ import StatsItem from './StatsItem/StatsItem';
 interface StatsBoxProps {
   moneroHashRate: string;
   shaHashRate: string;
+  tariRandomXHashRate: string;
   averageBlockTime: string;
   blockHeight: string;
 }
@@ -11,13 +12,15 @@ interface StatsBoxProps {
 function StatsDesktop({
   moneroHashRate,
   shaHashRate,
+  tariRandomXHashRate,
   averageBlockTime,
   blockHeight,
 }: StatsBoxProps) {
   return (
     <Wrapper>
       <StatsItem label="RandomX Hash Rate" value={moneroHashRate} />
-      <StatsItem label="Sha3 Hash Rate" value={shaHashRate} />
+      <StatsItem label="Sha3X Hash Rate" value={shaHashRate} />
+      <StatsItem label="Tari RandomX Hash Rate" value={tariRandomXHashRate} />
       <StatsItem label="Avg Block Time" value={averageBlockTime} lowerCase />
       <StatsItem label="Block Height" value={blockHeight} />
     </Wrapper>

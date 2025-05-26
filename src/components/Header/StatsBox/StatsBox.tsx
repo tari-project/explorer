@@ -16,9 +16,11 @@ function StatsBox({ variant }: StatsBoxProps) {
     (accumulator: number, currentValue: number) => accumulator + currentValue,
     0
   );
+  const sanitizeValue = (val: string):number => Number(val?.replace(/,/g, ''));
+  const latestMoneroHashRate = sanitizeValue(data?.currentMoneroRandomxHashRate) ?? 0;
+  const latestShaHashRate = sanitizeValue(data?.currentSha3xHashRate) ?? 0;
+  const latestTRXHashRate = sanitizeValue(data?.currentTariRandomxHashRate) ?? 0;
 
-  const latestMoneroHashRate = data?.currentMoneroHashRate ?? 0;
-  const latestShaHashRate = data?.currentShaHashRate ?? 0;
 
   const average = sum / values.length;
   const formattedAverageBlockTime =
@@ -28,17 +30,20 @@ function StatsBox({ variant }: StatsBoxProps) {
   ).format('0,0');
   const formattedMoneroHashRate = formatHash(latestMoneroHashRate);
   const formattedSha3HashRate = formatHash(latestShaHashRate);
+  const formattedTRXHashRate = formatHash(latestTRXHashRate);
 
   return variant === 'mobile' ? (
     <StatsMobile
       moneroHashRate={formattedMoneroHashRate}
       shaHashRate={formattedSha3HashRate}
+      tariRandomXHashRate={formattedTRXHashRate}
       averageBlockTime={formattedAverageBlockTime}
       blockHeight={formattedBlockHeight}
     />
   ) : (
     <StatsDesktop
       moneroHashRate={formattedMoneroHashRate}
+      tariRandomXHashRate={formattedTRXHashRate}
       shaHashRate={formattedSha3HashRate}
       averageBlockTime={formattedAverageBlockTime}
       blockHeight={formattedBlockHeight}

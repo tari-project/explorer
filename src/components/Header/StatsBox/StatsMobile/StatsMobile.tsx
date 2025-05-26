@@ -4,6 +4,7 @@ import StatsItem from './StatsItem/StatsItem';
 interface StatsBoxProps {
   moneroHashRate: string;
   shaHashRate: string;
+  tariRandomXHashRate: string;
   averageBlockTime: string;
   blockHeight: string;
 }
@@ -11,6 +12,7 @@ interface StatsBoxProps {
 function StatsMobile({
   moneroHashRate,
   shaHashRate,
+  tariRandomXHashRate,
   averageBlockTime,
   blockHeight,
 }: StatsBoxProps) {
@@ -30,12 +32,22 @@ function StatsMobile({
         <StatsItem
           label={
             <>
-              Sha3
+              Sha3X
               <br />
               Hash Rate
             </>
           }
           value={shaHashRate}
+        />
+        <StatsItem
+          label={
+            <>
+              Tari RandomX
+              <br />
+              Hash Rate
+            </>
+          }
+          value={tariRandomXHashRate}
         />
         <StatsItem
           label={
