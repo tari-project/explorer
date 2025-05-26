@@ -30,7 +30,7 @@ import { Alert, Skeleton } from '@mui/material';
 import { TransparentBg } from '@components/StyledComponents';
 
 interface HashRatesProps {
-  type: 'RandomX' | 'Sha3';
+  type: 'RandomX' | 'Sha3'| 'TariRandomX';
 }
 
 interface Display {
@@ -47,12 +47,11 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
   ]);
   const [noOfBlocks, setNoOfBlocks] = useState(180);
   const zoomAmount = 20;
-
   const name = type;
   const colorMap: { [key: string]: string } = {
-    RandomX: chartColor[2],
+    RandomX: chartColor[4],
     Sha3: chartColor[3],
-    default: chartColor[1],
+    default: chartColor[2],
   };
 
   const color = colorMap[type] || colorMap['default'];
@@ -75,8 +74,9 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
   }
 
   const hashRatesMap: { [key: string]: any[] } = {
-    RandomX: data?.moneroHashRates,
-    Sha3: data?.shaHashRates,
+    RandomX: data?.moneroRandomxHashRates,
+    Sha3: data?.sha3xHashRates,
+    TariRandomX: data?.tariRandomxHashRates
   };
 
   useEffect(() => {

@@ -93,6 +93,9 @@ function BlockExplorerPage() {
             <Grid item xs={12}>
               <HashRates type="Sha3" />
             </Grid>
+            <Grid item xs={12}>
+              <HashRates type="TariRandomX" />
+            </Grid>
           </Grid>
         </GradientPaper>
         <GradientPaper>
