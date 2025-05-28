@@ -140,6 +140,25 @@ function formatHash(number: number, decimals: number = 1) {
   return number.toFixed(decimals) + ' ' + suffixes[suffixIndex] + 'H';
 }
 
+function powCheck(num: string): string {
+  let powText = '';
+  switch (num) {
+    case '0':
+      powText = 'RandomX (Merge Mined)';
+      break;
+    case '1':
+      powText = 'SHA3x';
+      break;
+    case '2':
+      powText = 'RandomX';
+      break;
+    default:
+      powText = 'Unknown';
+      break;
+  }
+  return powText;
+}
+
 export {
   renderJson,
   toHexString,
@@ -151,4 +170,5 @@ export {
   handleChangeRowsPerPage,
   formatTimestamp,
   formatHash,
+  powCheck,
 };

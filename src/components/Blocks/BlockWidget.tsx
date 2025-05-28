@@ -31,7 +31,12 @@ import {
   Skeleton,
   Alert,
 } from '@mui/material';
-import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
+import {
+  toHexString,
+  shortenString,
+  formatTimestamp,
+  powCheck,
+} from '@utils/helpers';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import CopyToClipboard from '@components/CopyToClipboard';
@@ -100,9 +105,7 @@ function BlockWidget() {
                 <Typography variant="h6">Proof of Work</Typography>
               </Grid>
               <Grid item xs={col2}>
-                <TypographyData>
-                  {block.pow.pow_algo === '0' ? 'RandomX' : 'SHA-3'}
-                </TypographyData>
+                <TypographyData>{powCheck(block.pow.pow_algo)}</TypographyData>
               </Grid>
 
               <Grid item xs={col1}>
@@ -159,10 +162,10 @@ function BlockWidget() {
   }
 
   function Desktop() {
-    const col1 = 2;
-    const col2 = 2;
-    const col3 = 2;
-    const col4 = 4;
+    const col1 = 1.5;
+    const col2 = 2.5;
+    const col3 = 2.5;
+    const col4 = 3.5;
     const col5 = 1;
     const col6 = 1;
 
@@ -254,7 +257,7 @@ function BlockWidget() {
                 </Grid>
                 <Grid item xs={col3} md={col3} lg={col3}>
                   <TypographyData>
-                    {block.pow.pow_algo === '0' ? 'RandomX' : 'SHA-3'}
+                    {powCheck(block.pow.pow_algo)}
                   </TypographyData>
                 </Grid>
                 <Grid item xs={col4} md={col4} lg={col4}>

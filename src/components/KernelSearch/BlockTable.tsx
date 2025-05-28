@@ -30,6 +30,7 @@ import Button from '@mui/material/Button';
 import CopyToClipboard from '@components/CopyToClipboard';
 import { useMainStore } from '@services/stores/useMainStore';
 import InnerHeading from '@components/InnerHeading';
+import { powCheck } from '@utils/helpers';
 
 function BlockTable({ data }: { data: any }) {
   const [page, setPage] = useState(1);
@@ -80,9 +81,7 @@ function BlockTable({ data }: { data: any }) {
                   <Typography variant="body2">Proof of Work</Typography>
                 </Grid>
                 <Grid item xs={col2}>
-                  <TypographyData>
-                    {pow === '0' ? 'RandomX' : 'SHA-3'}
-                  </TypographyData>
+                  <TypographyData>{powCheck(pow)}</TypographyData>
                 </Grid>
 
                 <Grid item xs={col1}>
@@ -195,9 +194,7 @@ function BlockTable({ data }: { data: any }) {
                     </TypographyData>
                   </Grid>
                   <Grid item xs={col3} md={col3} lg={col3}>
-                    <TypographyData>
-                      {pow === '0' ? 'RandomX' : 'SHA-3'}
-                    </TypographyData>
+                    <TypographyData>{powCheck(pow)}</TypographyData>
                   </Grid>
                   <Grid item xs={col4} md={col4} lg={col4}>
                     <TypographyData>

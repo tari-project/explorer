@@ -122,7 +122,7 @@ const HashRates = () => {
         data: data?.moneroHashRates,
       },
       {
-        name: 'Sha 3',
+        name: 'Sha3X',
         type: 'line',
         smooth: true,
         data: data?.shaHashRates,

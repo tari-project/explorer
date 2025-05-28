@@ -27,6 +27,7 @@ import { useGetBlockByHeightOrHash } from '@services/api/hooks/useBlocks';
 import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
 import CopyToClipboard from '@components/CopyToClipboard';
 import InnerHeading from '@components/InnerHeading';
+import { powCheck } from '@utils/helpers';
 
 function BlockInfo({ blockHeight }: { blockHeight: any }) {
   const { data } = useGetBlockByHeightOrHash(blockHeight);
@@ -39,7 +40,7 @@ function BlockInfo({ blockHeight }: { blockHeight: any }) {
     },
     {
       label: 'Proof of Work',
-      value: header?.pow?.pow_algo === '0' ? 'RandomX' : 'SHA-3',
+      value: powCheck(header?.pow?.pow_algo),
       copy: false,
     },
     {

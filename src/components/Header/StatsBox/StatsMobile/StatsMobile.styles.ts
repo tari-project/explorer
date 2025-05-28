@@ -26,11 +26,11 @@ export const Wrapper = styled(Box)(({ theme }) => ({
 export const StatsWrapperSml = styled(Box)(() => ({
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '8px',
+  gap: '6px',
   justifyContent: 'center',
   width: '100%',
   borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-  padding: '12px 32px',
+  padding: '12px 20px',
   position: 'sticky',
   bottom: '0',
   left: '0',
