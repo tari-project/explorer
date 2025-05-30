@@ -100,6 +100,13 @@ export const componentSettings: ThemeOptions = {
         },
       },
     },
+    MuiButtonBase: {
+      defaultProps: {
+        sx: {
+          fontFamily: (theme) => theme.typography.h6.fontFamily,
+        },
+      },
+    },
     MuiTableCell: {
       defaultProps: {
         sx: {
