@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Stack, TextField } from '@mui/material';
+import { Button, Stack, TextField, Alert } from '@mui/material';
 import { useMainStore } from '@services/stores/useMainStore';
 
 const SearchBlock = () => {
   const searchOpen = useMainStore((state) => state.searchOpen);
   const setSearchOpen = useMainStore((state) => state.setSearchOpen);
+  const [message, setMessage] = useState('');
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -28,7 +29,7 @@ const SearchBlock = () => {
       return;
     }
     if (!validateQuery(query)) {
-      setSearchOpen(false);
+      setMessage('Please enter a valid block height or hash');
       setQuery('');
       return;
     }
@@ -71,6 +72,11 @@ const SearchBlock = () => {
           Search
         </Button>
       </Stack>
+      {message && (
+        <Alert severity="error" variant="standard">
+          {message}
+        </Alert>
+      )}
     </Stack>
   );
 };

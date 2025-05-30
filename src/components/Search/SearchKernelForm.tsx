@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GradientPaper } from '@components/StyledComponents';
 import { Grid, TextField, Button, Box } from '@mui/material';
 import { useSearchByKernel } from '@services/api/hooks/useBlocks';
@@ -10,7 +10,6 @@ function KernelSearchFormPage() {
   const [signature, setSignature] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  // Only search when the user submits
   const nonces = submitted && nonce ? [nonce] : [];
   const signatures = submitted && signature ? [signature] : [];
 
@@ -19,8 +18,7 @@ function KernelSearchFormPage() {
     signatures
   );
 
-  // Redirect if exactly one result
-  React.useEffect(() => {
+  useEffect(() => {
     if (data?.items.length === 1) {
       const blockHeight = data.items[0].block.header.height;
       window.location.replace(
