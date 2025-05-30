@@ -12,10 +12,8 @@ const SearchKernel = () => {
   const navigate = useNavigate();
 
   const validateQuery = (query: string) => {
-    const height = parseInt(query);
-    const isHeight = !isNaN(height) && height >= 0;
     const isHash = query.length === 64;
-    return isHeight || isHash;
+    return isHash;
   };
 
   const handleKernelSearch = () => {
@@ -25,15 +23,11 @@ const SearchKernel = () => {
       return;
     }
     if (!validateQuery(inputValue.nonce)) {
-      setMessage(
-        'Nonce must be a valid height (number >= 0) or a 64-character hash.'
-      );
+      setMessage('Nonce must be a 64-character hash.');
       return;
     }
     if (!validateQuery(inputValue.signature)) {
-      setMessage(
-        'Signature must be a valid height (number >= 0) or a 64-character hash.'
-      );
+      setMessage('Signature must be a 64-character hash.');
       return;
     }
     setMessage('');
