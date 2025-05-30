@@ -20,22 +20,20 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import SearchField from '../SearchField/SearchField';
-import { useState } from 'react';
 import { StyledContainer } from './HeaderBottom.styles';
 import StatsBox from '../StatsBox/StatsBox';
 import { useMainStore } from '@services/stores/useMainStore';
+import AdvancedSearch from '@components/Search/AdvancedSearch';
 
 export default function HeaderBottom() {
   const isMobile = useMainStore((state) => state.isMobile);
-  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <StyledContainer>
       {!isMobile && (
         <>
           <StatsBox variant="desktop" />
-          <SearchField isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+          <AdvancedSearch />
         </>
       )}
     </StyledContainer>

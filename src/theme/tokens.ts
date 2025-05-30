@@ -100,6 +100,13 @@ export const componentSettings: ThemeOptions = {
         },
       },
     },
+    MuiButtonBase: {
+      defaultProps: {
+        sx: {
+          fontFamily: (theme) => theme.typography.h6.fontFamily,
+        },
+      },
+    },
     MuiTableCell: {
       defaultProps: {
         sx: {
@@ -130,6 +137,23 @@ export const componentSettings: ThemeOptions = {
         thickness: 4,
         sx: {
           color: (theme) => theme.palette.primary.main,
+        },
+      },
+    },
+    MuiBackdrop: {
+      defaultProps: {
+        sx: {
+          backdropFilter: 'blur(4px)',
+        },
+      },
+    },
+    MuiDialog: {
+      defaultProps: {
+        PaperProps: {
+          sx: {
+            borderRadius: 4,
+            boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.1)',
+          },
         },
       },
     },

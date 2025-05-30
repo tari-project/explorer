@@ -22,10 +22,11 @@
 
 import { Fragment } from 'react';
 import { Grid, Divider, Typography } from '@mui/material';
-import { InnerHeading, TypographyData } from '@components/StyledComponents';
+import { TypographyData } from '@components/StyledComponents';
 import { useGetBlockByHeightOrHash } from '@services/api/hooks/useBlocks';
 import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
 import CopyToClipboard from '@components/CopyToClipboard';
+import InnerHeading from '@components/InnerHeading';
 import { powCheck } from '@utils/helpers';
 
 function BlockInfo({ blockHeight }: { blockHeight: any }) {
