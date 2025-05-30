@@ -11,10 +11,29 @@ const SearchKernel = () => {
   const setSearchOpen = useMainStore((state) => state.setSearchOpen);
   const navigate = useNavigate();
 
+  const validateQuery = (query: string) => {
+    const height = parseInt(query);
+    const isHeight = !isNaN(height) && height >= 0;
+    const isHash = query.length === 64;
+    return isHeight || isHash;
+  };
+
   const handleKernelSearch = () => {
     setTouched({ nonce: true, signature: true });
     if (!inputValue.nonce || !inputValue.signature) {
       setMessage('Both fields are required.');
+      return;
+    }
+    if (!validateQuery(inputValue.nonce)) {
+      setMessage(
+        'Nonce must be a valid height (number >= 0) or a 64-character hash.'
+      );
+      return;
+    }
+    if (!validateQuery(inputValue.signature)) {
+      setMessage(
+        'Signature must be a valid height (number >= 0) or a 64-character hash.'
+      );
       return;
     }
     setMessage('');
