@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 
 interface InnerHeadingProps {
   children: React.ReactNode;
+  borderBottom?: boolean;
   icon?: React.ReactNode;
 }
 
@@ -12,9 +13,13 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   textTransform: 'uppercase',
 }));
 
-function InnerHeading({ children, icon }: InnerHeadingProps) {
+function InnerHeading({
+  children,
+  borderBottom = true,
+  icon,
+}: InnerHeadingProps) {
   return (
-    <Stack direction="column" gap={1} mb={2}>
+    <Stack direction="column" gap={1} mb={borderBottom ? 2 : 0}>
       <Stack
         direction="row"
         alignItems="center"
@@ -28,7 +33,7 @@ function InnerHeading({ children, icon }: InnerHeadingProps) {
           </Stack>
         )}
       </Stack>
-      <Divider />
+      {borderBottom && <Divider />}
     </Stack>
   );
 }

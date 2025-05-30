@@ -133,6 +133,23 @@ export const componentSettings: ThemeOptions = {
         },
       },
     },
+    MuiBackdrop: {
+      defaultProps: {
+        sx: {
+          backdropFilter: 'blur(4px)',
+        },
+      },
+    },
+    MuiDialog: {
+      defaultProps: {
+        PaperProps: {
+          sx: {
+            borderRadius: 4,
+            boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.1)',
+          },
+        },
+      },
+    },
   },
 };
 
