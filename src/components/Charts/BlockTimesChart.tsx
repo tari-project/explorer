@@ -112,19 +112,7 @@ const BlockTimes = () => {
         name: 'All',
         type: 'line',
         smooth: true,
-        data: data?.blockTimes,
-      },
-      {
-        name: 'RandomX',
-        type: 'line',
-        smooth: true,
-        data: data?.moneroTimes,
-      },
-      {
-        name: 'Sha 3',
-        type: 'line',
-        smooth: true,
-        data: data?.shaTimes,
+        data: data?.blockTimes?.series,
       },
     ],
   };
