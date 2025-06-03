@@ -10,17 +10,15 @@ interface StatsBoxProps {
 
 function StatsBox({ variant }: StatsBoxProps) {
   const { data } = useAllBlocks();
-  const values = data?.blockTimes || [];
+  const values = data?.blockTimes?.series || [];
   const targetTime = 2;
   const sum = values.reduce(
     (accumulator: number, currentValue: number) => accumulator + currentValue,
     0
   );
-  const sanitizeValue = (val: string):number => Number(val?.replace(/,/g, ''));
-  const latestMoneroHashRate = sanitizeValue(data?.currentMoneroRandomxHashRate) ?? 0;
-  const latestShaHashRate = sanitizeValue(data?.currentSha3xHashRate) ?? 0;
-  const latestTRXHashRate = sanitizeValue(data?.currentTariRandomxHashRate) ?? 0;
-
+  const latestMoneroHashRate = data?.currentMoneroRandomxHashRate ?? 0;
+  const latestShaHashRate = data?.currentSha3xHashRate ?? 0;
+  const latestTRXHashRate = data?.currentTariRandomxHashRate ?? 0;
 
   const average = sum / values.length;
   const formattedAverageBlockTime =

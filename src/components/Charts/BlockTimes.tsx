@@ -47,9 +47,9 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type, targetTime }) => {
   };
 
   const blockTimesMap: { [key: string]: any[] } = {
-    RandomX: data?.moneroTimes,
-    Sha3: data?.shaTimes,
-    default: data?.blockTimes || [],
+    RandomX: data?.moneroTimes?.series,
+    Sha3: data?.shaTimes?.series,
+    default: data?.blockTimes?.series || [],
   };
 
   // const color = colorMap[type] || colorMap['default'];
