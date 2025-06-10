@@ -31,7 +31,7 @@ export const kernelItems = (content: any) => {
     },
     {
       label: 'Fee',
-      value: content.fee,
+      value: content.fee / 1_000_000 + ' XTM',
       copy: false,
     },
     {
