@@ -29,11 +29,24 @@ import BlockTimes from '@components/Charts/BlockTimes';
 import HashRates from '@components/Charts/HashRates';
 import POWChart from '@components/Charts/POWChart';
 import TransactionsWidget from '@components/Transactions/TransactionsWidget';
-import { useTheme } from '@mui/material/styles';
 import InnerHeading from '@components/InnerHeading';
+import { useTheme, useMediaQuery } from '@mui/material';
 
 function BlockExplorerPage() {
   const theme = useTheme();
+  const isLgUp = useMediaQuery(theme.breakpoints.up('lg'));
+
+  const Transactions = () => (
+    <Grid container spacing={3}>
+      <Grid item xs={12} md={6}>
+        <TransactionsWidget type="day" />
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <TransactionsWidget type="all" />
+      </Grid>
+    </Grid>
+  );
+
   return (
     <Grid
       container
@@ -54,6 +67,7 @@ function BlockExplorerPage() {
           gap: theme.spacing(3),
         }}
       >
+        {!isLgUp && <Transactions />}
         <GradientPaper>
           <InnerHeading>Recent Blocks</InnerHeading>
           <BlockWidget />
@@ -77,14 +91,7 @@ function BlockExplorerPage() {
           gap: theme.spacing(3),
         }}
       >
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <TransactionsWidget type="day" />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TransactionsWidget type="all" />
-          </Grid>
-        </Grid>
+        {isLgUp && <Transactions />}
         <GradientPaper>
           <InnerHeading>Block Times (Minutes)</InnerHeading>
           <Grid container spacing={3}>
