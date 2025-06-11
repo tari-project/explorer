@@ -58,7 +58,7 @@ function TransactionsWidget({ type }: TransactionsWidgetProps) {
               {formatNumber(amount)}
             </NumberTypography>
             <Line type={type} />
-            <Stack spacing={-1.5}>
+            <Stack spacing={-1}>
               <Typography variant="h6" textTransform="uppercase">
                 Transactions
               </Typography>
