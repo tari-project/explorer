@@ -137,7 +137,7 @@ function formatHash(number: number, decimals: number = 1) {
     number /= 1000;
     suffixIndex++;
   }
-  return number.toFixed(decimals) + ' ' + suffixes[suffixIndex] + 'H';
+  return number.toFixed(decimals) + suffixes[suffixIndex] + 'H';
 }
 
 function formatNumber(number: number, decimals: number = 2) {
