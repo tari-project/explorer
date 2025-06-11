@@ -6,9 +6,8 @@ interface TransactionsWidgetProps {
 }
 
 export const NumberTypography = styled(Typography)(({ theme }) => ({
-  fontWeight: 600,
   fontFamily: 'DrukHeavy, sans-serif',
-  fontSize: '40px',
+  fontSize: '34px',
   color: theme.palette.text.primary,
 }));
 

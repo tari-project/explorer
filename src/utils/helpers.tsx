@@ -153,7 +153,7 @@ function formatNumber(number: number, decimals: number = 2) {
     number /= 1000;
     suffixIndex++;
   }
-  return number.toFixed(decimals) + ' ' + suffixes[suffixIndex];
+  return number.toFixed(decimals) + suffixes[suffixIndex];
 }
 
 function powCheck(num: string): string {
