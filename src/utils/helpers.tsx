@@ -144,12 +144,12 @@ function formatNumber(number: number, decimals: number = 2) {
   if (number === undefined || number === null) {
     return 'N/A';
   }
-  if (number < 1000) {
-    return number.toFixed(decimals);
+  if (number < 10000) {
+    return number.toLocaleString();
   }
   const suffixes = ['', 'K', 'M', 'B', 'T'];
   let suffixIndex = 0;
-  while (number >= 1000 && suffixIndex < suffixes.length - 1) {
+  while (number >= 10000 && suffixIndex < suffixes.length - 1) {
     number /= 1000;
     suffixIndex++;
   }
