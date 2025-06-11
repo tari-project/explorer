@@ -30,7 +30,7 @@ export const StatsWrapperSml = styled(Box)(() => ({
   justifyContent: 'center',
   width: '100%',
   borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-  padding: '12px 20px',
+  padding: '12px',
   position: 'sticky',
   bottom: '0',
   left: '0',
@@ -46,5 +46,5 @@ export const StatsRowSml = styled(Box)(() => ({
   alignItems: 'center',
   width: '100%',
   maxWidth: '500px',
-  gap: '24px',
+  gap: '6px',
 }));

@@ -53,12 +53,20 @@ function TransactionsWidget({ type }: TransactionsWidgetProps) {
             alignItems="center"
             justifyContent="center"
           >
-            <IconWrapper bgcolor={color}>{icon}</IconWrapper>
-            <NumberTypography variant="h4">
-              {formatNumber(amount)}
-            </NumberTypography>
+            <Stack
+              direction={'row'}
+              spacing={1}
+              alignItems="center"
+              justifyContent={'flex-end'}
+              minWidth={'120px'}
+            >
+              <IconWrapper bgcolor={color}>{icon}</IconWrapper>
+              <NumberTypography variant="h4">
+                {formatNumber(amount)}
+              </NumberTypography>
+            </Stack>
             <Line type={type} />
-            <Stack spacing={-1}>
+            <Stack spacing={-1.4}>
               <Typography variant="h6" textTransform="uppercase">
                 Transactions
               </Typography>
