@@ -28,6 +28,7 @@ import BlockWidget from '@components/Blocks/BlockWidget';
 import BlockTimes from '@components/Charts/BlockTimes';
 import HashRates from '@components/Charts/HashRates';
 import POWChart from '@components/Charts/POWChart';
+import TransactionsWidget from '@components/Transactions/TransactionsWidget';
 import { useTheme } from '@mui/material/styles';
 import InnerHeading from '@components/InnerHeading';
 
@@ -76,6 +77,14 @@ function BlockExplorerPage() {
           gap: theme.spacing(3),
         }}
       >
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <TransactionsWidget type="day" />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TransactionsWidget type="all" />
+          </Grid>
+        </Grid>
         <GradientPaper>
           <InnerHeading>Block Times (Minutes)</InnerHeading>
           <Grid container spacing={3}>
