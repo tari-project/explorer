@@ -41,6 +41,7 @@ function BlockExplorerPage() {
       <Grid item xs={12} md={6}>
         <TransactionsWidget type="day" />
       </Grid>
+
       <Grid item xs={12} md={6}>
         <TransactionsWidget type="all" />
       </Grid>
