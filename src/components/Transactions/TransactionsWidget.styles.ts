@@ -5,11 +5,29 @@ interface TransactionsWidgetProps {
   type: 'day' | 'all';
 }
 
+const gradient1 = 'linear-gradient(80deg, #DA60FB -10.22%, #7967FF 113.87%)';
+const gradient2 = 'linear-gradient(80deg, #FF9958 -10.22%, #E56798 113.87%)';
+
 export const NumberTypography = styled(Typography)(({ theme }) => ({
   fontFamily: 'DrukHeavy, sans-serif',
   fontSize: '34px',
   color: theme.palette.text.primary,
+  [theme.breakpoints.down('md')]: {
+    fontSize: '28px',
+  },
 }));
+
+export const GradientTypography = styled(Typography)<TransactionsWidgetProps>(
+  ({ type }) => ({
+    fontFamily: 'DrukHeavy, sans-serif',
+    fontSize: '38px',
+    background: type === 'day' ? gradient1 : gradient2,
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    color: 'transparent',
+  })
+);
 
 export const Line = styled('div')<TransactionsWidgetProps>(({ type }) => ({
   width: '3px',
@@ -20,6 +38,19 @@ export const Line = styled('div')<TransactionsWidgetProps>(({ type }) => ({
       : 'linear-gradient(80deg, #FF9958 -10.22%, #E56798 113.87%)',
   borderRadius: '2px',
 }));
+
+export const HorizontalLine = styled('div')<TransactionsWidgetProps>(
+  ({ type }) => ({
+    width: '120px',
+    height: '2px',
+    marginTop: '4px',
+    background:
+      type === 'day'
+        ? 'linear-gradient(80deg, #DA60FB -10.22%, #7967FF 113.87%)'
+        : 'linear-gradient(80deg, #FF9958 -10.22%, #E56798 113.87%)',
+    borderRadius: '2px',
+  })
+);
 
 export const IconWrapper = styled('span')<{ bgcolor: string }>(
   ({ bgcolor }) => ({
@@ -47,7 +78,6 @@ export const LightTooltip = styled(Tooltip)(({ theme }) => ({
 export const TooltipContainer = styled('div')({
   position: 'relative',
   display: 'inline-block',
-  width: '100%',
 });
 
 export const CustomTooltip = styled('div')({

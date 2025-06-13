@@ -1,9 +1,10 @@
-import { Stack, Typography, CircularProgress } from '@mui/material';
+import { Stack, Typography, CircularProgress, Grid } from '@mui/material';
 import { IoStatsChart, IoAnalyticsSharp } from 'react-icons/io5';
 import { formatNumber } from '@utils/helpers';
 import {
   NumberTypography,
   Line,
+  HorizontalLine,
   TooltipContainer,
   CustomTooltip,
   TooltipWrapper,
@@ -15,12 +16,14 @@ import {
 } from '@services/api/hooks/useBlocks';
 import FetchStatusCheck from '@components/FetchStatusCheck';
 import { GradientPaper } from '@components/StyledComponents';
+import { useMainStore } from '@services/stores/useMainStore';
 
 interface TransactionsWidgetProps {
   type: 'day' | 'all';
 }
 
-function TransactionsWidget({ type }: TransactionsWidgetProps) {
+function TransactionsWidget() {
+  const isMobile = useMainStore((state) => state.isMobile);
   const {
     data: blocks,
     isLoading: blocksIsLoading,
@@ -65,26 +68,50 @@ function TransactionsWidget({ type }: TransactionsWidgetProps) {
     },
   };
 
-  const { amount, tooltip, icon, color, label } = config[type];
-  const tooltipText = `${amount.toLocaleString()} ${tooltip}`;
-
-  if (blocksIsError || blockStartIsError) {
+  function TransactionsMobile({ type }: TransactionsWidgetProps) {
+    const { amount, tooltip, label } = config[type];
+    const tooltipText = `${amount.toLocaleString()} ${tooltip}`;
     return (
-      <GradientPaper
-        style={{ width: '100%', padding: '16px', cursor: 'arrow' }}
-      >
-        <FetchStatusCheck
-          isLoading={blocksIsLoading || blockStartIsLoading}
-          isError={blocksIsError || blockStartIsError}
-          errorMessage="Error retrieving data"
-        />
-      </GradientPaper>
+      <TooltipContainer>
+        <TooltipWrapper>
+          <CustomTooltip className="custom-tooltip">
+            <Typography variant="body2" color="textSecondary">
+              {tooltipText}
+            </Typography>
+          </CustomTooltip>
+          <Stack
+            direction="column"
+            spacing={0}
+            alignItems="center"
+            justifyContent="center"
+          >
+            {blocksIsLoading || blockStartIsLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              <NumberTypography variant="h4">
+                {formatNumber(amount)}
+              </NumberTypography>
+            )}
+            <HorizontalLine type={type} />
+            <Stack spacing={-1.4} alignItems="center">
+              <Typography variant="h6" textTransform="uppercase">
+                Transactions
+              </Typography>
+              <Typography variant="body2" textTransform="uppercase">
+                {label}
+              </Typography>
+            </Stack>
+          </Stack>
+        </TooltipWrapper>
+      </TooltipContainer>
     );
   }
 
-  return (
-    <GradientPaper style={{ width: '100%', padding: '16px', cursor: 'arrow' }}>
-      <TooltipContainer>
+  function TransactionsDesktop({ type }: TransactionsWidgetProps) {
+    const { amount, tooltip, icon, color, label } = config[type];
+    const tooltipText = `${amount.toLocaleString()} ${tooltip}`;
+    return (
+      <TooltipContainer style={{ width: '100%' }}>
         <TooltipWrapper>
           <CustomTooltip className="custom-tooltip">
             <Typography variant="body2" color="textSecondary">
@@ -125,7 +152,54 @@ function TransactionsWidget({ type }: TransactionsWidgetProps) {
           </Stack>
         </TooltipWrapper>
       </TooltipContainer>
-    </GradientPaper>
+    );
+  }
+
+  if (blocksIsError || blockStartIsError) {
+    return (
+      <GradientPaper
+        style={{ width: '100%', padding: '16px', cursor: 'arrow' }}
+      >
+        <FetchStatusCheck
+          isLoading={blocksIsLoading || blockStartIsLoading}
+          isError={blocksIsError || blockStartIsError}
+          errorMessage="Error retrieving data"
+        />
+      </GradientPaper>
+    );
+  }
+
+  if (isMobile) {
+    return (
+      <GradientPaper
+        style={{ width: '100%', padding: '16px', cursor: 'arrow' }}
+      >
+        <Stack direction="row" spacing={6} justifyContent="center">
+          <TransactionsMobile type="day" />
+          <TransactionsMobile type="all" />
+        </Stack>
+      </GradientPaper>
+    );
+  }
+
+  return (
+    <Grid container spacing={3}>
+      <Grid item xs={12} md={6}>
+        <GradientPaper
+          style={{ width: '100%', padding: '16px', cursor: 'arrow' }}
+        >
+          <TransactionsDesktop type="day" />
+        </GradientPaper>
+      </Grid>
+
+      <Grid item xs={12} md={6}>
+        <GradientPaper
+          style={{ width: '100%', padding: '16px', cursor: 'arrow' }}
+        >
+          <TransactionsDesktop type="all" />
+        </GradientPaper>
+      </Grid>
+    </Grid>
   );
 }
 

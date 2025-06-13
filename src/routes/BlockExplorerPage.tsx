@@ -28,7 +28,7 @@ import BlockWidget from '@components/Blocks/BlockWidget';
 import BlockTimes from '@components/Charts/BlockTimes';
 import HashRates from '@components/Charts/HashRates';
 import POWChart from '@components/Charts/POWChart';
-import TransactionsWidget from '@components/Transactions/TransactionsWidget';
+import Transactions from '@components/Transactions/TransactionsWidget';
 import InnerHeading from '@components/InnerHeading';
 import { useTheme, useMediaQuery } from '@mui/material';
 
@@ -36,17 +36,17 @@ function BlockExplorerPage() {
   const theme = useTheme();
   const isLgUp = useMediaQuery(theme.breakpoints.up('lg'));
 
-  const Transactions = () => (
-    <Grid container spacing={3}>
-      <Grid item xs={12} md={6}>
-        <TransactionsWidget type="day" />
-      </Grid>
+  // const Transactions = () => (
+  //   <Grid container spacing={3}>
+  //     <Grid item xs={12} md={6}>
+  //       <TransactionsWidget type="day" />
+  //     </Grid>
 
-      <Grid item xs={12} md={6}>
-        <TransactionsWidget type="all" />
-      </Grid>
-    </Grid>
-  );
+  //     <Grid item xs={12} md={6}>
+  //       <TransactionsWidget type="all" />
+  //     </Grid>
+  //   </Grid>
+  // );
 
   return (
     <Grid
