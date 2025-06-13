@@ -36,24 +36,12 @@ function BlockExplorerPage() {
   const theme = useTheme();
   const isLgUp = useMediaQuery(theme.breakpoints.up('lg'));
 
-  // const Transactions = () => (
-  //   <Grid container spacing={3}>
-  //     <Grid item xs={12} md={6}>
-  //       <TransactionsWidget type="day" />
-  //     </Grid>
-
-  //     <Grid item xs={12} md={6}>
-  //       <TransactionsWidget type="all" />
-  //     </Grid>
-  //   </Grid>
-  // );
-
   return (
     <Grid
       container
       spacing={3}
       style={{
-        paddingTop: theme.spacing(4),
+        paddingTop: theme.spacing(3),
         paddingBottom: theme.spacing(6),
       }}
     >
