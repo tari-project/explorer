@@ -109,6 +109,11 @@ export const outputItems = (content: any) => {
       copy: false,
     },
     {
+      label: 'Payment Reference',
+      value: toHexString(content.payment_reference.data),
+      copy: true,
+    },
+    {
       label: 'Encrypted Data',
       value: toHexString(content.encrypted_data.data),
       copy: true,
