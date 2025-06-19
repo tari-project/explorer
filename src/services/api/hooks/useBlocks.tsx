@@ -109,8 +109,6 @@ export const useSearchByKernel = (nonces: string[], signatures: string[]) => {
   });
 };
 
-// 7c471c219239df235e80b1a00f88b48a4a52e687eb96c52cc31f7787e5d91f11
-
 export const useSearchByPayref = (payref: string) => {
   return useQuery({
     queryKey: ['payref', payref],

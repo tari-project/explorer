@@ -52,10 +52,10 @@ function PayRefHeader() {
       status = '';
   }
 
-  // if (data?.items.length === 1) {
-  //   const blockHeight = data.items[0].block_height;
-  //   window.location.replace(`/blocks/${blockHeight}?payref=${payref}`);
-  // }
+  if (data?.items.length === 1) {
+    const blockHeight = data.items[0].block_height;
+    window.location.replace(`/blocks/${blockHeight}?payref=${payref}`);
+  }
 
   return (
     <>

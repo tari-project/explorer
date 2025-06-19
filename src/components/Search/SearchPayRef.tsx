@@ -54,7 +54,7 @@ const PayRef = () => {
     <Stack gap={1} pb={2}>
       <TextField
         label="Search by payment reference"
-        placeholder="Enter 64-character hash"
+        placeholder="Enter 64-character PayRef hash"
         autoFocus
         value={query}
         onChange={handleInputChange}
