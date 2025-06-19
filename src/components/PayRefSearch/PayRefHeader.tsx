@@ -42,8 +42,8 @@ function PayRefHeader() {
     case isFetching:
       status = 'Searching...';
       break;
-    case isError:
-      status = 'Block not found';
+    case isError || data?.items.length === 0:
+      status = 'Not found';
       break;
     case isSuccess:
       status = `Block${data.items.length > 1 ? 's' : ''} found`;
@@ -52,38 +52,41 @@ function PayRefHeader() {
       status = '';
   }
 
+  // if (data?.items.length === 1) {
+  //   const blockHeight = data.items[0].block_height;
+  //   window.location.replace(`/blocks/${blockHeight}?payref=${payref}`);
+  // }
+
   return (
     <>
-      {!isMobile ? (
-        <Container maxWidth="xl">
-          <Box
+      <Container maxWidth="xl">
+        <Box
+          style={{
+            marginTop: isMobile ? theme.spacing(5) : theme.spacing(10),
+            marginBottom: isMobile ? theme.spacing(5) : theme.spacing(10),
+            color: theme.palette.text.primary,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: isMobile ? 0 : theme.spacing(1),
+          }}
+        >
+          <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
+            PayRef Search
+          </Typography>
+          <Typography
+            variant="h1"
             style={{
-              marginTop: theme.spacing(10),
-              marginBottom: theme.spacing(10),
-              color: theme.palette.text.primary,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: theme.spacing(1),
+              fontFamily: '"DrukHeavy", sans-serif',
+              fontSize: isMobile ? 40 : 60,
+              textTransform: 'uppercase',
             }}
           >
-            <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
-              PayRef Search
-            </Typography>
-            <Typography
-              variant="h1"
-              style={{
-                fontFamily: '"DrukHeavy", sans-serif',
-                fontSize: 60,
-                textTransform: 'uppercase',
-              }}
-            >
-              {status}
-            </Typography>
-          </Box>
-        </Container>
-      ) : null}
+            {status}
+          </Typography>
+        </Box>
+      </Container>
     </>
   );
 }

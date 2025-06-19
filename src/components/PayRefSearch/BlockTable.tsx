@@ -23,7 +23,12 @@
 import { useState, Fragment } from 'react';
 import { TypographyData } from '@components/StyledComponents';
 import { Typography, Grid, Divider, Pagination } from '@mui/material';
-import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
+import {
+  toHexString,
+  shortenString,
+  formatTimestamp,
+  formatXTM,
+} from '@utils/helpers';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -38,11 +43,17 @@ function BlockTable({ data }: { data: any }) {
   const itemsPerPage = 10;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  console.log('BlockTable data:', data);
-
   const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
+  if (!data || data.length === 0) {
+    return (
+      <Typography variant="body2" color="textSecondary">
+        No blocks found.
+      </Typography>
+    );
+  }
 
   function Mobile() {
     const col1 = 4;
@@ -55,16 +66,15 @@ function BlockTable({ data }: { data: any }) {
           const payref = block?.payment_reference_hex || 'no data';
           const minedTimestamp = block?.mined_timestamp || 'no data';
           const isSpent = block?.is_spent || false;
-          const minValuePromise = block?.min_value_promise || 'no data';
-          // const commitment = block?.commitment || 'no data';
+          const minValuePromise =
+            formatXTM(block?.min_value_promise) || 'no data';
+          const commitment = toHexString(block?.commitment?.data) || 'no data';
           const blockHash = toHexString(block?.block_hash?.data) || 'no data';
-          // const spentBlockHash =
-          //   toHexString(block?.spent_block_hash?.data) || 'no data';
+          const spentBlockHash = toHexString(block?.spent_block_hash?.data);
 
           return (
             <Fragment key={index}>
               <Grid item xs={12} key={index}>
-                <Divider />
                 <Grid container spacing={2} pl={0} pr={0} pb={2}>
                   <Grid item xs={col1}>
                     <Typography variant="body2">Height</Typography>
@@ -109,6 +119,16 @@ function BlockTable({ data }: { data: any }) {
                   </Grid>
 
                   <Grid item xs={col1}>
+                    <Typography variant="body2">Commitment</Typography>
+                  </Grid>
+                  <Grid item xs={col2}>
+                    <TypographyData>
+                      {shortenString(commitment, 6, 6)}
+                      <CopyToClipboard copy={commitment} />
+                    </TypographyData>
+                  </Grid>
+
+                  <Grid item xs={col1}>
                     <Typography variant="body2">Block Hash</Typography>
                   </Grid>
                   <Grid item xs={col2}>
@@ -117,13 +137,35 @@ function BlockTable({ data }: { data: any }) {
                       <CopyToClipboard copy={blockHash} />
                     </TypographyData>
                   </Grid>
+
+                  <Fragment>
+                    <Grid item xs={col1}>
+                      <Typography variant="body2">Spent Block Hash</Typography>
+                    </Grid>
+                    <Grid item xs={col2}>
+                      <TypographyData>
+                        {spentBlockHash?.length > 0 ? (
+                          <>
+                            {shortenString(spentBlockHash, 6, 6)}
+                            <CopyToClipboard copy={spentBlockHash} />
+                          </>
+                        ) : (
+                          'N/A'
+                        )}
+                      </TypographyData>
+                    </Grid>
+                  </Fragment>
                 </Grid>
-                <Grid item xs={12}>
+
+                <Grid item xs={12} pb={2}>
                   <Link to={`/blocks/${height}`}>
                     <Button variant="outlined" fullWidth>
                       View Block
                     </Button>
                   </Link>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider />
                 </Grid>
               </Grid>
             </Fragment>
@@ -137,9 +179,11 @@ function BlockTable({ data }: { data: any }) {
     const col1 = 1;
     const col2 = 2;
     const col3 = 2;
-    const col4 = 1;
-    const col5 = 2;
-    const col6 = 2;
+    const col4 = 0.75;
+    const col5 = 1.75;
+    const col6 = 1.75;
+    const col7 = 1.75;
+    const col8 = 1;
 
     return (
       <>
@@ -160,7 +204,13 @@ function BlockTable({ data }: { data: any }) {
             <Typography variant="body2">Min Value Promise</Typography>
           </Grid>
           <Grid item xs={col6} md={col6} lg={col6}>
+            <Typography variant="body2">Commitment</Typography>
+          </Grid>
+          <Grid item xs={col7} md={col7} lg={col7}>
             <Typography variant="body2">Block Hash</Typography>
+          </Grid>
+          <Grid item xs={col8} md={col8} lg={col8}>
+            <Typography variant="body2">Spent Block Hash</Typography>
           </Grid>
         </Grid>
         <Grid container spacing={2} pl={0} pr={0} pb={2}>
@@ -171,12 +221,13 @@ function BlockTable({ data }: { data: any }) {
               const payref = block?.payment_reference_hex || 'no data';
               const minedTimestamp = block?.mined_timestamp || 'no data';
               const isSpent = block?.is_spent || false;
-              const minValuePromise = block?.min_value_promise || 'no data';
-              // const commitment = block?.commitment || 'no data';
+              const minValuePromise =
+                formatXTM(block?.min_value_promise) || 'no data';
+              const commitment =
+                toHexString(block?.commitment?.data) || 'no data';
               const blockHash =
                 toHexString(block?.block_hash?.data) || 'no data';
-              // const spentBlockHash =
-              //   toHexString(block?.spent_block_hash?.data) || 'no data';
+              const spentBlockHash = toHexString(block?.spent_block_hash?.data);
 
               return (
                 <Fragment key={index}>
@@ -207,8 +258,26 @@ function BlockTable({ data }: { data: any }) {
                   </Grid>
                   <Grid item xs={col6} md={col6} lg={col6}>
                     <TypographyData>
+                      {shortenString(commitment, 6, 6)}
+                      <CopyToClipboard copy={commitment} />
+                    </TypographyData>
+                  </Grid>
+                  <Grid item xs={col7} md={col7} lg={col7}>
+                    <TypographyData>
                       {shortenString(blockHash, 6, 6)}
                       <CopyToClipboard copy={blockHash} />
+                    </TypographyData>
+                  </Grid>
+                  <Grid item xs={col8} md={col8} lg={col8}>
+                    <TypographyData>
+                      {spentBlockHash ? (
+                        <>
+                          {shortenString(spentBlockHash, 6, 6)}
+                          <CopyToClipboard copy={spentBlockHash} />
+                        </>
+                      ) : (
+                        'N/A'
+                      )}
                     </TypographyData>
                   </Grid>
                 </Fragment>

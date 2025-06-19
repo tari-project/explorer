@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import SearchBlock from './SearchBlock';
 import SearchKernel from './SearchKernel';
+import SearchPayRef from './SearchPayRef';
 import { StyledFormControlLabel } from './AdvancedSearch.styles';
 import { useMainStore } from '@services/stores/useMainStore';
 import { ThemeProvider } from '@emotion/react';
@@ -18,10 +19,12 @@ import { lightTheme } from '@theme/themes';
 import InnerHeading from '@components/InnerHeading';
 import { IoClose } from 'react-icons/io5';
 
+type SearchType = 'payref' | 'block' | 'kernel';
+
 export default function AdvancedSearch() {
   const searchOpen = useMainStore((state) => state.searchOpen);
   const setSearchOpen = useMainStore((state) => state.setSearchOpen);
-  const [searchType, setSearchType] = useState<'block' | 'kernel'>('block');
+  const [searchType, setSearchType] = useState<SearchType>('payref');
 
   const handleClickOpen = () => {
     setSearchOpen(true);
@@ -34,7 +37,7 @@ export default function AdvancedSearch() {
   const handleSearchTypeChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setSearchType(event.target.value as 'block' | 'kernel');
+    setSearchType(event.target.value as SearchType);
   };
 
   return (
@@ -67,6 +70,11 @@ export default function AdvancedSearch() {
                 name="search-type"
               >
                 <StyledFormControlLabel
+                  value="payref"
+                  control={<Radio />}
+                  label="Payment Reference"
+                />
+                <StyledFormControlLabel
                   value="block"
                   control={<Radio />}
                   label="Block"
@@ -78,7 +86,16 @@ export default function AdvancedSearch() {
                 />
               </RadioGroup>
             </FormControl>
-            {searchType === 'block' ? <SearchBlock /> : <SearchKernel />}
+            {(() => {
+              switch (searchType) {
+                case 'payref':
+                  return <SearchPayRef />;
+                case 'block':
+                  return <SearchBlock />;
+                default:
+                  return <SearchKernel />;
+              }
+            })()}
           </DialogContent>
         </Dialog>
       </ThemeProvider>

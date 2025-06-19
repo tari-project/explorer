@@ -108,7 +108,7 @@ function BlockTable({ data }: { data: any }) {
                   <TypographyData>{outputs}</TypographyData>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} pb={2}>
                   <Link to={`/blocks/${height}`}>
                     <Button variant="outlined" fullWidth>
                       View Block
