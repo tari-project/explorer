@@ -200,7 +200,7 @@ function Kernels({ blockHeight, type, itemsPerPage }: KernelsProps) {
           expanded={expanded}
           handleChange={handleChange}
           expandedPanel={expandedPanel}
-          tabName={title}
+          tabName={`Found in ${title}`}
           key={adjustedIndex}
           isHighlighted={true}
         />
@@ -324,11 +324,11 @@ function Kernels({ blockHeight, type, itemsPerPage }: KernelsProps) {
               Search
             </Button>
           </Stack>
-          {foundIndex !== null && foundIndex >= 0 && (
+          {/* {foundIndex !== null && foundIndex >= 0 && (
             <Alert severity="success" sx={{ mt: 1 }} variant="standard">
               Found in kernel {foundIndex + 1}
             </Alert>
-          )}
+          )} */}
           {hasSearched && foundIndex === null && (
             <Alert severity="error" sx={{ mt: 1 }} variant="standard">
               No matching kernel found

@@ -184,7 +184,7 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
           expanded={expanded}
           handleChange={handleChange}
           expandedPanel={expandedPanel}
-          tabName={title}
+          tabName={`Found in ${title}`}
           key={adjustedIndex}
           isHighlighted={true}
         />
@@ -193,7 +193,6 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       renderItems = null;
     }
   } else {
-    // Show all items as before
     renderItems = displayedItems?.map((content: any, index: number) => {
       const adjustedIndex = startIndex + 1 + index;
       const expandedPanel = `panel${adjustedIndex}`;
@@ -294,11 +293,11 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
               Search
             </Button>
           </Stack>
-          {foundIndex !== null && foundIndex >= 0 && (
+          {/* {foundIndex !== null && foundIndex >= 0 && (
             <Alert severity="success" sx={{ mt: 1 }} variant="standard">
               Found in output {foundIndex + 1}
             </Alert>
-          )}
+          )} */}
           {hasSearched && foundIndex === null && (
             <Alert severity="error" sx={{ mt: 1 }} variant="standard">
               No matching output found
