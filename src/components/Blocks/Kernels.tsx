@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TextField, Stack, Button, Alert, Typography } from '@mui/material';
 import {
   useGetBlockByHeightOrHash,
@@ -13,7 +13,6 @@ import { kernelItems } from './Data/Kernels';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
 import { kernelSearch } from '@/utils/searchFunctions';
 import InnerHeading from '@components/InnerHeading';
 
@@ -179,43 +178,75 @@ function Kernels({ blockHeight, type, itemsPerPage }: KernelsProps) {
     }
   }, [nonceParams, signatureParams, allKernelsData, type, itemsPerPage]);
 
-  const renderItems = displayedItems?.map((content: any, index: number) => {
-    const adjustedIndex = startIndex + 1 + index;
-    const expandedPanel = `panel${adjustedIndex}`;
-    let items: any[] = [];
-    switch (type) {
-      case 'inputs':
-        items = inputItems(content);
-        break;
-      case 'outputs':
-        items = outputItems(content);
-        break;
-      case 'kernels':
-        items = kernelItems(content);
-        break;
-      default:
-        break;
+  let renderItems;
+
+  if (
+    type === 'kernels' &&
+    foundIndex !== null &&
+    foundIndex >= 0 &&
+    foundPage === page
+  ) {
+    const indexOnPage = foundIndex % itemsPerPage;
+    const content = displayedItems?.[indexOnPage];
+    if (content) {
+      const adjustedIndex = startIndex + 1 + indexOnPage;
+      const expandedPanel = `panel${adjustedIndex}`;
+      const items = kernelItems(content);
+
+      renderItems = (
+        <GenerateAccordion
+          items={items}
+          adjustedIndex={adjustedIndex}
+          expanded={expanded}
+          handleChange={handleChange}
+          expandedPanel={expandedPanel}
+          tabName={title}
+          key={adjustedIndex}
+          isHighlighted={true}
+        />
+      );
+    } else {
+      renderItems = null;
     }
+  } else {
+    renderItems = displayedItems?.map((content: any, index: number) => {
+      const adjustedIndex = startIndex + 1 + index;
+      const expandedPanel = `panel${adjustedIndex}`;
+      let items: any[] = [];
+      switch (type) {
+        case 'inputs':
+          items = inputItems(content);
+          break;
+        case 'outputs':
+          items = outputItems(content);
+          break;
+        case 'kernels':
+          items = kernelItems(content);
+          break;
+        default:
+          break;
+      }
 
-    const shouldHighlight =
-      type === 'kernels' &&
-      foundIndex !== null &&
-      foundPage === page &&
-      foundIndex % itemsPerPage === index;
+      const shouldHighlight =
+        type === 'kernels' &&
+        foundIndex !== null &&
+        foundPage === page &&
+        foundIndex % itemsPerPage === index;
 
-    return (
-      <GenerateAccordion
-        items={items}
-        adjustedIndex={adjustedIndex}
-        expanded={expanded}
-        handleChange={handleChange}
-        expandedPanel={expandedPanel}
-        tabName={title}
-        key={adjustedIndex}
-        isHighlighted={shouldHighlight}
-      />
-    );
-  });
+      return (
+        <GenerateAccordion
+          items={items}
+          adjustedIndex={adjustedIndex}
+          expanded={expanded}
+          handleChange={handleChange}
+          expandedPanel={expandedPanel}
+          tabName={title}
+          key={adjustedIndex}
+          isHighlighted={shouldHighlight}
+        />
+      );
+    });
+  }
 
   const handlePageChange = (
     _event: React.ChangeEvent<unknown>,
@@ -307,17 +338,23 @@ function Kernels({ blockHeight, type, itemsPerPage }: KernelsProps) {
       )}
       {renderItems}
       <Stack justifyContent="center" mt={2} direction="row">
-        {totalItems > itemsPerPage && (
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={handlePageChange}
-            showFirstButton
-            showLastButton
-            color="primary"
-            variant="outlined"
-          />
-        )}
+        {totalItems > itemsPerPage &&
+          !(
+            type === 'kernels' &&
+            foundIndex !== null &&
+            foundIndex >= 0 &&
+            foundPage === page
+          ) && (
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={handlePageChange}
+              showFirstButton
+              showLastButton
+              color="primary"
+              variant="outlined"
+            />
+          )}
       </Stack>
     </>
   );

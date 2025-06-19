@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { TextField, Stack, Button, Alert, Typography } from '@mui/material';
 import {
   useGetBlockByHeightOrHash,
@@ -13,20 +13,23 @@ import { kernelItems } from './Data/Kernels';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import { useLocation } from 'react-router-dom';
-import { payrefSearch } from '@utils/searchFunctions';
+import { useEffect } from 'react';
+import { kernelSearch } from '@/utils/searchFunctions';
 import InnerHeading from '@components/InnerHeading';
 
-interface OutputsProps {
+interface KernelsProps {
   blockHeight: string;
   type: string;
   itemsPerPage: number;
-  payref?: string;
+  nonce?: string;
+  signature?: string;
 }
 
-function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
+function Kernels({ blockHeight, type, itemsPerPage }: KernelsProps) {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const payrefParams = params.get('payref');
+  const nonceParams = params.get('nonce');
+  const signatureParams = params.get('signature');
 
   const [page, setPage] = useState(1);
   const startIndex = (page - 1) * itemsPerPage;
@@ -37,15 +40,16 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
     isFetching,
     isError,
   } = useGetPaginatedData(blockHeight, type, startIndex, endIndex);
-  const { data: outputsData } = useGetPaginatedData(
+  const { data: allKernelsData } = useGetPaginatedData(
     blockHeight,
-    'outputs',
+    'kernels',
     0,
-    blockData?.body?.outputs_length
+    blockData?.body?.kernels_length
   );
   const [expanded, setExpanded] = useState<string | false>(false);
   const [searchValue, setSearchValue] = useState({
-    payref: '',
+    nonce: '',
+    signature: '',
   });
   const [foundIndex, setFoundIndex] = useState<number | null>(null);
   const [foundPage, setFoundPage] = useState<number | null>(null);
@@ -100,21 +104,25 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
     setFoundIndex(null);
   };
 
-  const handleOutputsSearch = () => {
+  const handleKernelSearch = () => {
     setHasSearched(true);
-    if (type === 'outputs' && outputsData?.body?.data) {
-      const idx = payrefSearch(searchValue.payref, outputsData.body.data);
+    if (type === 'kernels' && allKernelsData?.body?.data) {
+      const idx = kernelSearch(
+        searchValue.nonce,
+        searchValue.signature,
+        allKernelsData.body.data
+      );
       setFoundIndex(idx);
 
       if (idx !== null && idx >= 0) {
-        const outputPage = Math.floor(idx / itemsPerPage) + 1;
-        setFoundPage(outputPage);
-        setPage(outputPage);
+        const kernelPage = Math.floor(idx / itemsPerPage) + 1;
+        setFoundPage(kernelPage);
+        setPage(kernelPage);
 
         setTimeout(() => {
           const indexOnPage = idx % itemsPerPage;
           const foundPanel = `panel${
-            (outputPage - 1) * itemsPerPage + 1 + indexOnPage
+            (kernelPage - 1) * itemsPerPage + 1 + indexOnPage
           }`;
           setExpanded(foundPanel);
         }, 0);
@@ -125,7 +133,7 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
   };
 
   const handleClear = () => {
-    setSearchValue({ payref: '' });
+    setSearchValue({ nonce: '', signature: '' });
     setFoundIndex(null);
     setFoundPage(null);
     setHasSearched(false);
@@ -134,24 +142,33 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
   };
 
   useEffect(() => {
-    if (type === 'outputs' && payrefParams && outputsData?.body?.data) {
+    if (
+      type === 'kernels' &&
+      (nonceParams || signatureParams) &&
+      allKernelsData?.body?.data
+    ) {
       setShowSearch(true);
       setSearchValue({
-        payref: payrefParams || '',
+        nonce: nonceParams || '',
+        signature: signatureParams || '',
       });
 
-      const idx = payrefSearch(payrefParams || '', outputsData.body.data);
+      const idx = kernelSearch(
+        nonceParams || '',
+        signatureParams || '',
+        allKernelsData.body.data
+      );
       setFoundIndex(idx);
 
       if (idx !== null && idx >= 0) {
-        const outputPage = Math.floor(idx / itemsPerPage) + 1;
-        setFoundPage(outputPage);
-        setPage(outputPage);
+        const kernelPage = Math.floor(idx / itemsPerPage) + 1;
+        setFoundPage(kernelPage);
+        setPage(kernelPage);
 
         setTimeout(() => {
           const indexOnPage = idx % itemsPerPage;
           const foundPanel = `panel${
-            (outputPage - 1) * itemsPerPage + 1 + indexOnPage
+            (kernelPage - 1) * itemsPerPage + 1 + indexOnPage
           }`;
           setExpanded(foundPanel);
         }, 0);
@@ -160,78 +177,45 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       }
       setHasSearched(true);
     }
-  }, [payrefParams, outputsData, type, itemsPerPage]);
+  }, [nonceParams, signatureParams, allKernelsData, type, itemsPerPage]);
 
-  let renderItems;
-
-  if (
-    type === 'outputs' &&
-    foundIndex !== null &&
-    foundIndex >= 0 &&
-    foundPage === page
-  ) {
-    const indexOnPage = foundIndex % itemsPerPage;
-    const content = displayedItems?.[indexOnPage];
-    if (content) {
-      const adjustedIndex = startIndex + 1 + indexOnPage;
-      const expandedPanel = `panel${adjustedIndex}`;
-      const items = outputItems(content);
-
-      renderItems = (
-        <GenerateAccordion
-          items={items}
-          adjustedIndex={adjustedIndex}
-          expanded={expanded}
-          handleChange={handleChange}
-          expandedPanel={expandedPanel}
-          tabName={title}
-          key={adjustedIndex}
-          isHighlighted={true}
-        />
-      );
-    } else {
-      renderItems = null;
+  const renderItems = displayedItems?.map((content: any, index: number) => {
+    const adjustedIndex = startIndex + 1 + index;
+    const expandedPanel = `panel${adjustedIndex}`;
+    let items: any[] = [];
+    switch (type) {
+      case 'inputs':
+        items = inputItems(content);
+        break;
+      case 'outputs':
+        items = outputItems(content);
+        break;
+      case 'kernels':
+        items = kernelItems(content);
+        break;
+      default:
+        break;
     }
-  } else {
-    // Show all items as before
-    renderItems = displayedItems?.map((content: any, index: number) => {
-      const adjustedIndex = startIndex + 1 + index;
-      const expandedPanel = `panel${adjustedIndex}`;
-      let items: any[] = [];
-      switch (type) {
-        case 'inputs':
-          items = inputItems(content);
-          break;
-        case 'outputs':
-          items = outputItems(content);
-          break;
-        case 'kernels':
-          items = kernelItems(content);
-          break;
-        default:
-          break;
-      }
 
-      const shouldHighlight =
-        type === 'outputs' &&
-        foundIndex !== null &&
-        foundPage === page &&
-        foundIndex % itemsPerPage === index;
+    const shouldHighlight =
+      type === 'kernels' &&
+      foundIndex !== null &&
+      foundPage === page &&
+      foundIndex % itemsPerPage === index;
 
-      return (
-        <GenerateAccordion
-          items={items}
-          adjustedIndex={adjustedIndex}
-          expanded={expanded}
-          handleChange={handleChange}
-          expandedPanel={expandedPanel}
-          tabName={title}
-          key={adjustedIndex}
-          isHighlighted={shouldHighlight}
-        />
-      );
-    });
-  }
+    return (
+      <GenerateAccordion
+        items={items}
+        adjustedIndex={adjustedIndex}
+        expanded={expanded}
+        handleChange={handleChange}
+        expandedPanel={expandedPanel}
+        tabName={title}
+        key={adjustedIndex}
+        isHighlighted={shouldHighlight}
+      />
+    );
+  });
 
   const handlePageChange = (
     _event: React.ChangeEvent<unknown>,
@@ -254,7 +238,7 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
     <>
       <InnerHeading
         icon={
-          type === 'outputs' ? (
+          type === 'kernels' ? (
             <IconButton
               aria-label={showSearch ? 'Hide search' : 'Show search'}
               onClick={() => setShowSearch((prev) => !prev)}
@@ -267,22 +251,37 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       >
         {title}s ({totalItems})
       </InnerHeading>
-      {type === 'outputs' && showSearch && (
+      {type === 'kernels' && showSearch && (
         <Stack gap={1} pb={2}>
           <Typography variant="body2">
-            Search by Payment Reference (PayRef)
+            Search for a kernel by nonce or signature
           </Typography>
           <TextField
-            label="Payment Reference"
-            placeholder="Enter 64-character PayRef hash"
-            name="payref"
+            label="Nonce"
+            placeholder="Search by nonce"
+            name="nonce"
             variant="outlined"
             size="small"
-            value={searchValue.payref}
+            value={searchValue.nonce}
             onChange={handleSearchChange}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                handleOutputsSearch();
+                handleKernelSearch();
+              }
+            }}
+            fullWidth
+          />
+          <TextField
+            label="Signature"
+            placeholder="Search by signature"
+            name="signature"
+            variant="outlined"
+            size="small"
+            value={searchValue.signature}
+            onChange={handleSearchChange}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleKernelSearch();
               }
             }}
             fullWidth
@@ -290,44 +289,38 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
 
           <Stack direction="row" gap={1} justifyContent="flex-end">
             <Button onClick={handleClear}>Clear</Button>
-            <Button onClick={handleOutputsSearch} variant="contained">
+            <Button onClick={handleKernelSearch} variant="contained">
               Search
             </Button>
           </Stack>
           {foundIndex !== null && foundIndex >= 0 && (
             <Alert severity="success" sx={{ mt: 1 }} variant="standard">
-              Found in output {foundIndex + 1}
+              Found in kernel {foundIndex + 1}
             </Alert>
           )}
           {hasSearched && foundIndex === null && (
             <Alert severity="error" sx={{ mt: 1 }} variant="standard">
-              No matching output found
+              No matching kernel found
             </Alert>
           )}
         </Stack>
       )}
       {renderItems}
       <Stack justifyContent="center" mt={2} direction="row">
-        {totalItems > itemsPerPage &&
-          !(
-            type === 'outputs' &&
-            foundIndex !== null &&
-            foundIndex >= 0 &&
-            foundPage === page
-          ) && (
-            <Pagination
-              count={totalPages}
-              page={page}
-              onChange={handlePageChange}
-              showFirstButton
-              showLastButton
-              color="primary"
-              variant="outlined"
-            />
-          )}
+        {totalItems > itemsPerPage && (
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+            showFirstButton
+            showLastButton
+            color="primary"
+            variant="outlined"
+          />
+        )}
       </Stack>
     </>
   );
 }
 
-export default Outputs;
+export default Kernels;
