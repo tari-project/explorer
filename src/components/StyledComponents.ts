@@ -48,11 +48,13 @@ export const StyledAccordion = styled(Accordion, {
   shouldForwardProp: (prop) => prop !== 'isHighlighted',
 })<StyledAccordionProps>(({ theme, isHighlighted }) => ({
   backgroundColor: theme.palette.background.paper,
-  boxShadow: '1px 5px 28px rgba(35, 11, 73, 0.05)',
+  boxShadow: isHighlighted
+    ? '0px 5px 20px rgba(35, 11, 73, 0.15)'
+    : '0px 2px 4px rgba(35, 11, 73, 0.05)',
   borderRadius: theme.shape.borderRadius,
   marginBottom: theme.spacing(1),
   border: isHighlighted
-    ? `2px solid ${theme.palette.secondary.main}`
+    ? `2px solid rgba(255, 255, 255, 0.08)`
     : '2px solid rgba(255,255,255,0.04)',
   '&:hover': {
     backgroundColor: '#fafafc',

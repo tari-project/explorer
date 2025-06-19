@@ -72,7 +72,7 @@ export default function AdvancedSearch() {
                 <StyledFormControlLabel
                   value="payref"
                   control={<Radio />}
-                  label="Payment Reference"
+                  label="Payment Reference (PayRef)"
                 />
                 <StyledFormControlLabel
                   value="block"

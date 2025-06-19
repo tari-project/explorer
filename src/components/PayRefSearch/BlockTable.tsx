@@ -22,7 +22,7 @@
 
 import { useState, Fragment } from 'react';
 import { TypographyData } from '@components/StyledComponents';
-import { Typography, Grid, Divider, Pagination } from '@mui/material';
+import { Typography, Grid, Divider, Pagination, Alert } from '@mui/material';
 import {
   toHexString,
   shortenString,
@@ -49,9 +49,9 @@ function BlockTable({ data }: { data: any }) {
 
   if (!data || data.length === 0) {
     return (
-      <Typography variant="body2" color="textSecondary">
+      <Alert severity="error" variant="outlined">
         No blocks found.
-      </Typography>
+      </Alert>
     );
   }
 

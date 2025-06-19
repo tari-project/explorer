@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { TextField, Stack, Button, Alert, Typography } from '@mui/material';
+import { useState, useEffect, useRef } from 'react';
+import { TextField, Stack, Button, Alert } from '@mui/material';
 import {
   useGetBlockByHeightOrHash,
   useGetPaginatedData,
@@ -27,6 +27,7 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const payrefParams = params.get('payref');
+  const foundRef = useRef<HTMLDivElement>(null);
 
   const [page, setPage] = useState(1);
   const startIndex = (page - 1) * itemsPerPage;
@@ -51,6 +52,19 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
   const [foundPage, setFoundPage] = useState<number | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+
+  useEffect(() => {
+    if (
+      type === 'outputs' &&
+      foundIndex !== null &&
+      foundIndex >= 0 &&
+      foundPage === page &&
+      expanded
+    ) {
+      // Scroll to the found output
+      foundRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [foundIndex, foundPage, page, expanded, type]);
 
   let dataLength = '';
   switch (type) {
@@ -178,16 +192,18 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       const items = outputItems(content);
 
       renderItems = (
-        <GenerateAccordion
-          items={items}
-          adjustedIndex={adjustedIndex}
-          expanded={expanded}
-          handleChange={handleChange}
-          expandedPanel={expandedPanel}
-          tabName={`Found in ${title}`}
-          key={adjustedIndex}
-          isHighlighted={true}
-        />
+        <div ref={foundRef}>
+          <GenerateAccordion
+            items={items}
+            adjustedIndex={adjustedIndex}
+            expanded={expanded}
+            handleChange={handleChange}
+            expandedPanel={expandedPanel}
+            tabName={`Found in ${title}`}
+            key={adjustedIndex}
+            isHighlighted={true}
+          />
+        </div>
       );
     } else {
       renderItems = null;
@@ -218,16 +234,17 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
         foundIndex % itemsPerPage === index;
 
       return (
-        <GenerateAccordion
-          items={items}
-          adjustedIndex={adjustedIndex}
-          expanded={expanded}
-          handleChange={handleChange}
-          expandedPanel={expandedPanel}
-          tabName={title}
-          key={adjustedIndex}
-          isHighlighted={shouldHighlight}
-        />
+        <div ref={shouldHighlight ? foundRef : undefined} key={adjustedIndex}>
+          <GenerateAccordion
+            items={items}
+            adjustedIndex={adjustedIndex}
+            expanded={expanded}
+            handleChange={handleChange}
+            expandedPanel={expandedPanel}
+            tabName={title}
+            isHighlighted={shouldHighlight}
+          />
+        </div>
       );
     });
   }
@@ -268,11 +285,8 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       </InnerHeading>
       {type === 'outputs' && showSearch && (
         <Stack gap={1} pb={2}>
-          <Typography variant="body2">
-            Search by Payment Reference (PayRef)
-          </Typography>
           <TextField
-            label="Payment Reference"
+            label="Search by Payment Reference (PayRef)"
             placeholder="Enter 64-character PayRef hash"
             name="payref"
             variant="outlined"
@@ -284,7 +298,9 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
                 handleOutputsSearch();
               }
             }}
+            autoFocus
             fullWidth
+            InputLabelProps={{ shrink: true }}
           />
 
           <Stack direction="row" gap={1} justifyContent="flex-end">
