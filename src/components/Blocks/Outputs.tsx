@@ -59,7 +59,14 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       foundPage === page &&
       expanded
     ) {
-      foundRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const el = foundRef.current;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
+        const top = rect.top + scrollTop - 150;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
     }
   }, [foundIndex, foundPage, page, expanded]);
 
