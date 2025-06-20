@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Stack, TextField, Alert } from '@mui/material';
 import { useMainStore } from '@services/stores/useMainStore';
 
+export const validatePayRefQuery = (query: string) => {
+  const isHash = query.length === 64;
+  return isHash;
+};
+
 const PayRef = () => {
   const searchOpen = useMainStore((state) => state.searchOpen);
   const setSearchOpen = useMainStore((state) => state.setSearchOpen);
@@ -17,16 +22,11 @@ const PayRef = () => {
     }
   }, [searchOpen]);
 
-  const validateQuery = (query: string) => {
-    const isHash = query.length === 64;
-    return isHash;
-  };
-
   const handleSearch = () => {
     if (query === '') {
       return;
     }
-    if (!validateQuery(query)) {
+    if (!validatePayRefQuery(query)) {
       setMessage('Please enter a valid payment reference');
       setQuery('');
       return;

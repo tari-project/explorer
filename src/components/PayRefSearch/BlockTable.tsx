@@ -55,6 +55,9 @@ function BlockTable({ data }: { data: any }) {
     );
   }
 
+  // const blockHeight = data.items[0].block_height;
+  // window.location.replace(`/blocks/${blockHeight}?payref=${payref}`);
+
   function Mobile() {
     const col1 = 4;
     const col2 = 8;
@@ -81,7 +84,9 @@ function BlockTable({ data }: { data: any }) {
                   </Grid>
                   <Grid item xs={col2}>
                     <TypographyData>
-                      <Link to={`/blocks/${height}`}>{height} </Link>
+                      <Link to={`/blocks/${height}?payref=${payref}`}>
+                        {height}{' '}
+                      </Link>
                     </TypographyData>
                   </Grid>
 
@@ -158,7 +163,7 @@ function BlockTable({ data }: { data: any }) {
                 </Grid>
 
                 <Grid item xs={12} pb={2}>
-                  <Link to={`/blocks/${height}`}>
+                  <Link to={`/blocks/${height}?payref=${payref}`}>
                     <Button variant="outlined" fullWidth>
                       View Block
                     </Button>
@@ -236,7 +241,9 @@ function BlockTable({ data }: { data: any }) {
                   </Grid>
                   <Grid item xs={col1} md={col1} lg={col1}>
                     <TypographyData>
-                      <Link to={`/blocks/${height}`}>{height} </Link>
+                      <Link to={`/blocks/${height}?payref=${payref}`}>
+                        {height}{' '}
+                      </Link>
                     </TypographyData>
                   </Grid>
                   <Grid item xs={col2} md={col2} lg={col2}>

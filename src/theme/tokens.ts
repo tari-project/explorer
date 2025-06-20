@@ -33,7 +33,7 @@ import {
 
 export const componentSettings: ThemeOptions = {
   shape: {
-    borderRadius: 8,
+    borderRadius: 16,
   },
   spacing: 8,
   typography: {
@@ -151,7 +151,7 @@ export const componentSettings: ThemeOptions = {
       defaultProps: {
         PaperProps: {
           sx: {
-            borderRadius: 4,
+            borderRadius: 2,
             boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.1)',
           },
         },

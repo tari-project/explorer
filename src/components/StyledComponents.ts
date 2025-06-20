@@ -29,10 +29,12 @@ import Typography from '@mui/material/Typography';
 import Accordion from '@mui/material/Accordion';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import AccordionSummary from '@mui/material/AccordionSummary';
 
 interface StyledAccordionProps {
   theme?: any;
   isHighlighted?: boolean;
+  expanded?: boolean;
 }
 
 export const AccordionIconButton = styled(IconButton)(({ theme }) => ({
@@ -62,6 +64,15 @@ export const StyledAccordion = styled(Accordion, {
   '&:before': {
     display: 'none',
   },
+}));
+
+export const StyledAccordionSummary = styled(AccordionSummary, {
+  shouldForwardProp: (prop) => prop !== 'isHighlighted',
+})<StyledAccordionProps>(({ theme, isHighlighted, expanded }) => ({
+  backgroundColor: isHighlighted ? '#1D1928' : 'transparent',
+  color: isHighlighted ? '#fff' : 'inherit',
+  borderRadius: expanded ? `16px 16px 0 0` : theme.shape.borderRadius,
+  transition: 'background-color 0.3s ease',
 }));
 
 export const TypographyData = styled(Typography)(({ theme }) => ({
@@ -99,15 +110,6 @@ export const PageHeading = styled(Typography)(({ theme }) => ({
   letterSpacing: '1.5px',
   color: theme.palette.text.primary,
 }));
-
-// export const InnerHeading = styled(Typography)(({ theme }) => ({
-//   fontSize: theme.typography.h3.fontSize,
-//   fontFamily: "'DrukHeavy', sans-serif",
-//   textTransform: 'uppercase',
-//   borderBottom: `1px solid ${theme.palette.divider}`,
-//   paddingBottom: theme.spacing(1),
-//   marginBottom: theme.spacing(2),
-// }));
 
 export const DataTableCell = styled(TableCell)(() => ({
   fontFamily: "'PoppinsRegular', sans-serif",

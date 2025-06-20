@@ -38,7 +38,7 @@ const payrefSearch = (payref: string, outputs: any[]): number | null => {
 
   const foundIndex = outputs.findIndex((output) => {
     const payment_reference = toHexString(output.payment_reference.data);
-    const payrefMatch = payref ? payment_reference.includes(payref) : false;
+    const payrefMatch = payref ? payment_reference === payref : false;
     if (payref) {
       return payrefMatch;
     }
