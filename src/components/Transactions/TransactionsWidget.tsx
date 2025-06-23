@@ -1,13 +1,10 @@
-import { Stack, Typography, CircularProgress, Grid } from '@mui/material';
-import { IoStatsChart, IoAnalyticsSharp } from 'react-icons/io5';
+import { Stack, Typography, Grid } from '@mui/material';
+import TxnIcon1 from './images/icon-txns-1.svg';
+import TxnIcon2 from './images/icon-txns-2.svg';
 import { formatNumber } from '@utils/helpers';
 import {
   NumberTypography,
   Line,
-  HorizontalLine,
-  TooltipContainer,
-  CustomTooltip,
-  TooltipWrapper,
   IconWrapper,
 } from './TransactionsWidget.styles';
 import {
@@ -17,6 +14,7 @@ import {
 import FetchStatusCheck from '@components/FetchStatusCheck';
 import { GradientPaper } from '@components/StyledComponents';
 import { useMainStore } from '@services/stores/useMainStore';
+import DotLoader from '@components/DotLoader';
 
 interface TransactionsWidgetProps {
   type: 'day' | 'all';
@@ -55,103 +53,91 @@ function TransactionsWidget() {
     day: {
       amount: volume24h,
       tooltip: 'transactions in the last 24 hours',
-      icon: <IoAnalyticsSharp size={20} />,
-      color: '#AE5AE5',
+      icon: (
+        <img
+          src={TxnIcon1}
+          alt="Transactions Icon"
+          width="30px"
+          height="30px"
+        />
+      ),
       label: 'Last 24 Hours',
     },
     all: {
       amount: allTimeVolume,
       tooltip: 'transactions all time',
-      icon: <IoStatsChart size={20} />,
-      color: '#F28078',
+      icon: (
+        <img
+          src={TxnIcon2}
+          alt="Transactions Icon"
+          width="30px"
+          height="30px"
+        />
+      ),
       label: 'All Time',
     },
   };
 
   function TransactionsMobile({ type }: TransactionsWidgetProps) {
-    const { amount, tooltip, label } = config[type];
-    const tooltipText = `${amount.toLocaleString()} ${tooltip}`;
+    const { amount, label } = config[type];
     return (
-      <TooltipContainer>
-        <TooltipWrapper>
-          <CustomTooltip className="custom-tooltip">
-            <Typography variant="body2" color="textSecondary">
-              {tooltipText}
-            </Typography>
-          </CustomTooltip>
-          <Stack
-            direction="column"
-            spacing={0}
-            alignItems="center"
-            justifyContent="center"
-          >
-            {blocksIsLoading || blockStartIsLoading ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              <NumberTypography variant="h4">
-                {formatNumber(amount)}
-              </NumberTypography>
-            )}
-            <HorizontalLine type={type} />
-            <Stack spacing={-1.4} alignItems="center">
-              <Typography variant="h6" textTransform="uppercase">
-                Transactions
-              </Typography>
-              <Typography variant="body2" textTransform="uppercase">
-                {label}
-              </Typography>
-            </Stack>
-          </Stack>
-        </TooltipWrapper>
-      </TooltipContainer>
+      <Stack
+        direction="row"
+        spacing={0.5}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Typography variant="body2" textTransform="uppercase">
+          {label}:
+        </Typography>
+        {blocksIsLoading || blockStartIsLoading ? (
+          <DotLoader />
+        ) : (
+          <Typography variant="h6" textTransform="uppercase">
+            {formatNumber(amount)}
+          </Typography>
+        )}
+      </Stack>
     );
   }
 
   function TransactionsDesktop({ type }: TransactionsWidgetProps) {
-    const { amount, tooltip, icon, color, label } = config[type];
-    const tooltipText = `${amount.toLocaleString()} ${tooltip}`;
+    const { amount, icon, label } = config[type];
     return (
-      <TooltipContainer style={{ width: '100%' }}>
-        <TooltipWrapper>
-          <CustomTooltip className="custom-tooltip">
-            <Typography variant="body2" color="textSecondary">
-              {tooltipText}
-            </Typography>
-          </CustomTooltip>
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Stack
-              direction={'row'}
-              spacing={1}
-              alignItems="center"
-              justifyContent={'flex-end'}
-              minWidth={'120px'}
-            >
-              <IconWrapper bgcolor={color}>{icon}</IconWrapper>
-              {blocksIsLoading || blockStartIsLoading ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                <NumberTypography variant="h4">
-                  {formatNumber(amount)}
-                </NumberTypography>
-              )}
+      <Stack
+        direction="row"
+        spacing={0.75}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Stack
+          direction={'row'}
+          spacing={1}
+          alignItems="center"
+          justifyContent={'flex-end'}
+          minWidth={'120px'}
+        >
+          <IconWrapper>{icon}</IconWrapper>
+          {blocksIsLoading || blockStartIsLoading ? (
+            <Stack justifyContent="center" alignItems="center" width="90px">
+              <DotLoader />
             </Stack>
-            <Line type={type} />
-            <Stack spacing={-1.4}>
-              <Typography variant="h6" textTransform="uppercase">
-                Transactions
-              </Typography>
-              <Typography variant="body2" textTransform="uppercase">
-                {label}
-              </Typography>
-            </Stack>
-          </Stack>
-        </TooltipWrapper>
-      </TooltipContainer>
+          ) : (
+            <NumberTypography variant="h4">
+              {formatNumber(amount)}
+            </NumberTypography>
+          )}
+        </Stack>
+        <Line type={type} />
+        <Stack spacing={-1.4}>
+          <Typography variant="h6" textTransform="uppercase">
+            Transactions
+          </Typography>
+          <Typography variant="body2" textTransform="uppercase">
+            {label}
+          </Typography>
+        </Stack>
+      </Stack>
     );
   }
 
@@ -172,9 +158,21 @@ function TransactionsWidget() {
   if (isMobile) {
     return (
       <GradientPaper
-        style={{ width: '100%', padding: '16px', cursor: 'arrow' }}
+        style={{
+          borderRadius: '40px',
+          padding: '4px',
+        }}
       >
-        <Stack direction="row" spacing={6} justifyContent="center">
+        <IconWrapper>{config.day.icon}</IconWrapper>
+        <Stack
+          direction="column"
+          spacing={-1.5}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Typography variant="h6" textTransform="uppercase">
+            Transactions
+          </Typography>
           <TransactionsMobile type="day" />
           <TransactionsMobile type="all" />
         </Stack>
@@ -186,7 +184,11 @@ function TransactionsWidget() {
     <Grid container spacing={3}>
       <Grid item xs={12} md={6}>
         <GradientPaper
-          style={{ width: '100%', padding: '16px', cursor: 'arrow' }}
+          style={{
+            width: '100%',
+            padding: '12px 8px',
+            borderRadius: '40px',
+          }}
         >
           <TransactionsDesktop type="day" />
         </GradientPaper>
@@ -194,7 +196,11 @@ function TransactionsWidget() {
 
       <Grid item xs={12} md={6}>
         <GradientPaper
-          style={{ width: '100%', padding: '16px', cursor: 'arrow' }}
+          style={{
+            width: '100%',
+            padding: '12px 8px',
+            borderRadius: '40px',
+          }}
         >
           <TransactionsDesktop type="all" />
         </GradientPaper>

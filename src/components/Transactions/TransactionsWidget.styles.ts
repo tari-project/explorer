@@ -10,7 +10,7 @@ const gradient2 = 'linear-gradient(80deg, #FF9958 -10.22%, #E56798 113.87%)';
 
 export const NumberTypography = styled(Typography)(({ theme }) => ({
   fontFamily: 'DrukHeavy, sans-serif',
-  fontSize: '34px',
+  fontSize: '32px',
   color: theme.palette.text.primary,
   [theme.breakpoints.down('md')]: {
     fontSize: '28px',
@@ -52,19 +52,15 @@ export const HorizontalLine = styled('div')<TransactionsWidgetProps>(
   })
 );
 
-export const IconWrapper = styled('span')<{ bgcolor: string }>(
-  ({ bgcolor }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: bgcolor,
-    color: '#FFFFFF',
-    padding: '6px',
-    borderRadius: '50%',
-    width: '30px',
-    height: '30px',
-  })
-);
+export const IconWrapper = styled('span')(() => ({
+  position: 'absolute',
+  left: '16px',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
 
 export const LightTooltip = styled(Tooltip)(({ theme }) => ({
   tooltip: {
