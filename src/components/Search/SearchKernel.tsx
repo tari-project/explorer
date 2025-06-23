@@ -59,7 +59,7 @@ const SearchKernel = () => {
     <Stack gap={2} pb={2}>
       <TextField
         label="Nonce"
-        placeholder="Enter Nonce"
+        placeholder="Enter 64-character nonce hash"
         name="nonce"
         variant="outlined"
         size="small"
@@ -81,7 +81,7 @@ const SearchKernel = () => {
       />
       <TextField
         label="Signature"
-        placeholder="Enter Signature"
+        placeholder="Enter 64-character signature hash"
         name="signature"
         variant="outlined"
         size="small"
@@ -110,10 +110,6 @@ const SearchKernel = () => {
         </Button>
       </Stack>
       {message && (
-        // <Typography variant="body2" color="textSecondary">
-        //   {message}
-        // </Typography>
-
         <Alert severity="error" variant="standard">
           {message}
         </Alert>

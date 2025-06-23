@@ -34,6 +34,8 @@ import KernelHeader from '@components/KernelSearch/KernelHeader';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useMainStore } from '@services/stores/useMainStore';
 import { useEffect } from 'react';
+import PayRefSearchPage from '@routes/PayRefSearchPage';
+import PayRefHeader from '@components/PayRefSearch/PayRefHeader';
 
 function App() {
   const theme = useTheme();
@@ -68,6 +70,12 @@ function App() {
           element={<PageLayout customHeader={<KernelHeader />} />}
         >
           <Route index element={<KernelSearch />} />
+        </Route>
+        <Route
+          path="search_outputs_by_payref"
+          element={<PageLayout customHeader={<PayRefHeader />} />}
+        >
+          <Route index element={<PayRefSearchPage />} />
         </Route>
         <Route path="mempool" element={<PageLayout title="Mempool" />}>
           <Route index element={<MempoolPage />} />

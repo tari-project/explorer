@@ -156,6 +156,10 @@ function formatNumber(number: number, decimals: number = 2) {
   return number.toFixed(decimals) + suffixes[suffixIndex];
 }
 
+function formatXTM(amount: number): string {
+  return amount / 1_000_000 + ' XTM';
+}
+
 function powCheck(num: string): string {
   let powText = '';
   switch (num) {
@@ -186,6 +190,7 @@ export {
   handleChangeRowsPerPage,
   formatTimestamp,
   formatHash,
+  formatXTM,
   formatNumber,
   powCheck,
 };
