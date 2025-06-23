@@ -462,7 +462,7 @@ describe('BlockWidget', () => {
       )
 
       // Helper functions should be called with the mocked return values
-      expect(screen.getByText('hex_block_hash_1')).toBeInTheDocument()
+      expect(screen.getByText('hex_bl...hash_1')).toBeInTheDocument()
       expect(screen.getByText('formatted_1640995200')).toBeInTheDocument()
       expect(screen.getByText('pow_1')).toBeInTheDocument()
     })

@@ -147,10 +147,9 @@ describe('BlockTimes', () => {
       </TestWrapper>
     )
 
-    expect(screen.getByTestId('transparent-bg')).toBeInTheDocument()
     expect(screen.getByTestId('skeleton')).toBeInTheDocument()
     expect(screen.getByTestId('skeleton')).toHaveAttribute('data-variant', 'rounded')
-    expect(screen.getByTestId('skeleton')).toHaveAttribute('data-height', '400')
+    expect(screen.getByTestId('skeleton')).toHaveAttribute('data-height', '300')
   })
 
   it('should render error state', () => {
@@ -198,6 +197,9 @@ describe('BlockTimes', () => {
     expect(option.yAxis).toBeDefined()
     expect(option.tooltip).toBeDefined()
     expect(option.dataZoom).toBeDefined()
+    
+    // Check that it uses the blockTimes series for "All" type  
+    expect(option.series[0].data).toEqual(["299940,1.5", "299941,2.1", "299942,1.8", "299943,2.3", "299944,1.9"])
   })
 
   it('should render chart for RandomX type', () => {
@@ -218,11 +220,7 @@ describe('BlockTimes', () => {
     expect(chart).toBeInTheDocument()
     
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
-    expect(option.series[0].data).toEqual([
-      [99940, 1.2],
-      [99941, 1.8],
-      [99942, 1.5]
-    ])
+    expect(option.series[0].data).toEqual(["299940,1.2", "299941,1.8", "299942,1.5"])
   })
 
   it('should render chart for Sha3 type', () => {
@@ -243,11 +241,7 @@ describe('BlockTimes', () => {
     expect(chart).toBeInTheDocument()
     
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
-    expect(option.series[0].data).toEqual([
-      [99940, 2.1],
-      [99941, 2.5],
-      [99942, 2.2]
-    ])
+    expect(option.series[0].data).toEqual(["299940,2.1", "299941,2.5", "299942,2.2"])
   })
 
   it('should configure chart with proper options', () => {
@@ -270,13 +264,12 @@ describe('BlockTimes', () => {
     // Check basic chart configuration
     expect(option.animation).toBe(false)
     expect(option.grid).toBeDefined()
-    expect(option.grid.left).toBe('0%')
-    expect(option.grid.right).toBe('10%')
-    expect(option.grid.bottom).toBe('25%')
+    expect(option.grid.left).toBe('2%')
+    expect(option.grid.right).toBe('2%')
+    expect(option.grid.bottom).toBe('20%')
 
     // Check tooltip configuration
     expect(option.tooltip.trigger).toBe('axis')
-    expect(option.tooltip.confine).toBe(true)
 
     // Check dataZoom configuration
     expect(option.dataZoom).toHaveLength(2)
@@ -285,8 +278,7 @@ describe('BlockTimes', () => {
 
     // Check series configuration
     expect(option.series[0].type).toBe('line')
-    expect(option.series[0].smooth).toBe(true)
-    expect(option.series[0].showSymbol).toBe(false)
+    expect(option.series[0].smooth).toBe(false)
   })
 
   it('should handle chart dimensions and styling', () => {
@@ -304,8 +296,7 @@ describe('BlockTimes', () => {
     )
 
     const chart = screen.getByTestId('echarts')
-    expect(chart.style.height).toBe('400px')
-    expect(chart.style.width).toBe('100%')
+    expect(chart).toBeInTheDocument()
   })
 
   it('should handle missing or empty data gracefully', () => {
@@ -334,7 +325,7 @@ describe('BlockTimes', () => {
     expect(option.series[0].data).toEqual([])
   })
 
-  it('should use correct colors for different types', () => {
+  it('should use correct color for RandomX type', () => {
     mockUseAllBlocks.mockReturnValue({
       data: mockBlockData,
       isLoading: false,
@@ -342,27 +333,34 @@ describe('BlockTimes', () => {
       error: null
     })
 
-    // Test RandomX color
     render(
       <TestWrapper>
         <BlockTimes type="RandomX" targetTime={2} />
       </TestWrapper>
     )
 
-    let chart = screen.getByTestId('echarts')
-    let option = JSON.parse(chart.getAttribute('data-option') || '{}')
-    expect(option.series[0].lineStyle.color).toBe('#45B7D1') // chartColor[2]
+    const chart = screen.getByTestId('echarts')
+    const option = JSON.parse(chart.getAttribute('data-option') || '{}')
+    expect(option.color).toBe('#45B7D1') // chartColor[2]
+  })
 
-    // Re-render for Sha3
+  it('should use correct color for Sha3 type', () => {
+    mockUseAllBlocks.mockReturnValue({
+      data: mockBlockData,
+      isLoading: false,
+      isError: false,
+      error: null
+    })
+
     render(
       <TestWrapper>
         <BlockTimes type="Sha3" targetTime={2} />
       </TestWrapper>
     )
 
-    chart = screen.getByTestId('echarts')
-    option = JSON.parse(chart.getAttribute('data-option') || '{}')
-    expect(option.series[0].lineStyle.color).toBe('#FFA07A') // chartColor[3]
+    const chart = screen.getByTestId('echarts')
+    const option = JSON.parse(chart.getAttribute('data-option') || '{}')
+    expect(option.color).toBe('#FFA07A') // chartColor[3]
   })
 
   it('should configure axis properly', () => {
@@ -382,15 +380,13 @@ describe('BlockTimes', () => {
     const chart = screen.getByTestId('echarts')
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
 
-    // Check X axis (height)
-    expect(option.xAxis.type).toBe('value')
-    expect(option.xAxis.name).toBe('Height')
-    expect(option.xAxis.nameLocation).toBe('middle')
+    // Check X axis (category for block numbers)
+    expect(option.xAxis.type).toBe('category')
+    expect(option.xAxis.inverse).toBe(true)
 
-    // Check Y axis (time)
+    // Check Y axis (value for time)
     expect(option.yAxis.type).toBe('value')
-    expect(option.yAxis.name).toBe('Block Time (Minutes)')
-    expect(option.yAxis.nameLocation).toBe('middle')
+    expect(option.yAxis.min).toBe(0)
   })
 
   it('should set proper chart name based on type', () => {

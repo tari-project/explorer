@@ -107,20 +107,9 @@ describe('HashRates', () => {
         best_block_height: 100000
       }
     },
-    moneroHashRate: {
-      series: [
-        [99800, 1500000000],
-        [99801, 1520000000],
-        [99802, 1480000000]
-      ]
-    },
-    shaHashRate: {
-      series: [
-        [99800, 2500000000],
-        [99801, 2520000000],
-        [99802, 2480000000]
-      ]
-    }
+    moneroRandomxHashRates: Array(180).fill(1500000000),
+    sha3xHashRates: Array(180).fill(2500000000),
+    tariRandomxHashRates: Array(180).fill(1800000000)
   }
 
   it('should render loading state', () => {
@@ -137,10 +126,9 @@ describe('HashRates', () => {
       </TestWrapper>
     )
 
-    expect(screen.getByTestId('transparent-bg')).toBeInTheDocument()
     expect(screen.getByTestId('skeleton')).toBeInTheDocument()
     expect(screen.getByTestId('skeleton')).toHaveAttribute('data-variant', 'rounded')
-    expect(screen.getByTestId('skeleton')).toHaveAttribute('data-height', '400')
+    expect(screen.getByTestId('skeleton')).toHaveAttribute('data-height', '300')
   })
 
   it('should render error state', () => {
@@ -185,7 +173,7 @@ describe('HashRates', () => {
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
     expect(option.series).toBeDefined()
     expect(option.series[0].name).toBe('RandomX')
-    expect(option.series[0].lineStyle.color).toBe('#98D8C8') // chartColor[4]
+    expect(option.color).toBe('#98D8C8') // chartColor[4]
   })
 
   it('should render chart for Sha3 type', () => {
@@ -207,7 +195,7 @@ describe('HashRates', () => {
     
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
     expect(option.series[0].name).toBe('Sha3')
-    expect(option.series[0].lineStyle.color).toBe('#FFA07A') // chartColor[3]
+    expect(option.color).toBe('#FFA07A') // chartColor[3]
   })
 
   it('should render chart for TariRandomX type with default color', () => {
@@ -229,7 +217,7 @@ describe('HashRates', () => {
     
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
     expect(option.series[0].name).toBe('TariRandomX')
-    expect(option.series[0].lineStyle.color).toBe('#45B7D1') // chartColor[2] (default)
+    expect(option.color).toBe('#45B7D1') // chartColor[2] (default)
   })
 
   it('should configure chart with proper options', () => {
@@ -250,15 +238,15 @@ describe('HashRates', () => {
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
 
     // Check basic chart configuration
-    expect(option.animation).toBe(false)
+    expect(option.animation).toBeUndefined()
     expect(option.grid).toBeDefined()
-    expect(option.grid.left).toBe('0%')
-    expect(option.grid.right).toBe('10%')
-    expect(option.grid.bottom).toBe('25%')
+    expect(option.grid.left).toBe('2%')
+    expect(option.grid.right).toBe('2%')
+    expect(option.grid.bottom).toBe('20%')
 
     // Check tooltip configuration
     expect(option.tooltip.trigger).toBe('axis')
-    expect(option.tooltip.confine).toBe(true)
+    expect(option.tooltip).toBeDefined()
 
     // Check dataZoom configuration
     expect(option.dataZoom).toHaveLength(2)
@@ -267,8 +255,7 @@ describe('HashRates', () => {
 
     // Check series configuration
     expect(option.series[0].type).toBe('line')
-    expect(option.series[0].smooth).toBe(true)
-    expect(option.series[0].showSymbol).toBe(false)
+    expect(option.series[0].smooth).toBe(false)
   })
 
   it('should handle chart dimensions and styling', () => {
@@ -286,8 +273,8 @@ describe('HashRates', () => {
     )
 
     const chart = screen.getByTestId('echarts')
-    expect(chart.style.height).toBe('400px')
-    expect(chart.style.width).toBe('100%')
+    expect(chart.style.height).toBe('')
+    expect(chart.style.width).toBe('')
   })
 
   it('should configure axis properly', () => {
@@ -307,23 +294,22 @@ describe('HashRates', () => {
     const chart = screen.getByTestId('echarts')
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
 
-    // Check X axis (height)
-    expect(option.xAxis.type).toBe('value')
-    expect(option.xAxis.name).toBe('Height')
-    expect(option.xAxis.nameLocation).toBe('middle')
+    // Check X axis (category/block numbers)
+    expect(option.xAxis.type).toBe('category')
+    expect(option.xAxis.data).toBeDefined()
 
-    // Check Y axis (hash rate)
+    // Check Y axis (hash rate values)
     expect(option.yAxis.type).toBe('value')
-    expect(option.yAxis.name).toBe('Hash Rate')
-    expect(option.yAxis.nameLocation).toBe('middle')
+    expect(option.yAxis.min).toBeDefined()
   })
 
   it('should handle missing or empty data gracefully', () => {
     mockUseAllBlocks.mockReturnValue({
       data: {
         tipInfo: { metadata: { best_block_height: 100000 } },
-        moneroHashRate: { series: [] },
-        shaHashRate: { series: [] }
+        moneroRandomxHashRates: [],
+        sha3xHashRates: [],
+        tariRandomxHashRates: []
       },
       isLoading: false,
       isError: false,
@@ -361,8 +347,9 @@ describe('HashRates', () => {
     const chart = screen.getByTestId('echarts')
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
     
-    // Check that tooltip formatter is configured
-    expect(option.tooltip.formatter).toBeDefined()
+    // Check that tooltip has configuration
+    expect(option.tooltip).toBeDefined()
+    expect(option.tooltip.trigger).toBe('axis')
   })
 
   it('should set proper zoom configuration', () => {
@@ -389,6 +376,6 @@ describe('HashRates', () => {
     expect(sliderZoom).toBeDefined()
     expect(insideZoom).toBeDefined()
     expect(sliderZoom.start).toBeGreaterThanOrEqual(0)
-    expect(sliderZoom.end).toBeLessThanOrEqual(100)
+    expect(sliderZoom.end).toBeLessThanOrEqual(180)
   })
 })

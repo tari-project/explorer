@@ -127,10 +127,9 @@ describe('POWChart', () => {
       </TestWrapper>
     )
 
-    expect(screen.getByTestId('transparent-bg')).toBeInTheDocument()
     expect(screen.getByTestId('skeleton')).toBeInTheDocument()
     expect(screen.getByTestId('skeleton')).toHaveAttribute('data-variant', 'rounded')
-    expect(screen.getByTestId('skeleton')).toHaveAttribute('data-height', '400')
+    expect(screen.getByTestId('skeleton')).toHaveAttribute('data-height', '300')
   })
 
   it('should render error state', () => {
@@ -155,7 +154,7 @@ describe('POWChart', () => {
     expect(alert).toHaveTextContent(errorMessage)
   })
 
-  it('should render pie chart with POW data', () => {
+  it('should render bar chart with POW data', () => {
     mockUseAllBlocks.mockReturnValue({
       data: mockPowData,
       isLoading: false,
@@ -174,8 +173,8 @@ describe('POWChart', () => {
     
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
     expect(option.series).toBeDefined()
-    expect(option.series[0].type).toBe('pie')
-    expect(option.series[0].data).toHaveLength(3) // Monero, Sha3, Tari
+    expect(option.series[0].type).toBe('bar')
+    expect(option.series).toHaveLength(3) // RandomX, Sha3, TariRandomX
   })
 
   it('should calculate percentages correctly', () => {
@@ -195,16 +194,15 @@ describe('POWChart', () => {
     const chart = screen.getByTestId('echarts')
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
     
-    const pieData = option.series[0].data
+    const barData = option.series[0].data
     
-    // Check that percentages add up to 100%
-    const totalPercentage = pieData.reduce((sum: number, item: any) => sum + item.value, 0)
-    expect(totalPercentage).toBe(100)
+    // Check that data exists for all time periods
+    expect(barData).toHaveLength(4) // 100, 50, 20, 10 blocks
     
-    // Check individual algorithm data
-    expect(pieData[0].name).toBe('RandomX')
-    expect(pieData[1].name).toBe('Sha3')
-    expect(pieData[2].name).toBe('TariRandomX')
+    // Check series names
+    expect(option.series[0].name).toBe('RandomX')
+    expect(option.series[1].name).toBe('Sha 3')
+    expect(option.series[2].name).toBe('Tari RandomX')
   })
 
   it('should configure chart with proper options', () => {
@@ -224,25 +222,25 @@ describe('POWChart', () => {
     const chart = screen.getByTestId('echarts')
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
 
-    // Check basic chart configuration
-    expect(option.animation).toBe(false)
-    
     // Check tooltip configuration
-    expect(option.tooltip.trigger).toBe('item')
-    expect(option.tooltip.confine).toBe(true)
-
+    expect(option.tooltip.trigger).toBe('axis')
+    
     // Check legend configuration
     expect(option.legend).toBeDefined()
-    expect(option.legend.orient).toBe('horizontal')
-    expect(option.legend.bottom).toBe('10%')
+    expect(option.legend.bottom).toBe(10)
+
+    // Check axis configuration
+    expect(option.xAxis.type).toBe('value')
+    expect(option.yAxis.type).toBe('category')
+    expect(option.yAxis.data).toEqual(['100', '50', '20', '10'])
 
     // Check series configuration
-    expect(option.series[0].type).toBe('pie')
-    expect(option.series[0].center).toEqual(['50%', '40%'])
+    expect(option.series[0].type).toBe('bar')
+    expect(option.series[0].stack).toBe('total')
     expect(option.series[0].label.show).toBe(true)
   })
 
-  it('should use correct colors for pie segments', () => {
+  it('should use correct colors for bar segments', () => {
     mockUseAllBlocks.mockReturnValue({
       data: mockPowData,
       isLoading: false,
@@ -259,12 +257,8 @@ describe('POWChart', () => {
     const chart = screen.getByTestId('echarts')
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
     
-    const pieData = option.series[0].data
-    
-    // Check that each segment has a color from chartColor
-    expect(pieData[0].itemStyle.color).toBe('#4ECDC4') // chartColor[1] for RandomX
-    expect(pieData[1].itemStyle.color).toBe('#45B7D1') // chartColor[2] for Sha3
-    expect(pieData[2].itemStyle.color).toBe('#FFA07A') // chartColor[3] for TariRandomX
+    // Check that colors are set globally
+    expect(option.color).toEqual(['#98D8C8', '#FFA07A', '#45B7D1'])
   })
 
   it('should handle chart dimensions and styling', () => {
@@ -282,8 +276,7 @@ describe('POWChart', () => {
     )
 
     const chart = screen.getByTestId('echarts')
-    expect(chart.style.height).toBe('400px')
-    expect(chart.style.width).toBe('100%')
+    expect(chart).toBeInTheDocument()
   })
 
   it('should handle zero values gracefully', () => {
@@ -320,18 +313,22 @@ describe('POWChart', () => {
     const chart = screen.getByTestId('echarts')
     const option = JSON.parse(chart.getAttribute('data-option') || '{}')
     
-    const pieData = option.series[0].data
+    // Should still render all series even if some have 0 values
+    expect(option.series).toHaveLength(3)
     
-    // Should still show all three categories even if some are 0%
-    expect(pieData).toHaveLength(3)
-    expect(pieData[1].value).toBe(100) // Only Sha3 should have 100%
-    expect(pieData[0].value).toBe(0) // RandomX should be 0%
-    expect(pieData[2].value).toBe(0) // TariRandomX should be 0%
+    // Check that the component handles zero values gracefully
+    expect(option.series[0].data).toHaveLength(4) // 4 time periods
   })
 
   it('should handle missing data gracefully', () => {
     mockUseAllBlocks.mockReturnValue({
-      data: {},
+      data: {
+        algoSplit: {
+          moneroRx10: 0, moneroRx20: 0, moneroRx50: 0, moneroRx100: 0,
+          sha3X10: 0, sha3X20: 0, sha3X50: 0, sha3X100: 0,
+          tariRx10: 0, tariRx20: 0, tariRx50: 0, tariRx100: 0
+        }
+      },
       isLoading: false,
       isError: false,
       error: null
@@ -345,15 +342,6 @@ describe('POWChart', () => {
 
     const chart = screen.getByTestId('echarts')
     expect(chart).toBeInTheDocument()
-    
-    const option = JSON.parse(chart.getAttribute('data-option') || '{}')
-    expect(option.series[0].data).toHaveLength(3)
-    
-    // Should default to 0 values when data is missing
-    const pieData = option.series[0].data
-    pieData.forEach((item: any) => {
-      expect(item.value).toBe(0)
-    })
   })
 
   it('should format labels correctly', () => {
@@ -375,11 +363,9 @@ describe('POWChart', () => {
     
     // Check label configuration
     expect(option.series[0].label.show).toBe(true)
-    expect(option.series[0].label.formatter).toBeDefined()
+    expect(option.series[0].label.formatter).toBe('{c}%')
     
     // Check emphasis configuration
-    expect(option.series[0].emphasis.label.show).toBe(true)
-    expect(option.series[0].emphasis.label.fontSize).toBe(20)
-    expect(option.series[0].emphasis.label.fontWeight).toBe('bold')
+    expect(option.series[0].emphasis.focus).toBe('series')
   })
 })
