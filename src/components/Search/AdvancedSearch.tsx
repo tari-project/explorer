@@ -10,7 +10,6 @@ import {
 import { useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import SearchBlock from './SearchBlock';
-import SearchKernel from './SearchKernel';
 import SearchPayRef from './SearchPayRef';
 import { StyledFormControlLabel } from './AdvancedSearch.styles';
 import { useMainStore } from '@services/stores/useMainStore';
@@ -79,23 +78,9 @@ export default function AdvancedSearch() {
                   control={<Radio />}
                   label="Block"
                 />
-                <StyledFormControlLabel
-                  value="kernel"
-                  control={<Radio />}
-                  label="Kernel"
-                />
               </RadioGroup>
             </FormControl>
-            {(() => {
-              switch (searchType) {
-                case 'payref':
-                  return <SearchPayRef />;
-                case 'block':
-                  return <SearchBlock />;
-                default:
-                  return <SearchKernel />;
-              }
-            })()}
+            {searchType === 'payref' ? <SearchPayRef /> : <SearchBlock />}
           </DialogContent>
         </Dialog>
       </ThemeProvider>
