@@ -3,9 +3,6 @@ node_modules
 # Ignore OS files
 .DS_Store
 
-# Ignore build files
-dist/
-
 # Dependencies
 node_modules/
 npm-debug.log*
