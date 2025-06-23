@@ -126,8 +126,8 @@ describe('StatsBox', () => {
     expect(screen.getByTestId('block-height-mobile')).toHaveTextContent('123,456')
   })
 
-  it('should calculate average block time correctly', () => {
-    const { useAllBlocks } = require('@services/api/hooks/useBlocks')
+  it('should calculate average block time correctly', async () => {
+    const { useAllBlocks } = await import('@services/api/hooks/useBlocks')
     
     useAllBlocks.mockReturnValue({
       data: {
@@ -157,8 +157,8 @@ describe('StatsBox', () => {
     expect(screen.getByTestId('average-block-time')).toHaveTextContent('4m')
   })
 
-  it('should handle missing block times data gracefully', () => {
-    const { useAllBlocks } = require('@services/api/hooks/useBlocks')
+  it('should handle missing block times data gracefully', async () => {
+    const { useAllBlocks } = await import('@services/api/hooks/useBlocks')
     
     useAllBlocks.mockReturnValue({
       data: {
@@ -188,8 +188,8 @@ describe('StatsBox', () => {
     expect(screen.getByTestId('stats-desktop')).toBeInTheDocument()
   })
 
-  it('should handle missing hash rate data with defaults', () => {
-    const { useAllBlocks } = require('@services/api/hooks/useBlocks')
+  it('should handle missing hash rate data with defaults', async () => {
+    const { useAllBlocks } = await import('@services/api/hooks/useBlocks')
     
     useAllBlocks.mockReturnValue({
       data: {
@@ -219,8 +219,8 @@ describe('StatsBox', () => {
     expect(screen.getByTestId('sha-hash-rate')).toHaveTextContent('0H/s')
   })
 
-  it('should format hash rates with appropriate units', () => {
-    const { useAllBlocks } = require('@services/api/hooks/useBlocks')
+  it('should format hash rates with appropriate units', async () => {
+    const { useAllBlocks } = await import('@services/api/hooks/useBlocks')
     
     // Test different magnitudes
     useAllBlocks.mockReturnValue({
@@ -252,8 +252,8 @@ describe('StatsBox', () => {
     expect(screen.getByTestId('tari-random-x-hash-rate')).toHaveTextContent('3.5GH/s')
   })
 
-  it('should format block height with thousands separators', () => {
-    const { useAllBlocks } = require('@services/api/hooks/useBlocks')
+  it('should format block height with thousands separators', async () => {
+    const { useAllBlocks } = await import('@services/api/hooks/useBlocks')
     
     useAllBlocks.mockReturnValue({
       data: {
@@ -282,8 +282,8 @@ describe('StatsBox', () => {
     expect(screen.getByTestId('block-height')).toHaveTextContent('1,234,567')
   })
 
-  it('should handle null or undefined data gracefully', () => {
-    const { useAllBlocks } = require('@services/api/hooks/useBlocks')
+  it('should handle null or undefined data gracefully', async () => {
+    const { useAllBlocks } = await import('@services/api/hooks/useBlocks')
     
     useAllBlocks.mockReturnValue({
       data: null,

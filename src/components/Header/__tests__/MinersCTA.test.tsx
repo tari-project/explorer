@@ -45,6 +45,22 @@ vi.mock('@number-flow/react', () => ({
   )
 }))
 
+// Mock lazy loading
+vi.mock('react', async () => {
+  const actual = await vi.importActual('react')
+  return {
+    ...actual,
+    lazy: (fn: any) => {
+      const Component = ({ value, format }: { value: number; format: any }) => (
+        <span data-testid="number-flow">{value}</span>
+      )
+      Component.displayName = 'NumberFlow'
+      return Component
+    },
+    Suspense: ({ children }: { children: React.ReactNode }) => <>{children}</>
+  }
+})
+
 // Mock window.open
 const mockOpen = vi.fn()
 Object.defineProperty(window, 'open', {
@@ -145,8 +161,8 @@ describe('MinersCTA', () => {
     expect(screen.queryByText('Download Tari Universe')).not.toBeInTheDocument()
   })
 
-  it('should handle different OS download links', () => {
-    const { getOS } = require('@utils/getOs')
+  it('should handle different OS download links', async () => {
+    const { getOS } = await import('@utils/getOs')
     
     // Test MacOS
     getOS.mockReturnValue('MacOS')
@@ -187,7 +203,11 @@ describe('MinersCTA', () => {
 
   it('should show download modal on supported OS click', async () => {
     const mockSetShowDownloadModal = vi.fn()
-    const { useMainStore } = require('@services/stores/useMainStore')
+    const { useMainStore } = await import('@services/stores/useMainStore')
+    const { getOS } = await import('@utils/getOs')
+    
+    // Ensure OS is Windows for this test
+    getOS.mockReturnValue('Windows')
     
     useMainStore.mockImplementation((selector) => {
       const state = {
@@ -214,8 +234,8 @@ describe('MinersCTA', () => {
     expect(mockSetShowDownloadModal).toHaveBeenCalledWith(false)
   })
 
-  it('should display miner count with correct formatting', () => {
-    const { useMinerStats } = require('@services/api/hooks/useMinerStats')
+  it('should display miner count with correct formatting', async () => {
+    const { useMinerStats } = await import('@services/api/hooks/useMinerStats')
     
     // Test large number formatting
     useMinerStats.mockReturnValue({
@@ -233,8 +253,8 @@ describe('MinersCTA', () => {
     expect(screen.getByTestId('number-flow')).toBeInTheDocument()
   })
 
-  it('should handle missing miner stats data gracefully', () => {
-    const { useMinerStats } = require('@services/api/hooks/useMinerStats')
+  it('should handle missing miner stats data gracefully', async () => {
+    const { useMinerStats } = await import('@services/api/hooks/useMinerStats')
     
     useMinerStats.mockReturnValue({
       data: null,
@@ -274,8 +294,8 @@ describe('MinersCTA', () => {
     expect(screen.getByText('Download Tari Universe')).toBeInTheDocument()
   })
 
-  it('should handle mobile interface correctly', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+  it('should handle mobile interface correctly', async () => {
+    const { useMainStore } = await import('@services/stores/useMainStore')
     
     useMainStore.mockImplementation((selector) => {
       const state = {

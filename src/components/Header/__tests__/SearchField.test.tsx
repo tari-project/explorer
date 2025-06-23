@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { ThemeProvider } from '@mui/material/styles'
 import { BrowserRouter } from 'react-router-dom'
+import React from 'react'
 import SearchField from '../SearchField/SearchField'
 import { lightTheme } from '@theme/themes'
 
@@ -15,11 +16,17 @@ vi.mock('react-router-dom', async () => {
   }
 })
 
-// Mock SnackbarAlert component
+// Mock SnackbarAlert component  
 vi.mock('../../SnackbarAlert', () => ({
-  default: ({ open, message }: { open: boolean; message: string }) => (
-    open ? <div data-testid="snackbar-alert">{message}</div> : null
-  )
+  default: ({ open, message, setOpen }: { open: boolean; message: string; setOpen: (open: boolean) => void }) => {
+    React.useEffect(() => {
+      if (open) {
+        console.log('SnackbarAlert opened with message:', message)
+      }
+    }, [open, message])
+    
+    return open ? <div data-testid="snackbar-alert" role="alert">{message}</div> : null
+  }
 }))
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -164,7 +171,7 @@ describe('SearchField', () => {
     )
 
     const searchInput = screen.getByLabelText('Search by height or hash')
-    fireEvent.change(searchInput, { target: { value: '1234567890abcdef' } }) // Too short
+    fireEvent.change(searchInput, { target: { value: 'abcdef1234567890' } }) // Invalid - starts with letters, too short for hash
     fireEvent.keyPress(searchInput, { key: 'Enter', code: 'Enter', charCode: 13 })
 
     await waitFor(() => {

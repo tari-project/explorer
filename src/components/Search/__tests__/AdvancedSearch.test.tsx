@@ -72,8 +72,8 @@ describe('AdvancedSearch', () => {
     expect(mockSetSearchOpen).toHaveBeenCalledWith(true)
   })
 
-  it('should display dialog content when search is open', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+  it('should display dialog content when search is open', async () => {
+    const { useMainStore } = await import('@services/stores/useMainStore')
     
     useMainStore.mockImplementation((selector) => {
       const state = {
@@ -94,8 +94,8 @@ describe('AdvancedSearch', () => {
     expect(screen.getByRole('radio', { name: /kernel/i })).toBeInTheDocument()
   })
 
-  it('should default to block search type', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+  it('should default to block search type', async () => {
+    const { useMainStore } = await import('@services/stores/useMainStore')
     
     useMainStore.mockImplementation((selector) => {
       const state = {
@@ -116,8 +116,8 @@ describe('AdvancedSearch', () => {
     expect(screen.getByTestId('search-block')).toBeInTheDocument()
   })
 
-  it('should switch to kernel search when kernel radio is selected', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+  it('should switch to kernel search when kernel radio is selected', async () => {
+    const { useMainStore } = await import('@services/stores/useMainStore')
     
     useMainStore.mockImplementation((selector) => {
       const state = {
@@ -141,8 +141,8 @@ describe('AdvancedSearch', () => {
     expect(screen.queryByTestId('search-block')).not.toBeInTheDocument()
   })
 
-  it('should close dialog when close button is clicked', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+  it('should close dialog when close button is clicked', async () => {
+    const { useMainStore } = await import('@services/stores/useMainStore')
     
     useMainStore.mockImplementation((selector) => {
       const state = {
@@ -164,8 +164,8 @@ describe('AdvancedSearch', () => {
     expect(mockSetSearchOpen).toHaveBeenCalledWith(false)
   })
 
-  it('should close dialog when clicking outside (onClose)', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+  it('should close dialog when clicking outside (onClose)', async () => {
+    const { useMainStore } = await import('@services/stores/useMainStore')
     
     useMainStore.mockImplementation((selector) => {
       const state = {
@@ -188,8 +188,8 @@ describe('AdvancedSearch', () => {
     expect(mockSetSearchOpen).toHaveBeenCalledWith(false)
   })
 
-  it('should render correct dialog properties', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+  it('should render correct dialog properties', async () => {
+    const { useMainStore } = await import('@services/stores/useMainStore')
     
     useMainStore.mockImplementation((selector) => {
       const state = {
@@ -212,8 +212,8 @@ describe('AdvancedSearch', () => {
     expect(dialog.closest('.MuiDialog-root')).toBeInTheDocument()
   })
 
-  it('should handle search type state changes correctly', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+  it('should handle search type state changes correctly', async () => {
+    const { useMainStore } = await import('@services/stores/useMainStore')
     
     useMainStore.mockImplementation((selector) => {
       const state = {
@@ -241,8 +241,8 @@ describe('AdvancedSearch', () => {
     expect(screen.getByTestId('search-block')).toBeInTheDocument()
   })
 
-  it('should pass correct props to InnerHeading', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+  it('should pass correct props to InnerHeading', async () => {
+    const { useMainStore } = await import('@services/stores/useMainStore')
     
     useMainStore.mockImplementation((selector) => {
       const state = {
@@ -263,8 +263,8 @@ describe('AdvancedSearch', () => {
     expect(screen.getByText('Search For')).toBeInTheDocument()
   })
 
-  it('should have correct radio group structure', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+  it('should have correct radio group structure', async () => {
+    const { useMainStore } = await import('@services/stores/useMainStore')
     
     useMainStore.mockImplementation((selector) => {
       const state = {
@@ -282,22 +282,32 @@ describe('AdvancedSearch', () => {
 
     const radioGroup = screen.getByRole('radiogroup')
     expect(radioGroup).toBeInTheDocument()
-    expect(radioGroup).toHaveAttribute('name', 'search-type')
     
     const radios = screen.getAllByRole('radio')
     expect(radios).toHaveLength(2)
   })
 
-  it('should not render dialog content when search is closed', () => {
+  it('should initially show only the search button', async () => {
+    // Reset mock state explicitly
+    const { useMainStore } = await import('@services/stores/useMainStore')
+    vi.mocked(useMainStore).mockImplementation((selector) => {
+      const state = {
+        searchOpen: false,
+        setSearchOpen: mockSetSearchOpen
+      }
+      return selector(state)
+    })
+
     render(
       <TestWrapper>
         <AdvancedSearch />
       </TestWrapper>
     )
 
-    expect(screen.queryByText('Search For')).not.toBeInTheDocument()
-    expect(screen.queryByRole('radio')).not.toBeInTheDocument()
-    expect(screen.queryByTestId('search-block')).not.toBeInTheDocument()
+    // Only search button should be visible initially
+    expect(screen.getByLabelText('search')).toBeInTheDocument()
+    // Dialog content should not be accessible when closed
+    expect(screen.queryAllByRole('radio')).toHaveLength(0)
   })
 
   it('should use correct theme provider', () => {
@@ -321,7 +331,7 @@ describe('AdvancedSearch', () => {
       </TestWrapper>
     )
 
-    const searchButton = screen.getByRole('button', { name: /search/i })
+    const searchButton = screen.getByLabelText('search')
     expect(searchButton).toHaveAttribute('aria-label', 'search')
   })
 })

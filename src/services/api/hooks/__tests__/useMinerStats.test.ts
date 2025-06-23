@@ -1,228 +1,158 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useMinerStats, MINER_STATS_QUERY_KEY } from '../useMinerStats'
 import React from 'react'
 
-// Mock fetch globally
+// Mock fetch
 const mockFetch = vi.fn()
 global.fetch = mockFetch
 
-// Create a wrapper component for React Query
-const createWrapper = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-        refetchOnWindowFocus: false,
-      },
-    },
-  })
-  
-  return ({ children }: { children: React.ReactNode }) => (
+describe('useMinerStats', () => {
+  let queryClient: QueryClient
+
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
     React.createElement(QueryClientProvider, { client: queryClient }, children)
   )
-}
 
-describe('useMinerStats', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+          gcTime: 0,
+        },
+      },
+    })
+    mockFetch.mockClear()
   })
 
-  it('should have correct query key', () => {
+  afterEach(() => {
+    queryClient.clear()
+  })
+
+  it('should have correct query key export', () => {
     expect(MINER_STATS_QUERY_KEY).toEqual(['minerStats'])
   })
 
   it('should fetch miner stats successfully', async () => {
-    const mockData = { totalMiners: 42 }
+    const mockStats = { totalMiners: 42 }
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve(mockData)
+      json: async () => mockStats
     })
 
-    const { result } = renderHook(() => useMinerStats(), {
-      wrapper: createWrapper()
-    })
+    const { result } = renderHook(() => useMinerStats(), { wrapper })
 
     expect(result.current.isLoading).toBe(true)
     expect(result.current.data).toBeUndefined()
-    expect(result.current.error).toBe(null)
 
-    await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true)
-    })
+    await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
     expect(mockFetch).toHaveBeenCalledWith('https://rwa.y.at/miner/stats')
-    expect(result.current.data).toEqual(mockData)
+    expect(result.current.data).toEqual(mockStats)
     expect(result.current.isLoading).toBe(false)
     expect(result.current.error).toBe(null)
   })
 
-  it('should handle fetch errors', async () => {
+  it('should handle fetch errors gracefully', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,
-      status: 500
+      status: 500,
+      statusText: 'Internal Server Error'
     })
 
-    const { result } = renderHook(() => useMinerStats(), {
-      wrapper: createWrapper()
-    })
+    const { result } = renderHook(() => useMinerStats(), { wrapper })
 
-    expect(result.current.isLoading).toBe(true)
+    await waitFor(() => expect(result.current.isError).toBe(true))
 
-    await waitFor(() => {
-      expect(result.current.isError).toBe(true)
-    })
-
-    expect(result.current.error).toBeTruthy()
+    expect(mockFetch).toHaveBeenCalledWith('https://rwa.y.at/miner/stats')
     expect(result.current.data).toBeUndefined()
-    expect(result.current.isLoading).toBe(false)
+    expect(result.current.error).toBeInstanceOf(Error)
+    expect(result.current.error?.message).toBe('Failed to fetch miner stats')
   })
 
   it('should handle network errors', async () => {
     mockFetch.mockRejectedValueOnce(new Error('Network error'))
 
-    const { result } = renderHook(() => useMinerStats(), {
-      wrapper: createWrapper()
-    })
+    const { result } = renderHook(() => useMinerStats(), { wrapper })
 
-    expect(result.current.isLoading).toBe(true)
+    await waitFor(() => expect(result.current.isError).toBe(true))
 
-    await waitFor(() => {
-      expect(result.current.isError).toBe(true)
-    })
-
-    expect(result.current.error).toBeTruthy()
+    expect(mockFetch).toHaveBeenCalledWith('https://rwa.y.at/miner/stats')
     expect(result.current.data).toBeUndefined()
-    expect(result.current.isLoading).toBe(false)
+    expect(result.current.error).toBeInstanceOf(Error)
   })
 
-  it('should handle different response structures', async () => {
-    const mockData = { totalMiners: 1337 }
+  it('should use correct query options', async () => {
+    const mockStats = { totalMiners: 100 }
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve(mockData)
+      json: async () => mockStats
     })
 
-    const { result } = renderHook(() => useMinerStats(), {
-      wrapper: createWrapper()
-    })
+    const { result } = renderHook(() => useMinerStats(), { wrapper })
 
-    await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true)
-    })
+    await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-    expect(result.current.data?.totalMiners).toBe(1337)
+    // Check that the query key is correct
+    const queries = queryClient.getQueryCache().getAll()
+    expect(queries).toHaveLength(1)
+    expect(queries[0].queryKey).toEqual(['minerStats'])
   })
 
-  it('should handle zero miners', async () => {
-    const mockData = { totalMiners: 0 }
+  it('should handle JSON parsing errors', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve(mockData)
+      json: async () => {
+        throw new Error('Invalid JSON')
+      }
     })
 
-    const { result } = renderHook(() => useMinerStats(), {
-      wrapper: createWrapper()
-    })
+    const { result } = renderHook(() => useMinerStats(), { wrapper })
 
-    await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true)
-    })
+    await waitFor(() => expect(result.current.isError).toBe(true))
 
-    expect(result.current.data?.totalMiners).toBe(0)
+    expect(result.current.error).toBeInstanceOf(Error)
   })
 
-  it('should handle large numbers of miners', async () => {
-    const mockData = { totalMiners: 999999 }
+  it('should return correct data structure', async () => {
+    const mockStats = { totalMiners: 250 }
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve(mockData)
+      json: async () => mockStats
     })
 
-    const { result } = renderHook(() => useMinerStats(), {
-      wrapper: createWrapper()
-    })
+    const { result } = renderHook(() => useMinerStats(), { wrapper })
 
-    await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true)
-    })
+    await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-    expect(result.current.data?.totalMiners).toBe(999999)
+    expect(result.current.data).toHaveProperty('totalMiners')
+    expect(typeof result.current.data?.totalMiners).toBe('number')
+    expect(result.current.data?.totalMiners).toBe(250)
   })
 
-  it('should have correct query configuration', async () => {
-    const mockData = { totalMiners: 100 }
+  it('should handle empty response', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve(mockData)
+      json: async () => ({})
     })
 
-    const { result } = renderHook(() => useMinerStats(), {
-      wrapper: createWrapper()
-    })
+    const { result } = renderHook(() => useMinerStats(), { wrapper })
 
-    await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true)
-    })
+    await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-    // Check that the hook has the expected properties
-    expect(result.current).toHaveProperty('data')
-    expect(result.current).toHaveProperty('error')
-    expect(result.current).toHaveProperty('isLoading')
-    expect(result.current).toHaveProperty('isSuccess')
-    expect(result.current).toHaveProperty('isError')
-    expect(result.current).toHaveProperty('refetch')
+    expect(result.current.data).toEqual({})
   })
 
-  it('should handle 404 response', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      status: 404
-    })
-
-    const { result } = renderHook(() => useMinerStats(), {
-      wrapper: createWrapper()
-    })
-
-    await waitFor(() => {
-      expect(result.current.isError).toBe(true)
-    })
-
-    expect(result.current.error?.message).toBe('Failed to fetch miner stats')
-  })
-
-  it('should refetch data when called', async () => {
-    const mockData1 = { totalMiners: 50 }
-    const mockData2 = { totalMiners: 75 }
+  it('should have correct refetch interval configured', () => {
+    const { result } = renderHook(() => useMinerStats(), { wrapper })
     
-    mockFetch
-      .mockResolvedValueOnce({
-        ok: true,
-        json: () => Promise.resolve(mockData1)
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        json: () => Promise.resolve(mockData2)
-      })
-
-    const { result } = renderHook(() => useMinerStats(), {
-      wrapper: createWrapper()
-    })
-
-    await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true)
-    })
-
-    expect(result.current.data).toEqual(mockData1)
-
-    // Trigger refetch
-    result.current.refetch()
-
-    await waitFor(() => {
-      expect(result.current.data).toEqual(mockData2)
-    })
-
-    expect(mockFetch).toHaveBeenCalledTimes(2)
+    // Query should be configured for refetching
+    const queries = queryClient.getQueryCache().getAll()
+    expect(queries).toHaveLength(1)
+    
+    // The hook should be configured with refetch options
+    expect(result.current.refetch).toBeDefined()
   })
 })

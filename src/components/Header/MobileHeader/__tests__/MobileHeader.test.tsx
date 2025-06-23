@@ -5,17 +5,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 import MobileHeader from '../MobileHeader'
 import { lightTheme } from '@theme/themes'
+import { useMainStore } from '@services/stores/useMainStore'
 
 // Mock the store hook
 const mockSetShowMobileMenu = vi.fn()
+
 vi.mock('@services/stores/useMainStore', () => ({
-  useMainStore: vi.fn((selector) => {
-    const state = {
-      showMobileMenu: false,
-      setShowMobileMenu: mockSetShowMobileMenu
-    }
-    return selector(state)
-  })
+  useMainStore: vi.fn()
 }))
 
 // Mock child components
@@ -29,9 +25,25 @@ vi.mock('../MinersCTA/MinersCTA', () => ({
       data-testid="miners-cta"
       data-theme={theme}
       data-button-text={buttonText}
-      data-no-background={noBackground}
-      data-miners-only={minersOnly}
-      data-button-only={buttonOnly}
+      data-no-background={noBackground ? 'true' : 'false'}
+      data-miners-only={minersOnly ? 'true' : 'false'}
+      data-button-only={buttonOnly ? 'true' : 'false'}
+    >
+      {minersOnly ? 'Miners Only CTA' : buttonOnly ? 'Button Only CTA' : 'Full CTA'}
+    </div>
+  )
+}))
+
+// Mock the actual MinersCTA path more specifically
+vi.mock('../../MinersCTA/MinersCTA', () => ({
+  default: ({ theme, buttonText, noBackground, minersOnly, buttonOnly }: any) => (
+    <div 
+      data-testid="miners-cta"
+      data-theme={theme}
+      data-button-text={buttonText}
+      data-no-background={noBackground ? 'true' : 'false'}
+      data-miners-only={minersOnly ? 'true' : 'false'}
+      data-button-only={buttonOnly ? 'true' : 'false'}
     >
       {minersOnly ? 'Miners Only CTA' : buttonOnly ? 'Button Only CTA' : 'Full CTA'}
     </div>
@@ -42,7 +54,7 @@ vi.mock('@components/SocialLinks/SocialLinks', () => ({
   SocialIconButtons: () => <div data-testid="social-icon-buttons">Social Icons</div>
 }))
 
-vi.mock('./MobileNavigation/MobileNavigation', () => ({
+vi.mock('../MobileNavigation/MobileNavigation', () => ({
   default: () => <nav data-testid="mobile-navigation">Mobile Navigation</nav>
 }))
 
@@ -79,6 +91,15 @@ describe('MobileHeader', () => {
     mockSetShowMobileMenu.mockClear()
     // Reset document body overflow
     document.body.style.overflow = 'auto'
+    
+    // Set up default mock behavior
+    ;(useMainStore as any).mockImplementation((selector) => {
+      const state = {
+        showMobileMenu: false,
+        setShowMobileMenu: mockSetShowMobileMenu
+      }
+      return selector(state)
+    })
   })
 
   afterEach(() => {
@@ -124,10 +145,8 @@ describe('MobileHeader', () => {
   })
 
   it('should handle body overflow when mobile menu is open', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
-    
     // Mock showMobileMenu as true
-    useMainStore.mockImplementation((selector) => {
+    ;(useMainStore as any).mockImplementation((selector) => {
       const state = {
         showMobileMenu: true,
         setShowMobileMenu: mockSetShowMobileMenu
@@ -145,10 +164,10 @@ describe('MobileHeader', () => {
   })
 
   it('should reset body overflow when mobile menu is closed', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+    // Using mocked useMainStore
     
     // Start with menu open
-    useMainStore.mockImplementation((selector) => {
+    ;(useMainStore as any).mockImplementation((selector) => {
       const state = {
         showMobileMenu: true,
         setShowMobileMenu: mockSetShowMobileMenu
@@ -165,7 +184,7 @@ describe('MobileHeader', () => {
     expect(document.body.style.overflow).toBe('hidden')
 
     // Close menu
-    useMainStore.mockImplementation((selector) => {
+    ;(useMainStore as any).mockImplementation((selector) => {
       const state = {
         showMobileMenu: false,
         setShowMobileMenu: mockSetShowMobileMenu
@@ -183,9 +202,9 @@ describe('MobileHeader', () => {
   })
 
   it('should show mobile menu when showMobileMenu is true', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+    // Using mocked useMainStore
     
-    useMainStore.mockImplementation((selector) => {
+    ;(useMainStore as any).mockImplementation((selector) => {
       const state = {
         showMobileMenu: true,
         setShowMobileMenu: mockSetShowMobileMenu
@@ -229,7 +248,7 @@ describe('MobileHeader', () => {
       </TestWrapper>
     )
 
-    const logoLink = screen.getByRole('link')
+    const logoLink = screen.getByRole('link', { hidden: true })
     expect(logoLink).toHaveAttribute('href', '/')
     
     const logoImg = screen.getByAltText('Tari Logo')
@@ -252,9 +271,9 @@ describe('MobileHeader', () => {
   })
 
   it('should render both miners CTA variants correctly', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+    // Using mocked useMainStore
     
-    useMainStore.mockImplementation((selector) => {
+    ;(useMainStore as any).mockImplementation((selector) => {
       const state = {
         showMobileMenu: true,
         setShowMobileMenu: mockSetShowMobileMenu
@@ -309,9 +328,9 @@ describe('MobileHeader', () => {
   })
 
   it('should apply correct theme to miners CTA components', () => {
-    const { useMainStore } = require('@services/stores/useMainStore')
+    // Using mocked useMainStore
     
-    useMainStore.mockImplementation((selector) => {
+    ;(useMainStore as any).mockImplementation((selector) => {
       const state = {
         showMobileMenu: true,
         setShowMobileMenu: mockSetShowMobileMenu

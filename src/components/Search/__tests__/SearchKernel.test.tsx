@@ -42,8 +42,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    expect(screen.getByLabelText('Nonce')).toBeInTheDocument()
-    expect(screen.getByLabelText('Signature')).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: /nonce/i })).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: /signature/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument()
   })
@@ -55,7 +55,7 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
     expect(nonceInput).toHaveFocus()
   })
 
@@ -66,8 +66,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
-    const signatureInput = screen.getByLabelText('Signature')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i })
 
     fireEvent.change(nonceInput, { target: { value: 'test-nonce' } })
     fireEvent.change(signatureInput, { target: { value: 'test-signature' } })
@@ -98,8 +98,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
-    const signatureInput = screen.getByLabelText('Signature')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i })
     const searchButton = screen.getByRole('button', { name: /search/i })
 
     // Valid 64-char signature, invalid nonce
@@ -119,8 +119,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
-    const signatureInput = screen.getByLabelText('Signature')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i })
     const searchButton = screen.getByRole('button', { name: /search/i })
 
     // Valid 64-char nonce, invalid signature
@@ -140,8 +140,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
-    const signatureInput = screen.getByLabelText('Signature')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i })
     const searchButton = screen.getByRole('button', { name: /search/i })
 
     const validNonce = '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
@@ -164,8 +164,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
-    const signatureInput = screen.getByLabelText('Signature')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i })
 
     const validNonce = '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
     const validSignature = 'fedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321'
@@ -186,8 +186,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
-    const signatureInput = screen.getByLabelText('Signature')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i })
 
     const validNonce = '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
     const validSignature = 'fedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321'
@@ -208,8 +208,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
-    const signatureInput = screen.getByLabelText('Signature')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i })
     const cancelButton = screen.getByRole('button', { name: /cancel/i })
 
     // Add some input
@@ -230,8 +230,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
-    const signatureInput = screen.getByLabelText('Signature')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i })
 
     // Touch nonce field and leave empty
     fireEvent.change(nonceInput, { target: { value: 'temp' } })
@@ -253,7 +253,7 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
     
     // Initially no error should be shown
     expect(screen.queryByText('Nonce is required')).not.toBeInTheDocument()
@@ -273,8 +273,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
-    const signatureInput = screen.getByLabelText('Signature')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i })
     const searchButton = screen.getByRole('button', { name: /search/i })
 
     // First trigger error
@@ -301,8 +301,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
-    const signatureInput = screen.getByLabelText('Signature')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i })
 
     // Nonce field properties
     expect(nonceInput).toHaveAttribute('placeholder', 'Enter Nonce')
@@ -322,7 +322,7 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
     
     fireEvent.keyDown(nonceInput, { key: 'Escape', code: 'Escape' })
     fireEvent.keyDown(nonceInput, { key: 'Tab', code: 'Tab' })
@@ -337,8 +337,8 @@ describe('SearchKernel', () => {
       </TestWrapper>
     )
 
-    const nonceInput = screen.getByLabelText('Nonce')
-    const signatureInput = screen.getByLabelText('Signature')
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i })
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i })
     const searchButton = screen.getByRole('button', { name: /search/i })
 
     // Test 63 characters (too short)
