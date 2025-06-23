@@ -49,7 +49,7 @@ describe('inputItems', () => {
     const mockInput = createMockInput()
     const result = inputItems(mockInput)
 
-    expect(result).toHaveLength(12)
+    expect(result).toHaveLength(14)
     expect(result[0].label).toBe('Features')
     expect(result[0].copy).toBe(false)
     expect(result[0].children).toHaveLength(3)
@@ -72,11 +72,11 @@ describe('inputItems', () => {
     const result = inputItems(mockInput)
     
     const commitment = result.find(item => item.label === 'Commitment')
-    expect(commitment?.value).toBe('hex-string')
+    expect(commitment?.value).toBe('ff0080')
     expect(commitment?.copy).toBe(true)
 
     const hash = result.find(item => item.label === 'Hash')
-    expect(hash?.value).toBe('hex-string')
+    expect(hash?.value).toBe('80ff00')
     expect(hash?.copy).toBe(true)
   })
 
@@ -89,7 +89,7 @@ describe('inputItems', () => {
     expect(scriptSig?.children).toHaveLength(5)
     expect(scriptSig?.children?.[0]).toEqual({
       label: 'Ephemeral commitment',
-      value: 'hex-string',
+      value: '010203',
       copy: true
     })
   })
@@ -103,7 +103,7 @@ describe('inputItems', () => {
     expect(metadataSig?.children).toHaveLength(5)
     expect(metadataSig?.children?.[0]).toEqual({
       label: 'Ephemeral commitment',
-      value: 'hex-string',
+      value: '161718',
       copy: true
     })
   })
@@ -194,6 +194,6 @@ describe('inputItems', () => {
 
     expect(() => inputItems(incompleteInput)).not.toThrow()
     const result = inputItems(incompleteInput)
-    expect(result).toHaveLength(12)
+    expect(result).toHaveLength(14)
   })
 })

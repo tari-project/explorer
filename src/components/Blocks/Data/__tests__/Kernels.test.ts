@@ -83,7 +83,7 @@ describe('kernelItems', () => {
     const result = kernelItems(mockKernel)
     
     const excess = result.find(item => item.label === 'Excess')
-    expect(excess?.value).toBe('hex-string')
+    expect(excess?.value).toBe('ff0080')
     expect(excess?.copy).toBe(true)
   })
 
@@ -96,12 +96,12 @@ describe('kernelItems', () => {
     expect(excessSig?.children).toHaveLength(2)
     expect(excessSig?.children?.[0]).toEqual({
       label: 'Public Nonce',
-      value: 'hex-string',
+      value: '80ff00',
       copy: true
     })
     expect(excessSig?.children?.[1]).toEqual({
       label: 'Signature',
-      value: 'hex-string',
+      value: '0080ff',
       copy: true
     })
   })
@@ -111,7 +111,7 @@ describe('kernelItems', () => {
     const result = kernelItems(mockKernel)
     
     const hash = result.find(item => item.label === 'Hash')
-    expect(hash?.value).toBe('hex-string')
+    expect(hash?.value).toBe('ffff00')
     expect(hash?.copy).toBe(true)
     expect(hash?.header).toBe(false)
   })
