@@ -140,6 +140,10 @@ function formatHash(number: number, decimals: number = 1) {
   return number.toFixed(decimals) + ' ' + suffixes[suffixIndex] + 'H';
 }
 
+function formatXTM(amount: number): string {
+  return amount / 1_000_000 + ' XTM';
+}
+
 function powCheck(num: string): string {
   let powText = '';
   switch (num) {
@@ -170,5 +174,6 @@ export {
   handleChangeRowsPerPage,
   formatTimestamp,
   formatHash,
+  formatXTM,
   powCheck,
 };

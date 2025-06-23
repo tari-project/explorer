@@ -29,10 +29,12 @@ import Typography from '@mui/material/Typography';
 import Accordion from '@mui/material/Accordion';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import AccordionSummary from '@mui/material/AccordionSummary';
 
 interface StyledAccordionProps {
   theme?: any;
   isHighlighted?: boolean;
+  expanded?: boolean;
 }
 
 export const AccordionIconButton = styled(IconButton)(({ theme }) => ({
@@ -49,17 +51,28 @@ export const StyledAccordion = styled(Accordion, {
 })<StyledAccordionProps>(({ theme, isHighlighted }) => ({
   backgroundColor: theme.palette.background.paper,
   boxShadow: isHighlighted
-    ? '1px 5px 28px rgba(35, 11, 73, 0.25)'
-    : '1px 5px 28px rgba(35, 11, 73, 0.05)',
+    ? '0px 5px 20px rgba(35, 11, 73, 0.15)'
+    : '0px 2px 4px rgba(35, 11, 73, 0.05)',
   borderRadius: theme.shape.borderRadius,
   marginBottom: theme.spacing(1),
-  border: isHighlighted ? '1px solid #e1e1e1' : '1px solid #f8f8f8',
+  border: isHighlighted
+    ? `2px solid rgba(255, 255, 255, 0.08)`
+    : '2px solid rgba(255,255,255,0.04)',
   '&:hover': {
     backgroundColor: '#fafafc',
   },
   '&:before': {
     display: 'none',
   },
+}));
+
+export const StyledAccordionSummary = styled(AccordionSummary, {
+  shouldForwardProp: (prop) => prop !== 'isHighlighted',
+})<StyledAccordionProps>(({ theme, isHighlighted, expanded }) => ({
+  backgroundColor: isHighlighted ? '#1D1928' : 'transparent',
+  color: isHighlighted ? '#fff' : 'inherit',
+  borderRadius: expanded ? `16px 16px 0 0` : theme.shape.borderRadius,
+  transition: 'background-color 0.3s ease',
 }));
 
 export const TypographyData = styled(Typography)(({ theme }) => ({
@@ -97,15 +110,6 @@ export const PageHeading = styled(Typography)(({ theme }) => ({
   letterSpacing: '1.5px',
   color: theme.palette.text.primary,
 }));
-
-// export const InnerHeading = styled(Typography)(({ theme }) => ({
-//   fontSize: theme.typography.h3.fontSize,
-//   fontFamily: "'DrukHeavy', sans-serif",
-//   textTransform: 'uppercase',
-//   borderBottom: `1px solid ${theme.palette.divider}`,
-//   paddingBottom: theme.spacing(1),
-//   marginBottom: theme.spacing(2),
-// }));
 
 export const DataTableCell = styled(TableCell)(() => ({
   fontFamily: "'PoppinsRegular', sans-serif",

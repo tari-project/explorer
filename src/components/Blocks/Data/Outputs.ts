@@ -25,6 +25,11 @@ import { toHexString } from '@utils/helpers';
 export const outputItems = (content: any) => {
   const items = [
     {
+      label: 'Payment Reference',
+      value: toHexString(content.payment_reference.data),
+      copy: true,
+    },
+    {
       label: 'Features',
       copy: false,
       children: [

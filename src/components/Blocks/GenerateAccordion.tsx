@@ -21,12 +21,15 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Fragment } from 'react';
-import { StyledAccordion } from '@components/StyledComponents';
+import {
+  StyledAccordion,
+  StyledAccordionSummary,
+} from '@components/StyledComponents';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import GridItem from './GridItem';
+import { IoCheckmarkCircle } from 'react-icons/io5';
 
 function GenerateAccordion({
   items,
@@ -55,15 +58,32 @@ function GenerateAccordion({
       key={adjustedIndex}
       isHighlighted={isHighlighted}
     >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+      <StyledAccordionSummary
+        expandIcon={
+          <ExpandMoreIcon
+            style={{
+              color: isHighlighted ? '#fff' : 'inherit',
+              transition: 'color 0.3s ease',
+            }}
+          />
+        }
         aria-controls={expandedPanel + '-content'}
         id={expandedPanel + '-header'}
+        isHighlighted={isHighlighted}
+        expanded={expanded === `panel${adjustedIndex}`}
       >
-        <Typography variant="h5">
+        <Typography
+          variant="h5"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+        >
+          {isHighlighted && <IoCheckmarkCircle size="22" color="#B0D636" />}{' '}
           {tabName} {adjustedIndex}
         </Typography>
-      </AccordionSummary>
+      </StyledAccordionSummary>
       <AccordionDetails
         style={{
           padding: 0,

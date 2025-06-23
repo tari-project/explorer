@@ -108,3 +108,19 @@ export const useSearchByKernel = (nonces: string[], signatures: string[]) => {
     },
   });
 };
+
+export const useSearchByPayref = (payref: string) => {
+  return useQuery({
+    queryKey: ['payref', payref],
+    queryFn: () =>
+      jsonRpc(
+        `${address}/search_outputs_by_payref?payref=${payref}&json`,
+        'PayRef not found'
+      ).then((resp) => {
+        return resp;
+      }),
+    onError: (error: apiError) => {
+      return error;
+    },
+  });
+};

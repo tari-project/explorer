@@ -14,7 +14,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { kernelSearch } from '../../utils/kernelSearch';
+import { kernelSearch } from '@/utils/searchFunctions';
 import InnerHeading from '@components/InnerHeading';
 
 interface KernelsProps {
