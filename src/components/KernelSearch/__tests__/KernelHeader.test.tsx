@@ -23,17 +23,8 @@ vi.mock('@mui/material', () => ({
   useMediaQuery: vi.fn(() => false) // desktop by default
 }))
 
-// Mock theme
-const mockTheme = {
-  spacing: vi.fn((value: number) => `${value * 8}px`),
-  palette: {
-    background: { paper: '#ffffff' },
-    divider: '#e0e0e0'
-  },
-  breakpoints: {
-    down: vi.fn(() => '')
-  }
-}
+// Import centralized mock
+import { mockTheme, mockKernelSearchData } from '../../../test/mocks'
 
 vi.mock('@mui/material/styles', () => ({
   useTheme: () => mockTheme,
@@ -237,7 +228,7 @@ describe('KernelHeader', () => {
 
     it('should display success status with result count', () => {
       mockUseSearchByKernel.mockReturnValue({
-        data: mockKernelSearchData.results,
+        data: mockKernelSearchData,
         isFetching: false,
         isError: false,
         isSuccess: true
@@ -254,7 +245,7 @@ describe('KernelHeader', () => {
 
     it('should display no results found', () => {
       mockUseSearchByKernel.mockReturnValue({
-        data: [],
+        data: { items: [] },
         isFetching: false,
         isError: false,
         isSuccess: true
@@ -304,7 +295,7 @@ describe('KernelHeader', () => {
       vi.mocked(useMediaQuery).mockReturnValue(true) // mobile
 
       mockUseSearchByKernel.mockReturnValue({
-        data: mockKernelSearchData.results,
+        data: mockKernelSearchData,
         isFetching: false,
         isError: false,
         isSuccess: true
@@ -325,7 +316,7 @@ describe('KernelHeader', () => {
       vi.mocked(useMediaQuery).mockReturnValue(false) // desktop
 
       mockUseSearchByKernel.mockReturnValue({
-        data: mockKernelSearchData.results,
+        data: mockKernelSearchData,
         isFetching: false,
         isError: false,
         isSuccess: true
