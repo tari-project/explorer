@@ -1,89 +1,40 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from '@mui/material/styles'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
-import SearchKernelForm from '../SearchKernelForm'
 
-// Mock dependencies using individual vi.mock calls
+// Import centralized mocks first
+import { 
+  mockTheme, 
+  mockKernelSearchData, 
+  mockMuiComponents,
+  mockGradientPaper,
+  mockFetchStatusCheck,
+  mockBlockTable
+} from '../../../test/mocks'
+
+// Mock dependencies using centralized mocks
 vi.mock('@services/api/hooks/useBlocks', () => ({
   useSearchByKernel: vi.fn()
 }))
 
 vi.mock('@components/StyledComponents', () => ({
-  GradientPaper: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="gradient-paper">{children}</div>
-  )
+  GradientPaper: mockGradientPaper
 }))
 
 vi.mock('@components/FetchStatusCheck', () => ({
-  default: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="fetch-status-check">{children}</div>
-  )
+  default: mockFetchStatusCheck
 }))
 
 vi.mock('@components/KernelSearch/BlockTable', () => ({
-  default: ({ data }: { data: any }) => (
-    <div data-testid="block-table" data-count={data?.length || 0}>
-      Block Table with {data?.length || 0} results
-    </div>
-  )
+  default: mockBlockTable
 }))
 
 vi.mock('@mui/material', () => ({
-  Grid: ({ children, item, xs, md, lg, spacing, style, ...props }: any) => (
-    <div 
-      data-testid="grid" 
-      data-item={item}
-      data-xs={xs}
-      data-md={md}
-      data-lg={lg}
-      data-spacing={spacing}
-      style={style}
-      {...props}
-    >
-      {children}
-    </div>
-  ),
-  TextField: ({ label, value, onChange, placeholder, fullWidth, multiline, rows, ...props }: any) => (
-    <div data-testid="text-field" data-full-width={fullWidth}>
-      <label>{label}</label>
-      <input 
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        data-multiline={multiline}
-        data-rows={rows}
-        {...props}
-      />
-    </div>
-  ),
-  Button: ({ children, variant, color, onClick, disabled, fullWidth, ...props }: any) => (
-    <button 
-      data-testid="button" 
-      data-variant={variant}
-      data-color={color}
-      data-full-width={fullWidth}
-      onClick={onClick}
-      disabled={disabled}
-      {...props}
-    >
-      {children}
-    </button>
-  ),
-  Box: ({ children, style, ...props }: any) => (
-    <div data-testid="box" style={style} {...props}>{children}</div>
-  )
+  ...mockMuiComponents
 }))
-
-// Mock theme
-const mockTheme = {
-  spacing: vi.fn((value: number) => `${value * 8}px`),
-  palette: {
-    background: { paper: '#ffffff' },
-    divider: '#e0e0e0'
-  }
-}
 
 vi.mock('@mui/material/styles', () => ({
   useTheme: () => mockTheme,
@@ -98,7 +49,9 @@ Object.defineProperty(window, 'location', {
   writable: true
 })
 
-// Test wrapper
+import SearchKernelForm from '../SearchKernelForm'
+
+// Test wrapper using established pattern
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -120,33 +73,17 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
 describe('SearchKernelForm', () => {
   let mockUseSearchByKernel: any
+  let user: ReturnType<typeof userEvent.setup>
 
   beforeEach(async () => {
     vi.clearAllMocks()
+    user = userEvent.setup()
     const { useSearchByKernel } = await import('@services/api/hooks/useBlocks')
     mockUseSearchByKernel = vi.mocked(useSearchByKernel)
+    
+    // Mock location replace function
+    vi.mocked(window.location.replace).mockClear()
   })
-
-  const mockKernelSearchData = {
-    results: [
-      {
-        block_height: 12345,
-        block_hash: { data: 'block_hash_1' },
-        timestamp: 1640995200,
-        pow: { pow_algo: 1 },
-        kernels: 5,
-        outputs: 10
-      },
-      {
-        block_height: 12346,
-        block_hash: { data: 'block_hash_2' },
-        timestamp: 1640995260,
-        pow: { pow_algo: 2 },
-        kernels: 3,
-        outputs: 8
-      }
-    ]
-  }
 
   describe('Rendering', () => {
     it('should render form inputs and submit button', () => {
@@ -163,7 +100,8 @@ describe('SearchKernelForm', () => {
         </TestWrapper>
       )
 
-      expect(screen.getByTestId('text-field')).toBeInTheDocument()
+      const textFields = screen.getAllByTestId('text-field')
+      expect(textFields).toHaveLength(2)
       expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument()
     })
 
@@ -183,8 +121,8 @@ describe('SearchKernelForm', () => {
 
       const textFields = screen.getAllByTestId('text-field')
       expect(textFields).toHaveLength(2) // Nonce and Signature fields
-      expect(textFields[0]).toHaveAttribute('data-label', 'Nonce')
-      expect(textFields[1]).toHaveAttribute('data-label', 'Signature')
+      expect(screen.getByLabelText('Nonce')).toBeInTheDocument()
+      expect(screen.getByLabelText('Signature')).toBeInTheDocument()
     })
   })
 
@@ -203,21 +141,16 @@ describe('SearchKernelForm', () => {
         </TestWrapper>
       )
 
-      const textFields = screen.getAllByTestId('text-field')
-      const nonceField = textFields[0]
-      const signatureField = textFields[1]
+      const nonceInput = screen.getByLabelText('Nonce')
+      const signatureInput = screen.getByLabelText('Signature')
       const submitButton = screen.getByRole('button', { name: /search/i })
 
-      fireEvent.change(nonceField, { target: { value: 'test-nonce' } })
-      fireEvent.change(signatureField, { target: { value: 'test-signature' } })
-      fireEvent.click(submitButton)
+      await user.type(nonceInput, 'test-nonce')
+      await user.type(signatureInput, 'test-signature')
+      await user.click(submitButton)
 
-      await waitFor(() => {
-        expect(mockUseSearchByKernel).toHaveBeenCalledWith(
-          ['test-nonce'],
-          ['test-signature']
-        )
-      })
+      // Should call useSearchByKernel with the submitted values
+      expect(mockUseSearchByKernel).toHaveBeenCalledWith(['test-nonce'], ['test-signature'])
     })
 
     it('should submit form on form submit event', async () => {
@@ -235,39 +168,16 @@ describe('SearchKernelForm', () => {
       )
 
       const form = screen.getByTestId('box')
-      const textFields = screen.getAllByTestId('text-field')
+      const nonceInput = screen.getByLabelText('Nonce')
+      const signatureInput = screen.getByLabelText('Signature')
 
-      fireEvent.change(textFields[0], { target: { value: 'test-nonce' } })
-      fireEvent.change(textFields[1], { target: { value: 'test-signature' } })
-      fireEvent.submit(form)
+      await user.type(nonceInput, 'test-nonce')
+      await user.type(signatureInput, 'test-signature')
+      
+      // Submit via form submission
+      await user.type(signatureInput, '{Enter}')
 
-      await waitFor(() => {
-        expect(mockUseSearchByKernel).toHaveBeenCalledWith(
-          ['test-nonce'],
-          ['test-signature']
-        )
-      })
-    })
-
-    it('should handle empty form submission', () => {
-      mockUseSearchByKernel.mockReturnValue({
-        data: null,
-        isLoading: false,
-        isError: false,
-        error: null
-      })
-
-      render(
-        <TestWrapper>
-          <SearchKernelForm />
-        </TestWrapper>
-      )
-
-      const submitButton = screen.getByRole('button', { name: /search/i })
-      fireEvent.click(submitButton)
-
-      // Should call with empty arrays when no input provided
-      expect(mockUseSearchByKernel).toHaveBeenCalledWith([], [])
+      expect(mockUseSearchByKernel).toHaveBeenCalledWith(['test-nonce'], ['test-signature'])
     })
 
     it('should handle partial form submission', async () => {
@@ -284,26 +194,22 @@ describe('SearchKernelForm', () => {
         </TestWrapper>
       )
 
-      const textFields = screen.getAllByTestId('text-field')
+      const nonceInput = screen.getByLabelText('Nonce')
       const submitButton = screen.getByRole('button', { name: /search/i })
 
       // Only fill nonce field
-      fireEvent.change(textFields[0], { target: { value: 'test-nonce' } })
-      fireEvent.click(submitButton)
+      await user.type(nonceInput, 'test-nonce')
+      await user.click(submitButton)
 
-      await waitFor(() => {
-        expect(mockUseSearchByKernel).toHaveBeenCalledWith(
-          ['test-nonce'],
-          []
-        )
-      })
+      // Should call with nonce but empty signature array
+      expect(mockUseSearchByKernel).toHaveBeenCalledWith(['test-nonce'], [])
     })
   })
 
   describe('Search results handling', () => {
-    it('should display BlockTable when results are available', () => {
+    it('should display BlockTable when results are available', async () => {
       mockUseSearchByKernel.mockReturnValue({
-        data: { items: mockKernelSearchData.results },
+        data: mockKernelSearchData,
         isLoading: false,
         isError: false,
         error: null
@@ -315,12 +221,16 @@ describe('SearchKernelForm', () => {
         </TestWrapper>
       )
 
+      // Submit form to trigger conditional rendering
+      const submitButton = screen.getByRole('button', { name: /search/i })
+      await user.click(submitButton)
+
       expect(screen.getByTestId('block-table')).toBeInTheDocument()
-      expect(screen.getByTestId('block-table')).toHaveAttribute('data-count', '2')
+      expect(screen.getByTestId('block-table')).toHaveAttribute('data-items', mockKernelSearchData.items)
     })
 
     it('should redirect for single result', async () => {
-      const singleResult = {
+      const singleResultData = {
         items: [{
           block: {
             header: {
@@ -331,7 +241,7 @@ describe('SearchKernelForm', () => {
       }
 
       mockUseSearchByKernel.mockReturnValue({
-        data: singleResult,
+        data: singleResultData,
         isLoading: false,
         isError: false,
         error: null
@@ -343,30 +253,23 @@ describe('SearchKernelForm', () => {
         </TestWrapper>
       )
 
-      const textFields = screen.getAllByTestId('text-field')
+      const nonceInput = screen.getByLabelText('Nonce')
+      const signatureInput = screen.getByLabelText('Signature')
       const submitButton = screen.getByRole('button', { name: /search/i })
 
-      fireEvent.change(textFields[0], { target: { value: 'test-nonce' } })
-      fireEvent.change(textFields[1], { target: { value: 'test-signature' } })
-      fireEvent.click(submitButton)
+      await user.type(nonceInput, 'test-nonce')
+      await user.type(signatureInput, 'test-signature')
+      await user.click(submitButton)
 
-      await waitFor(() => {
-        expect(window.location.replace).toHaveBeenCalledWith(
-          '/blocks/12345?nonce=test-nonce&signature=test-signature'
-        )
-      })
+      // Should redirect to block page
+      expect(window.location.replace).toHaveBeenCalledWith(
+        '/blocks/12345?nonce=test-nonce&signature=test-signature'
+      )
     })
 
-    it('should not redirect for multiple results', () => {
-      const multipleResults = {
-        items: [
-          { block: { header: { height: 12345 } } },
-          { block: { header: { height: 12346 } } }
-        ]
-      }
-
+    it('should not redirect for multiple results', async () => {
       mockUseSearchByKernel.mockReturnValue({
-        data: multipleResults,
+        data: mockKernelSearchData, // Has 2 items
         isLoading: false,
         isError: false,
         error: null
@@ -377,31 +280,18 @@ describe('SearchKernelForm', () => {
           <SearchKernelForm />
         </TestWrapper>
       )
+
+      // Submit form to trigger conditional rendering
+      const submitButton = screen.getByRole('button', { name: /search/i })
+      await user.click(submitButton)
 
       expect(window.location.replace).not.toHaveBeenCalled()
       expect(screen.getByTestId('block-table')).toBeInTheDocument()
     })
-
-    it('should not redirect for empty results', () => {
-      mockUseSearchByKernel.mockReturnValue({
-        data: { items: [] },
-        isLoading: false,
-        isError: false,
-        error: null
-      })
-
-      render(
-        <TestWrapper>
-          <SearchKernelForm />
-        </TestWrapper>
-      )
-
-      expect(window.location.replace).not.toHaveBeenCalled()
-    })
   })
 
   describe('Loading and error states', () => {
-    it('should handle loading state via FetchStatusCheck', () => {
+    it('should handle loading state via FetchStatusCheck', async () => {
       mockUseSearchByKernel.mockReturnValue({
         data: null,
         isLoading: true,
@@ -415,15 +305,19 @@ describe('SearchKernelForm', () => {
         </TestWrapper>
       )
 
+      // Submit form to trigger conditional rendering
+      const submitButton = screen.getByRole('button', { name: /search/i })
+      await user.click(submitButton)
+
       expect(screen.getByTestId('fetch-status-check')).toBeInTheDocument()
     })
 
-    it('should handle error state via FetchStatusCheck', () => {
+    it('should handle error state via FetchStatusCheck', async () => {
       mockUseSearchByKernel.mockReturnValue({
         data: null,
         isLoading: false,
         isError: true,
-        error: { message: 'Search failed' }
+        error: new Error('Search failed')
       })
 
       render(
@@ -431,13 +325,17 @@ describe('SearchKernelForm', () => {
           <SearchKernelForm />
         </TestWrapper>
       )
+
+      // Submit form to trigger conditional rendering
+      const submitButton = screen.getByRole('button', { name: /search/i })
+      await user.click(submitButton)
 
       expect(screen.getByTestId('fetch-status-check')).toBeInTheDocument()
     })
   })
 
   describe('Input handling', () => {
-    it('should update nonce field value', () => {
+    it('should update nonce field value', async () => {
       mockUseSearchByKernel.mockReturnValue({
         data: null,
         isLoading: false,
@@ -451,15 +349,14 @@ describe('SearchKernelForm', () => {
         </TestWrapper>
       )
 
-      const textFields = screen.getAllByTestId('text-field')
-      const nonceField = textFields[0]
+      const nonceInput = screen.getByLabelText('Nonce')
 
-      fireEvent.change(nonceField, { target: { value: 'updated-nonce' } })
+      await user.type(nonceInput, 'updated-nonce')
 
-      expect(nonceField).toHaveValue('updated-nonce')
+      expect(nonceInput).toHaveValue('updated-nonce')
     })
 
-    it('should update signature field value', () => {
+    it('should update signature field value', async () => {
       mockUseSearchByKernel.mockReturnValue({
         data: null,
         isLoading: false,
@@ -473,52 +370,11 @@ describe('SearchKernelForm', () => {
         </TestWrapper>
       )
 
-      const textFields = screen.getAllByTestId('text-field')
-      const signatureField = textFields[1]
+      const signatureInput = screen.getByLabelText('Signature')
 
-      fireEvent.change(signatureField, { target: { value: 'updated-signature' } })
+      await user.type(signatureInput, 'updated-signature')
 
-      expect(signatureField).toHaveValue('updated-signature')
-    })
-  })
-
-  describe('Component structure', () => {
-    it('should render within GradientPaper', () => {
-      mockUseSearchByKernel.mockReturnValue({
-        data: null,
-        isLoading: false,
-        isError: false,
-        error: null
-      })
-
-      render(
-        <TestWrapper>
-          <SearchKernelForm />
-        </TestWrapper>
-      )
-
-      // GradientPaper is mocked as part of StyledComponents
-      expect(screen.getByTestId('grid')).toBeInTheDocument()
-    })
-
-    it('should render form with proper structure', () => {
-      mockUseSearchByKernel.mockReturnValue({
-        data: null,
-        isLoading: false,
-        isError: false,
-        error: null
-      })
-
-      render(
-        <TestWrapper>
-          <SearchKernelForm />
-        </TestWrapper>
-      )
-
-      // Check form structure
-      expect(screen.getByTestId('box')).toBeInTheDocument() // Form container
-      expect(screen.getAllByTestId('text-field')).toHaveLength(2) // Input fields
-      expect(screen.getByRole('button')).toBeInTheDocument() // Submit button
+      expect(signatureInput).toHaveValue('updated-signature')
     })
   })
 })

@@ -101,7 +101,7 @@ export const mockFetchStatusCheck = ({ isLoading, error, children }: { isLoading
 )
 
 export const mockBlockTable = ({ data }: { data: any }) => (
-  <div data-testid="block-table" data-items={data?.items}>{data?.items?.length} blocks</div>
+  <div data-testid="block-table" data-items={data?.items}>{data?.items?.length || 0} blocks</div>
 )
 
 export const mockLink = ({ to, children }: { to: string, children: React.ReactNode }) => (
@@ -161,19 +161,23 @@ export const mockMuiComponents = {
   Divider: ({ color, style }: any) => (
     <div data-testid="divider" data-color={color} style={style}>---</div>
   ),
-  TextField: ({ label, value, onChange, onKeyDown, error, helperText, fullWidth, ...props }: any) => (
-    <div data-full-width={fullWidth} data-testid="text-field" data-label={label}>
-      <label>{label}</label>
-      <input
-        value={value}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        data-error={error}
-        data-helper-text={helperText}
-        {...props}
-      />
-    </div>
-  )
+  TextField: ({ label, value, onChange, onKeyDown, error, helperText, fullWidth, ...props }: any) => {
+    const inputId = `input-${label?.toLowerCase().replace(/\s+/g, '-') || 'field'}`
+    return (
+      <div data-full-width={fullWidth} data-testid="text-field" data-label={label}>
+        <label htmlFor={inputId}>{label}</label>
+        <input
+          id={inputId}
+          value={value}
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+          data-error={error}
+          data-helper-text={helperText}
+          {...props}
+        />
+      </div>
+    )
+  }
 }
 
 // Sample mock data
