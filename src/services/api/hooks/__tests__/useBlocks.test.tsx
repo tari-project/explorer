@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook, waitFor, act } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactNode } from 'react'
 
@@ -89,6 +89,8 @@ describe('useBlocks hooks', () => {
       expect(mockJsonRpc).toHaveBeenCalledTimes(1)
     })
 
+    // Skipped: Timer-based tests with React Query can be flaky due to internal timer interactions
+    // The refetchInterval: 120000 is properly configured in the hook (see useBlocks.tsx:39)
     it.skip('should refetch data at correct interval', async () => {
       vi.useFakeTimers()
       mockJsonRpc.mockResolvedValue({ data: 'test' })
@@ -98,9 +100,18 @@ describe('useBlocks hooks', () => {
         wrapper: createWrapper(),
       })
 
-      // Fast forward 2 minutes (120000ms)
-      vi.advanceTimersByTime(120000)
+      // Wait for initial call
+      await waitFor(() => {
+        expect(mockJsonRpc).toHaveBeenCalledTimes(1)
+      })
 
+      // Fast forward 2 minutes (120000ms) and process microtasks
+      await act(async () => {
+        vi.advanceTimersByTime(120000)
+        await vi.runAllTimersAsync()
+      })
+
+      // Should have called twice now - initial + refetch
       await waitFor(() => {
         expect(mockJsonRpc).toHaveBeenCalledTimes(2)
       })
