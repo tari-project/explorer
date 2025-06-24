@@ -21,31 +21,32 @@ const SearchField = ({
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
-  const validateQuery = (query: string) => {
-    const height = parseInt(query);
-    const isHeight = !isNaN(height) && height >= 0;
-    const isHash = query.length === 64;
-    return isHeight || isHash;
-  };
-
   const handleSearch = () => {
     if (query === '') {
       setIsExpanded(false);
       return;
     }
-    if (!validateQuery(query)) {
+    const isHeight = /^\d+$/.test(query);
+    const isHash = /^[a-fA-F0-9]{64}$/.test(query);
+
+    if (!isHeight && !isHash) {
       setOpen(true);
       setQuery('');
       setIsExpanded(false);
       return;
     }
-    navigate(`/blocks/${query}`);
+
+    if (isHeight) {
+      navigate(`/blocks/${query}`);
+    } else if (isHash) {
+      navigate(`/search?hash=${query}`);
+    }
     setQuery('');
     setIsExpanded(false);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setQuery(event.target.value.toLowerCase().trim());
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -61,7 +62,8 @@ const SearchField = ({
       {isExpanded && (
         <Fade in={isExpanded} timeout={500}>
           <StyledTextField
-            label="Search by height or hash"
+            label="Search"
+            placeholder="Search by PayRef / Block Height / Block Hash"
             autoFocus
             value={query}
             onChange={handleInputChange}

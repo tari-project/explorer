@@ -35,6 +35,8 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { useMainStore } from '@services/stores/useMainStore';
 import { useEffect } from 'react';
 import PayRefSearchPage from '@routes/PayRefSearchPage';
+import SearchPage from '@routes/SearchPage';
+import SearchPageHeader from '@components/Search/SearchPageHeader';
 import PayRefHeader from '@components/PayRefSearch/PayRefHeader';
 
 function App() {
@@ -76,6 +78,12 @@ function App() {
           element={<PageLayout customHeader={<PayRefHeader />} />}
         >
           <Route index element={<PayRefSearchPage />} />
+        </Route>
+        <Route
+          path="search"
+          element={<PageLayout customHeader={<SearchPageHeader />} />}
+        >
+          <Route index element={<SearchPage />} />
         </Route>
         <Route path="mempool" element={<PageLayout title="Mempool" />}>
           <Route index element={<MempoolPage />} />

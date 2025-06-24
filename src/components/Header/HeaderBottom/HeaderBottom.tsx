@@ -23,17 +23,19 @@
 import { StyledContainer } from './HeaderBottom.styles';
 import StatsBox from '../StatsBox/StatsBox';
 import { useMainStore } from '@services/stores/useMainStore';
-import AdvancedSearch from '@components/Search/AdvancedSearch';
+import SearchField from '../SearchField/SearchField';
+import { useState } from 'react';
 
 export default function HeaderBottom() {
   const isMobile = useMainStore((state) => state.isMobile);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <StyledContainer>
       {!isMobile && (
         <>
           <StatsBox variant="desktop" />
-          <AdvancedSearch />
+          <SearchField isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
         </>
       )}
     </StyledContainer>
