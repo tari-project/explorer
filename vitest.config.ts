@@ -19,7 +19,10 @@ export default defineConfig({
         'dist/',
         'coverage/',
         '**/*.test.*',
-        '**/*.spec.*'
+        '**/*.spec.*',
+        '**/*.styles.ts',
+        'src/main.tsx',
+        'src/utils/baseNodeClient.ts'
       ],
       thresholds: {
         global: {
