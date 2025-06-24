@@ -155,6 +155,9 @@ export const mockMuiComponents = {
       {children}
     </button>
   ),
+  Container: ({ children, maxWidth, ...props }: any) => (
+    <div data-testid="container" maxwidth={maxWidth} {...props}>{children}</div>
+  ),
   Divider: ({ color, style }: any) => (
     <div data-testid="divider" data-color={color} style={style}>---</div>
   ),
