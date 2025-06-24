@@ -3,11 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { ThemeProvider } from '@mui/material/styles'
 import { MemoryRouter } from 'react-router-dom'
 import MobileNavigation from '../MobileNavigation'
-import {
-  mockUseMainStore,
-  mockSetSearchOpen,
-  mockTheme
-} from '@/test/mocks'
 
 // Mock the styles module
 vi.mock('../styles', () => ({
@@ -31,10 +26,18 @@ vi.mock('../styles', () => ({
 }))
 
 // Mock the store
-const mockSetShowMobileMenu = vi.fn()
 vi.mock('@services/stores/useMainStore', () => ({
   useMainStore: vi.fn()
 }))
+
+// Mock theme
+const mockTheme = {
+  spacing: vi.fn((value: number) => `${value * 8}px`),
+  palette: {
+    background: { paper: '#ffffff' },
+    divider: '#e0e0e0'
+  }
+}
 
 // Test wrapper
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -46,14 +49,19 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => (
 )
 
 describe('MobileNavigation', () => {
-  beforeEach(() => {
+  let mockUseMainStore: any
+  let mockSetShowMobileMenu: any
+
+  beforeEach(async () => {
     vi.clearAllMocks()
-    mockUseMainStore.mockImplementation((selector) => {
-      if (selector.toString().includes('setShowMobileMenu')) {
-        return mockSetShowMobileMenu
-      }
-      return undefined
-    })
+    
+    const { useMainStore } = await import('@services/stores/useMainStore')
+    mockUseMainStore = vi.mocked(useMainStore)
+    mockSetShowMobileMenu = vi.fn()
+    
+    // Mock the implementation to return the setShowMobileMenu function directly
+    // since useMainStore((state) => state.setShowMobileMenu) should return the function
+    mockUseMainStore.mockReturnValue(mockSetShowMobileMenu)
   })
 
   describe('Rendering', () => {
