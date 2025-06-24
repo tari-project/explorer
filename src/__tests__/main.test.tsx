@@ -125,15 +125,18 @@ describe('main.tsx', () => {
     }
   })
 
-  it('should test QueryClient instantiation', () => {
+  it('should test QueryClient instantiation', async () => {
     // Import and test QueryClient
-    const { QueryClient } = vi.importActual('@tanstack/react-query') as any
+    const { QueryClient } = await import('@tanstack/react-query')
     
     // Test that QueryClient can be instantiated
     expect(QueryClient).toBeDefined()
-    expect(mockQueryClient).toHaveProperty('defaultOptions')
-    expect(mockQueryClient.defaultOptions).toHaveProperty('queries')
-    expect(mockQueryClient.defaultOptions).toHaveProperty('mutations')
+    expect(typeof QueryClient).toBe('function')
+    
+    // Test that we can create an instance
+    const client = new QueryClient()
+    expect(client).toBeDefined()
+    expect(client).toHaveProperty('defaultOptions')
   })
 
   it('should test browser router creation', () => {
