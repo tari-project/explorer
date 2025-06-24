@@ -4,43 +4,70 @@ import { ThemeProvider } from '@mui/material/styles'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
 import BlockTable from '../BlockTable'
-import {
-  mockUseMainStore,
-  mockTheme,
-  mockStyledComponents,
-  mockCopyToClipboard,
-  mockInnerHeading,
-  mockMuiComponents,
-  mockToHexString,
-  mockShortenString,
-  mockFormatTimestamp,
-  mockPowCheck
-} from '@/test/mocks'
 
-// Mock dependencies using centralized mocks
-vi.mock('@services/stores/useMainStore', () => ({
-  useMainStore: mockUseMainStore
+// Mock dependencies with individual vi.mock calls
+vi.mock('@components/StyledComponents', () => ({
+  TypographyData: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="typography-data">{children}</div>
+  )
 }))
 
-vi.mock('@components/StyledComponents', () => mockStyledComponents)
-
 vi.mock('@components/CopyToClipboard', () => ({
-  default: mockCopyToClipboard
+  default: ({ copy }: { copy: string }) => (
+    <div data-testid="copy-to-clipboard" data-copy={copy}>Copy</div>
+  )
 }))
 
 vi.mock('@components/InnerHeading', () => ({
-  default: mockInnerHeading
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="inner-heading">{children}</div>
+  )
 }))
 
 vi.mock('@utils/helpers', () => ({
-  toHexString: mockToHexString,
-  shortenString: mockShortenString,
-  formatTimestamp: mockFormatTimestamp,
-  powCheck: mockPowCheck
+  toHexString: vi.fn((data) => `hex_${data}`),
+  shortenString: vi.fn((str, start, end) => `${str.substring(0, start)}...${str.substring(str.length - end)}`),
+  formatTimestamp: vi.fn((timestamp) => `formatted_${timestamp}`),
+  powCheck: vi.fn((algo) => `pow_${algo}`)
 }))
 
 vi.mock('@mui/material', () => ({
-  ...mockMuiComponents,
+  Typography: ({ children, variant }: any) => (
+    <div data-testid="typography" data-variant={variant}>{children}</div>
+  ),
+  Grid: ({ children, item, xs, md, lg, spacing, style, ...props }: any) => (
+    <div 
+      data-testid="grid" 
+      data-item={item}
+      data-xs={xs}
+      data-md={md}
+      data-lg={lg}
+      data-spacing={spacing}
+      style={style}
+      {...props}
+    >
+      {children}
+    </div>
+  ),
+  Divider: ({ color, style }: any) => (
+    <div data-testid="divider" data-color={color} style={style}>---</div>
+  ),
+  Button: ({ children, variant, fullWidth, href, color, style, ...props }: any) => (
+    <button 
+      data-testid="button" 
+      data-variant={variant}
+      data-full-width={fullWidth}
+      data-href={href}
+      data-color={color}
+      style={style}
+      {...props}
+    >
+      {children}
+    </button>
+  ),
+  Box: ({ children, style, ...props }: any) => (
+    <div data-testid="box" style={style} {...props}>{children}</div>
+  ),
   Pagination: ({ count, page, onChange }: any) => (
     <div data-testid="pagination" data-count={count} data-page={page}>
       <button onClick={() => onChange(null, page - 1)} disabled={page <= 1}>
@@ -60,6 +87,19 @@ vi.mock('react-router-dom', () => ({
   ),
   MemoryRouter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
 }))
+
+vi.mock('@services/stores/useMainStore', () => ({
+  useMainStore: vi.fn()
+}))
+
+// Mock theme
+const mockTheme = {
+  spacing: vi.fn((value: number) => `${value * 8}px`),
+  palette: {
+    background: { paper: '#ffffff' },
+    divider: '#e0e0e0'
+  }
+}
 
 vi.mock('@mui/material/styles', () => ({
   useTheme: () => mockTheme,
@@ -87,6 +127,21 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 }
 
 describe('BlockTable', () => {
+  let mockUseMainStore: any
+  let mockToHexString: any
+  let mockFormatTimestamp: any
+  let mockPowCheck: any
+
+  beforeEach(async () => {
+    vi.clearAllMocks()
+    const { useMainStore } = await import('@services/stores/useMainStore')
+    const { toHexString, formatTimestamp, powCheck } = await import('@utils/helpers')
+    mockUseMainStore = vi.mocked(useMainStore)
+    mockToHexString = vi.mocked(toHexString)
+    mockFormatTimestamp = vi.mocked(formatTimestamp)
+    mockPowCheck = vi.mocked(powCheck)
+  })
+
   const mockSearchResults = [
     {
       block_height: 12345,
@@ -114,10 +169,6 @@ describe('BlockTable', () => {
     kernels: 5 + i,
     outputs: 10 + i
   }))
-
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
 
   describe('Mobile View', () => {
     beforeEach(() => {

@@ -3,25 +3,68 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { ThemeProvider } from '@mui/material/styles'
 import { MemoryRouter } from 'react-router-dom'
 import SearchBlock from '../SearchBlock'
-import {
-  mockUseMainStore,
-  mockSetSearchOpen,
-  mockNavigate,
-  mockTheme,
-  mockMuiComponents
-} from '@/test/mocks'
 
-// Mock dependencies using centralized mocks
+// Mock dependencies using individual vi.mock calls
 vi.mock('@services/stores/useMainStore', () => ({
   useMainStore: vi.fn()
 }))
 
 vi.mock('react-router-dom', () => ({
-  useNavigate: () => mockNavigate,
+  useNavigate: vi.fn(),
   MemoryRouter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
 }))
 
-vi.mock('@mui/material', () => mockMuiComponents)
+vi.mock('@mui/material', () => ({
+  Button: ({ children, variant, color, onClick, disabled, ...props }: any) => (
+    <button 
+      data-testid="button" 
+      data-variant={variant}
+      data-color={color}
+      onClick={onClick}
+      disabled={disabled}
+      {...props}
+    >
+      {children}
+    </button>
+  ),
+  Stack: ({ children, spacing, direction, ...props }: any) => (
+    <div 
+      data-testid="stack" 
+      data-spacing={spacing}
+      data-direction={direction}
+      {...props}
+    >
+      {children}
+    </div>
+  ),
+  TextField: ({ label, value, onChange, placeholder, error, helperText, ...props }: any) => (
+    <div data-testid="text-field">
+      <label>{label}</label>
+      <input 
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        data-error={error}
+        {...props}
+      />
+      {helperText && <span data-testid="helper-text">{helperText}</span>}
+    </div>
+  ),
+  Alert: ({ severity, children }: any) => (
+    <div data-testid="alert" data-severity={severity}>
+      {children}
+    </div>
+  )
+}))
+
+// Mock theme
+const mockTheme = {
+  spacing: vi.fn((value: number) => `${value * 8}px`),
+  palette: {
+    background: { paper: '#ffffff' },
+    divider: '#e0e0e0'
+  }
+}
 
 vi.mock('@mui/material/styles', () => ({
   useTheme: () => mockTheme,
@@ -38,8 +81,22 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => (
 )
 
 describe('SearchBlock', () => {
-  beforeEach(() => {
+  let mockUseMainStore: any
+  let mockNavigate: any
+  let mockSetSearchOpen: any
+
+  beforeEach(async () => {
     vi.clearAllMocks()
+    
+    const { useMainStore } = await import('@services/stores/useMainStore')
+    const { useNavigate } = await import('react-router-dom')
+    
+    mockUseMainStore = vi.mocked(useMainStore)
+    mockNavigate = vi.mocked(useNavigate)
+    mockSetSearchOpen = vi.fn()
+    
+    mockNavigate.mockReturnValue(vi.fn())
+    
     mockUseMainStore.mockImplementation((selector) => {
       if (selector.toString().includes('searchOpen')) {
         return true // searchOpen = true

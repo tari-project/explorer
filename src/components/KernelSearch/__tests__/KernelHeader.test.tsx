@@ -4,22 +4,36 @@ import { ThemeProvider } from '@mui/material/styles'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
 import KernelHeader from '../KernelHeader'
-import {
-  mockUseSearchByKernel,
-  mockTheme,
-  mockKernelSearchData,
-  mockMuiComponents
-} from '@/test/mocks'
 
-// Mock dependencies using centralized mocks
+// Mock dependencies using individual vi.mock calls
 vi.mock('@services/api/hooks/useBlocks', () => ({
-  useSearchByKernel: mockUseSearchByKernel
+  useSearchByKernel: vi.fn()
 }))
 
 vi.mock('@mui/material', () => ({
-  ...mockMuiComponents,
+  Box: ({ children, style, ...props }: any) => (
+    <div data-testid="box" style={style} {...props}>{children}</div>
+  ),
+  Container: ({ children, ...props }: any) => (
+    <div data-testid="container" {...props}>{children}</div>
+  ),
+  Typography: ({ children, variant, color }: any) => (
+    <div data-testid="typography" data-variant={variant} data-color={color}>{children}</div>
+  ),
   useMediaQuery: vi.fn(() => false) // desktop by default
 }))
+
+// Mock theme
+const mockTheme = {
+  spacing: vi.fn((value: number) => `${value * 8}px`),
+  palette: {
+    background: { paper: '#ffffff' },
+    divider: '#e0e0e0'
+  },
+  breakpoints: {
+    down: vi.fn(() => '')
+  }
+}
 
 vi.mock('@mui/material/styles', () => ({
   useTheme: () => mockTheme,
@@ -57,9 +71,34 @@ const TestWrapper = ({ children, initialEntries = ['/'] }: {
 }
 
 describe('KernelHeader', () => {
-  beforeEach(() => {
+  let mockUseSearchByKernel: any
+
+  beforeEach(async () => {
     vi.clearAllMocks()
+    const { useSearchByKernel } = await import('@services/api/hooks/useBlocks')
+    mockUseSearchByKernel = vi.mocked(useSearchByKernel)
   })
+
+  const mockKernelSearchData = {
+    results: [
+      {
+        block_height: 12345,
+        block_hash: { data: 'block_hash_1' },
+        timestamp: 1640995200,
+        pow: { pow_algo: 1 },
+        kernels: 5,
+        outputs: 10
+      },
+      {
+        block_height: 12346,
+        block_hash: { data: 'block_hash_2' },
+        timestamp: 1640995260,
+        pow: { pow_algo: 2 },
+        kernels: 3,
+        outputs: 8
+      }
+    ]
+  }
 
   describe('URL parameter parsing', () => {
     it('should handle empty URL parameters', async () => {

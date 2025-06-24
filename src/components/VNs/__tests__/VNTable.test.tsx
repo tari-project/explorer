@@ -4,32 +4,70 @@ import { ThemeProvider } from '@mui/material/styles'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
 import VNTable from '../VNTable'
-import {
-  mockUseAllBlocks,
-  mockUseMainStore,
-  mockTheme,
-  mockVNData,
-  mockStyledComponents,
-  mockInnerHeading,
-  mockMuiComponents
-} from '@/test/mocks'
 
-// Mock dependencies using centralized mocks
+// Mock dependencies using individual vi.mock calls
 vi.mock('@services/api/hooks/useBlocks', () => ({
-  useAllBlocks: mockUseAllBlocks
+  useAllBlocks: vi.fn()
 }))
 
 vi.mock('@services/stores/useMainStore', () => ({
-  useMainStore: mockUseMainStore
+  useMainStore: vi.fn()
 }))
 
-vi.mock('@components/StyledComponents', () => mockStyledComponents)
+vi.mock('@components/StyledComponents', () => ({
+  TypographyData: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="typography-data">{children}</div>
+  ),
+  TransparentBg: ({ children, height }: { children: React.ReactNode; height?: string }) => (
+    <div data-testid="transparent-bg" data-height={height}>{children}</div>
+  )
+}))
 
 vi.mock('@components/InnerHeading', () => ({
-  default: mockInnerHeading
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="inner-heading">{children}</div>
+  )
 }))
 
-vi.mock('@mui/material', () => mockMuiComponents)
+vi.mock('@mui/material', () => ({
+  Typography: ({ children, variant }: any) => (
+    <div data-testid="typography" data-variant={variant}>{children}</div>
+  ),
+  Grid: ({ children, item, xs, md, lg, spacing, style, ...props }: any) => (
+    <div 
+      data-testid="grid" 
+      data-item={item}
+      data-xs={xs}
+      data-md={md}
+      data-lg={lg}
+      data-spacing={spacing}
+      style={style}
+      {...props}
+    >
+      {children}
+    </div>
+  ),
+  Divider: ({ color, style }: any) => (
+    <div data-testid="divider" data-color={color} style={style}>---</div>
+  ),
+  Alert: ({ severity, variant, children }: any) => (
+    <div data-testid="alert" data-severity={severity} data-variant={variant}>
+      {children}
+    </div>
+  ),
+  Skeleton: ({ variant, height }: any) => (
+    <div data-testid="skeleton" data-variant={variant} data-height={height}>Loading...</div>
+  )
+}))
+
+// Mock theme
+const mockTheme = {
+  spacing: vi.fn((value: number) => `${value * 8}px`),
+  palette: {
+    background: { paper: '#ffffff' },
+    divider: '#e0e0e0'
+  }
+}
 
 vi.mock('@mui/material/styles', () => ({
   useTheme: () => mockTheme,
@@ -57,9 +95,37 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 }
 
 describe('VNTable', () => {
-  beforeEach(() => {
+  let mockUseAllBlocks: any
+  let mockUseMainStore: any
+
+  beforeEach(async () => {
     vi.clearAllMocks()
+    const { useAllBlocks } = await import('@services/api/hooks/useBlocks')
+    const { useMainStore } = await import('@services/stores/useMainStore')
+    mockUseAllBlocks = vi.mocked(useAllBlocks)
+    mockUseMainStore = vi.mocked(useMainStore)
   })
+
+  const mockVNData = {
+    headers: [
+      {
+        vn_nodes: [
+          {
+            public_key: 'vn_key_1',
+            shard_key: 'shard_1',
+            epoch: 1,
+            committee: ['member1', 'member2']
+          },
+          {
+            public_key: 'vn_key_2',
+            shard_key: 'shard_2',
+            epoch: 1,
+            committee: ['member3', 'member4']
+          }
+        ]
+      }
+    ]
+  }
 
   describe('Mobile View', () => {
     beforeEach(() => {

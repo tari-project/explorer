@@ -4,20 +4,17 @@ import { ThemeProvider } from '@mui/material/styles'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
 import SearchKernelForm from '../SearchKernelForm'
-import {
-  mockUseSearchByKernel,
-  mockTheme,
-  mockStyledComponents,
-  mockMuiComponents,
-  mockKernelSearchData
-} from '@/test/mocks'
 
-// Mock dependencies using centralized mocks
+// Mock dependencies using individual vi.mock calls
 vi.mock('@services/api/hooks/useBlocks', () => ({
-  useSearchByKernel: mockUseSearchByKernel
+  useSearchByKernel: vi.fn()
 }))
 
-vi.mock('@components/StyledComponents', () => mockStyledComponents)
+vi.mock('@components/StyledComponents', () => ({
+  GradientPaper: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="gradient-paper">{children}</div>
+  )
+}))
 
 vi.mock('@components/FetchStatusCheck', () => ({
   default: ({ children }: { children: React.ReactNode }) => (
@@ -33,7 +30,60 @@ vi.mock('@components/KernelSearch/BlockTable', () => ({
   )
 }))
 
-vi.mock('@mui/material', () => mockMuiComponents)
+vi.mock('@mui/material', () => ({
+  Grid: ({ children, item, xs, md, lg, spacing, style, ...props }: any) => (
+    <div 
+      data-testid="grid" 
+      data-item={item}
+      data-xs={xs}
+      data-md={md}
+      data-lg={lg}
+      data-spacing={spacing}
+      style={style}
+      {...props}
+    >
+      {children}
+    </div>
+  ),
+  TextField: ({ label, value, onChange, placeholder, fullWidth, multiline, rows, ...props }: any) => (
+    <div data-testid="text-field" data-full-width={fullWidth}>
+      <label>{label}</label>
+      <input 
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        data-multiline={multiline}
+        data-rows={rows}
+        {...props}
+      />
+    </div>
+  ),
+  Button: ({ children, variant, color, onClick, disabled, fullWidth, ...props }: any) => (
+    <button 
+      data-testid="button" 
+      data-variant={variant}
+      data-color={color}
+      data-full-width={fullWidth}
+      onClick={onClick}
+      disabled={disabled}
+      {...props}
+    >
+      {children}
+    </button>
+  ),
+  Box: ({ children, style, ...props }: any) => (
+    <div data-testid="box" style={style} {...props}>{children}</div>
+  )
+}))
+
+// Mock theme
+const mockTheme = {
+  spacing: vi.fn((value: number) => `${value * 8}px`),
+  palette: {
+    background: { paper: '#ffffff' },
+    divider: '#e0e0e0'
+  }
+}
 
 vi.mock('@mui/material/styles', () => ({
   useTheme: () => mockTheme,
@@ -69,9 +119,34 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 }
 
 describe('SearchKernelForm', () => {
-  beforeEach(() => {
+  let mockUseSearchByKernel: any
+
+  beforeEach(async () => {
     vi.clearAllMocks()
+    const { useSearchByKernel } = await import('@services/api/hooks/useBlocks')
+    mockUseSearchByKernel = vi.mocked(useSearchByKernel)
   })
+
+  const mockKernelSearchData = {
+    results: [
+      {
+        block_height: 12345,
+        block_hash: { data: 'block_hash_1' },
+        timestamp: 1640995200,
+        pow: { pow_algo: 1 },
+        kernels: 5,
+        outputs: 10
+      },
+      {
+        block_height: 12346,
+        block_hash: { data: 'block_hash_2' },
+        timestamp: 1640995260,
+        pow: { pow_algo: 2 },
+        kernels: 3,
+        outputs: 8
+      }
+    ]
+  }
 
   describe('Rendering', () => {
     it('should render form inputs and submit button', () => {
