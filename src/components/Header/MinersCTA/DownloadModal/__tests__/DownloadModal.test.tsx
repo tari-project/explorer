@@ -95,11 +95,11 @@ vi.mock('../OSButton', () => ({
 describe('DownloadModal', () => {
   let mockUseMainStore: any
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks()
     mockUseMainStore = vi.fn()
-    const { useMainStore } = require('@services/stores/useMainStore')
-    useMainStore.mockImplementation(mockUseMainStore)
+    const { useMainStore } = await import('@services/stores/useMainStore')
+    vi.mocked(useMainStore).mockImplementation(mockUseMainStore)
   })
 
   it('should not render when showDownloadModal is false', () => {

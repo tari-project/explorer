@@ -61,7 +61,8 @@ describe('HeaderTitle', () => {
     render(<HeaderTitle title="Test Title" />)
 
     expect(screen.queryByTestId('styled-subtitle')).toBeInTheDocument()
-    expect(screen.getByText('')).toBeInTheDocument() // Empty subtitle still renders
+    const subtitle = screen.getByTestId('styled-subtitle')
+    expect(subtitle).toHaveTextContent('') // Empty subtitle still renders
   })
 
   it('should render within container with correct maxWidth', () => {
@@ -84,7 +85,8 @@ describe('HeaderTitle', () => {
     render(<HeaderTitle title="" />)
 
     expect(screen.getByTestId('styled-title')).toBeInTheDocument()
-    expect(screen.getByText('')).toBeInTheDocument()
+    const title = screen.getByTestId('styled-title')
+    expect(title).toHaveTextContent('')
   })
 
   it('should handle long titles', () => {

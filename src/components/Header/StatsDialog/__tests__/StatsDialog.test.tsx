@@ -79,7 +79,9 @@ vi.mock('../StatsDialog.styles', () => ({
 // Mock child components
 vi.mock('../../CopyToClipboard', () => ({
   default: ({ copy }: { copy: string }) => (
-    <span data-testid="copy-to-clipboard" data-copy={copy}>📋</span>
+    <button aria-label="copy to clipboard" data-testid="icon-button" data-copy={copy}>
+      <svg data-testid="ContentCopyIcon" />
+    </button>
   )
 }))
 
@@ -214,7 +216,7 @@ describe('StatsDialog', () => {
     const analyticsButton = screen.getAllByTestId('icon-button')[0]
     fireEvent.click(analyticsButton)
 
-    expect(screen.getByTestId('copy-to-clipboard')).toBeInTheDocument()
+    expect(screen.getByTestId('ContentCopyIcon')).toBeInTheDocument()
   })
 
   it('should close dialog when close button is clicked', () => {
