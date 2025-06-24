@@ -117,6 +117,11 @@ const mockTheme = {
   palette: {
     background: { paper: '#ffffff' },
     divider: '#e0e0e0'
+  },
+  typography: {
+    h6: {
+      fontSize: '1rem'
+    }
   }
 }
 
@@ -148,30 +153,40 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 describe('MempoolTable', () => {
   let mockUseAllBlocks: any
   let mockUseMainStore: any
+  let mockToHexString: any
 
   beforeEach(async () => {
     vi.clearAllMocks()
     const { useAllBlocks } = await import('@services/api/hooks/useBlocks')
     const { useMainStore } = await import('@services/stores/useMainStore')
+    const { toHexString } = await import('@utils/helpers')
     mockUseAllBlocks = vi.mocked(useAllBlocks)
     mockUseMainStore = vi.mocked(useMainStore)
+    mockToHexString = vi.mocked(toHexString)
   })
 
   const mockMempoolData = {
-    headers: [
+    mempool: [
       {
-        hash: { data: 'block_hash_1' },
-        mempool_stats: {
-          kernels: [
-            {
-              excess: { data: 'kernel_hash_1' },
-              excess_sig: { signature: { data: 'signature_1' } }
-            },
-            {
-              excess: { data: 'kernel_hash_2' },
-              excess_sig: { signature: { data: 'signature_2' } }
-            }
-          ]
+        transaction: {
+          body: {
+            signature: { data: 'mock_signature_1' },
+            total_fees: 1000,
+            outputs: [{}],
+            kernels: [{}],
+            inputs: [{}]
+          }
+        }
+      },
+      {
+        transaction: {
+          body: {
+            signature: { data: 'mock_signature_2' },
+            total_fees: 1500,
+            outputs: [{}, {}],
+            kernels: [{}],
+            inputs: [{}, {}]
+          }
         }
       }
     ]
@@ -179,10 +194,15 @@ describe('MempoolTable', () => {
 
   const largeMempoolData = {
     mempool: Array.from({ length: 25 }, (_, i) => ({
-      id: i,
-      excess_sig: { signature: `signature_${i}` },
-      fee_per_gram: 1000 + i * 100,
-      timestamp: 1640995200 + i * 60
+      transaction: {
+        body: {
+          signature: { data: `signature_${i}` },
+          total_fees: 1000 + i * 100,
+          outputs: [{}],
+          kernels: [{}],
+          inputs: [{}]
+        }
+      }
     }))
   }
 
@@ -204,12 +224,9 @@ describe('MempoolTable', () => {
         </TestWrapper>
       )
 
-      // Check for mobile layout
-      expect(screen.getByTestId('fetch-status-check')).toBeInTheDocument()
-      
-      // Check for data display
-      expect(screen.getByText('Kernel Signature')).toBeInTheDocument()
-      expect(screen.getByText('Fee per Gram')).toBeInTheDocument()
+      // Check for data display - use getAllByText since there are multiple elements
+      expect(screen.getAllByText('Excess')).toHaveLength(2) // One for each transaction
+      expect(screen.getAllByText('Total Fees')).toHaveLength(2)
       
       // Check copy components
       const copyComponents = screen.getAllByTestId('copy-to-clipboard')
@@ -255,9 +272,11 @@ describe('MempoolTable', () => {
       )
 
       // Check table headers
-      expect(screen.getByText('Kernel Signature')).toBeInTheDocument()
-      expect(screen.getByText('Fee per Gram')).toBeInTheDocument()
-      expect(screen.getByText('Time')).toBeInTheDocument()
+      expect(screen.getByText('Excess')).toBeInTheDocument()
+      expect(screen.getByText('Total Fees')).toBeInTheDocument()
+      expect(screen.getByText('Outputs')).toBeInTheDocument()
+      expect(screen.getByText('Kernels')).toBeInTheDocument()
+      expect(screen.getByText('Inputs')).toBeInTheDocument()
     })
 
     it('should render desktop mempool data in table format', () => {
@@ -332,8 +351,8 @@ describe('MempoolTable', () => {
       
       fireEvent.click(nextButton)
       
-      // Should display different transactions on page 2
-      expect(pagination).toHaveAttribute('data-page', '1') // Initial page
+      // Should be on page 2 after clicking next
+      expect(pagination).toHaveAttribute('data-page', '2')
     })
 
     it('should handle items per page changes', () => {
@@ -393,12 +412,8 @@ describe('MempoolTable', () => {
         </TestWrapper>
       )
 
-      // Should still render headers
-      expect(screen.getByText('Kernel Signature')).toBeInTheDocument()
-      
-      // Pagination should show 0 pages
-      const pagination = screen.getByTestId('pagination')
-      expect(pagination).toHaveAttribute('data-count', '0')
+      // Should show empty state alert
+      expect(screen.getByTestId('alert')).toHaveTextContent('Mempool is empty')
     })
 
     it('should handle null mempool data', () => {
@@ -414,9 +429,8 @@ describe('MempoolTable', () => {
         </TestWrapper>
       )
 
-      // Should handle null gracefully
-      const pagination = screen.getByTestId('pagination')
-      expect(pagination).toHaveAttribute('data-count', '0')
+      // Should show invalid data format alert
+      expect(screen.getByTestId('alert')).toHaveTextContent('Invalid data format')
     })
 
     it('should call helper functions with correct parameters', () => {
