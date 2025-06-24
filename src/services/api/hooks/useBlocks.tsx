@@ -55,6 +55,7 @@ export const useGetBlocksByParam = (from: number, limit: number) => {
 };
 
 export const useGetBlockByHeightOrHash = (blockHeight: string) => {
+  blockHeight = blockHeight.toLowerCase();
   return useQuery({
     queryKey: ['block', blockHeight],
     queryFn: () =>
@@ -75,6 +76,7 @@ export const useGetPaginatedData = (
   from: number,
   to: number
 ) => {
+  blockHeight = blockHeight.toLowerCase();
   return useQuery({
     queryKey: ['block', blockHeight, what, from, to],
     queryFn: () =>
@@ -110,6 +112,7 @@ export const useSearchByKernel = (nonces: string[], signatures: string[]) => {
 };
 
 export const useSearchByPayref = (payref: string) => {
+  payref = payref.toLowerCase();
   return useQuery({
     queryKey: ['payref', payref],
     queryFn: () =>

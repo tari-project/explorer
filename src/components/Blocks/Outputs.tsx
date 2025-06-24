@@ -83,7 +83,7 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
   const displayedItems = paginatedData?.body.data;
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+    const value = event.target.value.toLowerCase().trim();
     setSearchValue({
       ...searchValue,
       [event.target.name]: value,
