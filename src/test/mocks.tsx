@@ -36,12 +36,21 @@ export const mockSetSearchOpen = vi.fn()
 export const mockNavigate = vi.fn()
 
 // Utility function mocks
-export const mockToHexString = vi.fn((data) => `hex_${data}`)
+export const mockToHexString = vi.fn((data) => {
+  if (!data || data === 'no data') return 'no data'
+  return `hex_${data}`
+})
 export const mockShortenString = vi.fn((str, start = 6, end = 6) => 
   str.length > start + end ? `${str.substring(0, start)}...${str.substring(str.length - end)}` : str
 )
-export const mockFormatTimestamp = vi.fn((timestamp) => `formatted_${timestamp}`)
-export const mockPowCheck = vi.fn((algo) => `pow_${algo}`)
+export const mockFormatTimestamp = vi.fn((timestamp) => {
+  if (!timestamp || timestamp === 'no data') return 'no data'
+  return `formatted_${timestamp}`
+})
+export const mockPowCheck = vi.fn((algo) => {
+  if (!algo || algo === 'no data') return 'no data'
+  return `pow_${algo}`
+})
 export const mockKernelSearch = vi.fn()
 
 // Theme mock
@@ -52,7 +61,11 @@ export const mockTheme = {
     divider: '#e0e0e0',
     primary: { main: '#1976d2' },
     secondary: { main: '#dc004e' },
-    error: { main: '#d32f2f' }
+    error: { main: '#d32f2f' },
+    text: { primary: '#000000', secondary: '#666666' }
+  },
+  typography: {
+    h6: { fontSize: '1.25rem' }
   },
   breakpoints: {
     up: vi.fn(() => '(min-width:600px)'),
@@ -77,6 +90,22 @@ export const mockCopyToClipboard = ({ copy }: { copy: string }) => (
 
 export const mockInnerHeading = ({ children }: { children: React.ReactNode }) => (
   <div data-testid="inner-heading">{children}</div>
+)
+
+export const mockGradientPaper = ({ children }: { children: React.ReactNode }) => (
+  <div data-testid="gradient-paper">{children}</div>
+)
+
+export const mockFetchStatusCheck = ({ isLoading, error, children }: { isLoading?: boolean, error?: any, children?: React.ReactNode }) => (
+  <div data-testid="fetch-status-check" data-loading={isLoading} data-error={error}>{children}</div>
+)
+
+export const mockBlockTable = ({ data }: { data: any }) => (
+  <div data-testid="block-table" data-items={data?.items}>{data?.items?.length} blocks</div>
+)
+
+export const mockLink = ({ to, children }: { to: string, children: React.ReactNode }) => (
+  <a data-testid="link" data-to={to}>{children}</a>
 )
 
 // MUI component mocks
@@ -104,7 +133,7 @@ export const mockMuiComponents = {
     <div data-testid="box" {...props}>{children}</div>
   ),
   Skeleton: ({ variant, height, width }: any) => (
-    <div data-testid="skeleton" data-variant={variant} data-height={height} data-width={width}>
+    <div data-testid="skeleton" data-variant={variant} data-height={height || "200"} data-width={width}>
       Loading...
     </div>
   ),
@@ -129,16 +158,18 @@ export const mockMuiComponents = {
   Divider: ({ color, style }: any) => (
     <div data-testid="divider" data-color={color} style={style}>---</div>
   ),
-  TextField: ({ label, value, onChange, error, helperText, ...props }: any) => (
-    <input
-      data-testid="text-field"
-      data-label={label}
-      value={value}
-      onChange={onChange}
-      data-error={error}
-      data-helper-text={helperText}
-      {...props}
-    />
+  TextField: ({ label, value, onChange, onKeyDown, error, helperText, fullWidth, ...props }: any) => (
+    <div data-full-width={fullWidth} data-testid="text-field" data-label={label}>
+      <label>{label}</label>
+      <input
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        data-error={error}
+        data-helper-text={helperText}
+        {...props}
+      />
+    </div>
   )
 }
 
@@ -184,29 +215,34 @@ export const mockBlockData = {
 export const mockVNData = {
   activeVns: [
     {
-      public_key: 'vn_key_1',
-      shard_key: 'shard_1',
+      public_key: { data: 'Pubkey Data' },
+      shard_key: { data: 'Shardkey Data' },
       committee: 'committee_1'
     },
     {
-      public_key: 'vn_key_2', 
-      shard_key: 'shard_2',
+      public_key: { data: 'Pubkey Data' }, 
+      shard_key: { data: 'Shardkey Data' },
       committee: 'committee_2'
+    },
+    {
+      public_key: { data: 'Pubkey Data' }, 
+      shard_key: { data: 'Shardkey Data' },
+      committee: 'committee_3'
     }
   ]
 }
 
 export const mockKernelSearchData = {
-  results: [
-    {
-      block_height: 12345,
-      kernel_index: 0,
-      signature: 'kernel_signature_1'
-    },
-    {
-      block_height: 12346,
-      kernel_index: 1,
-      signature: 'kernel_signature_2'
-    }
-  ]
+items: [
+{
+block_height: 12345,
+kernel_index: 0,
+signature: 'kernel_signature_1'
+},
+{
+block_height: 12346,
+kernel_index: 1,
+signature: 'kernel_signature_2'  
+}
+]
 }

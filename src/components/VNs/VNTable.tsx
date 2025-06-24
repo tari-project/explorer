@@ -121,7 +121,7 @@ function VNTable() {
   return (
     <>
       <Title />
-      {data?.activeVns.length === 0 && !isLoading && !isError ? (
+      {data?.activeVns?.length === 0 && !isLoading && !isError ? (
         <Alert severity="info" variant="outlined">
           Coming Soon
         </Alert>

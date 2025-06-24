@@ -19,8 +19,8 @@ const SearchBlock = () => {
 
   const validateQuery = (query: string) => {
     const height = parseInt(query);
-    const isHeight = !isNaN(height) && height >= 0;
-    const isHash = query.length === 64;
+    const isHeight = !isNaN(height) && height >= 0 && query === height.toString();
+    const isHash = query.length === 64 && /^[0-9a-fA-F]+$/.test(query);
     return isHeight || isHash;
   };
 
@@ -42,7 +42,7 @@ const SearchBlock = () => {
     setQuery(event.target.value);
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSearch();
     }
@@ -50,6 +50,8 @@ const SearchBlock = () => {
 
   const handleCancel = () => {
     setSearchOpen(false);
+    setQuery('');
+    setMessage('');
   };
 
   return (
@@ -61,7 +63,7 @@ const SearchBlock = () => {
         value={query}
         onChange={handleInputChange}
         size="small"
-        onKeyPress={handleKeyPress}
+        onKeyDown={handleKeyDown}
         fullWidth
         InputLabelProps={{ shrink: true }}
         inputRef={inputRef}

@@ -37,13 +37,14 @@ vi.mock('@mui/material', () => ({
       {children}
     </div>
   ),
-  TextField: ({ label, value, onChange, placeholder, error, helperText, ...props }: any) => (
+  TextField: ({ label, value, onChange, placeholder, error, helperText, onKeyDown, ...props }: any) => (
     <div data-testid="text-field">
       <label>{label}</label>
       <input 
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         data-error={error}
         {...props}
       />
@@ -83,6 +84,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => (
 describe('SearchBlock', () => {
   let mockUseMainStore: any
   let mockNavigate: any
+  let mockNavigateFn: any
   let mockSetSearchOpen: any
 
   beforeEach(async () => {
@@ -93,9 +95,10 @@ describe('SearchBlock', () => {
     
     mockUseMainStore = vi.mocked(useMainStore)
     mockNavigate = vi.mocked(useNavigate)
+    mockNavigateFn = vi.fn()
     mockSetSearchOpen = vi.fn()
     
-    mockNavigate.mockReturnValue(vi.fn())
+    mockNavigate.mockReturnValue(mockNavigateFn)
     
     mockUseMainStore.mockImplementation((selector) => {
       if (selector.toString().includes('searchOpen')) {
@@ -128,7 +131,7 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
       // Note: jsdom doesn't actually focus elements, but we can test the ref setup
       expect(input).toBeInTheDocument()
     })
@@ -142,14 +145,14 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
       const searchButton = screen.getByRole('button', { name: /search/i })
 
       fireEvent.change(input, { target: { value: '12345' } })
       fireEvent.click(searchButton)
 
       await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith('/blocks/12345')
+        expect(mockNavigateFn).toHaveBeenCalledWith('/blocks/12345')
         expect(mockSetSearchOpen).toHaveBeenCalledWith(false)
       })
     })
@@ -163,14 +166,14 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
       const searchButton = screen.getByRole('button', { name: /search/i })
 
       fireEvent.change(input, { target: { value: validHash } })
       fireEvent.click(searchButton)
 
       await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith(`/blocks/${validHash}`)
+        expect(mockNavigateFn).toHaveBeenCalledWith(`/blocks/${validHash}`)
         expect(mockSetSearchOpen).toHaveBeenCalledWith(false)
       })
     })
@@ -182,7 +185,7 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
       const searchButton = screen.getByRole('button', { name: /search/i })
 
       fireEvent.change(input, { target: { value: 'invalid' } })
@@ -191,7 +194,7 @@ describe('SearchBlock', () => {
       await waitFor(() => {
         expect(screen.getByTestId('alert')).toBeInTheDocument()
         expect(screen.getByText('Please enter a valid block height or hash')).toBeInTheDocument()
-        expect(mockNavigate).not.toHaveBeenCalled()
+        expect(mockNavigateFn).not.toHaveBeenCalled()
       })
     })
 
@@ -202,7 +205,7 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
       const searchButton = screen.getByRole('button', { name: /search/i })
 
       fireEvent.change(input, { target: { value: '-123' } })
@@ -210,7 +213,7 @@ describe('SearchBlock', () => {
 
       await waitFor(() => {
         expect(screen.getByTestId('alert')).toBeInTheDocument()
-        expect(mockNavigate).not.toHaveBeenCalled()
+        expect(mockNavigateFn).not.toHaveBeenCalled()
       })
     })
 
@@ -221,7 +224,7 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
       const searchButton = screen.getByRole('button', { name: /search/i })
 
       fireEvent.change(input, { target: { value: '1234567890abcdef' } }) // Too short
@@ -229,7 +232,7 @@ describe('SearchBlock', () => {
 
       await waitFor(() => {
         expect(screen.getByTestId('alert')).toBeInTheDocument()
-        expect(mockNavigate).not.toHaveBeenCalled()
+        expect(mockNavigateFn).not.toHaveBeenCalled()
       })
     })
   })
@@ -242,13 +245,13 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
 
       fireEvent.change(input, { target: { value: '12345' } })
-      fireEvent.keyPress(input, { key: 'Enter', code: 'Enter' })
+      fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
 
       await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith('/blocks/12345')
+        expect(mockNavigateFn).toHaveBeenCalledWith('/blocks/12345')
         expect(mockSetSearchOpen).toHaveBeenCalledWith(false)
       })
     })
@@ -260,12 +263,12 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
 
       fireEvent.change(input, { target: { value: '12345' } })
-      fireEvent.keyPress(input, { key: 'Tab', code: 'Tab' })
+      fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' })
 
-      expect(mockNavigate).not.toHaveBeenCalled()
+      expect(mockNavigateFn).not.toHaveBeenCalled()
     })
   })
 
@@ -277,7 +280,7 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
       const cancelButton = screen.getByRole('button', { name: /cancel/i })
 
       fireEvent.change(input, { target: { value: '12345' } })
@@ -294,7 +297,7 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
       const searchButton = screen.getByRole('button', { name: /search/i })
       const cancelButton = screen.getByRole('button', { name: /cancel/i })
 
@@ -323,7 +326,7 @@ describe('SearchBlock', () => {
 
       fireEvent.click(searchButton)
 
-      expect(mockNavigate).not.toHaveBeenCalled()
+      expect(mockNavigateFn).not.toHaveBeenCalled()
       expect(mockSetSearchOpen).not.toHaveBeenCalledWith(false)
     })
 
@@ -334,11 +337,11 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
 
-      fireEvent.keyPress(input, { key: 'Enter', code: 'Enter' })
+      fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
 
-      expect(mockNavigate).not.toHaveBeenCalled()
+      expect(mockNavigateFn).not.toHaveBeenCalled()
     })
   })
 
@@ -350,7 +353,7 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
       const searchButton = screen.getByRole('button', { name: /search/i })
 
       fireEvent.change(input, { target: { value: '12345' } })
@@ -368,7 +371,7 @@ describe('SearchBlock', () => {
         </TestWrapper>
       )
 
-      const input = screen.getByTestId('text-field')
+      const input = screen.getByTestId('text-field').querySelector('input')
       const searchButton = screen.getByRole('button', { name: /search/i })
 
       fireEvent.change(input, { target: { value: 'invalid' } })

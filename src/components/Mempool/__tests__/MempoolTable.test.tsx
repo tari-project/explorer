@@ -58,6 +58,9 @@ vi.mock('@mui/material', () => ({
       {children}
     </div>
   ),
+  Box: ({ children, style, ...props }: any) => (
+    <div data-testid="box" style={style} {...props}>{children}</div>
+  ),
   Divider: ({ color, style }: any) => (
     <div data-testid="divider" data-color={color} style={style}>---</div>
   ),
