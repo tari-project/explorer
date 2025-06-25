@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
-import { Fade, InputAdornment } from '@mui/material';
+import { Fade, InputAdornment, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { IoSearch, IoClose } from 'react-icons/io5';
 import SnackbarAlert from '../../SnackbarAlert';
 import {
-  StyledTextField,
   SearchIconButton,
   CloseIconButton,
   ExpandIconButton,
 } from './SearchField.styles';
+import { useMainStore } from '@services/stores/useMainStore';
 
 const SearchField = ({
   isExpanded,
   setIsExpanded,
+  fullWidth = false,
 }: {
   isExpanded: boolean;
   setIsExpanded: (expanded: boolean) => void;
+  fullWidth?: boolean;
 }) => {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const isMobile = useMainStore((state) => state.isMobile);
 
   const handleSearch = () => {
     if (query === '') {
@@ -61,13 +64,14 @@ const SearchField = ({
       <SnackbarAlert open={open} setOpen={setOpen} message="Invalid query" />
       {isExpanded && (
         <Fade in={isExpanded} timeout={500}>
-          <StyledTextField
-            label="Search"
-            placeholder="Search by PayRef / Block Height / Block Hash"
+          <TextField
+            label="Search by PayRef / Block Height / Block Hash"
+            placeholder="Enter 64 character hash or block height"
             autoFocus
             value={query}
             onChange={handleInputChange}
             size="small"
+            style={{ width: fullWidth || isMobile ? '100%' : '440px' }}
             onKeyPress={handleKeyPress}
             InputProps={
               query !== ''

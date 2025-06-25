@@ -21,7 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { GradientPaper } from '@components/StyledComponents';
-import { Grid } from '@mui/material';
+import { Alert, Grid } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import {
   useSearchByPayref,
@@ -30,35 +30,66 @@ import {
 import FetchStatusCheck from '@components/FetchStatusCheck';
 import PayRefTable from '@components/Search/PayRefTable';
 import BlockTable from '@components/Search/BlockTable';
+import useSearchStatusStore from '@services/stores/useSearchStatusStore';
+import { useEffect } from 'react';
 
 function SearchPage() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
   const hash = params.get('hash') || '';
+  const isHash = /^[a-fA-F0-9]{64}$/.test(hash);
 
-  const {
-    data: payrefData,
-    isFetching: isPayrefLoading,
-    isError: isPayrefError,
-    error: payrefError,
-  } = useSearchByPayref(hash);
+  const setStatus = useSearchStatusStore((state) => state.setStatus);
+  const setMessage = useSearchStatusStore((state) => state.setMessage);
 
-  const {
-    data: blockData,
-    isFetching: isBlockLoading,
-    isError: isBlockError,
-    error: blockError,
-  } = useGetBlockByHeightOrHash(hash);
+  let payrefData, isPayrefLoading, isPayrefError, payrefError, isPayrefSuccess;
+  let blockData, isBlockLoading, isBlockError, blockError, isBlockSuccess;
+
+  if (isHash) {
+    ({
+      data: payrefData,
+      isFetching: isPayrefLoading,
+      isError: isPayrefError,
+      isSuccess: isPayrefSuccess,
+      error: payrefError,
+    } = useSearchByPayref(hash));
+
+    ({
+      data: blockData,
+      isFetching: isBlockLoading,
+      isError: isBlockError,
+      isSuccess: isBlockSuccess,
+      error: blockError,
+    } = useGetBlockByHeightOrHash(hash));
+  }
 
   let showFetchStatusCheck = true;
   let isLoading = true;
   let isError = false;
+  let isSuccess = false;
 
-  if (isPayrefLoading) {
+  if (!isHash) {
+    showFetchStatusCheck = false;
+    isLoading = false;
+    isError = true;
+    isSuccess = false;
+  } else if (isPayrefLoading) {
     showFetchStatusCheck = true;
     isLoading = true;
     isError = false;
+    isSuccess = false;
+  } else if (isPayrefSuccess && payrefData?.items.length > 0) {
+    showFetchStatusCheck = false;
+    isLoading = false;
+    isError = false;
+    isSuccess = true;
+
+    // If payref search returns exactly one result, redirect to block with payref
+    if (payrefData.items.length === 1) {
+      const blockHeight = payrefData.items[0].block_height;
+      window.location.replace(`/blocks/${blockHeight}?payref=${hash}`);
+    }
   } else if (
     isPayrefError ||
     (payrefData?.items.length === 0 && !isBlockLoading)
@@ -67,18 +98,59 @@ function SearchPage() {
       showFetchStatusCheck = true;
       isLoading = true;
       isError = false;
+      isSuccess = false;
     } else if (isBlockError || !blockData) {
       showFetchStatusCheck = true;
       isLoading = false;
       isError = true;
+      isSuccess = false;
+    } else if (isBlockSuccess && blockData) {
+      showFetchStatusCheck = false;
+      isLoading = false;
+      isError = false;
+      isSuccess = true;
+
+      // If payref search returns nothing, but block search succeeds, redirect to block
+      window.location.replace(`/blocks/${blockData.header.height}`);
     }
   } else {
     showFetchStatusCheck = false;
     isLoading = true;
     isError = false;
+    isSuccess = false;
   }
 
-  if (showFetchStatusCheck) {
+  useEffect(() => {
+    setStatus({
+      isLoading,
+      isError,
+      isSuccess,
+    });
+    if (isError) {
+      setMessage('Not found');
+    } else if (isSuccess) {
+      setMessage('Block found');
+    } else if (isLoading) {
+      setMessage('Searching...');
+    } else {
+      setMessage('');
+    }
+  }, [isLoading, isError, payrefError, isSuccess, blockError, setStatus]);
+
+  if (!isHash) {
+    return (
+      <Grid item xs={12} md={12} lg={12}>
+        <GradientPaper>
+          <Alert variant="outlined" severity="error">
+            {' '}
+            Invalid hash. Please enter a valid 64-character hexadecimal hash.
+          </Alert>
+        </GradientPaper>
+      </Grid>
+    );
+  }
+
+  if (showFetchStatusCheck || isLoading) {
     return (
       <Grid item xs={12} md={12} lg={12}>
         <GradientPaper>

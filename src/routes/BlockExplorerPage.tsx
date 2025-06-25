@@ -30,9 +30,19 @@ import HashRates from '@components/Charts/HashRates';
 import POWChart from '@components/Charts/POWChart';
 import { useTheme } from '@mui/material/styles';
 import InnerHeading from '@components/InnerHeading';
+import { useLocation } from 'react-router-dom';
 
 function BlockExplorerPage() {
   const theme = useTheme();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const hash = params.get('hash') || '';
+
+  if (hash) {
+    // Redirect to search page if 'hash' parameter is present
+    window.location.href = `/search?hash=${hash}`;
+    return null; // Prevent further rendering
+  }
   return (
     <Grid
       container

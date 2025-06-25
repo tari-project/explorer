@@ -25,17 +25,25 @@ import StatsBox from '../StatsBox/StatsBox';
 import { useMainStore } from '@services/stores/useMainStore';
 import SearchField from '../SearchField/SearchField';
 import { useState } from 'react';
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 export default function HeaderBottom() {
   const isMobile = useMainStore((state) => state.isMobile);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const theme = useTheme();
+  const isLg = useMediaQuery(theme.breakpoints.down('lg'));
+  const [isExpanded, setIsExpanded] = useState(true);
 
   return (
     <StyledContainer>
       {!isMobile && (
         <>
-          <StatsBox variant="desktop" />
-          <SearchField isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+          {(!isLg || isExpanded === false) && <StatsBox variant="desktop" />}
+          <SearchField
+            isExpanded={isExpanded}
+            setIsExpanded={setIsExpanded}
+            fullWidth={isLg ? true : false}
+          />
         </>
       )}
     </StyledContainer>

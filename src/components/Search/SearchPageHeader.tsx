@@ -22,65 +22,13 @@
 
 import { Box, Container, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useLocation } from 'react-router-dom';
-import {
-  useSearchByPayref,
-  useGetBlockByHeightOrHash,
-} from '@services/api/hooks/useBlocks';
 import { useMediaQuery } from '@mui/material';
-import { useEffect } from 'react';
+import useSearchStatusStore from '@services/stores/useSearchStatusStore';
 
 function SearchPageHeader() {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-
-  const hash = params.get('hash') || '';
-
-  const { isFetching, isError, isSuccess, data } = useSearchByPayref(hash);
-  const {
-    isFetching: isBlockFetching,
-    isError: isBlockError,
-    isSuccess: isBlockSuccess,
-    data: blockData,
-  } = useGetBlockByHeightOrHash(hash);
-
+  const message = useSearchStatusStore((state) => state.message);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  let status = '';
-
-  // Determine status for payref search
-  if (isFetching) {
-    status = 'Searching...';
-  } else if (isError || (isSuccess && data?.items.length === 0)) {
-    // If payref search fails, check block search
-    if (isBlockFetching) {
-      status = 'Searching...';
-    } else if (isBlockError || (isBlockSuccess && !blockData)) {
-      status = 'Not found';
-    } else if (isBlockSuccess && blockData) {
-      status = 'Block found';
-    }
-  } else if (isSuccess && data?.items.length > 0) {
-    status = `Block${data.items.length > 1 ? 's' : ''} found`;
-  }
-
-  useEffect(() => {
-    // If payref search returns exactly one result, redirect to block with payref
-    if (isSuccess && data?.items.length === 1) {
-      const blockHeight = data.items[0].block_height;
-      window.location.replace(`/blocks/${blockHeight}?payref=${hash}`);
-    }
-    // If payref search returns nothing, but block search succeeds, redirect to block
-    else if (
-      isSuccess &&
-      data?.items.length === 0 &&
-      isBlockSuccess &&
-      blockData
-    ) {
-      window.location.replace(`/blocks/${blockData.header.height}`);
-    }
-  }, [isSuccess, data, hash, isBlockSuccess, blockData]);
 
   return (
     <>
@@ -108,7 +56,7 @@ function SearchPageHeader() {
               textTransform: 'uppercase',
             }}
           >
-            {status}
+            {message || 'Searching...'}
           </Typography>
         </Box>
       </Container>
