@@ -136,7 +136,10 @@ export const componentSettings: ThemeOptions = {
       defaultProps: {
         thickness: 4,
         sx: {
-          color: (theme) => theme.palette.primary.main,
+          color: (theme) =>
+            theme.palette.mode === 'light'
+              ? 'rgba(0, 0, 0, 0.26)'
+              : 'rgba(255, 255, 255, 0.26)',
         },
       },
     },
