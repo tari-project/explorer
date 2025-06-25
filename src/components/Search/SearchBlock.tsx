@@ -39,7 +39,7 @@ const SearchBlock = () => {
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setQuery(event.target.value.toLowerCase().trim());
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
