@@ -32,7 +32,7 @@ export default function HeaderBottom() {
   const isMobile = useMainStore((state) => state.isMobile);
   const theme = useTheme();
   const isLg = useMediaQuery(theme.breakpoints.down('lg'));
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <StyledContainer>
