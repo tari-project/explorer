@@ -46,7 +46,7 @@ function MempoolTable() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const theme = useTheme();
   const isMobile = useMainStore((state) => state.isMobile);
-  const totalItems = data?.mempool.length || 0;
+  const totalItems = data?.mempool?.length || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handlePageChange = (

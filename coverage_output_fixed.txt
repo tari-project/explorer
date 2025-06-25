@@ -1,0 +1,409 @@
+
+> tari-block-explorer@0.0.0 test:coverage
+> vitest --coverage
+
+
+ RUN  v3.2.4 /Users/ric/Desktop/working/explorer-work
+      Coverage enabled with v8
+
+ ✓ src/__tests__/main.test.tsx (5 tests) 16ms
+ ✓ src/services/api/hooks/__tests__/useBlocks.test.tsx (13 tests) 71ms
+stderr | src/services/api/hooks/__tests__/useMinerStats.test.ts > useMinerStats > should handle fetch errors
+Error: Failed to fetch miner stats
+    at Object.fetchMinerStats [as queryFn] [90m(/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/useMinerStats.ts:13:15[90m)[39m
+
+stderr | src/services/api/hooks/__tests__/useMinerStats.test.ts > useMinerStats > should handle network errors
+Error: Network error
+    at [90m/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/__tests__/useMinerStats.test.ts:83:37
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+    at new Promise (<anonymous>)
+    at runWithTimeout [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10[90m)[39m
+    at runTest [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runFiles [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1787:3[90m)[39m
+
+ ✓ src/routes/__tests__/BlockExplorerPage.test.tsx (10 tests) 72ms
+ ❯ src/components/Charts/__tests__/HashRates.test.tsx (11 tests | 9 failed) 38ms
+   × HashRates > should render loading state 20ms
+     → Unable to find an element by: [data-testid="transparent-bg"]
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<div[39m
+        [33mdata-height[39m=[32m"300"[39m
+        [33mdata-testid[39m=[32m"skeleton"[39m
+        [33mdata-variant[39m=[32m"rounded"[39m
+      [36m>[39m
+        [0mLoading...[0m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ HashRates > should render error state 2ms
+   × HashRates > should render chart for RandomX type 2ms
+     → Cannot read properties of undefined (reading 'color')
+   × HashRates > should render chart for Sha3 type 1ms
+     → Cannot read properties of undefined (reading 'color')
+   × HashRates > should render chart for TariRandomX type with default color 1ms
+     → Cannot read properties of undefined (reading 'color')
+   × HashRates > should configure chart with proper options 2ms
+     → expected undefined to be false // Object.is equality
+   × HashRates > should handle chart dimensions and styling 3ms
+     → expected '' to be '400px' // Object.is equality
+   × HashRates > should configure axis properly 2ms
+     → expected 'category' to be 'value' // Object.is equality
+   ✓ HashRates > should handle missing or empty data gracefully 1ms
+   × HashRates > should use formatHash helper for tooltip formatting 1ms
+     → expected undefined to be defined
+   × HashRates > should set proper zoom configuration 1ms
+     → expected 180 to be less than or equal to 100
+ ✓ src/routes/__tests__/BlockPage.test.tsx (12 tests) 44ms
+ ✓ src/theme/__tests__/MainLayout.test.tsx (9 tests) 221ms
+ ✓ src/theme/__tests__/PageLayout.test.tsx (13 tests) 223ms
+ ✓ src/__tests__/App.test.tsx (10 tests) 65ms
+stderr | src/services/api/hooks/__tests__/useMinerStats.test.ts > useMinerStats > should handle 404 response
+Error: Failed to fetch miner stats
+    at Object.fetchMinerStats [as queryFn] [90m(/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/useMinerStats.ts:13:15[90m)[39m
+
+ ✓ src/components/__tests__/Error.test.tsx (8 tests) 223ms
+ ✓ src/routes/__tests__/KernelSearchPage.test.tsx (12 tests) 116ms
+ ✓ src/routes/__tests__/MempoolPage.test.tsx (9 tests) 67ms
+ ✓ src/components/__tests__/Loading.test.tsx (5 tests) 196ms
+ ✓ src/components/__tests__/FetchStatusCheck.test.tsx (9 tests) 232ms
+ ✓ src/services/api/hooks/__tests__/useMinerStats.test.ts (10 tests) 593ms
+stderr | src/components/__tests__/CopyToClipboard.test.tsx > CopyToClipboard > should call clipboard.writeText when clicked
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+
+stderr | src/components/__tests__/CopyToClipboard.test.tsx > CopyToClipboard > should update icon aria-label after clicking
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+
+stderr | src/components/__tests__/CopyToClipboard.test.tsx > CopyToClipboard > should reset tooltip after 2 seconds
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+
+stderr | src/components/__tests__/CopyToClipboard.test.tsx > CopyToClipboard > should reset tooltip after 2 seconds
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+
+stderr | src/components/__tests__/CopyToClipboard.test.tsx > CopyToClipboard > should handle multiple rapid clicks correctly
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+
+ ✓ src/components/__tests__/CopyToClipboard.test.tsx (10 tests) 311ms
+ ✓ src/assets/__tests__/Logo.test.tsx (6 tests) 49ms
+stderr | src/utils/__tests__/helpers.test.tsx > helpers > renderJson > should render regular arrays
+Warning: Each child in a list should have a unique "key" prop.
+
+Check the top-level render call using <ol>. See https://reactjs.org/link/warning-keys for more information.
+    at li
+
+stderr | src/utils/__tests__/helpers.test.tsx > helpers > renderJson > should render objects
+Warning: Each child in a list should have a unique "key" prop.
+
+Check the top-level render call using <ul>. See https://reactjs.org/link/warning-keys for more information.
+    at li
+
+ ✓ src/utils/__tests__/helpers.test.tsx (42 tests) 68ms
+stderr | src/components/Blocks/__tests__/BlockWidget.test.tsx > BlockWidget > Mobile View > should render mobile loading state
+Warning: Received `true` for a non-boolean attribute `container`.
+
+If you want to write it to the DOM, pass a string instead: container="true" or container={value.toString()}.
+    at div
+    at Grid (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:26:12)
+    at Mobile
+    at BlockWidget
+    at div
+    at MemoryRouter (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:91:20)
+    at div
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:111:21)
+    at QueryClientProvider (file:///Users/ric/Desktop/working/explorer-work/node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs:41:3)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:137:24)
+
+ ✓ src/services/api/__tests__/queryClient.test.ts (7 tests) 39ms
+stderr | src/components/Charts/__tests__/BlockTimes.test.tsx > BlockTimes > should render chart for All type
+Warning: React does not recognize the `alignItems` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `alignitems` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+    at div
+    at Box (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:44:11)
+    at BlockTimes (/Users/ric/Desktop/working/explorer-work/src/components/Charts/BlockTimes.tsx:9:23)
+    at div
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:55:21)
+    at QueryClientProvider (file:///Users/ric/Desktop/working/explorer-work/node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs:41:3)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:89:24)
+Warning: React does not recognize the `justifyContent` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `justifycontent` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+    at div
+    at Box (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:44:11)
+    at BlockTimes (/Users/ric/Desktop/working/explorer-work/src/components/Charts/BlockTimes.tsx:9:23)
+    at div
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:55:21)
+    at QueryClientProvider (file:///Users/ric/Desktop/working/explorer-work/node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs:41:3)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:89:24)
+
+ ✓ src/utils/__tests__/downloadLinks.test.ts (7 tests) 6ms
+ ✓ src/components/Charts/__tests__/BlockTimes.test.tsx (12 tests) 47ms
+ ✓ src/theme/__tests__/themes.test.ts (8 tests) 6ms
+ ✓ src/components/Blocks/Data/__tests__/Inputs.test.ts (10 tests) 5ms
+ ✓ src/routes/__tests__/VNPage.test.tsx (9 tests) 67ms
+ ✓ src/components/Blocks/Data/__tests__/Kernels.test.ts (14 tests) 12ms
+ ✓ src/components/Blocks/Data/__tests__/Outputs.test.ts (12 tests) 14ms
+ ✓ src/services/stores/__tests__/useMainStore.test.ts (17 tests) 3ms
+ ✓ src/routes/__tests__/BlocksPage.test.tsx (8 tests) 45ms
+ ✓ src/components/Blocks/__tests__/BlockWidget.test.tsx (12 tests) 368ms
+ ✓ src/components/Charts/__tests__/POWChart.test.tsx (10 tests) 57ms
+ ✓ src/services/api/helpers/__tests__/jsonRpc.test.ts (14 tests) 4ms
+ ✓ src/utils/__tests__/kernelSearch.test.ts (18 tests) 2ms
+ ✓ src/utils/__tests__/getOs.test.ts (20 tests) 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/Charts/__tests__/HashRates.test.tsx > HashRates > should render loading state
+TestingLibraryElementError: Unable to find an element by: [data-testid="transparent-bg"]
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<div[39m
+        [33mdata-height[39m=[32m"300"[39m
+        [33mdata-testid[39m=[32m"skeleton"[39m
+        [33mdata-variant[39m=[32m"rounded"[39m
+      [36m>[39m
+        [0mLoading...[0m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/Charts/__tests__/HashRates.test.tsx:140:19
+    138|     )
+    139| 
+    140|     expect(screen.getByTestId('transparent-bg')).toBeInTheDocument()
+       |                   ^
+    141|     expect(screen.getByTestId('skeleton')).toBeInTheDocument()
+    142|     expect(screen.getByTestId('skeleton')).toHaveAttribute('data-varia…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  src/components/Charts/__tests__/HashRates.test.tsx > HashRates > should render chart for RandomX type
+TypeError: Cannot read properties of undefined (reading 'color')
+ ❯ src/components/Charts/__tests__/HashRates.test.tsx:188:39
+    186|     expect(option.series).toBeDefined()
+    187|     expect(option.series[0].name).toBe('RandomX')
+    188|     expect(option.series[0].lineStyle.color).toBe('#98D8C8') // chartC…
+       |                                       ^
+    189|   })
+    190| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  src/components/Charts/__tests__/HashRates.test.tsx > HashRates > should render chart for Sha3 type
+TypeError: Cannot read properties of undefined (reading 'color')
+ ❯ src/components/Charts/__tests__/HashRates.test.tsx:210:39
+    208|     const option = JSON.parse(chart.getAttribute('data-option') || '{}…
+    209|     expect(option.series[0].name).toBe('Sha3')
+    210|     expect(option.series[0].lineStyle.color).toBe('#FFA07A') // chartC…
+       |                                       ^
+    211|   })
+    212| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  src/components/Charts/__tests__/HashRates.test.tsx > HashRates > should render chart for TariRandomX type with default color
+TypeError: Cannot read properties of undefined (reading 'color')
+ ❯ src/components/Charts/__tests__/HashRates.test.tsx:232:39
+    230|     const option = JSON.parse(chart.getAttribute('data-option') || '{}…
+    231|     expect(option.series[0].name).toBe('TariRandomX')
+    232|     expect(option.series[0].lineStyle.color).toBe('#45B7D1') // chartC…
+       |                                       ^
+    233|   })
+    234| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  src/components/Charts/__tests__/HashRates.test.tsx > HashRates > should configure chart with proper options
+AssertionError: expected undefined to be false // Object.is equality
+
+[32m- Expected:[39m 
+false
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ src/components/Charts/__tests__/HashRates.test.tsx:253:30
+    251| 
+    252|     // Check basic chart configuration
+    253|     expect(option.animation).toBe(false)
+       |                              ^
+    254|     expect(option.grid).toBeDefined()
+    255|     expect(option.grid.left).toBe('0%')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  src/components/Charts/__tests__/HashRates.test.tsx > HashRates > should handle chart dimensions and styling
+AssertionError: expected '' to be '400px' // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 400px[39m
+
+ ❯ src/components/Charts/__tests__/HashRates.test.tsx:289:32
+    287| 
+    288|     const chart = screen.getByTestId('echarts')
+    289|     expect(chart.style.height).toBe('400px')
+       |                                ^
+    290|     expect(chart.style.width).toBe('100%')
+    291|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  src/components/Charts/__tests__/HashRates.test.tsx > HashRates > should configure axis properly
+AssertionError: expected 'category' to be 'value' // Object.is equality
+
+Expected: [32m"value"[39m
+Received: [31m"category"[39m
+
+ ❯ src/components/Charts/__tests__/HashRates.test.tsx:311:31
+    309| 
+    310|     // Check X axis (height)
+    311|     expect(option.xAxis.type).toBe('value')
+       |                               ^
+    312|     expect(option.xAxis.name).toBe('Height')
+    313|     expect(option.xAxis.nameLocation).toBe('middle')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  src/components/Charts/__tests__/HashRates.test.tsx > HashRates > should use formatHash helper for tooltip formatting
+AssertionError: expected undefined to be defined
+ ❯ src/components/Charts/__tests__/HashRates.test.tsx:365:38
+    363|     
+    364|     // Check that tooltip formatter is configured
+    365|     expect(option.tooltip.formatter).toBeDefined()
+       |                                      ^
+    366|   })
+    367| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  src/components/Charts/__tests__/HashRates.test.tsx > HashRates > should set proper zoom configuration
+AssertionError: expected 180 to be less than or equal to 100
+ ❯ src/components/Charts/__tests__/HashRates.test.tsx:392:28
+    390|     expect(insideZoom).toBeDefined()
+    391|     expect(sliderZoom.start).toBeGreaterThanOrEqual(0)
+    392|     expect(sliderZoom.end).toBeLessThanOrEqual(100)
+       |                            ^
+    393|   })
+    394| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  1 failed | 31 passed (32)
+      Tests  9 failed | 363 passed (372)
+   Start at  18:52:08
+   Duration  3.39s (transform 840ms, setup 5.30s, collect 5.34s, tests 3.28s, environment 16.21s, prepare 3.50s)
+
