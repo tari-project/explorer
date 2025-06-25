@@ -9,6 +9,7 @@ import {
   ExpandIconButton,
 } from './SearchField.styles';
 import { useMainStore } from '@services/stores/useMainStore';
+import { validateHash, validateHeight } from '@utils/helpers';
 
 const SearchField = ({
   isExpanded,
@@ -29,8 +30,8 @@ const SearchField = ({
       setIsExpanded(false);
       return;
     }
-    const isHeight = /^\d+$/.test(query);
-    const isHash = /^[a-fA-F0-9]{64}$/.test(query);
+    const isHeight = validateHeight(query);
+    const isHash = validateHash(query);
 
     if (!isHeight && !isHash) {
       setOpen(true);

@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Stack, TextField, Alert } from '@mui/material';
 import { useMainStore } from '@services/stores/useMainStore';
+import { validateHash } from '@utils/helpers';
 
 export const validatePayRefQuery = (query: string) => {
-  const isHash = query.length === 64;
+  const isHash = validateHash(query);
   return isHash;
 };
 

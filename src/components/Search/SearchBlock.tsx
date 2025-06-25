@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Stack, TextField, Alert } from '@mui/material';
 import { useMainStore } from '@services/stores/useMainStore';
+import { validateHash, validateHeight } from '@utils/helpers';
 
 const SearchBlock = () => {
   const searchOpen = useMainStore((state) => state.searchOpen);
@@ -18,9 +19,8 @@ const SearchBlock = () => {
   }, [searchOpen]);
 
   const validateQuery = (query: string) => {
-    const height = parseInt(query);
-    const isHeight = !isNaN(height) && height >= 0;
-    const isHash = query.length === 64;
+    const isHeight = validateHeight(query);
+    const isHash = validateHash(query);
     return isHeight || isHash;
   };
 

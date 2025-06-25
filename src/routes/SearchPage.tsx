@@ -32,13 +32,14 @@ import PayRefTable from '@components/Search/PayRefTable';
 import BlockTable from '@components/Search/BlockTable';
 import useSearchStatusStore from '@services/stores/useSearchStatusStore';
 import { useEffect } from 'react';
+import { validateHash } from '@utils/helpers';
 
 function SearchPage() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
   const hash = params.get('hash') || '';
-  const isHash = /^[a-fA-F0-9]{64}$/.test(hash);
+  const isHash = validateHash(hash);
 
   const setStatus = useSearchStatusStore((state) => state.setStatus);
   const setMessage = useSearchStatusStore((state) => state.setMessage);
