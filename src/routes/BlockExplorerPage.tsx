@@ -31,17 +31,18 @@ import POWChart from '@components/Charts/POWChart';
 import Transactions from '@components/Transactions/TransactionsWidget';
 import InnerHeading from '@components/InnerHeading';
 import { useLocation } from 'react-router-dom';
+import { useTheme, useMediaQuery } from '@mui/material';
 
 function BlockExplorerPage() {
   const theme = useTheme();
+  const isLgUp = useMediaQuery(theme.breakpoints.up('lg'));
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const hash = params.get('hash') || '';
 
   if (hash) {
-    // Redirect to search page if 'hash' parameter is present
     window.location.href = `/search?hash=${hash}`;
-    return null; // Prevent further rendering
+    return null;
   }
   return (
     <Grid
