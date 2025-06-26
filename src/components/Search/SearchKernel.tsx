@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Stack, Alert, TextField } from '@mui/material';
 import { useMainStore } from '@services/stores/useMainStore';
+import { validateHash } from '@utils/helpers';
 
 const SearchKernel = () => {
   const [inputValue, setInputValue] = useState({ nonce: '', signature: '' });
@@ -12,7 +13,7 @@ const SearchKernel = () => {
   const navigate = useNavigate();
 
   const validateQuery = (query: string) => {
-    const isHash = query.length === 64;
+    const isHash = validateHash(query);
     return isHash;
   };
 

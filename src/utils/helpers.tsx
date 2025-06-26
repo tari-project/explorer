@@ -130,6 +130,16 @@ function formatTimestamp(timestamp: any) {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+function validateHeight(height: string): boolean {
+  const regex = /^\d+$/;
+  return regex.test(height);
+}
+
+function validateHash(hash: string): boolean {
+  const regex = /^[a-fA-F0-9]{64}$/;
+  return regex.test(hash);
+}
+
 function formatHash(number: number, decimals: number = 1) {
   const suffixes = ['', 'K', 'M', 'G', 'T', 'P'];
   let suffixIndex = 0;
@@ -189,6 +199,8 @@ export {
   handleChangePage,
   handleChangeRowsPerPage,
   formatTimestamp,
+  validateHash,
+  validateHeight,
   formatHash,
   formatXTM,
   formatNumber,

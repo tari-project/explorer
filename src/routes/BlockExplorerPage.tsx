@@ -30,12 +30,20 @@ import HashRates from '@components/Charts/HashRates';
 import POWChart from '@components/Charts/POWChart';
 import Transactions from '@components/Transactions/TransactionsWidget';
 import InnerHeading from '@components/InnerHeading';
+import { useLocation } from 'react-router-dom';
 import { useTheme, useMediaQuery } from '@mui/material';
 
 function BlockExplorerPage() {
   const theme = useTheme();
   const isLgUp = useMediaQuery(theme.breakpoints.up('lg'));
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const hash = params.get('hash') || '';
 
+  if (hash) {
+    window.location.href = `/search?hash=${hash}`;
+    return null;
+  }
   return (
     <Grid
       container

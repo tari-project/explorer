@@ -69,7 +69,7 @@ export const StyledAccordion = styled(Accordion, {
 export const StyledAccordionSummary = styled(AccordionSummary, {
   shouldForwardProp: (prop) => prop !== 'isHighlighted',
 })<StyledAccordionProps>(({ theme, isHighlighted, expanded }) => ({
-  backgroundColor: isHighlighted ? '#1D1928' : 'transparent',
+  backgroundColor: isHighlighted ? '#292532' : 'transparent',
   color: isHighlighted ? '#fff' : 'inherit',
   borderRadius: expanded ? `16px 16px 0 0` : theme.shape.borderRadius,
   transition: 'background-color 0.3s ease',

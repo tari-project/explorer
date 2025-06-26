@@ -1,12 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { TextField, IconButton } from '@mui/material';
-
-export const StyledTextField = styled(TextField)(({ theme }) => ({
-  width: '400px',
-  [theme.breakpoints.down('md')]: {
-    width: '100%',
-  },
-}));
+import { IconButton } from '@mui/material';
 
 export const SearchIconButton = styled(IconButton)({
   padding: 0,
