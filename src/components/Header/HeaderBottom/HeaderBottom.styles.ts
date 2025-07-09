@@ -7,4 +7,5 @@ export const StyledContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   color: theme.palette.text.primary,
   width: '100%',
+  minHeight: '50px',
 }));

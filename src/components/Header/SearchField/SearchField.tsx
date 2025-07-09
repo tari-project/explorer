@@ -1,51 +1,56 @@
 import React, { useState } from 'react';
-import { Fade, InputAdornment } from '@mui/material';
+import { Fade, InputAdornment, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { IoSearch, IoClose } from 'react-icons/io5';
 import SnackbarAlert from '../../SnackbarAlert';
 import {
-  StyledTextField,
   SearchIconButton,
   CloseIconButton,
   ExpandIconButton,
 } from './SearchField.styles';
+import { useMainStore } from '@services/stores/useMainStore';
+import { validateHash, validateHeight } from '@utils/helpers';
 
 const SearchField = ({
   isExpanded,
   setIsExpanded,
+  fullWidth = false,
 }: {
   isExpanded: boolean;
   setIsExpanded: (expanded: boolean) => void;
+  fullWidth?: boolean;
 }) => {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-
-  const validateQuery = (query: string) => {
-    const height = parseInt(query);
-    const isHeight = !isNaN(height) && height >= 0;
-    const isHash = query.length === 64;
-    return isHeight || isHash;
-  };
+  const isMobile = useMainStore((state) => state.isMobile);
 
   const handleSearch = () => {
     if (query === '') {
       setIsExpanded(false);
       return;
     }
-    if (!validateQuery(query)) {
+    const isHeight = validateHeight(query);
+    const isHash = validateHash(query);
+
+    if (!isHeight && !isHash) {
       setOpen(true);
       setQuery('');
       setIsExpanded(false);
       return;
     }
-    navigate(`/blocks/${query}`);
+
+    if (isHeight) {
+      navigate(`/blocks/${query}`);
+    } else if (isHash) {
+      navigate(`/search?hash=${query}`);
+    }
     setQuery('');
     setIsExpanded(false);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setQuery(event.target.value.toLowerCase().trim());
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -60,12 +65,14 @@ const SearchField = ({
       <SnackbarAlert open={open} setOpen={setOpen} message="Invalid query" />
       {isExpanded && (
         <Fade in={isExpanded} timeout={500}>
-          <StyledTextField
-            label="Search by height or hash"
+          <TextField
+            label="Search by PayRef / Block Height / Block Hash"
+            placeholder="Enter 64 character hash or block height"
             autoFocus
             value={query}
             onChange={handleInputChange}
             size="small"
+            style={{ width: fullWidth || isMobile ? '100%' : '440px' }}
             onKeyPress={handleKeyPress}
             InputProps={
               query !== ''

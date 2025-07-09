@@ -55,6 +55,7 @@ export const useGetBlocksByParam = (from: number, limit: number) => {
 };
 
 export const useGetBlockByHeightOrHash = (blockHeight: string) => {
+  blockHeight = blockHeight.toLowerCase();
   return useQuery({
     queryKey: ['block', blockHeight],
     queryFn: () =>
@@ -75,6 +76,7 @@ export const useGetPaginatedData = (
   from: number,
   to: number
 ) => {
+  blockHeight = blockHeight.toLowerCase();
   return useQuery({
     queryKey: ['block', blockHeight, what, from, to],
     queryFn: () =>
@@ -105,6 +107,23 @@ export const useSearchByKernel = (nonces: string[], signatures: string[]) => {
     },
     onError: (error: apiError) => {
       error;
+    },
+  });
+};
+
+export const useSearchByPayref = (payref: string) => {
+  payref = payref.toLowerCase();
+  return useQuery({
+    queryKey: ['payref', payref],
+    queryFn: () =>
+      jsonRpc(
+        `${address}/search_outputs_by_payref?payref=${payref}&json`,
+        'PayRef not found'
+      ).then((resp) => {
+        return resp;
+      }),
+    onError: (error: apiError) => {
+      return error;
     },
   });
 };

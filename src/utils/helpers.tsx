@@ -130,6 +130,16 @@ function formatTimestamp(timestamp: any) {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+function validateHeight(height: string): boolean {
+  const regex = /^\d+$/;
+  return regex.test(height);
+}
+
+function validateHash(hash: string): boolean {
+  const regex = /^[a-fA-F0-9]{64}$/;
+  return regex.test(hash);
+}
+
 function formatHash(number: number, decimals: number = 1) {
   const suffixes = ['', 'K', 'M', 'G', 'T', 'P'];
   let suffixIndex = 0;
@@ -137,7 +147,27 @@ function formatHash(number: number, decimals: number = 1) {
     number /= 1000;
     suffixIndex++;
   }
-  return number.toFixed(decimals) + ' ' + suffixes[suffixIndex] + 'H';
+  return number.toFixed(decimals) + suffixes[suffixIndex] + 'H';
+}
+
+function formatNumber(number: number, decimals: number = 2) {
+  if (number === undefined || number === null) {
+    return 'N/A';
+  }
+  if (number < 1000000) {
+    return number.toLocaleString();
+  }
+  const suffixes = ['', 'K', 'M', 'B', 'T'];
+  let suffixIndex = 0;
+  while (number >= 1000 && suffixIndex < suffixes.length - 1) {
+    number /= 1000;
+    suffixIndex++;
+  }
+  return number.toFixed(decimals) + suffixes[suffixIndex];
+}
+
+function formatXTM(amount: number): string {
+  return amount / 1_000_000 + ' XTM';
 }
 
 function powCheck(num: string): string {
@@ -169,6 +199,10 @@ export {
   handleChangePage,
   handleChangeRowsPerPage,
   formatTimestamp,
+  validateHash,
+  validateHeight,
   formatHash,
+  formatXTM,
+  formatNumber,
   powCheck,
 };

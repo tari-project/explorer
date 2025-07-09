@@ -23,23 +23,16 @@
 import { Box, Container, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useLocation } from 'react-router-dom';
-import { useSearchByKernel } from '@services/api/hooks/useBlocks';
+import { useSearchByPayref } from '@services/api/hooks/useBlocks';
 import { useMediaQuery } from '@mui/material';
 
-function KernelHeader() {
+function PayRefHeader() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
-  const noncesParams = params.get('nonces');
-  const nonces = noncesParams ? noncesParams.split(',') : [];
+  const payref = params.get('payref') || '';
 
-  const signaturesParams = params.get('signatures');
-  const signatures = signaturesParams ? signaturesParams.split(',') : [];
-
-  const { isFetching, isError, isSuccess, data } = useSearchByKernel(
-    nonces,
-    signatures
-  );
+  const { isFetching, isError, isSuccess, data } = useSearchByPayref(payref);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -49,14 +42,19 @@ function KernelHeader() {
     case isFetching:
       status = 'Searching...';
       break;
-    case isError:
-      status = 'Block not found';
+    case isError || data?.items.length === 0:
+      status = 'Not found';
       break;
     case isSuccess:
       status = `Block${data.items.length > 1 ? 's' : ''} found`;
       break;
     default:
       status = '';
+  }
+
+  if (data?.items.length === 1) {
+    const blockHeight = data.items[0].block_height;
+    window.location.replace(`/blocks/${blockHeight}?payref=${payref}`);
   }
 
   return (
@@ -75,7 +73,7 @@ function KernelHeader() {
           }}
         >
           <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
-            Kernel Search
+            PayRef Search
           </Typography>
           <Typography
             variant="h1"
@@ -93,4 +91,4 @@ function KernelHeader() {
   );
 }
 
-export default KernelHeader;
+export default PayRefHeader;

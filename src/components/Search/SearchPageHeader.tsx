@@ -22,42 +22,13 @@
 
 import { Box, Container, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useLocation } from 'react-router-dom';
-import { useSearchByKernel } from '@services/api/hooks/useBlocks';
 import { useMediaQuery } from '@mui/material';
+import useSearchStatusStore from '@services/stores/useSearchStatusStore';
 
-function KernelHeader() {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-
-  const noncesParams = params.get('nonces');
-  const nonces = noncesParams ? noncesParams.split(',') : [];
-
-  const signaturesParams = params.get('signatures');
-  const signatures = signaturesParams ? signaturesParams.split(',') : [];
-
-  const { isFetching, isError, isSuccess, data } = useSearchByKernel(
-    nonces,
-    signatures
-  );
-
+function SearchPageHeader() {
+  const message = useSearchStatusStore((state) => state.message);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  let status = '';
-  switch (true) {
-    case isFetching:
-      status = 'Searching...';
-      break;
-    case isError:
-      status = 'Block not found';
-      break;
-    case isSuccess:
-      status = `Block${data.items.length > 1 ? 's' : ''} found`;
-      break;
-    default:
-      status = '';
-  }
 
   return (
     <>
@@ -75,7 +46,7 @@ function KernelHeader() {
           }}
         >
           <Typography variant="body2" style={{ textTransform: 'uppercase' }}>
-            Kernel Search
+            Hash Search
           </Typography>
           <Typography
             variant="h1"
@@ -85,7 +56,7 @@ function KernelHeader() {
               textTransform: 'uppercase',
             }}
           >
-            {status}
+            {message || 'Searching...'}
           </Typography>
         </Box>
       </Container>
@@ -93,4 +64,4 @@ function KernelHeader() {
   );
 }
 
-export default KernelHeader;
+export default SearchPageHeader;

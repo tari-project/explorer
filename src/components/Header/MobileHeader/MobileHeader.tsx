@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   HeaderTop,
   Inside,
@@ -16,12 +16,12 @@ import { SocialIconButtons } from '@components/SocialLinks/SocialLinks';
 import MobileNavigation from './MobileNavigation/MobileNavigation';
 import Gem from '@assets/images/tari-gem.svg';
 import { Link } from 'react-router-dom';
-import AdvancedSearch from '@components/Search/AdvancedSearch';
+import SearchField from '@components/Header/SearchField/SearchField';
 
 export default function MobileHeader() {
   const showMobileMenu = useMainStore((state) => state.showMobileMenu);
   const setShowMobileMenu = useMainStore((state) => state.setShowMobileMenu);
-  const isExpanded = false;
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     if (showMobileMenu) {
@@ -64,7 +64,10 @@ export default function MobileHeader() {
                 </>
               )}
               <IconsContainer $isExpanded={isExpanded}>
-                <AdvancedSearch />
+                <SearchField
+                  isExpanded={isExpanded}
+                  setIsExpanded={setIsExpanded}
+                />
                 <MobileMenuButton />
               </IconsContainer>
             </Inner>

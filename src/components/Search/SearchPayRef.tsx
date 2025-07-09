@@ -2,9 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Stack, TextField, Alert } from '@mui/material';
 import { useMainStore } from '@services/stores/useMainStore';
-import { validateHash, validateHeight } from '@utils/helpers';
+import { validateHash } from '@utils/helpers';
 
-const SearchBlock = () => {
+export const validatePayRefQuery = (query: string) => {
+  const isHash = validateHash(query);
+  return isHash;
+};
+
+const PayRef = () => {
   const searchOpen = useMainStore((state) => state.searchOpen);
   const setSearchOpen = useMainStore((state) => state.setSearchOpen);
   const [message, setMessage] = useState('');
@@ -18,22 +23,16 @@ const SearchBlock = () => {
     }
   }, [searchOpen]);
 
-  const validateQuery = (query: string) => {
-    const isHeight = validateHeight(query);
-    const isHash = validateHash(query);
-    return isHeight || isHash;
-  };
-
   const handleSearch = () => {
     if (query === '') {
       return;
     }
-    if (!validateQuery(query)) {
-      setMessage('Please enter a valid block height or hash');
+    if (!validatePayRefQuery(query)) {
+      setMessage('Please enter a valid payment reference');
       setQuery('');
       return;
     }
-    navigate(`/blocks/${query}`);
+    navigate(`/search_outputs_by_payref?payref=${query}`);
     setSearchOpen(false);
     setQuery('');
   };
@@ -42,7 +41,7 @@ const SearchBlock = () => {
     setQuery(event.target.value.toLowerCase().trim());
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSearch();
     }
@@ -50,20 +49,18 @@ const SearchBlock = () => {
 
   const handleCancel = () => {
     setSearchOpen(false);
-    setQuery('');
-    setMessage('');
   };
 
   return (
     <Stack gap={1} pb={2}>
       <TextField
-        label="Search by height or hash"
-        placeholder="Enter block height or hash"
+        label="Search by payment reference"
+        placeholder="Enter 64-character PayRef hash"
         autoFocus
         value={query}
         onChange={handleInputChange}
         size="small"
-        onKeyDown={handleKeyDown}
+        onKeyPress={handleKeyPress}
         fullWidth
         InputLabelProps={{ shrink: true }}
         inputRef={inputRef}
@@ -83,4 +80,4 @@ const SearchBlock = () => {
   );
 };
 
-export default SearchBlock;
+export default PayRef;

@@ -28,17 +28,28 @@ import BlockWidget from '@components/Blocks/BlockWidget';
 import BlockTimes from '@components/Charts/BlockTimes';
 import HashRates from '@components/Charts/HashRates';
 import POWChart from '@components/Charts/POWChart';
-import { useTheme } from '@mui/material/styles';
+import Transactions from '@components/Transactions/TransactionsWidget';
 import InnerHeading from '@components/InnerHeading';
+import { useLocation } from 'react-router-dom';
+import { useTheme, useMediaQuery } from '@mui/material';
 
 function BlockExplorerPage() {
   const theme = useTheme();
+  const isLgUp = useMediaQuery(theme.breakpoints.up('lg'));
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const hash = params.get('hash') || '';
+
+  if (hash) {
+    window.location.href = `/search?hash=${hash}`;
+    return null;
+  }
   return (
     <Grid
       container
       spacing={3}
       style={{
-        paddingTop: theme.spacing(4),
+        paddingTop: theme.spacing(3),
         paddingBottom: theme.spacing(6),
       }}
     >
@@ -53,6 +64,7 @@ function BlockExplorerPage() {
           gap: theme.spacing(3),
         }}
       >
+        {!isLgUp && <Transactions />}
         <GradientPaper>
           <InnerHeading>Recent Blocks</InnerHeading>
           <BlockWidget />
@@ -76,6 +88,7 @@ function BlockExplorerPage() {
           gap: theme.spacing(3),
         }}
       >
+        {isLgUp && <Transactions />}
         <GradientPaper>
           <InnerHeading>Block Times (Minutes)</InnerHeading>
           <Grid container spacing={3}>

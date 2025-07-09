@@ -33,4 +33,20 @@ const kernelSearch = (
   return foundIndex !== -1 ? foundIndex : null;
 };
 
-export { kernelSearch };
+const payrefSearch = (payref: string, outputs: any[]): number | null => {
+  if (!outputs) return null;
+  payref = payref.toLowerCase();
+
+  const foundIndex = outputs.findIndex((output) => {
+    const payment_reference = toHexString(output.payment_reference.data);
+    const payrefMatch = payref ? payment_reference === payref : false;
+    if (payref) {
+      return payrefMatch;
+    }
+    return false;
+  });
+
+  return foundIndex !== -1 ? foundIndex : null;
+};
+
+export { kernelSearch, payrefSearch };

@@ -20,32 +20,49 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { StyledContainer } from './HeaderBottom.styles';
-import StatsBox from '../StatsBox/StatsBox';
-import { useMainStore } from '@services/stores/useMainStore';
-import SearchField from '../SearchField/SearchField';
-import { useState } from 'react';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { GradientPaper } from '@components/StyledComponents';
+import { Grid } from '@mui/material';
+import { useLocation } from 'react-router-dom';
+import { useSearchByPayref } from '@services/api/hooks/useBlocks';
+import FetchStatusCheck from '@components/FetchStatusCheck';
+import BlockTable from '@components/PayRefSearch/BlockTable';
 
-export default function HeaderBottom() {
-  const isMobile = useMainStore((state) => state.isMobile);
-  const theme = useTheme();
-  const isLg = useMediaQuery(theme.breakpoints.down('lg'));
-  const [isExpanded, setIsExpanded] = useState(false);
+function PayRefSearchPage() {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+
+  const payref = params.get('payref') || '';
+
+  const { data, isLoading, isError, error } = useSearchByPayref(payref);
+
+  if (isLoading || isError) {
+    return (
+      <Grid item xs={12} md={12} lg={12}>
+        <GradientPaper>
+          <FetchStatusCheck
+            isError={isError}
+            isLoading={isLoading}
+            errorMessage={error?.message || 'Error retrieving data'}
+          />
+        </GradientPaper>
+      </Grid>
+    );
+  }
+
+  // if (data?.items.length === 1) {
+  //   const blockHeight = data.items[0].block.header.height;
+  //   window.location.replace(
+  //     `/blocks/${blockHeight}?nonce=${noncesParams}&signature=${signaturesParams}`
+  //   );
+  // }
 
   return (
-    <StyledContainer>
-      {!isMobile && (
-        <>
-          {(!isLg || isExpanded === false) && <StatsBox variant="desktop" />}
-          <SearchField
-            isExpanded={isExpanded}
-            setIsExpanded={setIsExpanded}
-            fullWidth={isLg ? true : false}
-          />
-        </>
-      )}
-    </StyledContainer>
+    <Grid item xs={12} md={12} lg={12}>
+      <GradientPaper>
+        <BlockTable data={data?.items || []} />
+      </GradientPaper>
+    </Grid>
   );
 }
+
+export default PayRefSearchPage;
