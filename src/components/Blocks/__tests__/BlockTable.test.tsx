@@ -379,4 +379,107 @@ describe('BlockTable', () => {
     const sha3Elements = screen.getAllByText('SHA-3');
     expect(sha3Elements.length).toBe(2); // One for each block
   });
+
+  it('should render "View Block" button in mobile view and link correctly', () => {
+    mockUseMainStore.mockImplementation((selector) => selector({ isMobile: true }));
+
+    render(
+      <TestWrapper>
+        <BlockTable />
+      </TestWrapper>
+    );
+
+    const viewButtons = screen.getAllByRole('button', { name: /view block/i });
+    expect(viewButtons.length).toBe(2);
+    const links = screen.getAllByRole('link', { name: /view block/i });
+    expect(links[0]).toHaveAttribute('href', '/blocks/100');
+    expect(links[1]).toHaveAttribute('href', '/blocks/99');
+  });
+
+  it('should render all block fields in mobile view', () => {
+    mockUseMainStore.mockImplementation((selector) => selector({ isMobile: true }));
+
+    render(
+      <TestWrapper>
+        <BlockTable />
+      </TestWrapper>
+    );
+
+    expect(screen.getAllByText('Height').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Timestamp').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Proof of Work').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Hash').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Kernels').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Outputs').length).toBeGreaterThan(0);
+  });
+
+  it('should render skeleton loaders in mobile view when loading', () => {
+    mockUseMainStore.mockImplementation((selector) => selector({ isMobile: true }));
+    mockUseGetBlocksByParam.mockReturnValue({
+      data: null,
+      isLoading: true,
+    });
+
+    render(
+      <TestWrapper>
+        <BlockTable />
+      </TestWrapper>
+    );
+
+    expect(screen.getAllByTestId('skeleton-loader').length).toBeGreaterThan(0);
+  });
+
+  it('should update "Showing blocks X - Y" when changing rows per page', () => {
+    render(
+      <TestWrapper>
+        <BlockTable />
+      </TestWrapper>
+    );
+
+    const select = screen.getByDisplayValue('10');
+    fireEvent.change(select, { target: { value: '20' } });
+
+    expect(screen.getByText(/Showing blocks \d+ - \d+/)).toBeInTheDocument();
+  });
+
+  it('should reset to tip and page 1 when clicking Tip button', () => {
+    render(
+      <TestWrapper>
+        <BlockTable />
+      </TestWrapper>
+    );
+
+    const tipButton = screen.getByText('Tip');
+    fireEvent.click(tipButton);
+
+    expect(mockUseGetBlocksByParam).toHaveBeenCalled();
+    expect(screen.getByText(/Showing blocks \d+ - \d+/)).toBeInTheDocument();
+  });
+
+  it('should handle undefined tip gracefully', () => {
+    mockUseAllBlocks.mockReturnValue({ data: undefined });
+
+    render(
+      <TestWrapper>
+        <BlockTable />
+      </TestWrapper>
+    );
+
+    expect(screen.getByTestId('inner-heading')).toHaveTextContent('All Blocks');
+  });
+
+  it('should handle undefined data gracefully', () => {
+    mockUseGetBlocksByParam.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+    });
+
+    render(
+      <TestWrapper>
+        <BlockTable />
+      </TestWrapper>
+    );
+
+    expect(screen.getByTestId('inner-heading')).toHaveTextContent('All Blocks');
+  });
 });
