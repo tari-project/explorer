@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { kernelSearch } from '../searchFunctions';
+import { kernelSearch, payrefSearch } from '../searchFunctions';
 
 // Mock the helpers module
 vi.mock('@utils/helpers', () => ({
@@ -100,6 +100,49 @@ describe('kernelSearch', () => {
 
     // Should not throw and should handle gracefully
     const result = kernelSearch('test', '', malformedKernels);
+    expect(result).toBeNull();
+  });
+});
+
+describe('payrefSearch', () => {
+  const createMockOutput = (payrefData: number[] | null) => ({
+    payment_reference: { data: payrefData },
+  });
+
+  const mockOutputs = [
+    createMockOutput([1, 2, 3, 4]),
+    createMockOutput([5, 6, 7, 8]),
+    createMockOutput([9, 10, 11, 12]),
+  ];
+
+  it('should return null if outputs array is null or undefined', () => {
+    expect(payrefSearch('test', null as any)).toBeNull();
+    expect(payrefSearch('test', undefined as any)).toBeNull();
+  });
+
+  it('should find output by exact payref match (case-insensitive)', () => {
+    const result = payrefSearch('01020304', mockOutputs);
+    expect(result).toBe(0);
+  });
+
+  it('should return null if no output matches payref', () => {
+    const result = payrefSearch('99999999', mockOutputs);
+    expect(result).toBeNull();
+  });
+
+  it('should return null when payref is empty', () => {
+    const result = payrefSearch('', mockOutputs);
+    expect(result).toBeNull();
+  });
+
+  it('should handle empty outputs array', () => {
+    const result = payrefSearch('test', []);
+    expect(result).toBeNull();
+  });
+
+  it('should handle case where output data conversion fails gracefully', () => {
+    const malformedOutputs = [{ payment_reference: { data: null } }];
+    const result = payrefSearch('test', malformedOutputs);
     expect(result).toBeNull();
   });
 });
