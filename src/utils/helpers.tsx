@@ -150,7 +150,7 @@ function formatHash(number: number, decimals: number = 1) {
   return number.toFixed(decimals) + suffixes[suffixIndex] + 'H';
 }
 
-function formatNumber(number: number, decimals: number = 2) {
+function formatNumber(number: number | undefined | null, decimals: number = 2) {
   if (number === undefined || number === null) {
     return 'N/A';
   }

@@ -41,7 +41,7 @@ export const kernelItems = (content: any) => {
     },
     {
       label: 'Excess',
-      value: toHexString(content.excess.data),
+      value: toHexString(content.excess?.data),
       copy: true,
     },
     {
@@ -50,19 +50,19 @@ export const kernelItems = (content: any) => {
       children: [
         {
           label: 'Public Nonce',
-          value: toHexString(content.excess_sig.public_nonce.data),
+          value: toHexString(content.excess_sig.public_nonce?.data),
           copy: true,
         },
         {
           label: 'Signature',
-          value: toHexString(content.excess_sig.signature.data),
+          value: toHexString(content.excess_sig.signature?.data),
           copy: true,
         },
       ],
     },
     {
       label: 'Hash',
-      value: toHexString(content.hash.data),
+      value: toHexString(content.hash?.data),
       copy: true,
       header: false,
     },

@@ -26,7 +26,7 @@ export const outputItems = (content: any) => {
   const items = [
     {
       label: 'Payment Reference',
-      value: toHexString(content.payment_reference.data),
+      value: toHexString(content.payment_reference?.data),
       copy: true,
     },
     {
@@ -35,44 +35,44 @@ export const outputItems = (content: any) => {
       children: [
         {
           label: 'Version',
-          value: content.features.version,
+          value: content.features?.version,
           copy: false,
         },
         {
           label: 'Output Type',
-          value: content.features.output_type,
+          value: content.features?.output_type,
           copy: false,
         },
         {
           label: 'Maturity',
-          value: content.features.maturity,
+          value: content.features?.maturity,
           copy: false,
         },
         {
           label: 'Coinbase Extra Data',
-          value: toHexString(content.features.coinbase_extra.data),
+          value: toHexString(content.features?.coinbase_extra?.data),
           copy: true,
         },
       ],
     },
     {
       label: 'Commitment',
-      value: toHexString(content.commitment.data),
+      value: toHexString(content.commitment?.data),
       copy: true,
     },
     {
       label: 'Hash',
-      value: toHexString(content.hash.data),
+      value: toHexString(content.hash?.data),
       copy: true,
     },
     {
       label: 'Script',
-      value: toHexString(content.script.data),
+      value: toHexString(content.script?.data),
       copy: true,
     },
     {
       label: 'Sender Offset Public Key',
-      value: toHexString(content.sender_offset_public_key.data),
+      value: toHexString(content.sender_offset_public_key?.data),
       copy: true,
     },
     {
@@ -82,40 +82,40 @@ export const outputItems = (content: any) => {
         {
           label: 'Ephemeral commitment',
           value: toHexString(
-            content.metadata_signature.ephemeral_commitment.data
+            content.metadata_signature?.ephemeral_commitment?.data
           ),
           copy: true,
         },
         {
           label: 'Ephemeral pubkey',
-          value: toHexString(content.metadata_signature.ephemeral_pubkey.data),
+          value: toHexString(content.metadata_signature.ephemeral_pubkey?.data),
           copy: true,
         },
         {
           label: 'u_a',
-          value: toHexString(content.metadata_signature.u_a.data),
+          value: toHexString(content.metadata_signature.u_a?.data),
           copy: true,
         },
         {
           label: 'u_x',
-          value: toHexString(content.metadata_signature.u_x.data),
+          value: toHexString(content.metadata_signature.u_x?.data),
           copy: true,
         },
         {
           label: 'u_y',
-          value: toHexString(content.metadata_signature.u_y.data),
+          value: toHexString(content.metadata_signature.u_y?.data),
           copy: true,
         },
       ],
     },
     {
       label: 'Covenant Version',
-      value: content.covenant.data,
+      value: content.covenant?.data,
       copy: false,
     },
     {
       label: 'Encrypted Data',
-      value: toHexString(content.encrypted_data.data),
+      value: toHexString(content.encrypted_data?.data),
       copy: true,
     },
   ];
