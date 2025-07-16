@@ -26,24 +26,37 @@ vi.mock('@components/StyledComponents', () => ({
     onChange,
     isHighlighted,
     ...props
-  }: any) => (
-    <div
-      data-testid="styled-accordion"
-      data-expanded={expanded}
-      data-highlighted={
-        isHighlighted === undefined ? 'false' : String(isHighlighted)
-      }
-      onClick={() => onChange?.({}, !expanded)}
-      {...props}
-    >
-      {children}
-    </div>
-  ),
-  StyledAccordionSummary: ({ children, ...props }: any) => (
-    <button role="button" {...props}>
-      {children}
-    </button>
-  ),
+  }: any) => {
+    // Omit isHighlighted from props
+    const { isHighlighted: _isHighlighted, ...rest } = props;
+    return (
+      <div
+        data-testid="styled-accordion"
+        data-expanded={expanded}
+        data-highlighted={
+          isHighlighted === undefined ? 'false' : String(isHighlighted)
+        }
+        onClick={() => onChange?.({}, !expanded)}
+        {...rest}
+      >
+        {children}
+      </div>
+    );
+  },
+  StyledAccordionSummary: ({
+    children,
+    expandIcon,
+    isHighlighted,
+    expanded,
+    ...props
+  }: any) => {
+    // Omit expandIcon, isHighlighted, expanded from props
+    return (
+      <button role="button" {...props}>
+        {children}
+      </button>
+    );
+  },
   TypographyData: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="typography-data">{children}</div>
   ),

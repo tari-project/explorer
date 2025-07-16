@@ -64,10 +64,23 @@ vi.mock('@mui/material', () => ({
       {children}
     </div>
   ),
-  Grid: ({ children, item, xs, md, lg, spacing, style, ...props }: any) => (
+  Grid: ({
+    children,
+    item,
+    container,
+    xs,
+    md,
+    lg,
+    spacing,
+    style,
+    ...props
+  }: any) => (
     <div
       data-testid="grid"
       data-item={item}
+      data-container={
+        container !== undefined ? container.toString() : undefined
+      }
       data-xs={xs}
       data-md={md}
       data-lg={lg}

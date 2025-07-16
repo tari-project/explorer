@@ -23,7 +23,7 @@ function DownloadModal() {
       <ThemeProvider theme={lightTheme}>
         <Backdrop
           sx={{ zIndex: 10 }}
-          open={showDownloadModal}
+          open={!!showDownloadModal}
           onClick={handleClose}
         >
           <Modal>

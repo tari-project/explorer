@@ -31,8 +31,8 @@ const renderJson = (json: any) => {
       <>
         [
         <ol>
-          {json.map((val) => (
-            <li>{renderJson(val)},</li>
+          {json.map((val, idx) => (
+            <li key={idx}>{renderJson(val)},</li>
           ))}
         </ol>
         ],
@@ -44,7 +44,7 @@ const renderJson = (json: any) => {
         {'{'}
         <ul>
           {Object.keys(json).map((key) => (
-            <li>
+            <li key={key}>
               <b>"{key}"</b>:{renderJson(json[key])}
             </li>
           ))}

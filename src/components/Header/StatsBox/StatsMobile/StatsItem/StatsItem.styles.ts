@@ -8,16 +8,16 @@ export const StyledBox = styled(Box)({
   gap: '4px',
 });
 
-export const ValueTypography = styled(Typography)<{ lowerCase?: boolean }>(
-  ({ lowerCase }) => ({
-    textTransform: lowerCase ? 'lowercase' : 'uppercase',
-    fontFamily: 'DrukHeavy',
-    fontSize: '22px',
-    color: '#fff',
-    textAlign: 'center',
-    lineHeight: '0.9',
-  })
-);
+export const ValueTypography = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'lowerCase',
+})<{ lowerCase?: boolean }>(({ lowerCase }) => ({
+  textTransform: lowerCase ? 'lowercase' : 'uppercase',
+  fontFamily: 'DrukHeavy',
+  fontSize: '22px',
+  color: '#fff',
+  textAlign: 'center',
+  lineHeight: '0.9',
+}));
 
 export const LabelTypography = styled(Typography)({
   fontSize: '11px',

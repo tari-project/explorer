@@ -34,6 +34,7 @@ vi.mock('@services/stores/useMainStore', () => ({
     const state = {
       isMobile: false,
       setShowDownloadModal: vi.fn(),
+      showDownloadModal: false,
     };
     return selector(state);
   }),

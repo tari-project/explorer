@@ -381,7 +381,9 @@ describe('BlockTable', () => {
   });
 
   it('should render "View Block" button in mobile view and link correctly', () => {
-    mockUseMainStore.mockImplementation((selector) => selector({ isMobile: true }));
+    mockUseMainStore.mockImplementation((selector) =>
+      selector({ isMobile: true })
+    );
 
     render(
       <TestWrapper>
@@ -397,7 +399,9 @@ describe('BlockTable', () => {
   });
 
   it('should render all block fields in mobile view', () => {
-    mockUseMainStore.mockImplementation((selector) => selector({ isMobile: true }));
+    mockUseMainStore.mockImplementation((selector) =>
+      selector({ isMobile: true })
+    );
 
     render(
       <TestWrapper>
@@ -414,7 +418,9 @@ describe('BlockTable', () => {
   });
 
   it('should render skeleton loaders in mobile view when loading', () => {
-    mockUseMainStore.mockImplementation((selector) => selector({ isMobile: true }));
+    mockUseMainStore.mockImplementation((selector) =>
+      selector({ isMobile: true })
+    );
     mockUseGetBlocksByParam.mockReturnValue({
       data: null,
       isLoading: true,
