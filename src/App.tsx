@@ -77,6 +77,12 @@ function App() {
         >
           <Route index element={<SearchPage />} />
         </Route>
+        <Route
+          path="search_outputs_by_payref"
+          element={<PageLayout customHeader={<SearchPageHeader />} />}
+        >
+          <Route index element={<SearchPage />} />
+        </Route>
         <Route path="mempool" element={<PageLayout title="Mempool" />}>
           <Route index element={<MempoolPage />} />
         </Route>

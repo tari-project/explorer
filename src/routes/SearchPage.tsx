@@ -38,7 +38,7 @@ function SearchPage() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
-  const hash = params.get('hash') || '';
+  const hash = params.get('hash') || params.get('payref') || '';
   const isHash = validateHash(hash);
 
   const setStatus = useSearchStatusStore((state) => state.setStatus);
