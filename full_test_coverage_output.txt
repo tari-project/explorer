@@ -1,0 +1,480 @@
+
+ RUN  v3.2.4 /Users/ric/Desktop/working/explorer-work
+      Coverage enabled with v8
+
+stderr | src/components/Blocks/__tests__/BlockWidget.test.tsx > BlockWidget > Mobile View > should render mobile loading state
+Warning: Received `true` for a non-boolean attribute `container`.
+
+If you want to write it to the DOM, pass a string instead: container="true" or container={value.toString()}.
+    at div
+    at Grid (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:26:12)
+    at Mobile
+    at BlockWidget
+    at div
+    at MemoryRouter (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:91:20)
+    at div
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:111:21)
+    at QueryClientProvider (file:///Users/ric/Desktop/working/explorer-work/node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs:41:3)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:137:24)
+
+stderr | src/services/api/hooks/__tests__/useBlocks.test.tsx > useBlocks hooks > useAllBlocks > should handle fetch errors gracefully
+Error: Network error
+    at [90m/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/__tests__/useBlocks.test.tsx:64:25
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+    at new Promise (<anonymous>)
+    at runWithTimeout [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10[90m)[39m
+    at runTest [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+
+stderr | src/services/api/hooks/__tests__/useMinerStats.test.ts > useMinerStats > should handle fetch errors gracefully
+Error: Failed to fetch miner stats
+    at Object.fetchMinerStats [as queryFn] [90m(/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/useMinerStats.ts:13:15[90m)[39m
+
+stderr | src/services/api/hooks/__tests__/useMinerStats.test.ts > useMinerStats > should handle network errors
+Error: Network error
+    at [90m/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/__tests__/useMinerStats.test.ts:76:37
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+    at new Promise (<anonymous>)
+    at runWithTimeout [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10[90m)[39m
+    at runTest [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runFiles [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1787:3[90m)[39m
+
+stderr | src/services/api/hooks/__tests__/useBlocks.test.tsx > useBlocks hooks > useGetBlocksByParam > should handle errors in parameterized requests
+Error: Invalid parameters
+    at [90m/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/__tests__/useBlocks.test.tsx:142:37
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+    at new Promise (<anonymous>)
+    at runWithTimeout [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10[90m)[39m
+    at runTest [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+
+ ✓ src/components/Blocks/__tests__/BlockWidget.test.tsx (12 tests) 283ms
+stderr | src/services/api/hooks/__tests__/useMinerStats.test.ts > useMinerStats > should handle JSON parsing errors
+Error: Invalid JSON
+    at Object.json [90m(/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/__tests__/useMinerStats.test.ts:108:15[90m)[39m
+    at Object.fetchMinerStats [as queryFn] [90m(/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/useMinerStats.ts:16:21[90m)[39m
+
+stderr | src/services/api/hooks/__tests__/useMinerStats.test.ts > useMinerStats > should have correct refetch interval configured
+TypeError: Cannot read properties of undefined (reading 'ok')
+    at Object.fetchMinerStats [as queryFn] [90m(/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/useMinerStats.ts:12:19[90m)[39m
+
+ ✓ src/components/__tests__/Error.test.tsx (8 tests) 166ms
+stderr | src/services/api/hooks/__tests__/useBlocks.test.tsx > useBlocks hooks > useGetBlockByHeightOrHash > should handle block not found error
+Error: Block not found
+    at [90m/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/__tests__/useBlocks.test.tsx:216:37
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+    at new Promise (<anonymous>)
+    at runWithTimeout [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10[90m)[39m
+    at runTest [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+
+ ✓ src/services/api/hooks/__tests__/useMinerStats.test.ts (9 tests) 536ms
+ ✓ src/components/__tests__/FetchStatusCheck.test.tsx (9 tests) 128ms
+stderr | src/components/Header/MobileHeader/__tests__/MobileHeader.test.tsx > MobileHeader > should render mobile header with logo and miners CTA
+Warning: Received `false` for a non-boolean attribute `$open`.
+
+If you want to write it to the DOM, pass a string instead: $open="false" or $open={value.toString()}.
+
+If you used to conditionally omit it with $open={condition && value}, pass $open={condition ? value : undefined} instead.
+    at div
+    at MotionComponent (file:///Users/ric/Desktop/working/explorer-work/node_modules/framer-motion/dist/es/motion/index.mjs:35:16)
+    at /Users/ric/Desktop/working/explorer-work/node_modules/@emotion/react/dist/emotion-element-48d2c2e4.cjs.dev.js:62:23
+    at div
+    at /Users/ric/Desktop/working/explorer-work/node_modules/@emotion/react/dist/emotion-element-48d2c2e4.cjs.dev.js:62:23
+    at div
+    at MotionComponent (file:///Users/ric/Desktop/working/explorer-work/node_modules/framer-motion/dist/es/motion/index.mjs:35:16)
+    at /Users/ric/Desktop/working/explorer-work/node_modules/@emotion/react/dist/emotion-element-48d2c2e4.cjs.dev.js:62:23
+    at MobileHeader (/Users/ric/Desktop/working/explorer-work/src/components/Header/MobileHeader/MobileHeader.tsx:26:38)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at QueryClientProvider (file:///Users/ric/Desktop/working/explorer-work/node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs:41:3)
+    at Router (/Users/ric/Desktop/working/explorer-work/node_modules/react-router/dist/umd/react-router.development.js:1070:17)
+    at BrowserRouter (/Users/ric/Desktop/working/explorer-work/node_modules/react-router-dom/dist/umd/react-router-dom.development.js:359:7)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/Header/MobileHeader/__tests__/MobileHeader.test.tsx:97:24)
+Warning: Invalid attribute name: `$open`
+    at div
+    at MotionComponent (file:///Users/ric/Desktop/working/explorer-work/node_modules/framer-motion/dist/es/motion/index.mjs:35:16)
+    at /Users/ric/Desktop/working/explorer-work/node_modules/@emotion/react/dist/emotion-element-48d2c2e4.cjs.dev.js:62:23
+    at div
+    at /Users/ric/Desktop/working/explorer-work/node_modules/@emotion/react/dist/emotion-element-48d2c2e4.cjs.dev.js:62:23
+    at div
+    at MotionComponent (file:///Users/ric/Desktop/working/explorer-work/node_modules/framer-motion/dist/es/motion/index.mjs:35:16)
+    at /Users/ric/Desktop/working/explorer-work/node_modules/@emotion/react/dist/emotion-element-48d2c2e4.cjs.dev.js:62:23
+    at MobileHeader (/Users/ric/Desktop/working/explorer-work/src/components/Header/MobileHeader/MobileHeader.tsx:26:38)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at QueryClientProvider (file:///Users/ric/Desktop/working/explorer-work/node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs:41:3)
+    at Router (/Users/ric/Desktop/working/explorer-work/node_modules/react-router/dist/umd/react-router.development.js:1070:17)
+    at BrowserRouter (/Users/ric/Desktop/working/explorer-work/node_modules/react-router-dom/dist/umd/react-router-dom.development.js:359:7)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/Header/MobileHeader/__tests__/MobileHeader.test.tsx:97:24)
+
+stderr | src/services/api/hooks/__tests__/useBlocks.test.tsx > useBlocks hooks > useGetPaginatedData > should handle pagination errors
+Error: Invalid range
+    at [90m/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/__tests__/useBlocks.test.tsx:298:37
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+    at new Promise (<anonymous>)
+    at runWithTimeout [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10[90m)[39m
+    at runTest [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+
+stderr | src/components/__tests__/CopyToClipboard.test.tsx > CopyToClipboard > should call clipboard.writeText when clicked
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+
+stderr | src/components/__tests__/CopyToClipboard.test.tsx > CopyToClipboard > should update icon aria-label after clicking
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+
+stderr | src/components/__tests__/CopyToClipboard.test.tsx > CopyToClipboard > should reset tooltip after 2 seconds
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+
+stderr | src/components/__tests__/CopyToClipboard.test.tsx > CopyToClipboard > should reset tooltip after 2 seconds
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+
+ ✓ src/components/Header/MobileHeader/__tests__/MobileHeader.test.tsx (13 tests) 328ms
+stderr | src/components/__tests__/CopyToClipboard.test.tsx > CopyToClipboard > should handle multiple rapid clicks correctly
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+Warning: An update to CopyToClipboard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at CopyToClipboard (/Users/ric/Desktop/working/explorer-work/src/components/CopyToClipboard.tsx:7:28)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/__tests__/CopyToClipboard.test.tsx:14:24)
+
+stderr | src/services/api/hooks/__tests__/useBlocks.test.tsx > useBlocks hooks > useSearchByKernel > should handle search errors
+Error: Search failed
+    at [90m/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/__tests__/useBlocks.test.tsx:390:37
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+    at new Promise (<anonymous>)
+    at runWithTimeout [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10[90m)[39m
+    at runTest [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+
+ ✓ src/components/__tests__/CopyToClipboard.test.tsx (10 tests) 326ms
+ ✓ src/services/api/hooks/__tests__/useBlocks.test.tsx (24 tests | 1 skipped) 1334ms
+stderr | src/components/Blocks/__tests__/BlockTable.test.tsx > BlockTable > should render heading
+Warning: React does not recognize the `AnimatePresence` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `animatepresence` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+    at div
+    at div (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockTable.test.tsx:44:13)
+    at /Users/ric/Desktop/working/explorer-work/node_modules/@emotion/react/dist/emotion-element-48d2c2e4.cjs.dev.js:62:23
+    at Grid (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/Grid/Grid.js:380:49)
+    at Desktop
+    at BlockTable (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/BlockTable.tsx:33:79)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at Router (/Users/ric/Desktop/working/explorer-work/node_modules/react-router/dist/umd/react-router.development.js:1070:17)
+    at BrowserRouter (/Users/ric/Desktop/working/explorer-work/node_modules/react-router-dom/dist/umd/react-router-dom.development.js:359:7)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockTable.test.tsx:67:24)
+
+ ✓ src/components/Blocks/__tests__/SkeletonLoader.test.tsx (11 tests) 184ms
+stdout | src/components/Header/__tests__/SearchField.test.tsx > SearchField > should show error snackbar for invalid query
+SnackbarAlert opened with message: Invalid query
+
+stdout | src/components/Header/__tests__/SearchField.test.tsx > SearchField > should show error for negative height
+SnackbarAlert opened with message: Invalid query
+
+stdout | src/components/Header/__tests__/SearchField.test.tsx > SearchField > should show error for hash with incorrect length
+SnackbarAlert opened with message: Invalid query
+
+stderr | src/components/Header/__tests__/MinersCTA.test.tsx > MinersCTA > should render full component with miners count and download button
+Warning: Failed prop type: The prop `open` is marked as required in `ForwardRef(Backdrop)`, but its value is `undefined`.
+    at Backdrop (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/Backdrop/Backdrop.js:60:44)
+    at DownloadModal
+    at MinersCTA (/Users/ric/Desktop/working/explorer-work/src/components/Header/MinersCTA/MinersCTA.tsx:23:3)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/private-theming/node/ThemeProvider/ThemeProvider.js:39:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/system/ThemeProvider/ThemeProvider.js:50:5)
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/node_modules/@mui/material/node/styles/ThemeProvider.js:21:14)
+    at QueryClientProvider (file:///Users/ric/Desktop/working/explorer-work/node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs:41:3)
+    at Router (/Users/ric/Desktop/working/explorer-work/node_modules/react-router/dist/umd/react-router.development.js:1070:17)
+    at BrowserRouter (/Users/ric/Desktop/working/explorer-work/node_modules/react-router-dom/dist/umd/react-router-dom.development.js:359:7)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/Header/__tests__/MinersCTA.test.tsx:76:24)
+
+ ✓ src/components/SocialLinks/__tests__/SocialLinks.test.tsx (9 tests) 377ms
+ ✓ src/components/Blocks/__tests__/BlockInfo.test.tsx (13 tests) 445ms
+stdout | src/components/Header/__tests__/SearchField.test.tsx > SearchField > should clear input after invalid search
+SnackbarAlert opened with message: Invalid query
+
+ ✓ src/components/Header/__tests__/SearchField.test.tsx (18 tests) 955ms
+ ✓ src/components/Header/__tests__/MinersCTA.test.tsx (12 tests) 564ms
+ ❯ src/components/Search/__tests__/AdvancedSearch.test.tsx (14 tests | 3 failed) 1061ms
+   ✓ AdvancedSearch > should render search icon button when dialog is closed 191ms
+   ✓ AdvancedSearch > should open search dialog when search button is clicked 16ms
+   ✓ AdvancedSearch > should display dialog content when search is open 121ms
+   ✓ AdvancedSearch > should default to block search type 97ms
+   ✓ AdvancedSearch > should switch to kernel search when kernel radio is selected 143ms
+   ✓ AdvancedSearch > should close dialog when close button is clicked 39ms
+   ✓ AdvancedSearch > should close dialog when clicking outside (onClose) 27ms
+   ✓ AdvancedSearch > should render correct dialog properties 47ms
+   ✓ AdvancedSearch > should handle search type state changes correctly 65ms
+   ✓ AdvancedSearch > should pass correct props to InnerHeading 9ms
+   × AdvancedSearch > should have correct radio group structure 189ms
+     → [2mexpect([22m[31melement[39m[2m).toHaveAttribute([22m[32m[32m"name"[32m[39m[2m, [22m[32m[32m"search-type"[32m[39m[2m) // element.getAttribute("name") === "search-type"[22m
+
+Expected the element to have attribute:
+[32m  name="search-type"[39m
+Received:
+[31m  null[39m
+   × AdvancedSearch > should not render dialog content when search is closed 65ms
+     → [2mexpect([22m[31melement[39m[2m).not.toBeInTheDocument()[22m
+
+[31mexpected document not to contain element, found <h2>
+  Search For
+</h2> instead[39m
+   ✓ AdvancedSearch > should use correct theme provider 35ms
+   × AdvancedSearch > should have correct icon button attributes 16ms
+     → [2mexpect([22m[31melement[39m[2m).toHaveAttribute([22m[32m[32m"aria-label"[32m[39m[2m, [22m[32m[32m"search"[32m[39m[2m) // element.getAttribute("aria-label") === "search"[22m
+
+Expected the element to have attribute:
+[32m  aria-label="search"[39m
+Received:
+[31m  aria-label="close search"[39m
+ ✓ src/components/Blocks/__tests__/GridItem.test.tsx (12 tests) 190ms
+ ✓ src/components/Header/MobileMenuButton/__tests__/MobileMenuButton.test.tsx (11 tests) 160ms
+ ✓ src/routes/__tests__/BlockPage.test.tsx (12 tests) 254ms
+ ✓ src/components/Blocks/__tests__/BlockTable.test.tsx (19 tests) 1547ms
+ ✓ src/components/Search/__tests__/SearchKernel.test.tsx (16 tests) 2052ms
+   ✓ SearchKernel > should render nonce and signature input fields  355ms
+ ✓ src/components/Header/HeaderTop/__tests__/HeaderTop.test.tsx (10 tests) 279ms
+ ✓ src/components/__tests__/InnerHeading.test.tsx (10 tests) 222ms
+stderr | src/utils/__tests__/helpers.test.tsx > helpers > renderJson > should render regular arrays
+Warning: Each child in a list should have a unique "key" prop.
+
+Check the top-level render call using <ol>. See https://reactjs.org/link/warning-keys for more information.
+    at li
+
+stderr | src/utils/__tests__/helpers.test.tsx > helpers > renderJson > should render objects
+Warning: Each child in a list should have a unique "key" prop.
+
+Check the top-level render call using <ul>. See https://reactjs.org/link/warning-keys for more information.
+    at li
+
+ ✓ src/utils/__tests__/helpers.test.tsx (42 tests) 77ms
+ ✓ src/assets/__tests__/TariLogo.test.tsx (6 tests) 356ms
+stderr | src/components/Charts/__tests__/BlockTimes.test.tsx > BlockTimes > should render chart for All type
+Warning: React does not recognize the `alignItems` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `alignitems` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+    at div
+    at Box (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:44:11)
+    at BlockTimes (/Users/ric/Desktop/working/explorer-work/src/components/Charts/BlockTimes.tsx:9:23)
+    at div
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:55:21)
+    at QueryClientProvider (file:///Users/ric/Desktop/working/explorer-work/node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs:41:3)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:89:24)
+Warning: React does not recognize the `justifyContent` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `justifycontent` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+    at div
+    at Box (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:44:11)
+    at BlockTimes (/Users/ric/Desktop/working/explorer-work/src/components/Charts/BlockTimes.tsx:9:23)
+    at div
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:55:21)
+    at QueryClientProvider (file:///Users/ric/Desktop/working/explorer-work/node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs:41:3)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/Charts/__tests__/BlockTimes.test.tsx:89:24)
+
+ ✓ src/components/Charts/__tests__/BlockTimes.test.tsx (12 tests) 211ms
+ ✓ src/assets/__tests__/Logo.test.tsx (6 tests) 154ms
+ ✓ src/routes/__tests__/BlockExplorerPage.test.tsx (10 tests) 243ms
+ ✓ src/theme/__tests__/MainLayout.test.tsx (8 tests) 144ms
+ ✓ src/components/Charts/__tests__/HashRates.test.tsx (11 tests) 134ms
+ ✓ src/components/__tests__/Loading.test.tsx (5 tests) 277ms
+ ✓ src/components/Header/__tests__/StatsBox.test.tsx (10 tests) 30ms
+ ✓ src/assets/__tests__/TariGem.test.tsx (4 tests) 27ms
+ ✓ src/components/Charts/__tests__/POWChart.test.tsx (10 tests) 38ms
+ ✓ src/routes/__tests__/VNPage.test.tsx (9 tests) 127ms
+ ✓ src/__tests__/App.test.tsx (10 tests) 67ms
+ ✓ src/routes/__tests__/KernelSearchPage.test.tsx (12 tests) 106ms
+ ✓ src/components/Header/HeaderBottom/__tests__/HeaderBottom.test.tsx (9 tests) 190ms
+ ✓ src/theme/__tests__/PageLayout.test.tsx (11 tests) 294ms
+ ✓ src/components/Banner/__tests__/Banner.test.tsx (4 tests) 65ms
+ ✓ src/components/VersionInfo/__tests__/VersionInfo.test.tsx (5 tests) 42ms
+ ✓ src/assets/images/__tests__/FailureIcon.test.tsx (4 tests) 44ms
+ ✓ src/routes/__tests__/BlocksPage.test.tsx (8 tests) 68ms
+ ✓ src/assets/images/__tests__/SuccessIcon.test.tsx (4 tests) 27ms
+ ✓ src/routes/__tests__/MempoolPage.test.tsx (9 tests) 68ms
+ ✓ src/__tests__/main.test.tsx (5 tests) 157ms
+ ✓ src/services/stores/__tests__/useMainStore.test.ts (9 tests) 5ms
+ ✓ src/theme/__tests__/themes.test.ts (8 tests) 12ms
+ ✓ src/services/api/helpers/__tests__/jsonRpc.test.ts (14 tests) 8ms
+ ✓ src/components/Blocks/Data/__tests__/Inputs.test.ts (10 tests) 29ms
+ ✓ src/components/Blocks/Data/__tests__/Kernels.test.ts (14 tests) 5ms
+ ✓ src/components/Blocks/Data/__tests__/Outputs.test.ts (12 tests) 37ms
+ ✓ src/services/api/__tests__/queryClient.test.ts (7 tests) 6ms
+ ✓ src/utils/__tests__/getOs.test.ts (8 tests) 6ms
+ ✓ src/utils/__tests__/downloadLinks.test.ts (4 tests) 2ms
+ ✓ src/utils/__tests__/kernelSearch.test.ts (12 tests) 2ms
+ ✓ src/components/Blocks/__tests__/BlockHeader.test.tsx (12 tests) 101ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/Search/__tests__/AdvancedSearch.test.tsx > AdvancedSearch > should have correct radio group structure
+Error: [2mexpect([22m[31melement[39m[2m).toHaveAttribute([22m[32m[32m"name"[32m[39m[2m, [22m[32m[32m"search-type"[32m[39m[2m) // element.getAttribute("name") === "search-type"[22m
+
+Expected the element to have attribute:
+[32m  name="search-type"[39m
+Received:
+[31m  null[39m
+ ❯ src/components/Search/__tests__/AdvancedSearch.test.tsx:285:24
+    283|     const radioGroup = screen.getByRole('radiogroup')
+    284|     expect(radioGroup).toBeInTheDocument()
+    285|     expect(radioGroup).toHaveAttribute('name', 'search-type')
+       |                        ^
+    286|     
+    287|     const radios = screen.getAllByRole('radio')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/components/Search/__tests__/AdvancedSearch.test.tsx > AdvancedSearch > should not render dialog content when search is closed
+Error: [2mexpect([22m[31melement[39m[2m).not.toBeInTheDocument()[22m
+
+[31mexpected document not to contain element, found <h2>
+  Search For
+</h2> instead[39m
+ ❯ src/components/Search/__tests__/AdvancedSearch.test.tsx:298:50
+    296|     )
+    297| 
+    298|     expect(screen.queryByText('Search For')).not.toBeInTheDocument()
+       |                                                  ^
+    299|     expect(screen.queryByRole('radio')).not.toBeInTheDocument()
+    300|     expect(screen.queryByTestId('search-block')).not.toBeInTheDocument…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/components/Search/__tests__/AdvancedSearch.test.tsx > AdvancedSearch > should have correct icon button attributes
+Error: [2mexpect([22m[31melement[39m[2m).toHaveAttribute([22m[32m[32m"aria-label"[32m[39m[2m, [22m[32m[32m"search"[32m[39m[2m) // element.getAttribute("aria-label") === "search"[22m
+
+Expected the element to have attribute:
+[32m  aria-label="search"[39m
+Received:
+[31m  aria-label="close search"[39m
+ ❯ src/components/Search/__tests__/AdvancedSearch.test.tsx:325:26
+    323| 
+    324|     const searchButton = screen.getByRole('button', { name: /search/i …
+    325|     expect(searchButton).toHaveAttribute('aria-label', 'search')
+       |                          ^
+    326|   })
+    327| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed | 53 passed (54)
+      Tests  3 failed | 572 passed | 1 skipped (576)
+   Start at  20:35:28
+   Duration  11.78s (transform 2.04s, setup 15.36s, collect 41.55s, tests 14.55s, environment 41.56s, prepare 8.33s)
+

@@ -40,7 +40,7 @@ export default function MobileMenuButton() {
   const setShowMobileMenu = useMainStore((state) => state.setShowMobileMenu);
 
   return (
-    <Wrapper onClick={() => setShowMobileMenu(!showMobileMenu)}>
+    <Wrapper onClick={() => setShowMobileMenu(!showMobileMenu)} data-testid="mobile-menu-button">
       <IconContainer>
         <Line
           variants={topLineVariants}

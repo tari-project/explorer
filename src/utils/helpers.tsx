@@ -31,8 +31,8 @@ const renderJson = (json: any) => {
       <>
         [
         <ol>
-          {json.map((val) => (
-            <li>{renderJson(val)},</li>
+          {json.map((val, idx) => (
+            <li key={idx}>{renderJson(val)},</li>
           ))}
         </ol>
         ],
@@ -44,7 +44,7 @@ const renderJson = (json: any) => {
         {'{'}
         <ul>
           {Object.keys(json).map((key) => (
-            <li>
+            <li key={key}>
               <b>"{key}"</b>:{renderJson(json[key])}
             </li>
           ))}
@@ -150,7 +150,7 @@ function formatHash(number: number, decimals: number = 1) {
   return number.toFixed(decimals) + suffixes[suffixIndex] + 'H';
 }
 
-function formatNumber(number: number, decimals: number = 2) {
+function formatNumber(number: number | undefined | null, decimals: number = 2) {
   if (number === undefined || number === null) {
     return 'N/A';
   }

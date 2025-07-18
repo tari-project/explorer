@@ -1,0 +1,806 @@
+
+> tari-block-explorer@0.0.0 test:coverage
+> vitest --coverage --exclude **/Charts/** --run
+
+
+ RUN  v3.2.4 /Users/ric/Desktop/working/explorer-work
+      Coverage enabled with v8
+
+stderr | src/services/api/hooks/__tests__/useMinerStats.test.ts > useMinerStats > should handle fetch errors
+Error: Failed to fetch miner stats
+    at Object.fetchMinerStats [as queryFn] [90m(/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/useMinerStats.ts:13:15[90m)[39m
+
+ ✓ src/routes/__tests__/BlockPage.test.tsx (12 tests) 35ms
+stderr | src/utils/__tests__/helpers.test.tsx > helpers > renderJson > should render regular arrays
+Warning: Each child in a list should have a unique "key" prop.
+
+Check the top-level render call using <ol>. See https://reactjs.org/link/warning-keys for more information.
+    at li
+
+stderr | src/utils/__tests__/helpers.test.tsx > helpers > renderJson > should render objects
+Warning: Each child in a list should have a unique "key" prop.
+
+Check the top-level render call using <ul>. See https://reactjs.org/link/warning-keys for more information.
+    at li
+
+ ✓ src/theme/__tests__/themes.test.ts (8 tests) 27ms
+ ✓ src/__tests__/main.test.tsx (5 tests) 29ms
+stderr | src/services/api/hooks/__tests__/useMinerStats.test.ts > useMinerStats > should handle network errors
+Error: Network error
+    at [90m/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/__tests__/useMinerStats.test.ts:83:37
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+    at [90mfile:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+    at new Promise (<anonymous>)
+    at runWithTimeout [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10[90m)[39m
+    at runTest [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runFiles [90m(file:///Users/ric/Desktop/working/explorer-work/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1787:3[90m)[39m
+
+stderr | src/components/Blocks/__tests__/BlockWidget.test.tsx > BlockWidget > Mobile View > should render mobile loading state
+Warning: Received `true` for a non-boolean attribute `container`.
+
+If you want to write it to the DOM, pass a string instead: container="true" or container={value.toString()}.
+    at div
+    at Grid (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:26:12)
+    at Mobile
+    at BlockWidget
+    at div
+    at MemoryRouter (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:91:20)
+    at div
+    at ThemeProvider (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:111:21)
+    at QueryClientProvider (file:///Users/ric/Desktop/working/explorer-work/node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs:41:3)
+    at TestWrapper (/Users/ric/Desktop/working/explorer-work/src/components/Blocks/__tests__/BlockWidget.test.tsx:137:24)
+
+ ✓ src/utils/__tests__/helpers.test.tsx (42 tests) 38ms
+ ✓ src/services/api/hooks/__tests__/useBlocks.test.tsx (13 tests) 57ms
+ ✓ src/routes/__tests__/BlockExplorerPage.test.tsx (10 tests) 82ms
+ ✓ src/theme/__tests__/MainLayout.test.tsx (9 tests) 163ms
+ ✓ src/theme/__tests__/PageLayout.test.tsx (13 tests) 183ms
+ ✓ src/routes/__tests__/MempoolPage.test.tsx (9 tests) 73ms
+ ✓ src/routes/__tests__/VNPage.test.tsx (9 tests) 84ms
+stderr | src/services/api/hooks/__tests__/useMinerStats.test.ts > useMinerStats > should handle 404 response
+Error: Failed to fetch miner stats
+    at Object.fetchMinerStats [as queryFn] [90m(/Users/ric/Desktop/working/explorer-work/[39msrc/services/api/hooks/useMinerStats.ts:13:15[90m)[39m
+
+ ✓ src/routes/__tests__/BlocksPage.test.tsx (8 tests) 172ms
+ ❯ src/components/Blocks/__tests__/BlockWidget.test.tsx (12 tests | 1 failed) 279ms
+   ✓ BlockWidget > Mobile View > should render mobile loading state 22ms
+   ✓ BlockWidget > Mobile View > should render mobile error state 2ms
+   ✓ BlockWidget > Mobile View > should render mobile block data 58ms
+   ✓ BlockWidget > Mobile View > should limit mobile display to 5 blocks 77ms
+   ✓ BlockWidget > Desktop View > should render desktop loading state 3ms
+   ✓ BlockWidget > Desktop View > should render desktop error state 1ms
+   ✓ BlockWidget > Desktop View > should render desktop table headers 72ms
+   ✓ BlockWidget > Desktop View > should render desktop block data in table format 7ms
+   ✓ BlockWidget > Desktop View > should limit desktop display to 9 blocks 12ms
+   ✓ BlockWidget > Common functionality > should use theme spacing 4ms
+   ✓ BlockWidget > Common functionality > should handle empty data gracefully 5ms
+   × BlockWidget > Common functionality > should call helper functions with correct parameters 15ms
+     → Unable to find an element with the text: hex_block_hash_1. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mdata-spacing[39m=[32m"2"[39m
+          [33mdata-testid[39m=[32m"grid"[39m
+          [33mpb[39m=[32m"2"[39m
+          [33mpl[39m=[32m"0"[39m
+          [33mpr[39m=[32m"0"[39m
+          [33mpt[39m=[32m"2"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1.5"[39m
+            [33mdata-md[39m=[32m"1.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mHeight[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mTime[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mProof of Work[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"3.5"[39m
+            [33mdata-md[39m=[32m"3.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"3.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mHash[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mKernels[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mOutputs[0m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mdata-spacing[39m=[32m"2"[39m
+          [33mdata-testid[39m=[32m"grid"[39m
+          [33mpb[39m=[32m"2"[39m
+          [33mpl[39m=[32m"0"[39m
+          [33mpr[39m=[32m"0"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"12"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-color[39m=[32m"#e0e0e0"[39m
+              [33mdata-testid[39m=[32m"divider"[39m
+              [33mstyle[39m=[32m"background: none;"[39m
+            [36m>[39m
+              [0m---[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1.5"[39m
+            [33mdata-md[39m=[32m"1.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-testid[39m=[32m"link"[39m
+                [33mdata-to[39m=[32m"/blocks/12345"[39m
+              [36m>[39m
+                [0m12345[0m
+                [0m [0m
+              [36m</a>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mformatted_1640995200[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mpow_1[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"3.5"[39m
+            [33mdata-md[39m=[32m"3.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"3.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mhex_bl...hash_1[0m
+              [36m<div[39m
+                [33mdata-copy[39m=[32m"hex_block_hash_1"[39m
+                [33mdata-testid[39m=[32m"copy-to-clipboard"[39m
+              [36m>[39m
+                [0mCopy[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0m5[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0m10[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"12"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-color[39m=[32m"#e0e0e0"[39m
+              [33mdata-testid[39m=[32m"divider"[39m
+              [33mstyle[39m=[32m"background: none;"[39m
+            [36m>[39m
+              [0m---[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1.5"[39m
+            [33mdata-md[39m=[32m"1.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-testid[39m=[32m"link"[39m
+                [33mdata-to[39m=[32m"/blocks/12346"[39m
+              [36m>[39m
+                [0m12346[0m
+                [0m [0m
+              [36m</a>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mformatted_1640995260[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mpow_2[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"3.5"[39m
+            [33mdata-md[39m=[32m"3.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"3.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mhex_bl...hash_2[0m
+              [36m<div[39m
+                [33mdata-copy[39m=[32m"hex_block_hash_2"[39m
+                [33mdata-testid[39m=[32m"copy-to-clipboard"[39m
+              [36m>[39m
+                [0mCopy[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0m3[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0m8[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"12"[39m
+            [33mstyle[39m=[32m"display: flex; justify-content: center; align-items: center; gap: 24px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"divider"[39m
+            [36m>[39m
+              [0m---[0m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mdata-color[39m=[32m"secondary"[39m
+              [33mdata-href[39m=[32m"/blocks/"[39m
+              [33mdata-testid[39m=[32m"button"[39m
+              [33mdata-variant[39m=[32m"contained"[39m
+              [33mstyle[39m=[32m"min-width: 250px;"[39m
+            [36m>[39m
+              [0mView All Blocks[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ✓ src/services/api/hooks/__tests__/useMinerStats.test.ts (10 tests) 583ms
+ ✓ src/__tests__/App.test.tsx (10 tests) 49ms
+ ✓ src/routes/__tests__/KernelSearchPage.test.tsx (12 tests) 68ms
+ ✓ src/services/api/helpers/__tests__/jsonRpc.test.ts (14 tests) 8ms
+ ✓ src/components/Blocks/Data/__tests__/Inputs.test.ts (10 tests) 32ms
+ ✓ src/components/Blocks/Data/__tests__/Outputs.test.ts (12 tests) 13ms
+ ✓ src/services/api/__tests__/queryClient.test.ts (7 tests) 26ms
+ ✓ src/utils/__tests__/kernelSearch.test.ts (18 tests) 5ms
+ ✓ src/utils/__tests__/downloadLinks.test.ts (7 tests) 4ms
+ ✓ src/components/Blocks/Data/__tests__/Kernels.test.ts (14 tests) 12ms
+ ✓ src/utils/__tests__/getOs.test.ts (20 tests) 5ms
+ ✓ src/services/stores/__tests__/useMainStore.test.ts (17 tests) 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/Blocks/__tests__/BlockWidget.test.tsx > BlockWidget > Common functionality > should call helper functions with correct parameters
+TestingLibraryElementError: Unable to find an element with the text: hex_block_hash_1. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mdata-spacing[39m=[32m"2"[39m
+          [33mdata-testid[39m=[32m"grid"[39m
+          [33mpb[39m=[32m"2"[39m
+          [33mpl[39m=[32m"0"[39m
+          [33mpr[39m=[32m"0"[39m
+          [33mpt[39m=[32m"2"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1.5"[39m
+            [33mdata-md[39m=[32m"1.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mHeight[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mTime[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mProof of Work[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"3.5"[39m
+            [33mdata-md[39m=[32m"3.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"3.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mHash[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mKernels[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography"[39m
+              [33mdata-variant[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mOutputs[0m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mdata-spacing[39m=[32m"2"[39m
+          [33mdata-testid[39m=[32m"grid"[39m
+          [33mpb[39m=[32m"2"[39m
+          [33mpl[39m=[32m"0"[39m
+          [33mpr[39m=[32m"0"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"12"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-color[39m=[32m"#e0e0e0"[39m
+              [33mdata-testid[39m=[32m"divider"[39m
+              [33mstyle[39m=[32m"background: none;"[39m
+            [36m>[39m
+              [0m---[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1.5"[39m
+            [33mdata-md[39m=[32m"1.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-testid[39m=[32m"link"[39m
+                [33mdata-to[39m=[32m"/blocks/12345"[39m
+              [36m>[39m
+                [0m12345[0m
+                [0m [0m
+              [36m</a>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mformatted_1640995200[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mpow_1[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"3.5"[39m
+            [33mdata-md[39m=[32m"3.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"3.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mhex_bl...hash_1[0m
+              [36m<div[39m
+                [33mdata-copy[39m=[32m"hex_block_hash_1"[39m
+                [33mdata-testid[39m=[32m"copy-to-clipboard"[39m
+              [36m>[39m
+                [0mCopy[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0m5[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0m10[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"12"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-color[39m=[32m"#e0e0e0"[39m
+              [33mdata-testid[39m=[32m"divider"[39m
+              [33mstyle[39m=[32m"background: none;"[39m
+            [36m>[39m
+              [0m---[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1.5"[39m
+            [33mdata-md[39m=[32m"1.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-testid[39m=[32m"link"[39m
+                [33mdata-to[39m=[32m"/blocks/12346"[39m
+              [36m>[39m
+                [0m12346[0m
+                [0m [0m
+              [36m</a>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mformatted_1640995260[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"2.5"[39m
+            [33mdata-md[39m=[32m"2.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"2.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mpow_2[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"3.5"[39m
+            [33mdata-md[39m=[32m"3.5"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"3.5"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0mhex_bl...hash_2[0m
+              [36m<div[39m
+                [33mdata-copy[39m=[32m"hex_block_hash_2"[39m
+                [33mdata-testid[39m=[32m"copy-to-clipboard"[39m
+              [36m>[39m
+                [0mCopy[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0m3[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-lg[39m=[32m"1"[39m
+            [33mdata-md[39m=[32m"1"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"1"[39m
+            [33mstyle[39m=[32m"text-align: center;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"typography-data"[39m
+            [36m>[39m
+              [0m8[0m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mdata-item[39m=[32m"true"[39m
+            [33mdata-testid[39m=[32m"grid"[39m
+            [33mdata-xs[39m=[32m"12"[39m
+            [33mstyle[39m=[32m"display: flex; justify-content: center; align-items: center; gap: 24px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mdata-testid[39m=[32m"divider"[39m
+            [36m>[39m
+              [0m---[0m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mdata-color[39m=[32m"secondary"[39m
+              [33mdata-href[39m=[32m"/blocks/"[39m
+              [33mdata-testid[39m=[32m"button"[39m
+              [33mdata-variant[39m=[32m"contained"[39m
+              [33mstyle[39m=[32m"min-width: 250px;"[39m
+            [36m>[39m
+              [0mView All Blocks[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/Blocks/__tests__/BlockWidget.test.tsx:465:21
+    463| 
+    464|       // Helper functions should be called with the mocked return valu…
+    465|       expect(screen.getByText('hex_block_hash_1')).toBeInTheDocument()
+       |                     ^
+    466|       expect(screen.getByText('formatted_1640995200')).toBeInTheDocume…
+    467|       expect(screen.getByText('pow_1')).toBeInTheDocument()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 23 passed (24)
+      Tests  1 failed | 300 passed (301)
+   Start at  18:33:15
+   Duration  2.66s (transform 608ms, setup 3.51s, collect 2.42s, tests 2.03s, environment 10.54s, prepare 3.07s)
+
