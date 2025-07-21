@@ -21,8 +21,8 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { useState, useEffect } from 'react';
-import { Button, Box, Container, Typography, IconButton } from '@mui/material';
-import { useTheme, styled } from '@mui/material/styles';
+import { Box, Container } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -32,16 +32,14 @@ import {
 import { shortenString } from '@utils/helpers';
 import { useMediaQuery } from '@mui/material';
 import { GradientPaper } from '@components/StyledComponents';
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  textTransform: 'uppercase',
-  fontSize: 12,
-  '&:hover': {
-    backgroundColor: 'transparent',
-  },
-  fontFamily: theme.typography.h6.fontFamily,
-}));
+import {
+  StyledButton,
+  HeaderContainer,
+  HeaderTitle,
+  HeaderHeight,
+  NavigationContainer,
+  StyledIconButton,
+} from './BlockHeader.styles';
 
 function BlockHeader() {
   const { pathname } = useLocation();
@@ -53,8 +51,15 @@ function BlockHeader() {
   const theme = useTheme();
   const tip = tipInfo?.tipInfo.metadata.best_block_height;
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const nextLink = data?.height ? `/blocks/${data.height + 1}` : `/blocks/`;
+  const prevLink = data?.height ? `/blocks/${data.height - 1}` : '/blocks/';
 
   useEffect(() => {
+    if (isError || !data) {
+      setPrevDisabled(true);
+      setNextDisabled(true);
+      return;
+    }
     if (data?.height === 0) {
       setPrevDisabled(true);
     } else {
@@ -71,91 +76,40 @@ function BlockHeader() {
     <>
       <Container maxWidth="xl">
         {data?.height ? (
-          <Box
-            style={{
-              marginTop: isMobile ? theme.spacing(3) : theme.spacing(10),
-              marginBottom: isMobile ? theme.spacing(3) : theme.spacing(10),
-              color: theme.palette.text.primary,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: theme.spacing(1),
-            }}
-          >
-            <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
+          <HeaderContainer isMobile={isMobile}>
+            <HeaderTitle variant="h6">
               Block at Height
-            </Typography>
-            <Typography
-              variant="h1"
-              style={{
-                fontFamily: '"DrukHeavy", sans-serif',
-                fontSize: isMobile ? 60 : 80,
-              }}
-            >
-              {data?.height}
-            </Typography>
-          </Box>
+            </HeaderTitle>
+            <HeaderHeight variant="h1" isMobile={isMobile}>
+              {(data?.height || '').toLocaleString()}
+            </HeaderHeight>
+          </HeaderContainer>
         ) : (
-          <Box
-            style={{
-              marginTop: isMobile ? theme.spacing(3) : theme.spacing(10),
-              marginBottom: isMobile ? theme.spacing(3) : theme.spacing(10),
-              color: theme.palette.text.primary,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: theme.spacing(1),
-            }}
-          >
-            <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
+          <HeaderContainer isMobile={isMobile}>
+            <HeaderTitle variant="h6">
               {isFetching && 'Searching...'}
               {isError && 'Block not found'}
-            </Typography>
-            <Typography
-              variant="h1"
-              style={{
-                fontFamily: '"DrukHeavy", sans-serif',
-                fontSize: isMobile ? 60 : 80,
-              }}
-            >
+            </HeaderTitle>
+            <HeaderHeight variant="h1" isMobile={isMobile}>
               {heightOrHash.length > 30
                 ? shortenString(heightOrHash)
                 : heightOrHash}
-            </Typography>
-          </Box>
+            </HeaderHeight>
+          </HeaderContainer>
         )}
       </Container>
-      <GradientPaper
-        style={{
-          padding: '0',
-          marginBottom: theme.spacing(3),
-        }}
-      >
+      <GradientPaper sx={{ padding: '0', marginBottom: 3 }}>
         <Container maxWidth="xl">
-          <Box
-            style={{
-              borderTop: theme.palette.divider,
-              paddingTop: theme.spacing(1),
-              paddingBottom: theme.spacing(1),
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
+          <NavigationContainer>
             <Link to="/blocks/">
               <StyledButton>All Blocks</StyledButton>
             </Link>
             <Box>
-              <Link to={data?.prevLink}>
-                {isMobile ? (
-                  <IconButton
-                    disabled={prevDisabled}
-                    style={{ color: theme.palette.text.primary }}
-                  >
+              {prevDisabled ? (
+                isMobile ? (
+                  <StyledIconButton disabled={prevDisabled}>
                     <ChevronLeft />
-                  </IconButton>
+                  </StyledIconButton>
                 ) : (
                   <StyledButton
                     startIcon={<ChevronLeft />}
@@ -163,19 +117,31 @@ function BlockHeader() {
                   >
                     Previous Block
                   </StyledButton>
-                )}
-              </Link>
+                )
+              ) : (
+                <Link to={prevLink}>
+                  {isMobile ? (
+                    <StyledIconButton disabled={prevDisabled}>
+                      <ChevronLeft />
+                    </StyledIconButton>
+                  ) : (
+                    <StyledButton
+                      startIcon={<ChevronLeft />}
+                      disabled={prevDisabled}
+                    >
+                      Previous Block
+                    </StyledButton>
+                  )}
+                </Link>
+              )}
               <Link to={`/blocks/${tip}`}>
                 <StyledButton>Tip</StyledButton>
               </Link>
-              <Link to={data?.nextLink}>
-                {isMobile ? (
-                  <IconButton
-                    disabled={nextDisabled}
-                    style={{ color: theme.palette.text.primary }}
-                  >
+              {nextDisabled ? (
+                isMobile ? (
+                  <StyledIconButton disabled={nextDisabled}>
                     <ChevronRight />
-                  </IconButton>
+                  </StyledIconButton>
                 ) : (
                   <StyledButton
                     endIcon={<ChevronRight />}
@@ -183,10 +149,25 @@ function BlockHeader() {
                   >
                     Next Block
                   </StyledButton>
-                )}
-              </Link>
+                )
+              ) : (
+                <Link to={nextLink}>
+                  {isMobile ? (
+                    <StyledIconButton disabled={nextDisabled}>
+                      <ChevronRight />
+                    </StyledIconButton>
+                  ) : (
+                    <StyledButton
+                      endIcon={<ChevronRight />}
+                      disabled={nextDisabled}
+                    >
+                      Next Block
+                    </StyledButton>
+                  )}
+                </Link>
+              )}
             </Box>
-          </Box>
+          </NavigationContainer>
         </Container>
       </GradientPaper>
     </>

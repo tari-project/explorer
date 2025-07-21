@@ -258,7 +258,7 @@ describe('BlockTable', () => {
       // Check for height links
       const heightLinks = screen.getAllByTestId('link');
       expect(heightLinks[0]).toHaveAttribute('data-to', '/blocks/12345');
-      expect(heightLinks[0]).toHaveTextContent('12345');
+      expect(heightLinks[0]).toHaveTextContent('12,345');
     });
 
     it('should display formatted data in mobile view', () => {
