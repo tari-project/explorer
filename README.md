@@ -17,3 +17,9 @@ Start the dev server with:
 ### Build
 
     npm run build
+
+## Search Links
+
+To search for a hash or payref using a url, use the following format:
+
+    https://explore.tari.com/search?hash=<hash> or https://explore.tari.com?hash=<hash>
