@@ -92,6 +92,13 @@ export const componentSettings: ThemeOptions = {
           fontSize: 14,
         },
       },
+      styleOverrides: {
+        root: {
+          '&:disabled': {
+            cursor: 'default !important',
+          },
+        },
+      },
     },
     MuiPaper: {
       defaultProps: {

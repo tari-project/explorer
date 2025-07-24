@@ -267,7 +267,7 @@ describe('BlockWidget', () => {
       // Check for block height links
       const heightLinks = screen.getAllByTestId('link');
       expect(heightLinks[0]).toHaveAttribute('data-to', '/blocks/12345');
-      expect(heightLinks[0]).toHaveTextContent('12345');
+      expect(heightLinks[0]).toHaveTextContent('12,345');
 
       // Check for formatted timestamps
       expect(screen.getByText('formatted_1640995200')).toBeInTheDocument();
