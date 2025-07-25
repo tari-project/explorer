@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 // Mock React DOM for createRoot
 const mockRender = vi.fn();
-const mockCreateRoot = vi.fn((_el) => ({ render: mockRender }));
+const mockCreateRoot = vi.fn((el) => { void el; return { render: mockRender }; });
 vi.mock('react-dom/client', () => ({
   createRoot: mockCreateRoot,
 }));
@@ -24,7 +24,7 @@ vi.mock('@tanstack/react-query', () => ({
 }));
 
 vi.mock('@tanstack/react-query-devtools', () => ({
-  ReactQueryDevtools: (props: any) => (
+  ReactQueryDevtools: (props: unknown) => (
     <div
       data-testid="react-query-devtools"
       data-props={JSON.stringify(props)}
@@ -34,10 +34,10 @@ vi.mock('@tanstack/react-query-devtools', () => ({
 
 // Mock react-router-dom
 const mockRouter = { routes: [] };
-const mockCreateBrowserRouter = vi.fn((_el) => mockRouter);
+const mockCreateBrowserRouter = vi.fn((el) => { void el; return mockRouter; });
 vi.mock('react-router-dom', () => ({
   createBrowserRouter: mockCreateBrowserRouter,
-  RouterProvider: ({ router }: { router: any }) => (
+  RouterProvider: ({ router }: { router: unknown }) => (
     <div data-testid="router-provider" data-router={JSON.stringify(router)}>
       Router
     </div>

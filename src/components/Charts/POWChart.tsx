@@ -50,7 +50,7 @@ const ProofOfWork = () => {
     const total = monero + sha + tari;
     let moneroPercentage = Math.round((monero / total) * 100);
     let shaPercentage = Math.round((sha / total) * 100);
-    let tariPercentage = Math.round((tari / total) * 100);
+    const tariPercentage = Math.round((tari / total) * 100);
     const diff = 100 - (moneroPercentage + shaPercentage + tariPercentage);
     if (diff > 0) {
       moneroPercentage += diff;

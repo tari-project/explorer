@@ -82,8 +82,8 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
   useEffect(() => {
     const display: Display[] = [];
     const ascendingBlockNumbers: number[] = [];
-    let blockItem = parseInt(tip, 10) - noOfBlocks + 1;
-    let hashRates = hashRatesMap[type];
+    const blockItem = parseInt(tip, 10) - noOfBlocks + 1;
+    const hashRates = hashRatesMap[type];
 
     // Populate ascendingBlockNumbers array
     for (let i = 0; i < noOfBlocks; i++) {

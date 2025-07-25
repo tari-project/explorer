@@ -86,7 +86,7 @@ function BlockTable() {
     } else {
       setNextDisabled(false);
     }
-  }, [firstHeight]);
+  }, [blocksPerPage, data, page, firstHeight]);
 
   const handleNoOfItems = (event: SelectChangeEvent) => {
     const newValue = parseInt(event.target.value, 10);

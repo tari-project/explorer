@@ -96,7 +96,7 @@ describe('Error', () => {
 
   it('should accept String type for message prop', () => {
     // This test ensures the String type works (not just string)
-    const message: String = new String('Test message')
+    const message: string = new String('Test message')
     
     expect(() => {
       render(
