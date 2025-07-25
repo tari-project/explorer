@@ -61,7 +61,7 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type, targetTime }) => {
     ? rawBlockTimes.map((blockTime) => targetTime + blockTime)
     : [];
 
-  const blockNumbers = [];
+  const blockNumbers: number[] = [];
   let blockItem = parseInt(tip, 10);
   for (let i = 1; i <= noOfBlocks; i++) {
     blockNumbers.push(blockItem);

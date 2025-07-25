@@ -28,7 +28,7 @@ vi.mock('../SearchField/SearchField', () => ({
     fullWidth,
   }: {
     isExpanded: boolean;
-    setIsExpanded: Function;
+    setIsExpanded: (expanded: boolean) => void;
     fullWidth: boolean;
   }) => (
     <div

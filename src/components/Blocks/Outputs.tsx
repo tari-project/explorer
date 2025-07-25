@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import { useLocation } from 'react-router-dom';
 import { payrefSearch } from '@utils/searchFunctions';
 import InnerHeading from '@components/InnerHeading';
-import { validatePayRefQuery } from '@components/Search/SearchPayRef';
+import { validatePayRefQuery } from '@utils/validatePayRefQuery';
 
 interface OutputsProps {
   blockHeight: string;

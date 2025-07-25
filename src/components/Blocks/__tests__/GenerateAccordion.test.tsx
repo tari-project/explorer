@@ -25,10 +25,8 @@ vi.mock('@components/StyledComponents', () => ({
     expanded,
     onChange,
     isHighlighted,
-    ...props
+    ...rest
   }: any) => {
-    // Omit isHighlighted from props
-    const { isHighlighted: _isHighlighted, ...rest } = props;
     return (
       <div
         data-testid="styled-accordion"
@@ -45,9 +43,7 @@ vi.mock('@components/StyledComponents', () => ({
   },
   StyledAccordionSummary: ({
     children,
-    expandIcon,
-    isHighlighted,
-    expanded,
+    // expandIcon, isHighlighted, expanded are intentionally omitted to avoid unused variable warnings
     ...props
   }: any) => {
     // Omit expandIcon, isHighlighted, expanded from props

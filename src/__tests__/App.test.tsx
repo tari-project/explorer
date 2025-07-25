@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from '../App';
@@ -35,30 +35,24 @@ vi.mock('@routes/BlockPage', () => ({
 
 // Mock layout components with proper outlet handling
 vi.mock('@theme/MainLayout', () => ({
-  default: () => {
-    const { Outlet } = require('react-router-dom');
-    return (
-      <div data-testid="main-layout">
-        <Outlet />
-      </div>
-    );
-  },
+  default: () => (
+    <div data-testid="main-layout">
+      <Outlet />
+    </div>
+  ),
 }));
 
 vi.mock('@theme/PageLayout', () => ({
-  default: ({ title, customHeader, children }: any) => {
-    const { Outlet } = require('react-router-dom');
-    return (
-      <div data-testid="page-layout">
-        {title && <div data-testid="page-title">{title}</div>}
-        {customHeader && <div data-testid="custom-header">{customHeader}</div>}
-        <div data-testid="page-content">
-          <Outlet />
-          {children}
-        </div>
+  default: ({ title, customHeader, children }: any) => (
+    <div data-testid="page-layout">
+      {title && <div data-testid="page-title">{title}</div>}
+      {customHeader && <div data-testid="custom-header">{customHeader}</div>}
+      <div data-testid="page-content">
+        <Outlet />
+        {children}
       </div>
-    );
-  },
+    </div>
+  ),
 }));
 
 // Mock header components

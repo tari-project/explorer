@@ -44,26 +44,21 @@ function SearchPage() {
   const setStatus = useSearchStatusStore((state) => state.setStatus);
   const setMessage = useSearchStatusStore((state) => state.setMessage);
 
-  let payrefData, isPayrefLoading, isPayrefError, payrefError, isPayrefSuccess;
-  let blockData, isBlockLoading, isBlockError, blockError, isBlockSuccess;
+  const {
+    data: payrefData,
+    isFetching: isPayrefLoading,
+    isError: isPayrefError,
+    isSuccess: isPayrefSuccess,
+    error: payrefError,
+  } = useSearchByPayref(hash);
 
-  if (isHash) {
-    ({
-      data: payrefData,
-      isFetching: isPayrefLoading,
-      isError: isPayrefError,
-      isSuccess: isPayrefSuccess,
-      error: payrefError,
-    } = useSearchByPayref(hash));
-
-    ({
-      data: blockData,
-      isFetching: isBlockLoading,
-      isError: isBlockError,
-      isSuccess: isBlockSuccess,
-      error: blockError,
-    } = useGetBlockByHeightOrHash(hash));
-  }
+  const {
+    data: blockData,
+    isFetching: isBlockLoading,
+    isError: isBlockError,
+    isSuccess: isBlockSuccess,
+    error: blockError,
+  } = useGetBlockByHeightOrHash(hash);
 
   let showFetchStatusCheck = true;
   let isLoading = true;
@@ -136,7 +131,15 @@ function SearchPage() {
     } else {
       setMessage('');
     }
-  }, [isLoading, isError, payrefError, isSuccess, blockError, setStatus]);
+  }, [
+    isLoading,
+    isError,
+    payrefError,
+    isSuccess,
+    blockError,
+    setStatus,
+    setMessage,
+  ]);
 
   if (!isHash) {
     return (

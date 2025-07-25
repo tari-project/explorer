@@ -30,7 +30,7 @@ import { Alert, Skeleton } from '@mui/material';
 import { TransparentBg } from '@components/StyledComponents';
 
 interface HashRatesProps {
-  type: 'RandomX' | 'Sha3'| 'TariRandomX';
+  type: 'RandomX' | 'Sha3' | 'TariRandomX';
 }
 
 interface Display {
@@ -73,13 +73,12 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     return dataArray;
   }
 
-  const hashRatesMap: { [key: string]: any[] } = {
-    RandomX: data?.moneroRandomxHashRates,
-    Sha3: data?.sha3xHashRates,
-    TariRandomX: data?.tariRandomxHashRates
-  };
-
   useEffect(() => {
+    const hashRatesMap: { [key: string]: any[] } = {
+      RandomX: data?.moneroRandomxHashRates,
+      Sha3: data?.sha3xHashRates,
+      TariRandomX: data?.tariRandomxHashRates,
+    };
     const display: Display[] = [];
     const ascendingBlockNumbers: number[] = [];
     const blockItem = parseInt(tip, 10) - noOfBlocks + 1;
@@ -101,7 +100,7 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
       }
     }
     setDisplay(display);
-  }, [data]);
+  }, [data, noOfBlocks, tip, type]);
 
   const option = {
     tooltip: {

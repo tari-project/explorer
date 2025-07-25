@@ -42,7 +42,7 @@ vi.mock('@mui/material', () => ({
       {children}
     </div>
   ),
-  Box: ({ children, alignItems, justifyContent, ...props }: any) => (
+  Box: ({ children, ...props }: any) => (
     <div data-testid="box" {...props}>
       {children}
     </div>

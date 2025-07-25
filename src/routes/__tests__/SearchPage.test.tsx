@@ -121,6 +121,20 @@ describe('SearchPage', () => {
   });
 
   it('renders error for invalid hash', () => {
+    mockUseSearchByPayref.mockReturnValue({
+      data: null,
+      isFetching: false,
+      isError: false,
+      isSuccess: false,
+      error: null,
+    });
+    mockUseGetBlockByHeightOrHash.mockReturnValue({
+      data: null,
+      isFetching: false,
+      isError: false,
+      isSuccess: false,
+      error: null,
+    });
     render(
       <TestWrapper initialEntries={[`/search?hash=invalid`]}>
         <SearchPage />

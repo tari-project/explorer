@@ -60,18 +60,21 @@ const renderJson = (json: unknown): React.ReactNode => {
   }
 };
 
-function removeTagged(obj: Record<string, unknown> | undefined): unknown {
+function removeTagged(obj: unknown): unknown {
   if (obj === undefined) {
     return 'undefined';
   }
-  if (obj['@@TAGGED@@'] !== undefined) {
-    const tagged = obj['@@TAGGED@@'] as unknown[];
-    return tagged[1];
+  if (typeof obj === 'object' && obj !== null) {
+    const rec = obj as Record<string, unknown>;
+    if (rec['@@TAGGED@@'] !== undefined) {
+      const tagged = rec['@@TAGGED@@'] as unknown[];
+      return tagged[1];
+    }
   }
   return obj;
 }
 
-function toHexString(byteArray: number[] | Record<string, unknown> | undefined): string {
+function toHexString(byteArray: unknown): string {
   if (Array.isArray(byteArray)) {
     return Array.from(byteArray, function (byte) {
       return ('0' + (byte & 0xff).toString(16)).slice(-2);
@@ -80,11 +83,17 @@ function toHexString(byteArray: number[] | Record<string, unknown> | undefined):
   if (byteArray === undefined) {
     return 'undefined';
   }
-  // object might be a tagged object
-  if (typeof byteArray === 'object' && byteArray['@@TAGGED@@'] !== undefined) {
-    const tagged = byteArray['@@TAGGED@@'] as unknown[];
+  if (
+    typeof byteArray === 'object' &&
+    byteArray !== null &&
+    (byteArray as Record<string, unknown>)['@@TAGGED@@'] !== undefined
+  ) {
+    const tagged = (byteArray as Record<string, unknown>)[
+      '@@TAGGED@@'
+    ] as unknown[];
     return toHexString(tagged[1] as number[]);
   }
+  // Only allow arrays, tagged objects, or undefined. All else unsupported.
   return 'Unsupported type';
 }
 
