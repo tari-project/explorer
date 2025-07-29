@@ -16,7 +16,7 @@ vi.mock('@components/VNs/VNTable', () => ({
 }));
 
 vi.mock('@mui/material', () => ({
-  Grid: ({ children, ...props }: any) => (
+  Grid: ({ children, ...props }: React.ComponentProps<'div'>) => (
     <div data-testid="grid" data-props={JSON.stringify(props)}>
       {children}
     </div>
@@ -42,7 +42,13 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>{children}</ThemeProvider>
+      <ThemeProvider
+        theme={
+          mockTheme as unknown as Partial<import('@mui/material/styles').Theme>
+        }
+      >
+        {children}
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

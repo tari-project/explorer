@@ -22,7 +22,7 @@ vi.mock('@components/Blocks/BlockParts', () => ({
   default: () => <div>BlockParts</div>,
 }));
 vi.mock('@components/FetchStatusCheck', () => ({
-  default: (props: any) => (
+  default: (props: { isError?: boolean; isLoading?: boolean; errorMessage?: string }) => (
     <div>
       FetchStatusCheck{' '}
       {props.isError ? 'Error' : props.isLoading ? 'Loading' : ''}

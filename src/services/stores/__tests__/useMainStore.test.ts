@@ -1,6 +1,17 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useMainStore } from '../useMainStore';
 
+type Store = {
+  showMobileMenu: boolean;
+  setShowMobileMenu: (showMobileMenu: boolean) => void;
+  showDownloadModal: boolean;
+  setShowDownloadModal: (showDownloadModal: boolean) => void;
+  isMobile: boolean;
+  setIsMobile: (isMobile: boolean) => void;
+  searchOpen: boolean;
+  setSearchOpen: (searchOpen: boolean) => void;
+};
+
 describe('useMainStore', () => {
   beforeEach(() => {
     // Reset store state before each test
@@ -104,8 +115,8 @@ describe('useMainStore', () => {
   it('should work with zustand selector pattern', () => {
     // Test that we can call selectors directly on the store state
     const state = useMainStore.getState();
-    const showMobileMenu = (state: any) => state.showMobileMenu;
-    const setShowMobileMenu = (state: any) => state.setShowMobileMenu;
+    const showMobileMenu = (state: Store) => state.showMobileMenu;
+    const setShowMobileMenu = (state: Store) => state.setShowMobileMenu;
 
     expect(showMobileMenu(state)).toBe(false);
     expect(typeof setShowMobileMenu(state)).toBe('function');

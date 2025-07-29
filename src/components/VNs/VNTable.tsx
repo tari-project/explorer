@@ -38,7 +38,7 @@ function VNTable() {
 
     return (
       <Grid container spacing={2} pl={0} pr={0}>
-        {data?.activeVns?.map((_: any, index: number) => (
+        {data?.activeVns?.map((_: unknown, index: number) => (
           <Fragment key={index}>
             <Grid item xs={col1}>
               <Typography variant="body2">Public Key</Typography>
@@ -78,7 +78,7 @@ function VNTable() {
           </Grid>
         </Grid>
         <Grid container spacing={2} pl={0} pr={0} pb={2}>
-          {data?.activeVns?.map((_: any, index: number) => (
+          {data?.activeVns?.map((_: unknown, index: number) => (
             <Fragment key={index}>
               <Grid item xs={12}>
                 <Divider />

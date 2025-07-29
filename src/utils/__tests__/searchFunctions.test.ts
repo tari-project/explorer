@@ -27,8 +27,8 @@ describe('kernelSearch', () => {
   ];
 
   it('should return null if kernels array is null or undefined', () => {
-    expect(kernelSearch('test', 'test', null as any)).toBeNull();
-    expect(kernelSearch('test', 'test', undefined as any)).toBeNull();
+    expect(kernelSearch('test', 'test', null as unknown as unknown[])).toBeNull();
+    expect(kernelSearch('test', 'test', undefined as unknown as unknown[])).toBeNull();
   });
 
   it('should find kernel by nonce only', () => {
@@ -116,8 +116,8 @@ describe('payrefSearch', () => {
   ];
 
   it('should return null if outputs array is null or undefined', () => {
-    expect(payrefSearch('test', null as any)).toBeNull();
-    expect(payrefSearch('test', undefined as any)).toBeNull();
+    expect(payrefSearch('test', null as unknown as unknown[])).toBeNull();
+    expect(payrefSearch('test', undefined as unknown as unknown[])).toBeNull();
   });
 
   it('should find output by exact payref match (case-insensitive)', () => {

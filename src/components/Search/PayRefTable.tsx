@@ -36,7 +36,18 @@ import CopyToClipboard from '@components/CopyToClipboard';
 import { useMainStore } from '@services/stores/useMainStore';
 import InnerHeading from '@components/InnerHeading';
 
-function PayRefTable({ data }: { data: any }) {
+interface BlockData {
+  block_height?: number;
+  payment_reference_hex?: string;
+  mined_timestamp?: number;
+  is_spent?: boolean;
+  min_value_promise?: number;
+  commitment?: { data?: number[] };
+  block_hash?: { data?: number[] };
+  spent_block_hash?: { data?: number[] };
+}
+
+function PayRefTable({ data }: { data: BlockData[] }) {
   const [page, setPage] = useState(1);
   const isMobile = useMainStore((state) => state.isMobile);
   const totalItems = data?.length || 0;
@@ -61,13 +72,14 @@ function PayRefTable({ data }: { data: any }) {
 
     return (
       <Grid container spacing={2} pl={0} pr={0}>
-        {data.map((block: any, index: number) => {
+        {data.map((block: BlockData, index: number) => {
           const height = block?.block_height || 'no data';
           const payref = block?.payment_reference_hex || 'no data';
           const minedTimestamp = block?.mined_timestamp || 'no data';
           const isSpent = block?.is_spent || false;
-          const minValuePromise =
-            formatXTM(block?.min_value_promise) || 'no data';
+          const minValuePromise = block?.min_value_promise
+            ? formatXTM(block.min_value_promise)
+            : 'no data';
           const commitment = toHexString(block?.commitment?.data) || 'no data';
           const blockHash = toHexString(block?.block_hash?.data) || 'no data';
           const spentBlockHash = toHexString(block?.spent_block_hash?.data);
@@ -102,7 +114,7 @@ function PayRefTable({ data }: { data: any }) {
                   </Grid>
                   <Grid item xs={col2}>
                     <TypographyData>
-                      {formatTimestamp(minedTimestamp)}
+                      {typeof minedTimestamp === 'number' ? formatTimestamp(minedTimestamp) : minedTimestamp}
                     </TypographyData>
                   </Grid>
 
@@ -218,13 +230,14 @@ function PayRefTable({ data }: { data: any }) {
         <Grid container spacing={2} pl={0} pr={0} pb={2}>
           {data
             ?.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-            .map((block: any, index: number) => {
+            .map((block: BlockData, index: number) => {
               const height = block?.block_height || 'no data';
               const payref = block?.payment_reference_hex || 'no data';
               const minedTimestamp = block?.mined_timestamp || 'no data';
               const isSpent = block?.is_spent || false;
-              const minValuePromise =
-                formatXTM(block?.min_value_promise) || 'no data';
+              const minValuePromise = block?.min_value_promise
+                ? formatXTM(block.min_value_promise)
+                : 'no data';
               const commitment =
                 toHexString(block?.commitment?.data) || 'no data';
               const blockHash =
@@ -251,7 +264,7 @@ function PayRefTable({ data }: { data: any }) {
                   </Grid>
                   <Grid item xs={col3} md={col3} lg={col3}>
                     <TypographyData>
-                      {formatTimestamp(minedTimestamp)}
+                      {typeof minedTimestamp === 'number' ? formatTimestamp(minedTimestamp) : minedTimestamp}
                     </TypographyData>
                   </Grid>
                   <Grid item xs={col4} md={col4} lg={col4}>

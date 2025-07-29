@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, type Theme } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import BlockExplorerPage from '../BlockExplorerPage';
 
@@ -82,7 +82,7 @@ vi.mock('@mui/material', async () => {
   const actual = await import('@mui/material');
   return {
     ...(typeof actual === 'object' ? actual : {}),
-    Grid: ({ children, ...props }: any) => (
+    Grid: ({ children, ...props }: React.ComponentProps<'div'>) => (
       <div data-testid="grid" data-props={JSON.stringify(props)}>
         {children}
       </div>
@@ -117,7 +117,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>{children}</ThemeProvider>
+      <ThemeProvider theme={mockTheme as unknown as Theme}>{children}</ThemeProvider>
     </QueryClientProvider>
   );
 };

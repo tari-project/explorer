@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, type Theme } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import SearchPage from '../SearchPage';
@@ -13,7 +13,7 @@ vi.mock('@components/StyledComponents', () => ({
 }));
 
 vi.mock('@components/FetchStatusCheck', () => ({
-  default: ({ isError, isLoading, errorMessage }: any) => (
+  default: ({ isError, isLoading, errorMessage }: { isError?: boolean; isLoading?: boolean; errorMessage?: string }) => (
     <div data-testid="fetch-status-check">
       {isLoading && <div data-testid="loading">Loading...</div>}
       {isError && <div data-testid="error">{errorMessage}</div>}
@@ -22,7 +22,7 @@ vi.mock('@components/FetchStatusCheck', () => ({
 }));
 
 vi.mock('@components/Search/PayRefTable', () => ({
-  default: ({ data }: { data: any[] }) => (
+  default: ({ data }: { data: unknown[] }) => (
     <div data-testid="payref-table" data-count={data.length}>
       PayRef Table
     </div>
@@ -30,20 +30,20 @@ vi.mock('@components/Search/PayRefTable', () => ({
 }));
 
 vi.mock('@components/Search/BlockTable', () => ({
-  default: ({ data }: { data: any }) => (
-    <div data-testid="block-table" data-height={data.height || 0}>
+  default: ({ data }: { data: { height?: number } | undefined }) => (
+    <div data-testid="block-table" data-height={data?.height || 0}>
       Block Table
     </div>
   ),
 }));
 
 vi.mock('@mui/material', () => ({
-  Alert: ({ children, ...props }: any) => (
+  Alert: ({ children, ...props }: React.ComponentProps<'div'>) => (
     <div data-testid="alert" data-props={JSON.stringify(props)}>
       {children}
     </div>
   ),
-  Grid: ({ children, ...props }: any) => (
+  Grid: ({ children, ...props }: React.ComponentProps<'div'>) => (
     <div data-testid="grid" data-props={JSON.stringify(props)}>
       {children}
     </div>
@@ -54,8 +54,8 @@ vi.mock('@mui/material', () => ({
 const mockUseSearchByPayref = vi.fn();
 const mockUseGetBlockByHeightOrHash = vi.fn();
 vi.mock('@services/api/hooks/useBlocks', () => ({
-  useSearchByPayref: (...args: any[]) => mockUseSearchByPayref(...args),
-  useGetBlockByHeightOrHash: (...args: any[]) =>
+  useSearchByPayref: (...args: unknown[]) => mockUseSearchByPayref(...args),
+  useGetBlockByHeightOrHash: (...args: unknown[]) =>
     mockUseGetBlockByHeightOrHash(...args),
 }));
 
@@ -63,7 +63,7 @@ vi.mock('@services/api/hooks/useBlocks', () => ({
 const setStatus = vi.fn();
 const setMessage = vi.fn();
 vi.mock('@services/stores/useSearchStatusStore', () => ({
-  default: (selector: any) => selector({ setStatus, setMessage }),
+  default: (selector: (state: { setStatus: typeof setStatus; setMessage: typeof setMessage }) => unknown) => selector({ setStatus, setMessage }),
 }));
 
 // Mock validateHash
@@ -105,7 +105,7 @@ const TestWrapper = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>
+      <ThemeProvider theme={mockTheme as unknown as Theme}>
         <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
       </ThemeProvider>
     </QueryClientProvider>

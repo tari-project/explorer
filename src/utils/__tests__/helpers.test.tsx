@@ -135,7 +135,7 @@ describe('helpers', () => {
       const setPage = vi.fn();
       const event = {
         target: { value: '25' },
-      } as any;
+      } as React.ChangeEvent<HTMLInputElement>;
 
       handleChangeRowsPerPage(event, setRowsPerPage, setPage);
 
