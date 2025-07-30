@@ -27,31 +27,31 @@ vi.mock('@components/InnerHeading', () => ({
 }));
 
 vi.mock('@utils/helpers', () => ({
-  toHexString: vi.fn((data) => {
+  toHexString: vi.fn((data: unknown) => {
     if (!data || data === 'no data') return 'no data';
     return `hex_${data}`;
   }),
   shortenString: vi.fn(
-    (str, start, end) =>
+    (str: string, start: number, end: number) =>
       `${str.substring(0, start)}...${str.substring(str.length - end)}`
   ),
-  formatTimestamp: vi.fn((timestamp) => {
+  formatTimestamp: vi.fn((timestamp: unknown) => {
     if (!timestamp || timestamp === 'no data') return 'no data';
     return `formatted_${timestamp}`;
   }),
-  powCheck: vi.fn((algo) => {
+  powCheck: vi.fn((algo: unknown) => {
     if (!algo || algo === 'no data') return 'no data';
     return `pow_${algo}`;
   }),
 }));
 
 vi.mock('@mui/material', () => ({
-  Typography: ({ children, variant }: any) => (
+  Typography: ({ children, variant }: { children: React.ReactNode; variant?: string }) => (
     <div data-testid="typography" data-variant={variant}>
       {children}
     </div>
   ),
-  Grid: ({ children, item, xs, md, lg, spacing, style, ...props }: any) => (
+  Grid: ({ children, item, xs, md, lg, spacing, style, ...props }: React.ComponentProps<'div'> & { item?: boolean; xs?: number; md?: number; lg?: number; spacing?: number }) => (
     <div
       data-testid="grid"
       data-item={item}
@@ -65,7 +65,7 @@ vi.mock('@mui/material', () => ({
       {children}
     </div>
   ),
-  Divider: ({ color, style }: any) => (
+  Divider: ({ color, style }: { color?: string; style?: React.CSSProperties }) => (
     <div data-testid="divider" data-color={color} style={style}>
       ---
     </div>
@@ -78,7 +78,7 @@ vi.mock('@mui/material', () => ({
     color,
     style,
     ...props
-  }: any) => (
+  }: React.ComponentProps<'button'> & { variant?: string; fullWidth?: boolean; href?: string; color?: string }) => (
     <button
       data-testid="button"
       data-variant={variant}
@@ -91,20 +91,20 @@ vi.mock('@mui/material', () => ({
       {children}
     </button>
   ),
-  Box: ({ children, style, ...props }: any) => (
+  Box: ({ children, style, ...props }: React.ComponentProps<'div'> & { style?: React.CSSProperties }) => (
     <div data-testid="box" style={style} {...props}>
       {children}
     </div>
   ),
-  Pagination: ({ count, page, onChange }: any) => (
+  Pagination: ({ count, page, onChange }: { count?: number; page?: number; onChange?: (event: unknown, page: number) => void }) => (
     <div data-testid="pagination" data-count={count} data-page={page}>
-      <button onClick={() => onChange(null, page - 1)} disabled={page <= 1}>
+      <button onClick={() => onChange?.(null, (page || 1) - 1)} disabled={(page || 1) <= 1}>
         Previous
       </button>
       <span>
-        Page {page} of {count}
+        Page {page || 1} of {count || 1}
       </span>
-      <button onClick={() => onChange(null, page + 1)} disabled={page >= count}>
+      <button onClick={() => onChange?.(null, (page || 1) + 1)} disabled={(page || 1) >= (count || 1)}>
         Next
       </button>
     </div>
@@ -153,7 +153,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>
+      <ThemeProvider theme={mockTheme as unknown as import('@mui/material/styles').Theme}>
         <MemoryRouter>{children}</MemoryRouter>
       </ThemeProvider>
     </QueryClientProvider>
@@ -161,10 +161,10 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 describe('BlockTable', () => {
-  let mockUseMainStore: any;
-  let mockToHexString: any;
-  let mockFormatTimestamp: any;
-  let mockPowCheck: any;
+  let mockUseMainStore: ReturnType<typeof vi.fn>;
+  let mockToHexString: ReturnType<typeof vi.fn>;
+  let mockFormatTimestamp: ReturnType<typeof vi.fn>;
+  let mockPowCheck: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();

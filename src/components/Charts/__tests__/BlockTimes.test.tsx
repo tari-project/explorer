@@ -4,9 +4,51 @@ import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import BlockTimes from '../BlockTimes';
 
+interface EChartsProps {
+  option: unknown;
+  style?: React.CSSProperties;
+  [key: string]: unknown;
+}
+
+interface AlertProps {
+  severity: string;
+  variant: string;
+  children: React.ReactNode;
+}
+
+interface SkeletonProps {
+  variant: string;
+  height: string | number;
+}
+
+interface TypographyProps {
+  children: React.ReactNode;
+  variant: string;
+}
+
+interface BoxProps {
+  children: React.ReactNode;
+  [key: string]: unknown;
+}
+
+interface Theme {
+  spacing: (value: number) => string;
+  palette: {
+    mode: string;
+    text: {
+      primary: string;
+    };
+    grey: {
+      300: string;
+      400: string;
+      500: string;
+    };
+  };
+}
+
 // Mock ECharts
 vi.mock('echarts-for-react', () => ({
-  default: ({ option, style, ...props }: any) => (
+  default: ({ option, style, ...props }: EChartsProps) => (
     <div
       data-testid="echarts"
       data-option={JSON.stringify(option)}
@@ -27,22 +69,22 @@ vi.mock('@components/StyledComponents', () => ({
 
 // Mock MUI components
 vi.mock('@mui/material', () => ({
-  Alert: ({ severity, variant, children }: any) => (
+  Alert: ({ severity, variant, children }: AlertProps) => (
     <div data-testid="alert" data-severity={severity} data-variant={variant}>
       {children}
     </div>
   ),
-  Skeleton: ({ variant, height }: any) => (
+  Skeleton: ({ variant, height }: SkeletonProps) => (
     <div data-testid="skeleton" data-variant={variant} data-height={height}>
       Loading...
     </div>
   ),
-  Typography: ({ children, variant }: any) => (
+  Typography: ({ children, variant }: TypographyProps) => (
     <div data-testid="typography" data-variant={variant}>
       {children}
     </div>
   ),
-  Box: ({ children, ...props }: any) => (
+  Box: ({ children, ...props }: BoxProps) => (
     <div data-testid="box" {...props}>
       {children}
     </div>
@@ -92,13 +134,13 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>{children}</ThemeProvider>
+      <ThemeProvider theme={mockTheme as Theme}>{children}</ThemeProvider>
     </QueryClientProvider>
   );
 };
 
 describe('BlockTimes', () => {
-  let mockUseAllBlocks: any;
+  let mockUseAllBlocks: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();

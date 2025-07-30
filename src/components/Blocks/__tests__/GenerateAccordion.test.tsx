@@ -4,6 +4,19 @@ import { ThemeProvider } from '@mui/material/styles';
 import GenerateAccordion from '../GenerateAccordion';
 import { lightTheme } from '@theme/themes';
 
+interface StyledAccordionProps {
+  children: React.ReactNode;
+  expanded: boolean | string;
+  onChange?: (event: unknown, expanded: boolean) => void;
+  isHighlighted?: boolean;
+  [key: string]: unknown;
+}
+
+interface StyledAccordionSummaryProps {
+  children: React.ReactNode;
+  [key: string]: unknown;
+}
+
 // Mock helpers
 vi.mock('@utils/helpers', () => ({
   shortenString: vi.fn((str) => `${str?.slice(0, 8)}...${str?.slice(-8)}`),
@@ -26,7 +39,7 @@ vi.mock('@components/StyledComponents', () => ({
     onChange,
     isHighlighted,
     ...rest
-  }: any) => {
+  }: StyledAccordionProps) => {
     return (
       <div
         data-testid="styled-accordion"
@@ -45,7 +58,7 @@ vi.mock('@components/StyledComponents', () => ({
     children,
     // expandIcon, isHighlighted, expanded are intentionally omitted to avoid unused variable warnings
     ...props
-  }: any) => {
+  }: StyledAccordionSummaryProps) => {
     // Omit expandIcon, isHighlighted, expanded from props
     return (
       <button role="button" {...props}>

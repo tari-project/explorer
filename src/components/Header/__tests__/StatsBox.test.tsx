@@ -46,7 +46,13 @@ vi.mock('../StatsBox/StatsDesktop/StatsDesktop', () => ({
     shaHashRate,
     averageBlockTime,
     blockHeight,
-  }: any) => (
+  }: {
+    moneroHashRate?: string | number;
+    tariRandomXHashRate?: string | number;
+    shaHashRate?: string | number;
+    averageBlockTime?: string | number;
+    blockHeight?: string | number;
+  }) => (
     <div data-testid="stats-desktop">
       <span data-testid="monero-hash-rate">{moneroHashRate}</span>
       <span data-testid="tari-random-x-hash-rate">{tariRandomXHashRate}</span>
@@ -64,7 +70,13 @@ vi.mock('../StatsBox/StatsMobile/StatsMobile', () => ({
     tariRandomXHashRate,
     averageBlockTime,
     blockHeight,
-  }: any) => (
+  }: {
+    moneroHashRate?: string | number;
+    shaHashRate?: string | number;
+    tariRandomXHashRate?: string | number;
+    averageBlockTime?: string | number;
+    blockHeight?: string | number;
+  }) => (
     <div data-testid="stats-mobile">
       <span data-testid="monero-hash-rate-mobile">{moneroHashRate}</span>
       <span data-testid="sha-hash-rate-mobile">{shaHashRate}</span>

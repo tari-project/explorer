@@ -6,6 +6,22 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from '../App';
 import '@testing-library/jest-dom';
 
+interface PageLayoutProps {
+  title?: string;
+  customHeader?: React.ReactNode;
+  children?: React.ReactNode;
+}
+
+interface TypographyProps {
+  children: React.ReactNode;
+}
+
+interface MockTheme {
+  breakpoints: {
+    down: (breakpoint: string) => string;
+  };
+}
+
 // Mock all the page components
 vi.mock('@routes/BlockExplorerPage', () => ({
   default: () => (
@@ -43,7 +59,7 @@ vi.mock('@theme/MainLayout', () => ({
 }));
 
 vi.mock('@theme/PageLayout', () => ({
-  default: ({ title, customHeader, children }: any) => (
+  default: ({ title, customHeader, children }: PageLayoutProps) => (
     <div data-testid="page-layout">
       {title && <div data-testid="page-title">{title}</div>}
       {customHeader && <div data-testid="custom-header">{customHeader}</div>}
@@ -85,7 +101,7 @@ const mockTheme = {
 vi.mock('@mui/material', () => ({
   useTheme: () => mockTheme,
   useMediaQuery: vi.fn(() => false),
-  Typography: ({ children }: any) => (
+  Typography: ({ children }: TypographyProps) => (
     <div data-testid="typography">{children}</div>
   ),
 }));
@@ -107,7 +123,7 @@ const TestWrapper = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>
+      <ThemeProvider theme={mockTheme as MockTheme}>
         <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
       </ThemeProvider>
     </QueryClientProvider>

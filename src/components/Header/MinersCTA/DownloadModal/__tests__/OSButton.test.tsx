@@ -4,7 +4,7 @@ import OSButton from '../OSButton';
 
 // Mock MUI components
 vi.mock('@mui/material', () => ({
-  Icon: ({ sx, children }: any) => (
+  Icon: ({ sx, children }: { sx?: unknown; children: React.ReactNode }) => (
     <div data-testid="icon" data-sx={JSON.stringify(sx)}>
       {children}
     </div>
@@ -152,13 +152,15 @@ describe('OSButton', () => {
   });
 
   it('should handle invalid OS gracefully', () => {
-    const { container } = render(<OSButton os={'Invalid' as any} />);
+    const { container } = render(
+      <OSButton os={'Invalid' as unknown as 'Windows'} />
+    );
 
     expect(container.firstChild).toBeNull();
   });
 
   it('should not open link if OS config is invalid', () => {
-    render(<OSButton os={'Invalid' as any} />);
+    render(<OSButton os={'Invalid' as unknown as 'Windows'} />);
 
     // Since the component returns null for invalid OS, there's no button to click
     expect(mockWindowOpen).not.toHaveBeenCalled();

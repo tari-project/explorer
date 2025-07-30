@@ -27,7 +27,13 @@ vi.mock('../MinersCTA/MinersCTA', () => ({
     noBackground,
     minersOnly,
     buttonOnly,
-  }: any) => (
+  }: {
+    theme?: unknown;
+    buttonText?: string;
+    noBackground?: boolean;
+    minersOnly?: boolean;
+    buttonOnly?: boolean;
+  }) => (
     <div
       data-testid="miners-cta"
       data-theme={theme}
@@ -53,7 +59,13 @@ vi.mock('../../MinersCTA/MinersCTA', () => ({
     noBackground,
     minersOnly,
     buttonOnly,
-  }: any) => (
+  }: {
+    theme?: unknown;
+    buttonText?: string;
+    noBackground?: boolean;
+    minersOnly?: boolean;
+    buttonOnly?: boolean;
+  }) => (
     <div
       data-testid="miners-cta"
       data-theme={theme}
@@ -82,7 +94,13 @@ vi.mock('../MobileNavigation/MobileNavigation', () => ({
 }));
 
 vi.mock('@components/Header/SearchField/SearchField', () => ({
-  default: ({ isExpanded, setIsExpanded }: any) => (
+  default: ({
+    isExpanded,
+    setIsExpanded,
+  }: {
+    isExpanded?: boolean;
+    setIsExpanded?: (expanded: boolean) => void;
+  }) => (
     <div
       data-testid="search-field"
       data-is-expanded={isExpanded ? 'true' : 'false'}
@@ -126,13 +144,15 @@ describe('MobileHeader', () => {
     // Reset document body overflow
     document.body.style.overflow = 'auto';
     // Set up default mock behavior
-    (useMainStore as any).mockImplementation((selector: any) => {
-      const state = {
-        showMobileMenu: false,
-        setShowMobileMenu: mockSetShowMobileMenu,
-      };
-      return selector(state);
-    });
+    (useMainStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showMobileMenu: false,
+          setShowMobileMenu: mockSetShowMobileMenu,
+        };
+        return selector(state);
+      }
+    );
   });
 
   afterEach(() => {
@@ -182,13 +202,15 @@ describe('MobileHeader', () => {
 
   it('should handle body overflow when mobile menu is open', () => {
     // Mock showMobileMenu as true
-    (useMainStore as any).mockImplementation((selector: any) => {
-      const state = {
-        showMobileMenu: true,
-        setShowMobileMenu: mockSetShowMobileMenu,
-      };
-      return selector(state);
-    });
+    (useMainStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showMobileMenu: true,
+          setShowMobileMenu: mockSetShowMobileMenu,
+        };
+        return selector(state);
+      }
+    );
 
     render(
       <TestWrapper>
@@ -202,13 +224,15 @@ describe('MobileHeader', () => {
   it('should reset body overflow when mobile menu is closed', () => {
     // Using mocked useMainStore
     // Start with menu open
-    (useMainStore as any).mockImplementation((selector: any) => {
-      const state = {
-        showMobileMenu: true,
-        setShowMobileMenu: mockSetShowMobileMenu,
-      };
-      return selector(state);
-    });
+    (useMainStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showMobileMenu: true,
+          setShowMobileMenu: mockSetShowMobileMenu,
+        };
+        return selector(state);
+      }
+    );
     const { rerender } = render(
       <TestWrapper>
         <MobileHeader />
@@ -216,13 +240,15 @@ describe('MobileHeader', () => {
     );
     expect(document.body.style.overflow).toBe('hidden');
     // Close menu
-    (useMainStore as any).mockImplementation((selector: any) => {
-      const state = {
-        showMobileMenu: false,
-        setShowMobileMenu: mockSetShowMobileMenu,
-      };
-      return selector(state);
-    });
+    (useMainStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showMobileMenu: false,
+          setShowMobileMenu: mockSetShowMobileMenu,
+        };
+        return selector(state);
+      }
+    );
     rerender(
       <TestWrapper>
         <MobileHeader />
@@ -233,13 +259,15 @@ describe('MobileHeader', () => {
 
   it('should show mobile menu when showMobileMenu is true', () => {
     // Using mocked useMainStore
-    (useMainStore as any).mockImplementation((selector: any) => {
-      const state = {
-        showMobileMenu: true,
-        setShowMobileMenu: mockSetShowMobileMenu,
-      };
-      return selector(state);
-    });
+    (useMainStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showMobileMenu: true,
+          setShowMobileMenu: mockSetShowMobileMenu,
+        };
+        return selector(state);
+      }
+    );
 
     render(
       <TestWrapper>
@@ -302,13 +330,15 @@ describe('MobileHeader', () => {
   it('should render both miners CTA variants correctly', () => {
     // Using mocked useMainStore
 
-    (useMainStore as any).mockImplementation((selector: any) => {
-      const state = {
-        showMobileMenu: true,
-        setShowMobileMenu: mockSetShowMobileMenu,
-      };
-      return selector(state);
-    });
+    (useMainStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showMobileMenu: true,
+          setShowMobileMenu: mockSetShowMobileMenu,
+        };
+        return selector(state);
+      }
+    );
 
     render(
       <TestWrapper>
@@ -367,13 +397,15 @@ describe('MobileHeader', () => {
   it('should apply correct theme to miners CTA components', () => {
     // Using mocked useMainStore
 
-    (useMainStore as any).mockImplementation((selector: any) => {
-      const state = {
-        showMobileMenu: true,
-        setShowMobileMenu: mockSetShowMobileMenu,
-      };
-      return selector(state);
-    });
+    (useMainStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showMobileMenu: true,
+          setShowMobileMenu: mockSetShowMobileMenu,
+        };
+        return selector(state);
+      }
+    );
 
     render(
       <TestWrapper>

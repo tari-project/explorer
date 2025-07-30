@@ -10,12 +10,17 @@ const mockSetShowMobileMenu = vi.fn();
 const mockUseMainStore = vi.fn();
 
 vi.mock('@services/stores/useMainStore', () => ({
-  useMainStore: (selector: any) => mockUseMainStore(selector),
+  useMainStore: (selector: (state: unknown) => unknown) =>
+    mockUseMainStore(selector),
 }));
 
 // Mock the styled components
 vi.mock('../styles', () => ({
-  Wrapper: ({ children, onClick, ...props }: any) => (
+  Wrapper: ({
+    children,
+    onClick,
+    ...props
+  }: React.ComponentProps<'button'> & { children: React.ReactNode }) => (
     <button onClick={onClick} {...props}>
       {children}
     </button>
@@ -23,7 +28,14 @@ vi.mock('../styles', () => ({
   IconContainer: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="icon-container">{children}</div>
   ),
-  Line: ({ initial, animate, ...props }: any) => (
+  Line: ({
+    initial,
+    animate,
+    ...props
+  }: React.ComponentProps<'div'> & {
+    initial?: unknown;
+    animate?: unknown;
+  }) => (
     <div
       data-testid="line"
       data-animate={animate}

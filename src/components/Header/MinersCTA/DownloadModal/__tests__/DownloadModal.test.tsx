@@ -4,7 +4,17 @@ import DownloadModal from '../DownloadModal';
 
 // Mock MUI components
 vi.mock('@mui/material', () => ({
-  IconButton: ({ children, onClick, 'aria-label': ariaLabel, sx }: any) => (
+  IconButton: ({
+    children,
+    onClick,
+    'aria-label': ariaLabel,
+    sx,
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+    'aria-label'?: string;
+    sx?: unknown;
+  }) => (
     <button
       data-testid="icon-button"
       onClick={onClick}
@@ -14,12 +24,30 @@ vi.mock('@mui/material', () => ({
       {children}
     </button>
   ),
-  Typography: ({ children, variant, sx }: any) => (
+  Typography: ({
+    children,
+    variant,
+    sx,
+  }: {
+    children: React.ReactNode;
+    variant?: string;
+    sx?: unknown;
+  }) => (
     <div data-testid={`typography-${variant}`} data-sx={JSON.stringify(sx)}>
       {children}
     </div>
   ),
-  Backdrop: ({ children, open, onClick, sx }: any) =>
+  Backdrop: ({
+    children,
+    open,
+    onClick,
+    sx,
+  }: {
+    children: React.ReactNode;
+    open?: boolean;
+    onClick?: () => void;
+    sx?: unknown;
+  }) =>
     open ? (
       <div
         data-testid="backdrop"
@@ -29,7 +57,17 @@ vi.mock('@mui/material', () => ({
         {children}
       </div>
     ) : null,
-  Stack: ({ children, spacing, direction, mt }: any) => (
+  Stack: ({
+    children,
+    spacing,
+    direction,
+    mt,
+  }: {
+    children: React.ReactNode;
+    spacing?: unknown;
+    direction?: string;
+    mt?: unknown;
+  }) => (
     <div
       data-testid="stack"
       data-spacing={spacing}
@@ -90,7 +128,7 @@ vi.mock('../OSButton', () => ({
 }));
 
 describe('DownloadModal', () => {
-  let mockUseMainStore: any;
+  let mockUseMainStore: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -100,13 +138,15 @@ describe('DownloadModal', () => {
   });
 
   it('should not render when showDownloadModal is false', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        showDownloadModal: false,
-        setShowDownloadModal: mockSetShowDownloadModal,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showDownloadModal: false,
+          setShowDownloadModal: mockSetShowDownloadModal,
+        };
+        return selector(state);
+      }
+    );
 
     render(<DownloadModal />);
 
@@ -114,13 +154,15 @@ describe('DownloadModal', () => {
   });
 
   it('should render when showDownloadModal is true', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        showDownloadModal: true,
-        setShowDownloadModal: mockSetShowDownloadModal,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showDownloadModal: true,
+          setShowDownloadModal: mockSetShowDownloadModal,
+        };
+        return selector(state);
+      }
+    );
 
     render(<DownloadModal />);
 
@@ -130,13 +172,15 @@ describe('DownloadModal', () => {
   });
 
   it('should render download message', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        showDownloadModal: true,
-        setShowDownloadModal: mockSetShowDownloadModal,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showDownloadModal: true,
+          setShowDownloadModal: mockSetShowDownloadModal,
+        };
+        return selector(state);
+      }
+    );
 
     render(<DownloadModal />);
 
@@ -148,13 +192,15 @@ describe('DownloadModal', () => {
   });
 
   it('should render Tari logo', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        showDownloadModal: true,
-        setShowDownloadModal: mockSetShowDownloadModal,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showDownloadModal: true,
+          setShowDownloadModal: mockSetShowDownloadModal,
+        };
+        return selector(state);
+      }
+    );
 
     render(<DownloadModal />);
 
@@ -163,13 +209,15 @@ describe('DownloadModal', () => {
   });
 
   it('should render OS buttons for all platforms', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        showDownloadModal: true,
-        setShowDownloadModal: mockSetShowDownloadModal,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showDownloadModal: true,
+          setShowDownloadModal: mockSetShowDownloadModal,
+        };
+        return selector(state);
+      }
+    );
 
     render(<DownloadModal />);
 
@@ -179,13 +227,15 @@ describe('DownloadModal', () => {
   });
 
   it('should render close button', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        showDownloadModal: true,
-        setShowDownloadModal: mockSetShowDownloadModal,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showDownloadModal: true,
+          setShowDownloadModal: mockSetShowDownloadModal,
+        };
+        return selector(state);
+      }
+    );
 
     render(<DownloadModal />);
 
@@ -194,13 +244,15 @@ describe('DownloadModal', () => {
   });
 
   it('should close modal when close button is clicked', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        showDownloadModal: true,
-        setShowDownloadModal: mockSetShowDownloadModal,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showDownloadModal: true,
+          setShowDownloadModal: mockSetShowDownloadModal,
+        };
+        return selector(state);
+      }
+    );
 
     render(<DownloadModal />);
 
@@ -211,13 +263,15 @@ describe('DownloadModal', () => {
   });
 
   it('should close modal when backdrop is clicked', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        showDownloadModal: true,
-        setShowDownloadModal: mockSetShowDownloadModal,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showDownloadModal: true,
+          setShowDownloadModal: mockSetShowDownloadModal,
+        };
+        return selector(state);
+      }
+    );
 
     render(<DownloadModal />);
 
@@ -228,13 +282,15 @@ describe('DownloadModal', () => {
   });
 
   it('should render with proper component structure', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        showDownloadModal: true,
-        setShowDownloadModal: mockSetShowDownloadModal,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showDownloadModal: true,
+          setShowDownloadModal: mockSetShowDownloadModal,
+        };
+        return selector(state);
+      }
+    );
 
     render(<DownloadModal />);
 
@@ -243,13 +299,15 @@ describe('DownloadModal', () => {
   });
 
   it('should render typography with correct variants', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        showDownloadModal: true,
-        setShowDownloadModal: mockSetShowDownloadModal,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showDownloadModal: true,
+          setShowDownloadModal: mockSetShowDownloadModal,
+        };
+        return selector(state);
+      }
+    );
 
     render(<DownloadModal />);
 
@@ -258,13 +316,15 @@ describe('DownloadModal', () => {
   });
 
   it('should render stack with correct props', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        showDownloadModal: true,
-        setShowDownloadModal: mockSetShowDownloadModal,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          showDownloadModal: true,
+          setShowDownloadModal: mockSetShowDownloadModal,
+        };
+        return selector(state);
+      }
+    );
 
     render(<DownloadModal />);
 
