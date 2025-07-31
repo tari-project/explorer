@@ -21,6 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Fragment } from 'react';
+import type { MempoolTransaction } from '@types';
 import { useAllBlocks } from '@services/api/hooks/useBlocks';
 import {
   TypographyData,
@@ -43,7 +44,7 @@ function MempoolTable() {
   const desktopCount = 5;
   const mobileCount = 5;
 
-  function isMempoolArray(mempool: any): mempool is Array<any> {
+  function isMempoolArray(mempool: unknown): mempool is MempoolTransaction[] {
     return Array.isArray(mempool);
   }
 
@@ -53,65 +54,67 @@ function MempoolTable() {
 
     return (
       <Grid container spacing={2} pl={0} pr={0}>
-        {data?.mempool.slice(0, mobileCount).map((item: any, index: number) => (
-          <Fragment key={index}>
-            <Grid item xs={col1}>
-              <Typography variant="h6">Excess</Typography>
-            </Grid>
-            <Grid item xs={col2}>
-              <TypographyData>
-                {' '}
-                {shortenString(
-                  toHexString(item.transaction.body.signature.data)
-                )}
-                <CopyToClipboard
-                  copy={toHexString(item.transaction.body.signature.data)}
-                  key={`${index}-copy`}
-                />
-              </TypographyData>
-            </Grid>
+        {data?.mempool
+          .slice(0, mobileCount)
+          .map((item: MempoolTransaction, index: number) => (
+            <Fragment key={index}>
+              <Grid item xs={col1}>
+                <Typography variant="h6">Excess</Typography>
+              </Grid>
+              <Grid item xs={col2}>
+                <TypographyData>
+                  {' '}
+                  {shortenString(
+                    toHexString(item.transaction.body.signature.data)
+                  )}
+                  <CopyToClipboard
+                    copy={toHexString(item.transaction.body.signature.data)}
+                    key={`${index}-copy`}
+                  />
+                </TypographyData>
+              </Grid>
 
-            <Grid item xs={col1}>
-              <Typography variant="h6">Total Fees</Typography>
-            </Grid>
-            <Grid item xs={col2}>
-              <TypographyData>
-                {item.transaction.body.total_fees}
-              </TypographyData>
-            </Grid>
+              <Grid item xs={col1}>
+                <Typography variant="h6">Total Fees</Typography>
+              </Grid>
+              <Grid item xs={col2}>
+                <TypographyData>
+                  {item.transaction.body.total_fees}
+                </TypographyData>
+              </Grid>
 
-            <Grid item xs={col1}>
-              <Typography variant="h6">Outputs</Typography>
-            </Grid>
-            <Grid item xs={col2}>
-              <TypographyData>
-                {item.transaction.body.outputs.length}
-              </TypographyData>
-            </Grid>
+              <Grid item xs={col1}>
+                <Typography variant="h6">Outputs</Typography>
+              </Grid>
+              <Grid item xs={col2}>
+                <TypographyData>
+                  {item.transaction.body.outputs.length}
+                </TypographyData>
+              </Grid>
 
-            <Grid item xs={col1}>
-              <Typography variant="h6">Kernels</Typography>
-            </Grid>
-            <Grid item xs={col2}>
-              <TypographyData>
-                {item.transaction.body.kernels.length}
-              </TypographyData>
-            </Grid>
+              <Grid item xs={col1}>
+                <Typography variant="h6">Kernels</Typography>
+              </Grid>
+              <Grid item xs={col2}>
+                <TypographyData>
+                  {item.transaction.body.kernels.length}
+                </TypographyData>
+              </Grid>
 
-            <Grid item xs={col1}>
-              <Typography variant="h6">Inputs</Typography>
-            </Grid>
-            <Grid item xs={col2}>
-              <TypographyData>
-                {item.transaction.body.inputs.length}
-              </TypographyData>
-            </Grid>
+              <Grid item xs={col1}>
+                <Typography variant="h6">Inputs</Typography>
+              </Grid>
+              <Grid item xs={col2}>
+                <TypographyData>
+                  {item.transaction.body.inputs.length}
+                </TypographyData>
+              </Grid>
 
-            <Grid item xs={12}>
-              <TransparentDivider />
-            </Grid>
-          </Fragment>
-        ))}
+              <Grid item xs={12}>
+                <TransparentDivider />
+              </Grid>
+            </Fragment>
+          ))}
       </Grid>
     );
   }
@@ -163,7 +166,7 @@ function MempoolTable() {
         <Grid container spacing={2} pl={0} pr={0} pb={2}>
           {data?.mempool
             .slice(0, desktopCount)
-            .map((item: any, index: number) => (
+            .map((item: MempoolTransaction, index: number) => (
               <Fragment key={index}>
                 <Grid item xs={12}>
                   <TransparentDivider />

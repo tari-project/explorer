@@ -1,4 +1,10 @@
 import { useState, useEffect } from 'react';
+import type {
+  TransactionInput,
+  TransactionOutput,
+  TransactionKernel,
+  AccordionItem,
+} from '@types';
 import { TextField, Stack, Button, Alert, Typography } from '@mui/material';
 import {
   useGetBlockByHeightOrHash,
@@ -209,43 +215,48 @@ function Kernels({ blockHeight, type, itemsPerPage }: KernelsProps) {
       renderItems = null;
     }
   } else {
-    renderItems = displayedItems?.map((content: any, index: number) => {
-      const adjustedIndex = startIndex + 1 + index;
-      const expandedPanel = `panel${adjustedIndex}`;
-      let items: any[] = [];
-      switch (type) {
-        case 'inputs':
-          items = inputItems(content);
-          break;
-        case 'outputs':
-          items = outputItems(content);
-          break;
-        case 'kernels':
-          items = kernelItems(content);
-          break;
-        default:
-          break;
+    renderItems = displayedItems?.map(
+      (
+        content: TransactionInput | TransactionOutput | TransactionKernel,
+        index: number
+      ) => {
+        const adjustedIndex = startIndex + 1 + index;
+        const expandedPanel = `panel${adjustedIndex}`;
+        let items: AccordionItem[] = [];
+        switch (type) {
+          case 'inputs':
+            items = inputItems(content as TransactionInput);
+            break;
+          case 'outputs':
+            items = outputItems(content as TransactionOutput);
+            break;
+          case 'kernels':
+            items = kernelItems(content as TransactionKernel);
+            break;
+          default:
+            break;
+        }
+
+        const shouldHighlight =
+          type === 'kernels' &&
+          foundIndex !== null &&
+          foundPage === page &&
+          foundIndex % itemsPerPage === index;
+
+        return (
+          <GenerateAccordion
+            items={items}
+            adjustedIndex={adjustedIndex}
+            expanded={expanded}
+            handleChange={handleChange}
+            expandedPanel={expandedPanel}
+            tabName={title}
+            key={adjustedIndex}
+            isHighlighted={shouldHighlight}
+          />
+        );
       }
-
-      const shouldHighlight =
-        type === 'kernels' &&
-        foundIndex !== null &&
-        foundPage === page &&
-        foundIndex % itemsPerPage === index;
-
-      return (
-        <GenerateAccordion
-          items={items}
-          adjustedIndex={adjustedIndex}
-          expanded={expanded}
-          handleChange={handleChange}
-          expandedPanel={expandedPanel}
-          tabName={title}
-          key={adjustedIndex}
-          isHighlighted={shouldHighlight}
-        />
-      );
-    });
+    );
   }
 
   const handlePageChange = (

@@ -21,8 +21,9 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { toHexString } from '@utils/helpers';
+import { TransactionInput, AccordionItem } from '@types';
 
-export const inputItems = (content: any) => {
+export const inputItems = (content: TransactionInput): AccordionItem[] => {
   const items = [
     {
       label: 'Features',

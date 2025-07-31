@@ -25,6 +25,7 @@ import { useTheme } from '@mui/material/styles';
 import { chartColor } from '@theme/colors';
 import { useAllBlocks } from '@services/api/hooks/useBlocks';
 import InnerHeading from '@components/InnerHeading';
+import type { BlockHeader } from '@types';
 
 const BlockTimes = () => {
   const { data } = useAllBlocks();
@@ -38,17 +39,23 @@ const BlockTimes = () => {
     return dataArray;
   }
 
-  const blockNumbers = data?.headers.map((header: any) => header.height);
+  const blockNumbers = data?.headers.map(
+    (header: BlockHeader) => header.height
+  );
 
   const option = {
     tooltip: {
       trigger: 'axis',
-      formatter: (params: any) => {
-        const tooltipContent = params.map((param: any) => {
-          const seriesName = param.seriesName;
-          const value = param.value;
-          return `${seriesName}: ${value.toFixed(2)}m`;
-        });
+      formatter: (
+        params: Array<{ seriesName: string; value: number; dataIndex: number }>
+      ) => {
+        const tooltipContent = params.map(
+          (param: { seriesName: string; value: number; dataIndex: number }) => {
+            const seriesName = param.seriesName;
+            const value = param.value;
+            return `${seriesName}: ${value.toFixed(2)}m`;
+          }
+        );
         const blockNumber = blockNumbers?.[params[0].dataIndex];
         return `<b>Block ${blockNumber}</b><br/>${tooltipContent.join(
           '<br/>'

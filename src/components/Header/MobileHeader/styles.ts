@@ -1,26 +1,29 @@
 import { motion } from 'framer-motion';
+import type { Theme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import headerBgImage from '../images/header-bg.png';
 
 export const Wrapper = styled(motion.div, {
   shouldForwardProp: (prop: string) => prop !== '$open',
-})<{ $open: boolean }>(({ theme, $open }: any) => ({
-  width: '100%',
-  pointerEvents: 'none',
-  position: 'sticky',
-  top: 0,
-  left: 0,
-  zIndex: 99,
-  display: 'none',
-  marginTop: '30px',
-  [theme.breakpoints.down('lg')]: {
-    display: 'flex',
-  },
-  ...($open && {
+})<{ $open: boolean }>(
+  ({ theme, $open }: { theme: Theme; $open: boolean }) => ({
     width: '100%',
-    height: '100dvh',
-  }),
-}));
+    pointerEvents: 'none',
+    position: 'sticky',
+    top: 0,
+    left: 0,
+    zIndex: 99,
+    display: 'none',
+    marginTop: '30px',
+    [theme.breakpoints.down('lg')]: {
+      display: 'flex',
+    },
+    ...($open && {
+      width: '100%',
+      height: '100dvh',
+    }),
+  })
+);
 
 export const Inside = styled('div')({
   position: 'relative',
@@ -29,7 +32,7 @@ export const Inside = styled('div')({
 
 export const HeaderTop = styled(motion.div, {
   shouldForwardProp: (prop: string) => prop !== '$open',
-})<{ $open: boolean }>(({ $open }: any) => ({
+})<{ $open: boolean }>(({ $open }: { $open: boolean }) => ({
   padding: '14px',
   pointerEvents: 'auto',
   display: 'flex',

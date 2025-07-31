@@ -46,7 +46,7 @@ const ProofOfWork = () => {
   const theme = useTheme();
   const { data, isError, isLoading, error } = useAllBlocks();
 
-  function calculatePercentage(monero: number, sha: number, tari:number) {
+  function calculatePercentage(monero: number, sha: number, tari: number) {
     const total = monero + sha + tari;
     let moneroPercentage = Math.round((monero / total) * 100);
     let shaPercentage = Math.round((sha / total) * 100);
@@ -61,20 +61,44 @@ const ProofOfWork = () => {
   }
 
   const moneroRx = {
-    10: calculatePercentage(data?.algoSplit.moneroRx10, data?.algoSplit.sha3X10, data?.algoSplit.tariRx10)[0],
-    20: calculatePercentage(data?.algoSplit.moneroRx20, data?.algoSplit.sha3X20, data?.algoSplit.tariRx20)[0],
-    50: calculatePercentage(data?.algoSplit.moneroRx50, data?.algoSplit.sha3X50, data?.algoSplit.tariRx50)[0],
+    10: calculatePercentage(
+      data?.algoSplit.moneroRx10,
+      data?.algoSplit.sha3X10,
+      data?.algoSplit.tariRx10
+    )[0],
+    20: calculatePercentage(
+      data?.algoSplit.moneroRx20,
+      data?.algoSplit.sha3X20,
+      data?.algoSplit.tariRx20
+    )[0],
+    50: calculatePercentage(
+      data?.algoSplit.moneroRx50,
+      data?.algoSplit.sha3X50,
+      data?.algoSplit.tariRx50
+    )[0],
     100: calculatePercentage(
       data?.algoSplit.moneroRx100,
       data?.algoSplit.sha3X100,
-      data?.algoSplit.tariRx100,
+      data?.algoSplit.tariRx100
     )[0],
   };
 
   const sha3X = {
-    10: calculatePercentage(data?.algoSplit.moneroRx10, data?.algoSplit.sha3X10, data?.algoSplit.tariRx10)[1],
-    20: calculatePercentage(data?.algoSplit.moneroRx20, data?.algoSplit.sha3X20, data?.algoSplit.tariRx20)[1],
-    50: calculatePercentage(data?.algoSplit.moneroRx50, data?.algoSplit.sha3X50, data?.algoSplit.tariRx50)[1],
+    10: calculatePercentage(
+      data?.algoSplit.moneroRx10,
+      data?.algoSplit.sha3X10,
+      data?.algoSplit.tariRx10
+    )[1],
+    20: calculatePercentage(
+      data?.algoSplit.moneroRx20,
+      data?.algoSplit.sha3X20,
+      data?.algoSplit.tariRx20
+    )[1],
+    50: calculatePercentage(
+      data?.algoSplit.moneroRx50,
+      data?.algoSplit.sha3X50,
+      data?.algoSplit.tariRx50
+    )[1],
     100: calculatePercentage(
       data?.algoSplit.moneroRx100,
       data?.algoSplit.sha3X100,
@@ -82,9 +106,21 @@ const ProofOfWork = () => {
     )[1],
   };
   const tariRx = {
-    10: calculatePercentage(data?.algoSplit.moneroRx10, data?.algoSplit.sha3X10, data?.algoSplit.tariRx10)[2],
-    20: calculatePercentage(data?.algoSplit.moneroRx20, data?.algoSplit.sha3X20, data?.algoSplit.tariRx20)[2],
-    50: calculatePercentage(data?.algoSplit.moneroRx50, data?.algoSplit.sha3X50, data?.algoSplit.tariRx50)[2],
+    10: calculatePercentage(
+      data?.algoSplit.moneroRx10,
+      data?.algoSplit.sha3X10,
+      data?.algoSplit.tariRx10
+    )[2],
+    20: calculatePercentage(
+      data?.algoSplit.moneroRx20,
+      data?.algoSplit.sha3X20,
+      data?.algoSplit.tariRx20
+    )[2],
+    50: calculatePercentage(
+      data?.algoSplit.moneroRx50,
+      data?.algoSplit.sha3X50,
+      data?.algoSplit.tariRx50
+    )[2],
     100: calculatePercentage(
       data?.algoSplit.moneroRx100,
       data?.algoSplit.sha3X100,
@@ -98,7 +134,9 @@ const ProofOfWork = () => {
       axisPointer: {
         type: 'shadow',
       },
-      formatter: function (params: any) {
+      formatter: function (
+        params: Array<{ name: string; color: string; value: number }>
+      ) {
         const moneroBlocks =
           data?.algoSplit[`moneroRx${params[0].name}` as keyof AlgoSplit];
         const shaBlocks =

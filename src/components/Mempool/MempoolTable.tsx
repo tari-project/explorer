@@ -21,6 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Fragment, useState } from 'react';
+import type { MempoolTransaction } from '@types';
 import { useAllBlocks } from '@services/api/hooks/useBlocks';
 import { TypographyData } from '@components/StyledComponents';
 import {
@@ -62,7 +63,7 @@ function MempoolTable() {
     setPage(1);
   };
 
-  function isMempoolArray(mempool: any): mempool is Array<any> {
+  function isMempoolArray(mempool: unknown): mempool is MempoolTransaction[] {
     return Array.isArray(mempool);
   }
 
@@ -74,7 +75,7 @@ function MempoolTable() {
       <Grid container spacing={2} pl={0} pr={0}>
         {data?.mempool
           .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-          .map((item: any, index: number) => (
+          .map((item: MempoolTransaction, index: number) => (
             <Fragment key={index}>
               <Grid item xs={col1}>
                 <Typography variant="h6">Excess</Typography>
@@ -184,7 +185,7 @@ function MempoolTable() {
         <Grid container spacing={2} pl={0} pr={0} pb={2}>
           {data?.mempool
             .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-            .map((item: any, index: number) => (
+            .map((item: MempoolTransaction, index: number) => (
               <Fragment key={index}>
                 <Grid item xs={12}>
                   <Divider />

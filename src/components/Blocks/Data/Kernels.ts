@@ -21,8 +21,9 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { toHexString } from '@utils/helpers';
+import type { TransactionKernel } from '@types';
 
-export const kernelItems = (content: any) => {
+export const kernelItems = (content: TransactionKernel) => {
   const items = [
     {
       label: 'Features',

@@ -21,6 +21,12 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { useState } from 'react';
+import type {
+  TransactionInput,
+  TransactionOutput,
+  TransactionKernel,
+  AccordionItem,
+} from '@types';
 import Box from '@mui/material/Box';
 import {
   useGetBlockByHeightOrHash,
@@ -95,36 +101,41 @@ function Inputs({
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const displayedItems = paginatedData?.body.data;
 
-  const renderItems = displayedItems?.map((content: any, index: number) => {
-    const adjustedIndex = startIndex + 1 + index;
-    const expandedPanel = `panel${adjustedIndex}`;
-    let items: any[] = [];
-    switch (type) {
-      case 'inputs':
-        items = inputItems(content);
-        break;
-      case 'outputs':
-        items = outputItems(content);
-        break;
-      case 'kernels':
-        items = kernelItems(content);
-        break;
-      default:
-        break;
-    }
+  const renderItems = displayedItems?.map(
+    (
+      content: TransactionInput | TransactionOutput | TransactionKernel,
+      index: number
+    ) => {
+      const adjustedIndex = startIndex + 1 + index;
+      const expandedPanel = `panel${adjustedIndex}`;
+      let items: AccordionItem[] = [];
+      switch (type) {
+        case 'inputs':
+          items = inputItems(content as TransactionInput);
+          break;
+        case 'outputs':
+          items = outputItems(content as TransactionOutput);
+          break;
+        case 'kernels':
+          items = kernelItems(content as TransactionKernel);
+          break;
+        default:
+          break;
+      }
 
-    return (
-      <GenerateAccordion
-        items={items}
-        adjustedIndex={adjustedIndex}
-        expanded={expanded}
-        handleChange={handleChange}
-        expandedPanel={expandedPanel}
-        tabName={title}
-        key={adjustedIndex}
-      />
-    );
-  });
+      return (
+        <GenerateAccordion
+          items={items}
+          adjustedIndex={adjustedIndex}
+          expanded={expanded}
+          handleChange={handleChange}
+          expandedPanel={expandedPanel}
+          tabName={title}
+          key={adjustedIndex}
+        />
+      );
+    }
+  );
 
   const handlePageChange = (
     _event: React.ChangeEvent<unknown>,

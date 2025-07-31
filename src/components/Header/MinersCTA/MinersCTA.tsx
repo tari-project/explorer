@@ -82,14 +82,14 @@ export default function MinersCTA({
 
   if (minersOnly) {
     return (
-      <TextWrapper 
-        data-testid="miners-cta" 
-        data-theme={theme} 
+      <TextWrapper
+        data-testid="miners-cta"
+        data-theme={theme}
         data-button-text={buttonText}
         data-no-background={noBackground ? 'true' : 'false'}
         data-miners-only="true"
-        data-button-only="false">
-      
+        data-button-only="false"
+      >
         <DotSml theme={theme as any} />
         <Text
           theme={theme as any}
@@ -124,14 +124,14 @@ export default function MinersCTA({
 
   if (buttonOnly) {
     return (
-      <ButtonWrapper 
-        data-testid="miners-cta" 
-        data-theme={theme} 
+      <ButtonWrapper
+        data-testid="miners-cta"
+        data-theme={theme}
         data-button-text={buttonText}
         data-no-background={noBackground ? 'true' : 'false'}
         data-miners-only="false"
-        data-button-only="true">
-      
+        data-button-only="true"
+      >
         <Button
           theme={theme as any}
           href={downloadLink}
@@ -147,16 +147,16 @@ export default function MinersCTA({
   return (
     <>
       {!isMobile && <DownloadModal />}
-      <Wrapper 
-        theme={theme as any} 
-        $noBackground={noBackground} 
-        data-testid="miners-cta" 
-        data-theme={theme} 
+      <Wrapper
+        theme={theme as any}
+        $noBackground={noBackground}
+        data-testid="miners-cta"
+        data-theme={theme}
         data-button-text={buttonText}
         data-no-background={noBackground ? 'true' : 'false'}
         data-miners-only="false"
-        data-button-only="false">
-      
+        data-button-only="false"
+      >
         <TextWrapper>
           <Dot theme={theme as any} />
           <Text theme={theme as any}>

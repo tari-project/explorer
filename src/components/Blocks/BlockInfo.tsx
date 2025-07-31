@@ -29,7 +29,7 @@ import CopyToClipboard from '@components/CopyToClipboard';
 import InnerHeading from '@components/InnerHeading';
 import { powCheck } from '@utils/helpers';
 
-function BlockInfo({ blockHeight }: { blockHeight: any }) {
+function BlockInfo({ blockHeight }: { blockHeight: string }) {
   const { data } = useGetBlockByHeightOrHash(blockHeight);
   const { header } = data ?? {};
   const items = [

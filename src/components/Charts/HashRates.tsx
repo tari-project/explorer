@@ -74,7 +74,7 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
   }
 
   useEffect(() => {
-    const hashRatesMap: { [key: string]: any[] } = {
+    const hashRatesMap: { [key: string]: number[] } = {
       RandomX: data?.moneroRandomxHashRates,
       Sha3: data?.sha3xHashRates,
       TariRandomX: data?.tariRandomxHashRates,
@@ -105,12 +105,16 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
   const option = {
     tooltip: {
       trigger: 'axis',
-      formatter: (params: any) => {
-        const tooltipContent = params.map((param: any) => {
-          const seriesName = param.seriesName;
-          const value = formatHash(param.value, 2);
-          return `${seriesName}: ${value}`;
-        });
+      formatter: (
+        params: Array<{ seriesName: string; value: number; dataIndex: number }>
+      ) => {
+        const tooltipContent = params.map(
+          (param: { seriesName: string; value: number; dataIndex: number }) => {
+            const seriesName = param.seriesName;
+            const value = formatHash(param.value, 2);
+            return `${seriesName}: ${value}`;
+          }
+        );
         const blockNumber = display[params[0].dataIndex].blockNumber;
         return `<b>Block ${blockNumber}</b><br/>${tooltipContent.join(
           '<br/>'

@@ -4,23 +4,8 @@ import { MemoryRouter, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from '../App';
+import type { PageLayoutProps, TypographyProps, MockTheme } from '@types';
 import '@testing-library/jest-dom';
-
-interface PageLayoutProps {
-  title?: string;
-  customHeader?: React.ReactNode;
-  children?: React.ReactNode;
-}
-
-interface TypographyProps {
-  children: React.ReactNode;
-}
-
-interface MockTheme {
-  breakpoints: {
-    down: (breakpoint: string) => string;
-  };
-}
 
 // Mock all the page components
 vi.mock('@routes/BlockExplorerPage', () => ({

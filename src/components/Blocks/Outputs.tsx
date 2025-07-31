@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import type { TransactionOutput } from '@types';
 import { TextField, Stack, Button, Alert } from '@mui/material';
 import {
   useGetBlockByHeightOrHash,
@@ -189,30 +190,32 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       renderItems = null;
     }
   } else {
-    renderItems = displayedItems?.map((content: any, index: number) => {
-      const adjustedIndex = startIndex + 1 + index;
-      const expandedPanel = `panel${adjustedIndex}`;
-      const items = outputItems(content);
+    renderItems = displayedItems?.map(
+      (content: TransactionOutput, index: number) => {
+        const adjustedIndex = startIndex + 1 + index;
+        const expandedPanel = `panel${adjustedIndex}`;
+        const items = outputItems(content);
 
-      const shouldHighlight =
-        foundIndex !== null &&
-        foundPage === page &&
-        foundIndex % itemsPerPage === index;
+        const shouldHighlight =
+          foundIndex !== null &&
+          foundPage === page &&
+          foundIndex % itemsPerPage === index;
 
-      return (
-        <div ref={shouldHighlight ? foundRef : undefined} key={adjustedIndex}>
-          <GenerateAccordion
-            items={items}
-            adjustedIndex={adjustedIndex}
-            expanded={expanded}
-            handleChange={handleChange}
-            expandedPanel={expandedPanel}
-            tabName={title}
-            isHighlighted={shouldHighlight}
-          />
-        </div>
-      );
-    });
+        return (
+          <div ref={shouldHighlight ? foundRef : undefined} key={adjustedIndex}>
+            <GenerateAccordion
+              items={items}
+              adjustedIndex={adjustedIndex}
+              expanded={expanded}
+              handleChange={handleChange}
+              expandedPanel={expandedPanel}
+              tabName={title}
+              isHighlighted={shouldHighlight}
+            />
+          </div>
+        );
+      }
+    );
   }
 
   const handlePageChange = (
