@@ -21,7 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 export async function jsonRpc(url: string, error404?: string) {
-  let response = await fetch(`${url}`);
+  const response = await fetch(`${url}`);
 
   if (!response.ok) {
     if (response.status === 404) {
@@ -31,6 +31,6 @@ export async function jsonRpc(url: string, error404?: string) {
     throw new Error(`Request failed with status: ${response.status}`);
   }
 
-  let json = await response.json();
+  const json = await response.json();
   return json;
 }

@@ -48,6 +48,7 @@ import CopyToClipboard from '@components/CopyToClipboard';
 import SkeletonLoader from './SkeletonLoader';
 import { useMainStore } from '@services/stores/useMainStore';
 import { powCheck } from '@utils/helpers';
+import type { BlockData } from '@types';
 
 function BlockTable() {
   const { data: tipData } = useAllBlocks();
@@ -86,7 +87,7 @@ function BlockTable() {
     } else {
       setNextDisabled(false);
     }
-  }, [firstHeight]);
+  }, [blocksPerPage, data, page, firstHeight]);
 
   const handleNoOfItems = (event: SelectChangeEvent) => {
     const newValue = parseInt(event.target.value, 10);
@@ -145,7 +146,7 @@ function BlockTable() {
 
     return (
       <Grid container spacing={2} pl={0} pr={0} {...motionProps()}>
-        {data?.headers.map((block: any, index: number) => (
+        {data?.headers.map((block: BlockData, index: number) => (
           <Fragment key={index}>
             <Grid item xs={col1}>
               <Typography variant="h6">Height</Typography>
@@ -171,7 +172,9 @@ function BlockTable() {
               <Typography variant="h6">Proof of Work</Typography>
             </Grid>
             <Grid item xs={col2}>
-              <TypographyData>{powCheck(block.pow.pow_algo)}</TypographyData>
+              <TypographyData>
+                {block.pow ? powCheck(String(block.pow.pow_algo)) : 'Unknown'}
+              </TypographyData>
             </Grid>
 
             <Grid item xs={col1}>
@@ -285,7 +288,7 @@ function BlockTable() {
       <>
         <Header />
         <Grid container spacing={2} pl={0} pr={0} pb={2} {...motionProps()}>
-          {data?.headers.map((block: any, index: number) => (
+          {data?.headers.map((block: BlockData, index: number) => (
             <Fragment key={index}>
               <Grid item xs={12}>
                 <Divider />
@@ -303,7 +306,9 @@ function BlockTable() {
                 </TypographyData>
               </Grid>
               <Grid item xs={col3} md={col3} lg={col3}>
-                <TypographyData>{powCheck(block.pow.pow_algo)}</TypographyData>
+                <TypographyData>
+                  {block.pow ? powCheck(String(block.pow.pow_algo)) : 'Unknown'}
+                </TypographyData>
               </Grid>
               <Grid item xs={col4} md={col4} lg={col4}>
                 <TypographyData>

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
-import { ThemeProvider } from '@mui/material/styles'
+import { ThemeProvider, type Theme } from '@mui/material/styles'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
 import KernelSearchPage from '../KernelSearchPage'
@@ -13,7 +13,7 @@ vi.mock('@components/StyledComponents', () => ({
 }))
 
 vi.mock('@components/FetchStatusCheck', () => ({
-  default: ({ isError, isLoading, errorMessage }: any) => (
+  default: ({ isError, isLoading, errorMessage }: { isError?: boolean; isLoading?: boolean; errorMessage?: string }) => (
     <div data-testid="fetch-status-check">
       {isLoading && <div data-testid="loading">Loading...</div>}
       {isError && <div data-testid="error">{errorMessage}</div>}
@@ -22,7 +22,7 @@ vi.mock('@components/FetchStatusCheck', () => ({
 }))
 
 vi.mock('@components/KernelSearch/BlockTable', () => ({
-  default: ({ data }: { data: any[] }) => (
+  default: ({ data }: { data: unknown[] }) => (
     <div data-testid="kernel-block-table" data-count={data.length}>
       Kernel Block Table
     </div>
@@ -30,7 +30,7 @@ vi.mock('@components/KernelSearch/BlockTable', () => ({
 }))
 
 vi.mock('@mui/material', () => ({
-  Grid: ({ children, ...props }: any) => (
+  Grid: ({ children, ...props }: React.ComponentProps<'div'>) => (
     <div data-testid="grid" data-props={JSON.stringify(props)}>
       {children}
     </div>
@@ -76,7 +76,7 @@ const TestWrapper = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>
+      <ThemeProvider theme={mockTheme as unknown as Theme}>
         <MemoryRouter initialEntries={initialEntries}>
           {children}
         </MemoryRouter>
@@ -86,7 +86,7 @@ const TestWrapper = ({
 }
 
 describe('KernelSearchPage', () => {
-  let mockUseSearchByKernel: any
+  let mockUseSearchByKernel: ReturnType<typeof vi.fn>
   
   beforeEach(async () => {
     vi.clearAllMocks()

@@ -5,6 +5,59 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import BlockWidget from '../BlockWidget';
 
+interface TypographyProps {
+  children: React.ReactNode;
+  variant: string;
+}
+
+interface GridProps {
+  children: React.ReactNode;
+  item?: boolean;
+  container?: boolean;
+  xs?: number;
+  md?: number;
+  lg?: number;
+  spacing?: number;
+  style?: React.CSSProperties;
+  [key: string]: unknown;
+}
+
+interface DividerProps {
+  color?: string;
+  style?: React.CSSProperties;
+}
+
+interface ButtonProps {
+  children: React.ReactNode;
+  variant?: string;
+  fullWidth?: boolean;
+  href?: string;
+  color?: string;
+  style?: React.CSSProperties;
+  [key: string]: unknown;
+}
+
+interface SkeletonProps {
+  variant: string;
+  height: string | number;
+}
+
+interface AlertProps {
+  severity: string;
+  variant: string;
+  children: React.ReactNode;
+}
+
+interface Theme {
+  spacing: (value: number) => string;
+  palette: {
+    background: {
+      paper: string;
+    };
+    divider: string;
+  };
+}
+
 // Mock components and dependencies
 vi.mock('@components/StyledComponents', () => ({
   TypographyData: ({ children }: { children: React.ReactNode }) => (
@@ -33,7 +86,7 @@ vi.mock('@components/CopyToClipboard', () => ({
 
 // Mock MUI components
 vi.mock('@mui/material', () => ({
-  Typography: ({ children, variant }: any) => (
+  Typography: ({ children, variant }: TypographyProps) => (
     <div data-testid="typography" data-variant={variant}>
       {children}
     </div>
@@ -48,7 +101,7 @@ vi.mock('@mui/material', () => ({
     spacing,
     style,
     ...props
-  }: any) => (
+  }: GridProps) => (
     <div
       data-testid="grid"
       data-item={item}
@@ -63,7 +116,7 @@ vi.mock('@mui/material', () => ({
       {children}
     </div>
   ),
-  Divider: ({ color, style }: any) => (
+  Divider: ({ color, style }: DividerProps) => (
     <div data-testid="divider" data-color={color} style={style}>
       ---
     </div>
@@ -76,7 +129,7 @@ vi.mock('@mui/material', () => ({
     color,
     style,
     ...props
-  }: any) => (
+  }: ButtonProps) => (
     <button
       data-testid="button"
       data-variant={variant}
@@ -89,12 +142,12 @@ vi.mock('@mui/material', () => ({
       {children}
     </button>
   ),
-  Skeleton: ({ variant, height }: any) => (
+  Skeleton: ({ variant, height }: SkeletonProps) => (
     <div data-testid="skeleton" data-variant={variant} data-height={height}>
       Loading...
     </div>
   ),
-  Alert: ({ severity, variant, children }: any) => (
+  Alert: ({ severity, variant, children }: AlertProps) => (
     <div data-testid="alert" data-severity={severity} data-variant={variant}>
       {children}
     </div>
@@ -161,7 +214,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>
+      <ThemeProvider theme={mockTheme as Theme}>
         <MemoryRouter>{children}</MemoryRouter>
       </ThemeProvider>
     </QueryClientProvider>
@@ -169,8 +222,8 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 describe('BlockWidget', () => {
-  let mockUseAllBlocks: any;
-  let mockUseMainStore: any;
+  let mockUseAllBlocks: ReturnType<typeof vi.fn>;
+  let mockUseMainStore: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();

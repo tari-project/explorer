@@ -21,6 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Fragment } from 'react';
+import type { AccordionItem } from '@types';
 import {
   StyledAccordion,
   StyledAccordionSummary,
@@ -40,7 +41,7 @@ function GenerateAccordion({
   tabName,
   isHighlighted,
 }: {
-  items: any;
+  items: AccordionItem[];
   adjustedIndex: number;
   expanded: string | false;
   handleChange: (
@@ -89,36 +90,44 @@ function GenerateAccordion({
           padding: 0,
         }}
       >
-        {items.map((item: any, subIndex: number) => (
+        {items.map((item: AccordionItem, subIndex: number) => (
           <Fragment key={subIndex}>
             {item.children ? (
               <Fragment>
                 {GridItem(
                   item.label,
-                  item.value,
-                  item.copy,
+                  Array.isArray(item.value)
+                    ? item.value.join(',')
+                    : item.value ?? '',
+                  Boolean(item.copy),
                   adjustedIndex,
                   subIndex,
                   true
                 )}
-                {item.children.map((child: any, innerIndex: number) => (
-                  <Fragment key={innerIndex}>
-                    {GridItem(
-                      child.label,
-                      child.value,
-                      child.copy,
-                      adjustedIndex,
-                      subIndex,
-                      false
-                    )}
-                  </Fragment>
-                ))}
+                {item.children.map(
+                  (child: AccordionItem, innerIndex: number) => (
+                    <Fragment key={innerIndex}>
+                      {GridItem(
+                        child.label,
+                        Array.isArray(child.value)
+                          ? child.value.join(',')
+                          : child.value ?? '',
+                        Boolean(child.copy),
+                        adjustedIndex,
+                        subIndex,
+                        false
+                      )}
+                    </Fragment>
+                  )
+                )}
               </Fragment>
             ) : (
               GridItem(
                 item.label,
-                item.value,
-                item.copy,
+                Array.isArray(item.value)
+                  ? item.value.join(',')
+                  : item.value ?? '',
+                Boolean(item.copy),
                 adjustedIndex,
                 subIndex,
                 true

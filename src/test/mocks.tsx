@@ -96,11 +96,11 @@ export const mockGradientPaper = ({ children }: { children: React.ReactNode }) =
   <div data-testid="gradient-paper">{children}</div>
 )
 
-export const mockFetchStatusCheck = ({ isLoading, error, children }: { isLoading?: boolean, error?: any, children?: React.ReactNode }) => (
+export const mockFetchStatusCheck = ({ isLoading, error, children }: { isLoading?: boolean, error?: unknown, children?: React.ReactNode }) => (
   <div data-testid="fetch-status-check" data-loading={isLoading} data-error={error}>{children}</div>
 )
 
-export const mockBlockTable = ({ data }: { data: any }) => (
+export const mockBlockTable = ({ data }: { data: { items?: unknown[] } | undefined }) => (
   <div data-testid="block-table" data-items={data?.items}>{data?.items?.length || 0} blocks</div>
 )
 
@@ -110,12 +110,12 @@ export const mockLink = ({ to, children }: { to: string, children: React.ReactNo
 
 // MUI component mocks
 export const mockMuiComponents = {
-  Typography: ({ children, variant, color, ...props }: any) => (
+  Typography: ({ children, variant, color, ...props }: React.ComponentProps<'div'> & { variant?: string; color?: string }) => (
     <div data-testid="typography" data-variant={variant} data-color={color} {...props}>
       {children}
     </div>
   ),
-  Grid: ({ children, item, xs, md, lg, spacing, container, ...props }: any) => (
+  Grid: ({ children, item, xs, md, lg, spacing, container, ...props }: React.ComponentProps<'div'> & { item?: boolean; xs?: number; md?: number; lg?: number; spacing?: number; container?: boolean }) => (
     <div 
       data-testid="grid" 
       data-item={item}
@@ -129,20 +129,20 @@ export const mockMuiComponents = {
       {children}
     </div>
   ),
-  Box: ({ children, ...props }: any) => (
+  Box: ({ children, ...props }: React.ComponentProps<'div'>) => (
     <div data-testid="box" {...props}>{children}</div>
   ),
-  Skeleton: ({ variant, height, width }: any) => (
+  Skeleton: ({ variant, height, width }: { variant?: string; height?: string | number; width?: string | number }) => (
     <div data-testid="skeleton" data-variant={variant} data-height={height || "200"} data-width={width}>
       Loading...
     </div>
   ),
-  Alert: ({ severity, variant, children }: any) => (
+  Alert: ({ severity, variant, children }: { severity?: string; variant?: string; children?: React.ReactNode }) => (
     <div data-testid="alert" data-severity={severity} data-variant={variant}>
       {children}
     </div>
   ),
-  Button: ({ children, variant, fullWidth, href, color, onClick, ...props }: any) => (
+  Button: ({ children, variant, fullWidth, href, color, onClick, ...props }: React.ComponentProps<'button'> & { variant?: string; fullWidth?: boolean; href?: string; color?: string }) => (
     <button 
       data-testid="button" 
       data-variant={variant}
@@ -155,13 +155,13 @@ export const mockMuiComponents = {
       {children}
     </button>
   ),
-  Container: ({ children, maxWidth, ...props }: any) => (
-    <div data-testid="container" maxwidth={maxWidth} {...props}>{children}</div>
+  Container: ({ children, maxWidth, ...props }: React.ComponentProps<'div'> & { maxWidth?: string }) => (
+    <div data-testid="container" data-maxwidth={maxWidth} {...props}>{children}</div>
   ),
-  Divider: ({ color, style }: any) => (
+  Divider: ({ color, style }: { color?: string; style?: React.CSSProperties }) => (
     <div data-testid="divider" data-color={color} style={style}>---</div>
   ),
-  TextField: ({ label, value, onChange, onKeyDown, error, helperText, fullWidth, ...props }: any) => {
+  TextField: ({ label, value, onChange, onKeyDown, error, helperText, fullWidth, ...props }: React.ComponentProps<'input'> & { label?: string; error?: boolean; helperText?: string; fullWidth?: boolean }) => {
     const inputId = `input-${label?.toLowerCase().replace(/\s+/g, '-') || 'field'}`
     return (
       <div data-full-width={fullWidth} data-testid="text-field" data-label={label}>

@@ -5,6 +5,18 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import BlockParts from '../BlockParts';
 import { lightTheme } from '@theme/themes';
 
+interface AccordionProps {
+  adjustedIndex: number;
+  tabName: string;
+  items: unknown[];
+}
+
+interface FetchStatusProps {
+  isLoading: boolean;
+  isError: boolean;
+  errorMessage?: string;
+}
+
 // Mock API hooks
 const mockUseGetBlockByHeightOrHash = vi.fn();
 const mockUseGetPaginatedData = vi.fn();
@@ -21,7 +33,7 @@ vi.mock('@services/api/hooks/useBlocks', () => ({
 
 // Mock components
 vi.mock('../GenerateAccordion', () => ({
-  default: ({ adjustedIndex, tabName, items }: any) => (
+  default: ({ adjustedIndex, tabName, items }: AccordionProps) => (
     <div data-testid={`accordion-${adjustedIndex}`}>
       <span data-testid="tab-name">{tabName}</span>
       <span data-testid="adjusted-index">{adjustedIndex}</span>
@@ -31,7 +43,7 @@ vi.mock('../GenerateAccordion', () => ({
 }));
 
 vi.mock('@components/FetchStatusCheck', () => ({
-  default: ({ isLoading, isError, errorMessage }: any) => (
+  default: ({ isLoading, isError, errorMessage }: FetchStatusProps) => (
     <div data-testid="fetch-status">
       {isLoading && <span data-testid="loading">Loading...</span>}
       {isError && <span data-testid="error">{errorMessage}</span>}

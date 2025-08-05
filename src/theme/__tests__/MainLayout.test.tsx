@@ -1,8 +1,19 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, type MockedFunction } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import MainLayout from '../MainLayout';
 import { useMainStore } from '@services/stores/useMainStore';
+
+type Store = {
+  showMobileMenu: boolean;
+  setShowMobileMenu: (showMobileMenu: boolean) => void;
+  showDownloadModal: boolean;
+  setShowDownloadModal: (showDownloadModal: boolean) => void;
+  isMobile: boolean;
+  setIsMobile: (isMobile: boolean) => void;
+  searchOpen: boolean;
+  setSearchOpen: (searchOpen: boolean) => void;
+};
 
 // Mock child components
 vi.mock('@components/Header/Header', () => ({
@@ -45,8 +56,17 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe('MainLayout', () => {
   beforeEach(() => {
-    (useMainStore as any).mockImplementation((selector: any) => {
-      const state = { isMobile: false };
+    (useMainStore as unknown as MockedFunction<typeof useMainStore>).mockImplementation((selector: (state: Store) => unknown) => {
+      const state: Store = {
+        isMobile: false,
+        showMobileMenu: false,
+        setShowMobileMenu: vi.fn(),
+        showDownloadModal: false,
+        setShowDownloadModal: vi.fn(),
+        setIsMobile: vi.fn(),
+        searchOpen: false,
+        setSearchOpen: vi.fn()
+      };
       return selector(state);
     });
   });
@@ -65,8 +85,17 @@ describe('MainLayout', () => {
   });
 
   it('should not render mobile stats box when isMobile is false', () => {
-    (useMainStore as any).mockImplementation((selector: any) => {
-      const state = { isMobile: false };
+    (useMainStore as unknown as MockedFunction<typeof useMainStore>).mockImplementation((selector: (state: Store) => unknown) => {
+      const state: Store = {
+        isMobile: false,
+        showMobileMenu: false,
+        setShowMobileMenu: vi.fn(),
+        showDownloadModal: false,
+        setShowDownloadModal: vi.fn(),
+        setIsMobile: vi.fn(),
+        searchOpen: false,
+        setSearchOpen: vi.fn()
+      };
       return selector(state);
     });
 
@@ -80,8 +109,17 @@ describe('MainLayout', () => {
   });
 
   it('should render mobile stats box when isMobile is true', () => {
-    (useMainStore as any).mockImplementation((selector: any) => {
-      const state = { isMobile: true };
+    (useMainStore as unknown as MockedFunction<typeof useMainStore>).mockImplementation((selector: (state: Store) => unknown) => {
+      const state: Store = {
+        isMobile: true,
+        showMobileMenu: false,
+        setShowMobileMenu: vi.fn(),
+        showDownloadModal: false,
+        setShowDownloadModal: vi.fn(),
+        setIsMobile: vi.fn(),
+        searchOpen: false,
+        setSearchOpen: vi.fn()
+      };
       return selector(state);
     });
 
@@ -164,8 +202,17 @@ describe('MainLayout', () => {
     expect(useMainStore).toHaveBeenCalledWith(expect.any(Function));
 
     // Test the selector function
-    const selectorFn = (useMainStore as any).mock.calls[0][0];
-    const mockState = { isMobile: true, otherProp: 'test' };
+    const selectorFn = (useMainStore as unknown as MockedFunction<typeof useMainStore>).mock.calls[0][0];
+    const mockState: Store = {
+      isMobile: true,
+      showMobileMenu: false,
+      setShowMobileMenu: vi.fn(),
+      showDownloadModal: false,
+      setShowDownloadModal: vi.fn(),
+      setIsMobile: vi.fn(),
+      searchOpen: false,
+      setSearchOpen: vi.fn()
+    };
     expect(selectorFn(mockState)).toBe(true);
   });
 });

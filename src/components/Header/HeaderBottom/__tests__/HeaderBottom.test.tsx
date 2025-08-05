@@ -6,10 +6,15 @@ import HeaderBottom from '../HeaderBottom';
 import { lightTheme } from '@theme/themes';
 import { MemoryRouter } from 'react-router-dom';
 
+interface Store {
+  isMobile: boolean;
+}
+
 // Mock the useMainStore hook
 const mockUseMainStore = vi.fn();
 vi.mock('@services/stores/useMainStore', () => ({
-  useMainStore: (selector: any) => mockUseMainStore(selector),
+  useMainStore: (selector: (state: Store) => unknown) =>
+    mockUseMainStore(selector),
 }));
 
 // Mock StatsBox component
@@ -28,7 +33,7 @@ vi.mock('../SearchField/SearchField', () => ({
     fullWidth,
   }: {
     isExpanded: boolean;
-    setIsExpanded: Function;
+    setIsExpanded: (expanded: boolean) => void;
     fullWidth: boolean;
   }) => (
     <div
@@ -52,14 +57,14 @@ const { mockUseTheme } = vi.hoisted(() => ({
 }));
 
 vi.mock('@mui/material', async (importOriginal) => {
-  const actual = await importOriginal();
+  const actual = await importOriginal<Record<string, unknown>>();
   return {
     ...(typeof actual === 'object' && actual !== null ? actual : {}),
-    useMediaQuery: (query: any) => mockUseMediaQuery(query),
+    useMediaQuery: (query: string) => mockUseMediaQuery(query),
   };
 });
 vi.mock('@mui/material/styles', async (importOriginal) => {
-  const actual = await importOriginal();
+  const actual = await importOriginal<Record<string, unknown>>();
   return {
     ...(typeof actual === 'object' && actual !== null ? actual : {}),
     useTheme: mockUseTheme,
@@ -86,7 +91,7 @@ describe('HeaderBottom', () => {
   });
 
   it('should not render StatsBox or SearchField when mobile', () => {
-    mockUseMainStore.mockImplementation((selector) =>
+    mockUseMainStore.mockImplementation((selector: (state: Store) => unknown) =>
       selector({ isMobile: true })
     );
     mockUseMediaQuery.mockReturnValue(false);
@@ -102,7 +107,7 @@ describe('HeaderBottom', () => {
   });
 
   it('should render StyledContainer in all modes', () => {
-    mockUseMainStore.mockImplementation((selector) =>
+    mockUseMainStore.mockImplementation((selector: (state: Store) => unknown) =>
       selector({ isMobile: false })
     );
     mockUseMediaQuery.mockReturnValue(false);
@@ -113,7 +118,7 @@ describe('HeaderBottom', () => {
     );
     expect(screen.getByTestId('styled-container')).toBeInTheDocument();
     unmount();
-    mockUseMainStore.mockImplementation((selector) =>
+    mockUseMainStore.mockImplementation((selector: (state: Store) => unknown) =>
       selector({ isMobile: true })
     );
     render(
@@ -125,7 +130,7 @@ describe('HeaderBottom', () => {
   });
 
   it('should render empty container in mobile mode', () => {
-    mockUseMainStore.mockImplementation((selector) =>
+    mockUseMainStore.mockImplementation((selector: (state: Store) => unknown) =>
       selector({ isMobile: true })
     );
     mockUseMediaQuery.mockReturnValue(false);

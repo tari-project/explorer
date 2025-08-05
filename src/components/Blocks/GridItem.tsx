@@ -29,7 +29,7 @@ import CopyToClipboard from '@components/CopyToClipboard';
 
 function GridItem(
   label: string,
-  value: any,
+  value: string | number,
   copy: boolean,
   index: number,
   subIndex: number,
@@ -50,8 +50,11 @@ function GridItem(
         <TypographyData>
           {copy ? (
             <Fragment>
-              {shortenString(value)}
-              <CopyToClipboard copy={value} key={`${index}-${subIndex}-copy`} />
+              {shortenString(String(value))}
+              <CopyToClipboard
+                copy={String(value)}
+                key={`${index}-${subIndex}-copy`}
+              />
             </Fragment>
           ) : (
             value

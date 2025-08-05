@@ -21,8 +21,9 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { toHexString } from '@utils/helpers';
+import type { TransactionOutput } from '@types';
 
-export const outputItems = (content: any) => {
+export const outputItems = (content: TransactionOutput) => {
   const items = [
     {
       label: 'Payment Reference',

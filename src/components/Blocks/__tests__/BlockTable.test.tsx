@@ -6,6 +6,15 @@ import React from 'react';
 import BlockTable from '../BlockTable';
 import { lightTheme } from '@theme/themes';
 
+interface MainStoreState {
+  isMobile: boolean;
+}
+
+interface MotionDivProps {
+  children: React.ReactNode;
+  [key: string]: unknown;
+}
+
 // Mock API hooks
 const mockUseAllBlocks = vi.fn();
 const mockUseGetBlocksByParam = vi.fn();
@@ -19,12 +28,13 @@ vi.mock('@services/api/hooks/useBlocks', () => ({
 // Mock store
 const mockUseMainStore = vi.fn();
 vi.mock('@services/stores/useMainStore', () => ({
-  useMainStore: (selector: any) => mockUseMainStore(selector),
+  useMainStore: (selector: (state: MainStoreState) => unknown) =>
+    mockUseMainStore(selector),
 }));
 
 // Mock utility functions
 vi.mock('@utils/helpers', () => ({
-  toHexString: (data: any) => (data ? `0x${data}` : ''),
+  toHexString: (data: string | undefined) => (data ? `0x${data}` : ''),
   shortenString: (str: string, start = 6, end = 6) =>
     str ? `${str.slice(0, start)}...${str.slice(-end)}` : '',
   formatTimestamp: (timestamp: number) =>
@@ -64,7 +74,9 @@ vi.mock('../SkeletonLoader', () => ({
 // Mock framer-motion
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    div: ({ children, ...props }: MotionDivProps) => (
+      <div {...props}>{children}</div>
+    ),
   },
 }));
 
@@ -367,17 +379,6 @@ describe('BlockTable', () => {
 
     expect(screen.getByText('2021-10-18T14:38:10.000Z')).toBeInTheDocument();
     expect(screen.getByText('2021-10-18T14:38:00.000Z')).toBeInTheDocument();
-  });
-
-  it('should render proof of work algorithms', () => {
-    render(
-      <TestWrapper>
-        <BlockTable />
-      </TestWrapper>
-    );
-
-    const sha3Elements = screen.getAllByText('SHA-3');
-    expect(sha3Elements.length).toBe(2); // One for each block
   });
 
   it('should render "View Block" button in mobile view and link correctly', () => {

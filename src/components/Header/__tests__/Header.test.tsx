@@ -65,7 +65,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 describe('Header', () => {
-  let mockUseMainStore: any;
+  let mockUseMainStore: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -74,13 +74,15 @@ describe('Header', () => {
   });
 
   it('should render desktop header when not mobile', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        isMobile: false,
-        setIsMobile: mockSetIsMobile,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          isMobile: false,
+          setIsMobile: mockSetIsMobile,
+        };
+        return selector(state);
+      }
+    );
 
     render(
       <TestWrapper>
@@ -96,13 +98,15 @@ describe('Header', () => {
   });
 
   it('should render mobile header when mobile', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        isMobile: true,
-        setIsMobile: mockSetIsMobile,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          isMobile: true,
+          setIsMobile: mockSetIsMobile,
+        };
+        return selector(state);
+      }
+    );
 
     render(
       <TestWrapper>
@@ -118,13 +122,15 @@ describe('Header', () => {
   });
 
   it('should always wrap content in ThemeProvider', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        isMobile: false,
-        setIsMobile: mockSetIsMobile,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          isMobile: false,
+          setIsMobile: mockSetIsMobile,
+        };
+        return selector(state);
+      }
+    );
 
     render(
       <TestWrapper>
@@ -137,13 +143,15 @@ describe('Header', () => {
 
   it('should respond to isMobile state changes', () => {
     // Initially desktop
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        isMobile: false,
-        setIsMobile: mockSetIsMobile,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          isMobile: false,
+          setIsMobile: mockSetIsMobile,
+        };
+        return selector(state);
+      }
+    );
 
     const { rerender } = render(
       <TestWrapper>
@@ -155,13 +163,15 @@ describe('Header', () => {
     expect(screen.queryByTestId('mobile-header')).not.toBeInTheDocument();
 
     // Switch to mobile
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        isMobile: true,
-        setIsMobile: mockSetIsMobile,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          isMobile: true,
+          setIsMobile: mockSetIsMobile,
+        };
+        return selector(state);
+      }
+    );
 
     rerender(
       <TestWrapper>
@@ -174,13 +184,15 @@ describe('Header', () => {
   });
 
   it('should render correct desktop header structure', () => {
-    mockUseMainStore.mockImplementation((selector: any) => {
-      const state = {
-        isMobile: false,
-        setIsMobile: mockSetIsMobile,
-      };
-      return selector(state);
-    });
+    mockUseMainStore.mockImplementation(
+      (selector: (state: unknown) => unknown) => {
+        const state = {
+          isMobile: false,
+          setIsMobile: mockSetIsMobile,
+        };
+        return selector(state);
+      }
+    );
 
     render(
       <TestWrapper>

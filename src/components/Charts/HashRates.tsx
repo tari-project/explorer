@@ -30,7 +30,7 @@ import { Alert, Skeleton } from '@mui/material';
 import { TransparentBg } from '@components/StyledComponents';
 
 interface HashRatesProps {
-  type: 'RandomX' | 'Sha3'| 'TariRandomX';
+  type: 'RandomX' | 'Sha3' | 'TariRandomX';
 }
 
 interface Display {
@@ -73,17 +73,16 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     return dataArray;
   }
 
-  const hashRatesMap: { [key: string]: any[] } = {
-    RandomX: data?.moneroRandomxHashRates,
-    Sha3: data?.sha3xHashRates,
-    TariRandomX: data?.tariRandomxHashRates
-  };
-
   useEffect(() => {
+    const hashRatesMap: { [key: string]: number[] } = {
+      RandomX: data?.moneroRandomxHashRates,
+      Sha3: data?.sha3xHashRates,
+      TariRandomX: data?.tariRandomxHashRates,
+    };
     const display: Display[] = [];
     const ascendingBlockNumbers: number[] = [];
-    let blockItem = parseInt(tip, 10) - noOfBlocks + 1;
-    let hashRates = hashRatesMap[type];
+    const blockItem = parseInt(tip, 10) - noOfBlocks + 1;
+    const hashRates = hashRatesMap[type];
 
     // Populate ascendingBlockNumbers array
     for (let i = 0; i < noOfBlocks; i++) {
@@ -101,17 +100,21 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
       }
     }
     setDisplay(display);
-  }, [data]);
+  }, [data, noOfBlocks, tip, type]);
 
   const option = {
     tooltip: {
       trigger: 'axis',
-      formatter: (params: any) => {
-        const tooltipContent = params.map((param: any) => {
-          const seriesName = param.seriesName;
-          const value = formatHash(param.value, 2);
-          return `${seriesName}: ${value}`;
-        });
+      formatter: (
+        params: Array<{ seriesName: string; value: number; dataIndex: number }>
+      ) => {
+        const tooltipContent = params.map(
+          (param: { seriesName: string; value: number; dataIndex: number }) => {
+            const seriesName = param.seriesName;
+            const value = formatHash(param.value, 2);
+            return `${seriesName}: ${value}`;
+          }
+        );
         const blockNumber = display[params[0].dataIndex].blockNumber;
         return `<b>Block ${blockNumber}</b><br/>${tooltipContent.join(
           '<br/>'

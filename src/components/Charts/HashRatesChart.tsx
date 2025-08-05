@@ -26,6 +26,7 @@ import { chartColor } from '@theme/colors';
 import { useAllBlocks } from '@services/api/hooks/useBlocks';
 import { formatHash } from '@utils/helpers';
 import InnerHeading from '@components/InnerHeading';
+import type { BlockHeader } from '@types';
 
 const HashRates = () => {
   const { data } = useAllBlocks();
@@ -39,17 +40,23 @@ const HashRates = () => {
     return dataArray;
   }
 
-  const blockNumbers = data?.headers.map((header: any) => header.height);
+  const blockNumbers = data?.headers.map(
+    (header: BlockHeader) => header.height
+  );
 
   const option = {
     tooltip: {
       trigger: 'axis',
-      formatter: (params: any) => {
-        const tooltipContent = params.map((param: any) => {
-          const seriesName = param.seriesName;
-          const value = formatHash(param.value);
-          return `${seriesName}: ${value}`;
-        });
+      formatter: (
+        params: Array<{ seriesName: string; value: number; dataIndex: number }>
+      ) => {
+        const tooltipContent = params.map(
+          (param: { seriesName: string; value: number; dataIndex: number }) => {
+            const seriesName = param.seriesName;
+            const value = formatHash(param.value);
+            return `${seriesName}: ${value}`;
+          }
+        );
         const blockNumber = blockNumbers?.[params[0].dataIndex];
         return `<b>Block ${blockNumber}</b><br/>${tooltipContent.join(
           '<br/>'

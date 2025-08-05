@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 
-export const Wrapper = styled(motion.div)<{}>(() => ({
+export const Wrapper = styled(motion.div)<object>(() => ({
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',

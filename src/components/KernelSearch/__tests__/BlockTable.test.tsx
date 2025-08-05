@@ -27,26 +27,32 @@ vi.mock('@components/InnerHeading', () => ({
 }));
 
 vi.mock('@utils/helpers', () => ({
-  toHexString: vi.fn((data) => {
+  toHexString: vi.fn((data: unknown) => {
     if (!data || data === 'no data') return 'no data';
     return `hex_${data}`;
   }),
   shortenString: vi.fn(
-    (str, start, end) =>
+    (str: string, start: number, end: number) =>
       `${str.substring(0, start)}...${str.substring(str.length - end)}`
   ),
-  formatTimestamp: vi.fn((timestamp) => {
+  formatTimestamp: vi.fn((timestamp: unknown) => {
     if (!timestamp || timestamp === 'no data') return 'no data';
     return `formatted_${timestamp}`;
   }),
-  powCheck: vi.fn((algo) => {
+  powCheck: vi.fn((algo: unknown) => {
     if (!algo || algo === 'no data') return 'no data';
     return `pow_${algo}`;
   }),
 }));
 
 vi.mock('@mui/material', () => ({
-  Typography: ({ children, variant }: any) => (
+  Typography: ({
+    children,
+    variant,
+  }: {
+    children: React.ReactNode;
+    variant?: string;
+  }) => (
     <div data-testid="typography" data-variant={variant}>
       {children}
     </div>
@@ -59,9 +65,14 @@ vi.mock('@mui/material', () => ({
     lg,
     spacing,
     style,
-    container,
     ...props
-  }: any) => (
+  }: React.ComponentProps<'div'> & {
+    item?: boolean;
+    xs?: number;
+    md?: number;
+    lg?: number;
+    spacing?: number;
+  }) => (
     <div
       data-testid="grid"
       data-item={item}
@@ -75,7 +86,13 @@ vi.mock('@mui/material', () => ({
       {children}
     </div>
   ),
-  Divider: ({ color, style }: any) => (
+  Divider: ({
+    color,
+    style,
+  }: {
+    color?: string;
+    style?: React.CSSProperties;
+  }) => (
     <div data-testid="divider" data-color={color} style={style}>
       ---
     </div>
@@ -88,7 +105,12 @@ vi.mock('@mui/material', () => ({
     color,
     style,
     ...props
-  }: any) => (
+  }: React.ComponentProps<'button'> & {
+    variant?: string;
+    fullWidth?: boolean;
+    href?: string;
+    color?: string;
+  }) => (
     <button
       data-testid="button"
       data-variant={variant}
@@ -101,20 +123,38 @@ vi.mock('@mui/material', () => ({
       {children}
     </button>
   ),
-  Box: ({ children, style, ...props }: any) => (
+  Box: ({
+    children,
+    style,
+    ...props
+  }: React.ComponentProps<'div'> & { style?: React.CSSProperties }) => (
     <div data-testid="box" style={style} {...props}>
       {children}
     </div>
   ),
-  Pagination: ({ count, page, onChange }: any) => (
+  Pagination: ({
+    count,
+    page,
+    onChange,
+  }: {
+    count?: number;
+    page?: number;
+    onChange?: (event: unknown, page: number) => void;
+  }) => (
     <div data-testid="pagination" data-count={count} data-page={page}>
-      <button onClick={() => onChange(null, page - 1)} disabled={page <= 1}>
+      <button
+        onClick={() => onChange?.(null, (page || 1) - 1)}
+        disabled={(page || 1) <= 1}
+      >
         Previous
       </button>
       <span>
-        Page {page} of {count}
+        Page {page || 1} of {count || 1}
       </span>
-      <button onClick={() => onChange(null, page + 1)} disabled={page >= count}>
+      <button
+        onClick={() => onChange?.(null, (page || 1) + 1)}
+        disabled={(page || 1) >= (count || 1)}
+      >
         Next
       </button>
     </div>
@@ -163,7 +203,9 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>
+      <ThemeProvider
+        theme={mockTheme as unknown as import('@mui/material/styles').Theme}
+      >
         <MemoryRouter>{children}</MemoryRouter>
       </ThemeProvider>
     </QueryClientProvider>
@@ -171,10 +213,10 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 describe('BlockTable', () => {
-  let mockUseMainStore: any;
-  let mockToHexString: any;
-  let mockFormatTimestamp: any;
-  let mockPowCheck: any;
+  let mockUseMainStore: ReturnType<typeof vi.fn>;
+  let mockToHexString: ReturnType<typeof vi.fn>;
+  let mockFormatTimestamp: ReturnType<typeof vi.fn>;
+  let mockPowCheck: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -194,12 +236,72 @@ describe('BlockTable', () => {
         header: {
           height: 12345,
           timestamp: 1640995200,
-          hash: { data: 'block_hash_1' },
+          hash: {
+            data: [
+              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
+              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
+              116, 123, 184,
+            ],
+          },
+          pow: { pow_algo: 1 },
+          version: 1,
+          prev_hash: {
+            data: [
+              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
+              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
+              116, 123, 185,
+            ],
+          },
+          nonce: 123456,
+          output_mr: {
+            data: [
+              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
+              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
+              116, 123, 186,
+            ],
+          },
+          validator_node_mr: {
+            data: [
+              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
+              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
+              116, 123, 187,
+            ],
+          },
+          kernel_mr: {
+            data: [
+              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
+              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
+              116, 123, 188,
+            ],
+          },
+          input_mr: {
+            data: [
+              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
+              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
+              116, 123, 189,
+            ],
+          },
+          kernel_mmr_size: 100,
+          output_mmr_size: 200,
+          total_kernel_offset: {
+            data: [
+              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
+              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
+              116, 123, 190,
+            ],
+          },
+          total_script_offset: {
+            data: [
+              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
+              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
+              116, 123, 191,
+            ],
+          },
         },
-        pow: { pow_algo: 1 },
         body: {
           kernels: Array(5).fill({}),
           outputs: Array(10).fill({}),
+          inputs: Array(0).fill({}),
         },
       },
     },
@@ -208,12 +310,72 @@ describe('BlockTable', () => {
         header: {
           height: 12346,
           timestamp: 1640995260,
-          hash: { data: 'block_hash_2' },
+          hash: {
+            data: [
+              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
+              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
+              117, 124, 185,
+            ],
+          },
+          pow: { pow_algo: 2 },
+          version: 1,
+          prev_hash: {
+            data: [
+              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
+              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
+              117, 124, 186,
+            ],
+          },
+          nonce: 123457,
+          output_mr: {
+            data: [
+              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
+              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
+              117, 124, 187,
+            ],
+          },
+          validator_node_mr: {
+            data: [
+              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
+              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
+              117, 124, 188,
+            ],
+          },
+          kernel_mr: {
+            data: [
+              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
+              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
+              117, 124, 189,
+            ],
+          },
+          input_mr: {
+            data: [
+              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
+              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
+              117, 124, 190,
+            ],
+          },
+          kernel_mmr_size: 101,
+          output_mmr_size: 201,
+          total_kernel_offset: {
+            data: [
+              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
+              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
+              117, 124, 191,
+            ],
+          },
+          total_script_offset: {
+            data: [
+              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
+              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
+              117, 124, 192,
+            ],
+          },
         },
-        pow: { pow_algo: 2 },
         body: {
           kernels: Array(3).fill({}),
           outputs: Array(8).fill({}),
+          inputs: Array(0).fill({}),
         },
       },
     },
@@ -224,12 +386,30 @@ describe('BlockTable', () => {
       header: {
         height: 12345 + i,
         timestamp: 1640995200 + i * 60,
-        hash: { data: `block_hash_${i}` },
+        hash: { data: Array.from({ length: 32 }, (_, j) => 230 + i + j) },
+        pow: { pow_algo: (i % 2) + 1 },
+        version: 1,
+        prev_hash: { data: Array.from({ length: 32 }, (_, j) => 231 + i + j) },
+        nonce: 123456 + i,
+        output_mr: { data: Array.from({ length: 32 }, (_, j) => 232 + i + j) },
+        validator_node_mr: {
+          data: Array.from({ length: 32 }, (_, j) => 233 + i + j),
+        },
+        kernel_mr: { data: Array.from({ length: 32 }, (_, j) => 234 + i + j) },
+        input_mr: { data: Array.from({ length: 32 }, (_, j) => 235 + i + j) },
+        kernel_mmr_size: 100 + i,
+        output_mmr_size: 200 + i,
+        total_kernel_offset: {
+          data: Array.from({ length: 32 }, (_, j) => 236 + i + j),
+        },
+        total_script_offset: {
+          data: Array.from({ length: 32 }, (_, j) => 237 + i + j),
+        },
       },
-      pow: { pow_algo: (i % 2) + 1 },
       body: {
         kernels: Array(5 + i).fill({}),
         outputs: Array(10 + i).fill({}),
+        inputs: Array(0).fill({}),
       },
     },
   }));
@@ -335,11 +515,11 @@ describe('BlockTable', () => {
       const copyComponents = screen.getAllByTestId('copy-to-clipboard');
       expect(copyComponents[0]).toHaveAttribute(
         'data-copy',
-        'hex_block_hash_1'
+        'hex_230,160,204,44,173,230,204,173,53,91,78,10,8,168,2,174,164,156,16,1,133,148,15,200,171,69,101,117,185,116,123,184'
       );
       expect(copyComponents[1]).toHaveAttribute(
         'data-copy',
-        'hex_block_hash_2'
+        'hex_231,161,205,45,174,231,205,174,54,92,79,11,9,169,3,175,165,157,17,2,134,149,16,201,172,70,102,118,186,117,124,185'
       );
 
       // Check for formatted timestamps
@@ -431,10 +611,10 @@ describe('BlockTable', () => {
       expect(screen.queryByTestId('pagination')).not.toBeInTheDocument();
     });
 
-    it('should handle null data', () => {
+    it('should handle undefined data', () => {
       render(
         <TestWrapper>
-          <BlockTable data={null} />
+          <BlockTable data={[]} />
         </TestWrapper>
       );
 
@@ -450,12 +630,20 @@ describe('BlockTable', () => {
       );
 
       // Helper functions should be called
-      expect(mockToHexString).toHaveBeenCalledWith('block_hash_1');
-      expect(mockToHexString).toHaveBeenCalledWith('block_hash_2');
+      expect(mockToHexString).toHaveBeenCalledWith([
+        230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2, 174,
+        164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185, 116, 123,
+        184,
+      ]);
+      expect(mockToHexString).toHaveBeenCalledWith([
+        231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3, 175,
+        165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186, 117, 124,
+        185,
+      ]);
       expect(mockFormatTimestamp).toHaveBeenCalledWith(1640995200);
       expect(mockFormatTimestamp).toHaveBeenCalledWith(1640995260);
-      expect(mockPowCheck).toHaveBeenCalledWith(1);
-      expect(mockPowCheck).toHaveBeenCalledWith(2);
+      expect(mockPowCheck).toHaveBeenCalledWith('1');
+      expect(mockPowCheck).toHaveBeenCalledWith('2');
     });
   });
 

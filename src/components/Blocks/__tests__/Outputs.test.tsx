@@ -6,6 +6,19 @@ import { MemoryRouter } from 'react-router-dom';
 import Outputs from '../Outputs';
 import { lightTheme } from '@theme/themes';
 
+interface AccordionProps {
+  adjustedIndex: number;
+  tabName: string;
+  items: unknown[];
+  isHighlighted: boolean;
+}
+
+interface FetchStatusProps {
+  isLoading: boolean;
+  isError: boolean;
+  errorMessage?: string;
+}
+
 // Mock API hooks
 const mockUseGetBlockByHeightOrHash = vi.fn();
 const mockUseGetPaginatedData = vi.fn();
@@ -22,7 +35,12 @@ vi.mock('@services/api/hooks/useBlocks', () => ({
 
 // Mock components
 vi.mock('../GenerateAccordion', () => ({
-  default: ({ adjustedIndex, tabName, items, isHighlighted }: any) => (
+  default: ({
+    adjustedIndex,
+    tabName,
+    items,
+    isHighlighted,
+  }: AccordionProps) => (
     <div
       data-testid={`accordion-${adjustedIndex}`}
       data-highlighted={isHighlighted ? 'true' : 'false'}
@@ -35,7 +53,7 @@ vi.mock('../GenerateAccordion', () => ({
 }));
 
 vi.mock('@components/FetchStatusCheck', () => ({
-  default: ({ isLoading, isError, errorMessage }: any) => (
+  default: ({ isLoading, isError, errorMessage }: FetchStatusProps) => (
     <div data-testid="fetch-status">
       {isLoading && <span data-testid="loading">Loading...</span>}
       {isError && <span data-testid="error">{errorMessage}</span>}
@@ -66,9 +84,9 @@ vi.mock('../Data/Outputs', () => ({
 }));
 
 vi.mock('@utils/searchFunctions', () => ({
-  payrefSearch: vi.fn((payref, data) => {
+  payrefSearch: vi.fn((payref: string, data: { hash: string }[]) => {
     if (!payref) return null;
-    return data.findIndex((item: any) => item.hash === payref);
+    return data.findIndex((item: { hash: string }) => item.hash === payref);
   }),
 }));
 

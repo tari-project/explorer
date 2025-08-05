@@ -1,5 +1,6 @@
 import { styled, keyframes } from '@mui/system';
 import { Link } from '@mui/material';
+import type { ThemeMode } from '@types';
 
 const radarPulse = keyframes`
     0% {
@@ -13,7 +14,7 @@ const radarPulse = keyframes`
 `;
 
 export const Wrapper = styled('div')<{
-  theme: 'light' | 'dark';
+  $theme: ThemeMode;
   $noBackground?: boolean;
 }>`
   display: flex;
@@ -31,8 +32,8 @@ export const Wrapper = styled('div')<{
   flex-shrink: 0;
   width: fit-content;
 
-  ${({ theme }) =>
-    theme === 'light' &&
+  ${({ $theme }) =>
+    $theme === 'light' &&
     `
             border: 1px solid rgba(17, 17, 17, 0.2);
             background: rgba(17, 17, 17, 0.05);
@@ -62,7 +63,7 @@ export const TextWrapper = styled('div')`
   position: relative;
 `;
 
-export const Dot = styled('div')<{ theme: 'light' | 'dark' }>`
+export const Dot = styled('div')<{ $theme: ThemeMode }>`
   width: 11px;
   height: 11px;
   background: linear-gradient(180deg, #0f9 0%, #b0d636 100%);
@@ -88,7 +89,7 @@ export const Dot = styled('div')<{ theme: 'light' | 'dark' }>`
   }
 `;
 
-export const DotSml = styled('div')<{ theme: 'light' | 'dark' }>`
+export const DotSml = styled('div')<{ $theme: ThemeMode }>`
   width: 8px;
   height: 8px;
   background: linear-gradient(180deg, #0f9 0%, #b0d636 100%);
@@ -114,7 +115,7 @@ export const DotSml = styled('div')<{ theme: 'light' | 'dark' }>`
   }
 `;
 
-export const Text = styled('div')<{ theme: 'light' | 'dark' }>`
+export const Text = styled('div')<{ $theme: ThemeMode }>`
   color: #71ee73;
   font-family: var(--font-poppins), sans-serif;
   font-size: 15px;
@@ -126,8 +127,8 @@ export const Text = styled('div')<{ theme: 'light' | 'dark' }>`
   transform: translateY(1px);
   white-space: nowrap;
 
-  ${({ theme }) =>
-    theme === 'light' &&
+  ${({ $theme }) =>
+    $theme === 'light' &&
     `
             color: #26764e;
         `}
@@ -142,7 +143,7 @@ export const ButtonWrapper = styled('div')`
   z-index: 1;
 `;
 
-export const Button = styled(Link)<{ theme: 'light' | 'dark' }>`
+export const Button = styled(Link)<{ $theme: ThemeMode }>`
   position: relative;
   z-index: 1;
   border-radius: 10px;
@@ -189,8 +190,8 @@ export const Button = styled(Link)<{ theme: 'light' | 'dark' }>`
     }
   }
 
-  ${({ theme }) =>
-    theme === 'light' &&
+  ${({ $theme }) =>
+    $theme === 'light' &&
     `
             background: #000;
             color: #fff;

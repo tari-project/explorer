@@ -82,17 +82,17 @@ export default function MinersCTA({
 
   if (minersOnly) {
     return (
-      <TextWrapper 
-        data-testid="miners-cta" 
-        data-theme={theme} 
+      <TextWrapper
+        data-testid="miners-cta"
+        data-theme={theme}
         data-button-text={buttonText}
         data-no-background={noBackground ? 'true' : 'false'}
         data-miners-only="true"
-        data-button-only="false">
-      
-        <DotSml theme={theme as any} />
+        data-button-only="false"
+      >
+        <DotSml $theme={theme} />
         <Text
-          theme={theme as any}
+          $theme={theme}
           style={{
             fontSize: '13px',
             letterSpacing: '0.1px',
@@ -124,16 +124,16 @@ export default function MinersCTA({
 
   if (buttonOnly) {
     return (
-      <ButtonWrapper 
-        data-testid="miners-cta" 
-        data-theme={theme} 
+      <ButtonWrapper
+        data-testid="miners-cta"
+        data-theme={theme}
         data-button-text={buttonText}
         data-no-background={noBackground ? 'true' : 'false'}
         data-miners-only="false"
-        data-button-only="true">
-      
+        data-button-only="true"
+      >
         <Button
-          theme={theme as any}
+          $theme={theme}
           href={downloadLink}
           onClick={handleDownloadClick}
           target="_blank"
@@ -147,19 +147,19 @@ export default function MinersCTA({
   return (
     <>
       {!isMobile && <DownloadModal />}
-      <Wrapper 
-        theme={theme as any} 
-        $noBackground={noBackground} 
-        data-testid="miners-cta" 
-        data-theme={theme} 
+      <Wrapper
+        $theme={theme}
+        $noBackground={noBackground}
+        data-testid="miners-cta"
+        data-theme={theme}
         data-button-text={buttonText}
         data-no-background={noBackground ? 'true' : 'false'}
         data-miners-only="false"
-        data-button-only="false">
-      
+        data-button-only="false"
+      >
         <TextWrapper>
-          <Dot theme={theme as any} />
-          <Text theme={theme as any}>
+          <Dot $theme={theme} />
+          <Text $theme={theme}>
             <NumberWrapper style={{ width: `${numberWidth}px` }}>
               <span ref={numberRef}>
                 <Suspense fallback={<div>Loading...</div>}>
@@ -179,7 +179,7 @@ export default function MinersCTA({
         </TextWrapper>
         <ButtonWrapper>
           <Button
-            theme={theme as any}
+            $theme={theme}
             href={downloadLink}
             onClick={handleDownloadClick}
             target="_blank"

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, type Theme } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import MempoolTable from '../MempoolTable';
@@ -46,30 +46,20 @@ vi.mock('@components/FetchStatusCheck', () => ({
 }));
 
 vi.mock('@utils/helpers', () => ({
-  toHexString: vi.fn((data) => `hex_${data}`),
+  toHexString: vi.fn((data: unknown) => `hex_${data}`),
   shortenString: vi.fn(
-    (str, start, end) =>
+    (str: string, start: number, end: number) =>
       `${str.substring(0, start)}...${str.substring(str.length - end)}`
   ),
 }));
 
 vi.mock('@mui/material', () => ({
-  Typography: ({ children, variant }: any) => (
+  Typography: ({ children, variant }: { children: React.ReactNode; variant?: string }) => (
     <div data-testid="typography" data-variant={variant}>
       {children}
     </div>
   ),
-  Grid: ({
-    children,
-    item,
-    xs,
-    md,
-    lg,
-    spacing,
-    style,
-    container,
-    ...props
-  }: any) => (
+  Grid: ({ children, item, xs, md, lg, spacing, style, ...props }: React.ComponentProps<'div'> & { item?: boolean; xs?: number; md?: number; lg?: number; spacing?: number }) => (
     <div
       data-testid="grid"
       data-item={item}
@@ -84,12 +74,12 @@ vi.mock('@mui/material', () => ({
       {children}
     </div>
   ),
-  Box: ({ children, style, ...props }: any) => (
+  Box: ({ children, style, ...props }: React.ComponentProps<'div'> & { style?: React.CSSProperties }) => (
     <div data-testid="box" style={style} {...props}>
       {children}
     </div>
   ),
-  Divider: ({ color, style }: any) => (
+  Divider: ({ color, style }: { color?: string; style?: React.CSSProperties }) => (
     <div data-testid="divider" data-color={color} style={style}>
       ---
     </div>
@@ -102,7 +92,7 @@ vi.mock('@mui/material', () => ({
     color,
     style,
     ...props
-  }: any) => (
+  }: React.ComponentProps<'button'> & { variant?: string; fullWidth?: boolean; href?: string; color?: string }) => (
     <button
       data-testid="button"
       data-variant={variant}
@@ -115,38 +105,38 @@ vi.mock('@mui/material', () => ({
       {children}
     </button>
   ),
-  Skeleton: ({ variant, height }: any) => (
+  Skeleton: ({ variant, height }: { variant?: string; height?: string | number }) => (
     <div data-testid="skeleton" data-variant={variant} data-height={height}>
       Loading...
     </div>
   ),
-  Alert: ({ severity, variant, children }: any) => (
+  Alert: ({ severity, variant, children }: { severity?: string; variant?: string; children?: React.ReactNode }) => (
     <div data-testid="alert" data-severity={severity} data-variant={variant}>
       {children}
     </div>
   ),
-  Pagination: ({ count, page, onChange }: any) => (
+  Pagination: ({ count, page, onChange }: { count?: number; page?: number; onChange?: (event: unknown, page: number) => void }) => (
     <div data-testid="pagination" data-count={count} data-page={page}>
-      <button onClick={() => onChange(null, page - 1)}>Previous</button>
-      <button onClick={() => onChange(null, page + 1)}>Next</button>
+      <button onClick={() => onChange?.(null, (page || 1) - 1)}>Previous</button>
+      <button onClick={() => onChange?.(null, (page || 1) + 1)}>Next</button>
     </div>
   ),
-  MenuItem: ({ children, value }: any) => (
+  MenuItem: ({ children, value }: { children: React.ReactNode; value?: string | number }) => (
     <option data-testid="menu-item" value={value}>
       {children}
     </option>
   ),
-  FormControl: ({ children }: any) => (
+  FormControl: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="form-control">{children}</div>
   ),
 }));
 
 vi.mock('@mui/material/Select', () => ({
-  default: ({ value, onChange, children }: any) => (
+  default: ({ value, onChange, children }: { value?: string | number; onChange?: (event: { target: { value: string } }) => void; children: React.ReactNode }) => (
     <select
       data-testid="select"
       value={value}
-      onChange={(e) => onChange({ target: { value: e.target.value } })}
+      onChange={(e) => onChange?.({ target: { value: e.target.value } })}
     >
       {children}
     </select>
@@ -185,7 +175,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>
+      <ThemeProvider theme={mockTheme as unknown as Theme}>
         <MemoryRouter>{children}</MemoryRouter>
       </ThemeProvider>
     </QueryClientProvider>
@@ -193,9 +183,9 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 describe('MempoolTable', () => {
-  let mockUseAllBlocks: any;
-  let mockUseMainStore: any;
-  let mockToHexString: any;
+  let mockUseAllBlocks: ReturnType<typeof vi.fn>;
+  let mockUseMainStore: ReturnType<typeof vi.fn>;
+  let mockToHexString: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();

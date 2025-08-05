@@ -22,7 +22,7 @@
 
 import Paper from '@mui/material/Paper';
 import TableCell from '@mui/material/TableCell';
-import { styled } from '@mui/material/styles';
+import { styled, type Theme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -32,7 +32,7 @@ import Divider from '@mui/material/Divider';
 import AccordionSummary from '@mui/material/AccordionSummary';
 
 interface StyledAccordionProps {
-  theme?: any;
+  theme?: Theme;
   isHighlighted?: boolean;
   expanded?: boolean;
 }
@@ -183,8 +183,8 @@ export const TransparentDivider = styled(Divider)(({ theme }) => ({
   background: 'none',
 }));
 
-export const TransparentBg = styled(Box)(
-  ({ theme, height }: { theme: any; height?: any }) => ({
+export const TransparentBg = styled(Box)<{ height?: string | number }>(
+  ({ theme, height }) => ({
     height: height || '300px',
     display: 'flex',
     justifyContent: 'center',

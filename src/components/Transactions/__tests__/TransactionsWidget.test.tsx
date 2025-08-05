@@ -20,7 +20,7 @@ vi.mock('@components/FetchStatusCheck', () => ({
   default: () => <div>FetchStatusCheck</div>,
 }));
 vi.mock('@components/StyledComponents', () => ({
-  GradientPaper: ({ children }: any) => <div>{children}</div>,
+  GradientPaper: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 vi.mock('@components/DotLoader', () => ({
   default: () => <div>DotLoader</div>,
@@ -28,9 +28,9 @@ vi.mock('@components/DotLoader', () => ({
 vi.mock('./images/icon-txns-1.svg', () => 'icon-txns-1.svg');
 vi.mock('./images/icon-txns-2.svg', () => 'icon-txns-2.svg');
 vi.mock('./TransactionsWidget.styles', () => ({
-  NumberTypography: ({ children }: any) => <span>{children}</span>,
+  NumberTypography: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
   Line: () => <div>Line</div>,
-  IconWrapper: ({ children }: any) => <span>{children}</span>,
+  IconWrapper: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
 }));
 vi.mock('@utils/helpers', () => ({
   formatNumber: (n: number) => n.toLocaleString(),

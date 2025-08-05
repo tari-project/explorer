@@ -41,6 +41,7 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import CopyToClipboard from '@components/CopyToClipboard';
 import { useMainStore } from '@services/stores/useMainStore';
+import type { BlockData } from '@types';
 
 function BlockWidget() {
   const theme = useTheme();
@@ -81,7 +82,7 @@ function BlockWidget() {
       <Grid container spacing={2} pl={0} pr={0}>
         {data?.headers
           .slice(0, mobileCount)
-          .map((block: any, index: number) => (
+          .map((block: BlockData, index: number) => (
             <Fragment key={index}>
               <Grid item xs={col1}>
                 <Typography variant="h6">Height</Typography>
@@ -107,7 +108,7 @@ function BlockWidget() {
                 <Typography variant="h6">Proof of Work</Typography>
               </Grid>
               <Grid item xs={col2}>
-                <TypographyData>{powCheck(block.pow.pow_algo)}</TypographyData>
+                <TypographyData>{block.pow ? powCheck(String(block.pow.pow_algo)) : 'Unknown'}</TypographyData>
               </Grid>
 
               <Grid item xs={col1}>
@@ -237,7 +238,7 @@ function BlockWidget() {
         <Grid container spacing={2} pl={0} pr={0} pb={2}>
           {data?.headers
             .slice(0, desktopCount)
-            .map((block: any, index: number) => (
+            .map((block: BlockData, index: number) => (
               <Fragment key={index}>
                 <Grid item xs={12}>
                   <Divider
@@ -261,7 +262,7 @@ function BlockWidget() {
                 </Grid>
                 <Grid item xs={col3} md={col3} lg={col3}>
                   <TypographyData>
-                    {powCheck(block.pow.pow_algo)}
+                    {block.pow ? powCheck(String(block.pow.pow_algo)) : 'Unknown'}
                   </TypographyData>
                 </Grid>
                 <Grid item xs={col4} md={col4} lg={col4}>

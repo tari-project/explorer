@@ -10,7 +10,7 @@ vi.mock('@services/api/hooks/useBlocks', () => ({
 
 // Mock MUI components
 vi.mock('@mui/material/Typography', () => ({
-  default: ({ children, variant, color, ...props }: any) => (
+  default: ({ children, variant, color, ...props }: React.ComponentProps<'span'> & { variant?: string; color?: string }) => (
     <span data-testid="typography" data-variant={variant} data-color={color} {...props}>
       {children}
     </span>
@@ -40,7 +40,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 }
 
 describe('VersionInfo', () => {
-  let mockUseAllBlocks: any
+  let mockUseAllBlocks: ReturnType<typeof vi.fn>
 
   beforeEach(async () => {
     vi.clearAllMocks()

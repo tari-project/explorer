@@ -6,6 +6,24 @@ import { MemoryRouter } from 'react-router-dom';
 import Kernels from '../Kernels';
 import { lightTheme } from '@theme/themes';
 
+interface AccordionProps {
+  adjustedIndex: number;
+  tabName: string;
+  items: unknown[];
+  isHighlighted: boolean;
+}
+
+interface FetchStatusProps {
+  isLoading: boolean;
+  isError: boolean;
+  errorMessage?: string;
+}
+
+interface KernelItem {
+  nonce?: string;
+  signature?: string;
+}
+
 // Mock API hooks
 const mockUseGetBlockByHeightOrHash = vi.fn();
 const mockUseGetPaginatedData = vi.fn();
@@ -22,7 +40,12 @@ vi.mock('@services/api/hooks/useBlocks', () => ({
 
 // Mock components
 vi.mock('../GenerateAccordion', () => ({
-  default: ({ adjustedIndex, tabName, items, isHighlighted }: any) => (
+  default: ({
+    adjustedIndex,
+    tabName,
+    items,
+    isHighlighted,
+  }: AccordionProps) => (
     <div
       data-testid={`accordion-${adjustedIndex}`}
       data-highlighted={isHighlighted ? 'true' : 'false'}
@@ -35,7 +58,7 @@ vi.mock('../GenerateAccordion', () => ({
 }));
 
 vi.mock('@components/FetchStatusCheck', () => ({
-  default: ({ isLoading, isError, errorMessage }: any) => (
+  default: ({ isLoading, isError, errorMessage }: FetchStatusProps) => (
     <div data-testid="fetch-status">
       {isLoading && <span data-testid="loading">Loading...</span>}
       {isError && <span data-testid="error">{errorMessage}</span>}
@@ -81,14 +104,16 @@ vi.mock('../Data/Kernels', () => ({
 }));
 
 vi.mock('@/utils/searchFunctions', () => ({
-  kernelSearch: vi.fn((nonce, signature, data) => {
-    if (!nonce && !signature) return null;
-    return data.findIndex(
-      (item: any) =>
-        (nonce && item.nonce === nonce) ||
-        (signature && item.signature === signature)
-    );
-  }),
+  kernelSearch: vi.fn(
+    (nonce: string, signature: string, data: KernelItem[]) => {
+      if (!nonce && !signature) return null;
+      return data.findIndex(
+        (item: KernelItem) =>
+          (nonce && item.nonce === nonce) ||
+          (signature && item.signature === signature)
+      );
+    }
+  ),
 }));
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {

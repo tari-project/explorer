@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, type Theme } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import VNTable from '../VNTable';
@@ -38,7 +38,7 @@ vi.mock('@components/InnerHeading', () => ({
 }));
 
 vi.mock('@mui/material', () => ({
-  Typography: ({ children, variant, color, ...props }: any) => (
+  Typography: ({ children, variant, color, ...props }: React.ComponentProps<'div'> & { variant?: string; color?: string }) => (
     <div
       data-testid="typography"
       data-variant={variant}
@@ -48,7 +48,7 @@ vi.mock('@mui/material', () => ({
       {children}
     </div>
   ),
-  Grid: ({ children, item, xs, md, lg, spacing, container, ...props }: any) => (
+  Grid: ({ children, item, xs, md, lg, spacing, container, ...props }: React.ComponentProps<'div'> & { item?: boolean; xs?: number; md?: number; lg?: number; spacing?: number; container?: boolean }) => (
     <div
       data-testid="grid"
       data-item={item}
@@ -62,7 +62,7 @@ vi.mock('@mui/material', () => ({
       {children}
     </div>
   ),
-  Skeleton: ({ variant, height, width }: any) => (
+  Skeleton: ({ variant, height, width }: { variant?: string; height?: string | number; width?: string | number }) => (
     <div
       data-testid="skeleton"
       data-variant={variant}
@@ -72,12 +72,12 @@ vi.mock('@mui/material', () => ({
       Loading...
     </div>
   ),
-  Alert: ({ severity, variant, children }: any) => (
+  Alert: ({ severity, variant, children }: { severity?: string; variant?: string; children?: React.ReactNode }) => (
     <div data-testid="alert" data-severity={severity} data-variant={variant}>
       {children}
     </div>
   ),
-  Divider: ({ color, style }: any) => (
+  Divider: ({ color, style }: { color?: string; style?: React.CSSProperties }) => (
     <div data-testid="divider" data-color={color} style={style}>
       ---
     </div>
@@ -121,7 +121,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>
+      <ThemeProvider theme={mockTheme as unknown as Theme}>
         <MemoryRouter>{children}</MemoryRouter>
       </ThemeProvider>
     </QueryClientProvider>
@@ -129,8 +129,8 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 describe('VNTable', () => {
-  let mockUseAllBlocks: any;
-  let mockUseMainStore: any;
+  let mockUseAllBlocks: ReturnType<typeof vi.fn>;
+  let mockUseMainStore: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();

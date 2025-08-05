@@ -14,6 +14,7 @@ vi.mock('@utils/helpers', () => ({
 }));
 
 const createMockOutput = () => ({
+  payment_reference: { data: [22, 23, 24] },
   features: {
     version: 1,
     output_type: 'COINBASE',
@@ -183,6 +184,7 @@ describe('outputItems', () => {
 
   it('should handle missing data gracefully', () => {
     const incompleteOutput = {
+      payment_reference: { data: [] },
       features: {
         version: 0,
         output_type: '',
@@ -226,12 +228,12 @@ describe('outputItems', () => {
   it('should handle null or undefined values gracefully', () => {
     const mockOutput = {
       ...createMockOutput(),
-      covenant: { data: null },
+      covenant: { data: [] },
     };
 
     expect(() => outputItems(mockOutput)).not.toThrow();
     const result = outputItems(mockOutput);
     const covenant = result.find((item) => item.label === 'Covenant Version');
-    expect(covenant?.value).toBe(null);
+    expect(covenant?.value).toEqual([]);
   });
 });

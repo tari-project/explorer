@@ -22,7 +22,7 @@
 
 import { ChangeEvent } from 'react';
 
-const renderJson = (json: any) => {
+const renderJson = (json: unknown): React.ReactNode => {
   if (Array.isArray(json)) {
     if (json.length == 32) {
       return <span className="string">"{toHexString(json)}"</span>;
@@ -38,14 +38,15 @@ const renderJson = (json: any) => {
         ],
       </>
     );
-  } else if (typeof json === 'object') {
+  } else if (typeof json === 'object' && json !== null) {
+    const obj = json as Record<string, unknown>;
     return (
       <>
         {'{'}
         <ul>
-          {Object.keys(json).map((key) => (
+          {Object.keys(obj).map((key) => (
             <li key={key}>
-              <b>"{key}"</b>:{renderJson(json[key])}
+              <b>"{key}"</b>:{renderJson(obj[key])}
             </li>
           ))}
         </ul>
@@ -55,21 +56,25 @@ const renderJson = (json: any) => {
   } else {
     if (typeof json === 'string')
       return <span className="string">"{json}"</span>;
-    return <span className="other">{json}</span>;
+    return <span className="other">{String(json)}</span>;
   }
 };
 
-function removeTagged(obj: any) {
+function removeTagged(obj: unknown): unknown {
   if (obj === undefined) {
     return 'undefined';
   }
-  if (obj['@@TAGGED@@'] !== undefined) {
-    return obj['@@TAGGED@@'][1];
+  if (typeof obj === 'object' && obj !== null) {
+    const rec = obj as Record<string, unknown>;
+    if (rec['@@TAGGED@@'] !== undefined) {
+      const tagged = rec['@@TAGGED@@'] as unknown[];
+      return tagged[1];
+    }
   }
   return obj;
 }
 
-function toHexString(byteArray: any): string {
+function toHexString(byteArray: unknown): string {
   if (Array.isArray(byteArray)) {
     return Array.from(byteArray, function (byte) {
       return ('0' + (byte & 0xff).toString(16)).slice(-2);
@@ -78,15 +83,22 @@ function toHexString(byteArray: any): string {
   if (byteArray === undefined) {
     return 'undefined';
   }
-  // object might be a tagged object
-  if (byteArray['@@TAGGED@@'] !== undefined) {
-    return toHexString(byteArray['@@TAGGED@@'][1]);
+  if (
+    typeof byteArray === 'object' &&
+    byteArray !== null &&
+    (byteArray as Record<string, unknown>)['@@TAGGED@@'] !== undefined
+  ) {
+    const tagged = (byteArray as Record<string, unknown>)[
+      '@@TAGGED@@'
+    ] as unknown[];
+    return toHexString(tagged[1] as number[]);
   }
+  // Only allow arrays, tagged objects, or undefined. All else unsupported.
   return 'Unsupported type';
 }
 
 function fromHexString(hexString: string) {
-  let res = [];
+  const res: number[] = [];
   for (let i = 0; i < hexString.length; i += 2) {
     res.push(Number('0x' + hexString.substring(i, i + 2)));
   }
@@ -97,7 +109,7 @@ function shortenString(string: string, start: number = 8, end: number = 8) {
   return string.substring(0, start) + '...' + string.slice(-end);
 }
 
-function emptyRows(page: number, rowsPerPage: number, array: any[]) {
+function emptyRows(page: number, rowsPerPage: number, array: unknown[]) {
   return page > 0 ? Math.max(0, (1 + page) * rowsPerPage - array.length) : 0;
 }
 
@@ -117,7 +129,7 @@ function handleChangeRowsPerPage(
   setPage(0);
 }
 
-function formatTimestamp(timestamp: any) {
+function formatTimestamp(timestamp: number) {
   const date = new Date(timestamp * 1000);
 
   const year = date.getFullYear();

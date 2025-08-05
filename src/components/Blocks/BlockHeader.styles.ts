@@ -21,7 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { Button, Box, Typography, IconButton } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 
 export const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -34,7 +34,7 @@ export const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 interface HeaderContainerProps {
-  theme?: any;
+  theme?: Theme;
   isMobile: boolean;
 }
 export const HeaderContainer = styled(Box, {

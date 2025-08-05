@@ -46,7 +46,7 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type, targetTime }) => {
     default: chartColor[1],
   };
 
-  const blockTimesMap: { [key: string]: any[] } = {
+  const blockTimesMap: { [key: string]: number[] } = {
     RandomX: data?.moneroTimes?.series,
     Sha3: data?.shaTimes?.series,
     default: data?.blockTimes?.series || [],
@@ -61,7 +61,7 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type, targetTime }) => {
     ? rawBlockTimes.map((blockTime) => targetTime + blockTime)
     : [];
 
-  const blockNumbers = new Array();
+  const blockNumbers: number[] = [];
   let blockItem = parseInt(tip, 10);
   for (let i = 1; i <= noOfBlocks; i++) {
     blockNumbers.push(blockItem);
@@ -80,12 +80,16 @@ const BlockTimes: React.FC<BlockTimesProps> = ({ type, targetTime }) => {
     animation: false,
     tooltip: {
       trigger: 'axis',
-      formatter: (params: any) => {
-        const tooltipContent = params.map((param: any) => {
-          const seriesName = param.seriesName;
-          const value = param.value;
-          return `${seriesName}: ${value.toFixed(2)}m`;
-        });
+      formatter: (
+        params: Array<{ seriesName: string; value: number; dataIndex: number }>
+      ) => {
+        const tooltipContent = params.map(
+          (param: { seriesName: string; value: number; dataIndex: number }) => {
+            const seriesName = param.seriesName;
+            const value = param.value;
+            return `${seriesName}: ${value.toFixed(2)}m`;
+          }
+        );
         const blockNumber = blockNumbers?.[params[0].dataIndex];
         return `<b>Block ${blockNumber}</b><br/>${tooltipContent.join(
           '<br/>'

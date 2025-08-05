@@ -31,10 +31,28 @@ import CopyToClipboard from '@components/CopyToClipboard';
 import { useMainStore } from '@services/stores/useMainStore';
 import InnerHeading from '@components/InnerHeading';
 
-function BlockTable({ data }: { data: any }) {
+interface BlockData {
+  height?: number;
+  header?: {
+    hash?: { data?: number[] };
+    prev_hash?: { data?: number[] };
+    timestamp?: number;
+    target_difficulty?: number;
+    achieved_difficulty?: number;
+    total_kernel_offset?: { data?: number[] };
+    nonce?: number;
+    pow?: {
+      pow_algo?: number;
+      accumulated_monero_difficulty?: number;
+      accumulated_blake_difficulty?: number;
+    };
+  };
+}
+
+function BlockTable({ data }: { data: BlockData | undefined }) {
   const [page, setPage] = useState(1);
   const isMobile = useMainStore((state) => state.isMobile);
-  const totalItems = data?.length || 0;
+  const totalItems = data ? 1 : 0;
   const itemsPerPage = 10;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -42,7 +60,7 @@ function BlockTable({ data }: { data: any }) {
     setPage(value);
   };
 
-  if (!data || data.length === 0) {
+  if (!data) {
     return (
       <Alert severity="error" variant="outlined">
         No blocks found.
@@ -80,7 +98,9 @@ function BlockTable({ data }: { data: any }) {
         </Grid>
         <Grid item xs={col2}>
           <TypographyData variant="body2">
-            {formatTimestamp(timestamp)}
+            {typeof timestamp === 'number'
+              ? formatTimestamp(timestamp)
+              : timestamp}
           </TypographyData>
         </Grid>
         <Grid item xs={12}>
@@ -123,7 +143,11 @@ function BlockTable({ data }: { data: any }) {
             </TypographyData>
           </Grid>
           <Grid item xs={col3} md={col3} lg={col3}>
-            <TypographyData>{formatTimestamp(timestamp)}</TypographyData>
+            <TypographyData>
+              {typeof timestamp === 'number'
+                ? formatTimestamp(timestamp)
+                : timestamp}
+            </TypographyData>
           </Grid>
         </Grid>
       </>

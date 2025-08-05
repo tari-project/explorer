@@ -1,9 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from '../App';
+import type { PageLayoutProps, TypographyProps, MockTheme } from '@types';
 import '@testing-library/jest-dom';
 
 // Mock all the page components
@@ -35,30 +36,24 @@ vi.mock('@routes/BlockPage', () => ({
 
 // Mock layout components with proper outlet handling
 vi.mock('@theme/MainLayout', () => ({
-  default: () => {
-    const { Outlet } = require('react-router-dom');
-    return (
-      <div data-testid="main-layout">
-        <Outlet />
-      </div>
-    );
-  },
+  default: () => (
+    <div data-testid="main-layout">
+      <Outlet />
+    </div>
+  ),
 }));
 
 vi.mock('@theme/PageLayout', () => ({
-  default: ({ title, customHeader, children }: any) => {
-    const { Outlet } = require('react-router-dom');
-    return (
-      <div data-testid="page-layout">
-        {title && <div data-testid="page-title">{title}</div>}
-        {customHeader && <div data-testid="custom-header">{customHeader}</div>}
-        <div data-testid="page-content">
-          <Outlet />
-          {children}
-        </div>
+  default: ({ title, customHeader, children }: PageLayoutProps) => (
+    <div data-testid="page-layout">
+      {title && <div data-testid="page-title">{title}</div>}
+      {customHeader && <div data-testid="custom-header">{customHeader}</div>}
+      <div data-testid="page-content">
+        <Outlet />
+        {children}
       </div>
-    );
-  },
+    </div>
+  ),
 }));
 
 // Mock header components
@@ -91,7 +86,7 @@ const mockTheme = {
 vi.mock('@mui/material', () => ({
   useTheme: () => mockTheme,
   useMediaQuery: vi.fn(() => false),
-  Typography: ({ children }: any) => (
+  Typography: ({ children }: TypographyProps) => (
     <div data-testid="typography">{children}</div>
   ),
 }));
@@ -113,7 +108,7 @@ const TestWrapper = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mockTheme as any}>
+      <ThemeProvider theme={mockTheme as MockTheme}>
         <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
       </ThemeProvider>
     </QueryClientProvider>

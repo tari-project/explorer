@@ -21,6 +21,7 @@
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import { useState, Fragment } from 'react';
+import type { Block } from '@types';
 import { TypographyData } from '@components/StyledComponents';
 import { Typography, Grid, Divider, Pagination } from '@mui/material';
 import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
@@ -32,7 +33,11 @@ import { useMainStore } from '@services/stores/useMainStore';
 import InnerHeading from '@components/InnerHeading';
 import { powCheck } from '@utils/helpers';
 
-function BlockTable({ data }: { data: any }) {
+interface BlockTableProps {
+  data: Array<{ block: Block }>;
+}
+
+function BlockTable({ data }: BlockTableProps) {
   const [page, setPage] = useState(1);
   const isMobile = useMainStore((state) => state.isMobile);
   const totalItems = data?.length || 0;
@@ -51,11 +56,11 @@ function BlockTable({ data }: { data: any }) {
       <Grid container spacing={2} pl={0} pr={0}>
         {data
           ?.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-          .map(({ block }: any, index: number) => {
+          .map(({ block }: { block: Block }, index: number) => {
             const height = block?.header?.height || 'no data';
             const timestamp = block?.header?.timestamp || 'no data';
             const hash = block?.header?.hash?.data || 'no data';
-            const pow = block?.pow?.pow_algo || 'no data';
+            const pow = block?.header?.pow?.pow_algo?.toString() || 'no data';
             const kernels = block?.body.kernels.length || 'no data';
             const outputs = block?.body.outputs.length || 'no data';
 
@@ -76,14 +81,20 @@ function BlockTable({ data }: { data: any }) {
                   <Typography variant="body2">Timestamp</Typography>
                 </Grid>
                 <Grid item xs={col2}>
-                  <TypographyData>{formatTimestamp(timestamp)}</TypographyData>
+                  <TypographyData>
+                    {typeof timestamp === 'number'
+                      ? formatTimestamp(timestamp)
+                      : 'no data'}
+                  </TypographyData>
                 </Grid>
 
                 <Grid item xs={col1}>
                   <Typography variant="body2">Proof of Work</Typography>
                 </Grid>
                 <Grid item xs={col2}>
-                  <TypographyData>{powCheck(pow)}</TypographyData>
+                  <TypographyData>
+                    {pow === 'no data' ? 'no data' : powCheck(pow)}
+                  </TypographyData>
                 </Grid>
 
                 <Grid item xs={col1}>
@@ -172,11 +183,11 @@ function BlockTable({ data }: { data: any }) {
         <Grid container spacing={2} pl={0} pr={0} pb={2}>
           {data
             ?.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-            .map(({ block }: any, index: number) => {
+            .map(({ block }: { block: Block }, index: number) => {
               const height = block?.header?.height || 'no data';
               const timestamp = block?.header?.timestamp || 'no data';
               const hash = block?.header?.hash?.data || 'no data';
-              const pow = block?.pow?.pow_algo || 'no data';
+              const pow = block?.header?.pow?.pow_algo?.toString() || 'no data';
               const kernels = block?.body.kernels.length || 'no data';
               const outputs = block?.body.outputs.length || 'no data';
 
@@ -194,11 +205,15 @@ function BlockTable({ data }: { data: any }) {
                   </Grid>
                   <Grid item xs={col2} md={col2} lg={col2}>
                     <TypographyData>
-                      {formatTimestamp(timestamp)}
+                      {typeof timestamp === 'number'
+                        ? formatTimestamp(timestamp)
+                        : 'no data'}
                     </TypographyData>
                   </Grid>
                   <Grid item xs={col3} md={col3} lg={col3}>
-                    <TypographyData>{powCheck(pow)}</TypographyData>
+                    <TypographyData>
+                      {pow === 'no data' ? 'no data' : powCheck(pow)}
+                    </TypographyData>
                   </Grid>
                   <Grid item xs={col4} md={col4} lg={col4}>
                     <TypographyData>

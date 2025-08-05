@@ -36,7 +36,7 @@ import StatsBox from '@components/Header/StatsBox/StatsBox';
 interface PageLayoutProps {
   title?: string;
   subTitle?: string;
-  customHeader?: any;
+  customHeader?: React.ReactNode;
 }
 
 export default function PageLayout({

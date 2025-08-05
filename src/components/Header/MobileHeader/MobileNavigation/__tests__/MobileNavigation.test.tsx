@@ -48,14 +48,16 @@ const mockTheme = {
 
 // Test wrapper
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
-  <ThemeProvider theme={mockTheme as any}>
+  <ThemeProvider
+    theme={mockTheme as unknown as import('@mui/material/styles').Theme}
+  >
     <MemoryRouter>{children}</MemoryRouter>
   </ThemeProvider>
 );
 
 describe('MobileNavigation', () => {
-  let mockUseMainStore: any;
-  let mockSetShowMobileMenu: any;
+  let mockUseMainStore: ReturnType<typeof vi.fn>;
+  let mockSetShowMobileMenu: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();

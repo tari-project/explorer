@@ -18,14 +18,14 @@ vi.mock('react-router-dom', async () => {
 
 // Mock SnackbarAlert component
 vi.mock('../../SnackbarAlert', () => ({
-  default: ({
+  default: function SnackbarAlertMock({
     open,
     message,
   }: {
     open: boolean;
     message: string;
     setOpen: (open: boolean) => void;
-  }) => {
+  }) {
     React.useEffect(() => {
       if (open) {
         console.log('SnackbarAlert opened with message:', message);

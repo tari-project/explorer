@@ -5,7 +5,15 @@ import StatsDialog from '../StatsDialog';
 
 // Mock MUI components
 vi.mock('@mui/material/Button', () => ({
-  default: ({ children, onClick, autoFocus }: any) => (
+  default: ({
+    children,
+    onClick,
+    autoFocus,
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+    autoFocus?: boolean;
+  }) => (
     <button data-testid="button" onClick={onClick} data-auto-focus={autoFocus}>
       {children}
     </button>
@@ -33,7 +41,17 @@ vi.mock('@mui/material/DialogActions', () => ({
 }));
 
 vi.mock('@mui/material/IconButton', () => ({
-  default: ({ children, onClick, 'aria-label': ariaLabel, sx }: any) => (
+  default: ({
+    children,
+    onClick,
+    'aria-label': ariaLabel,
+    sx,
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+    'aria-label'?: string;
+    sx?: unknown;
+  }) => (
     <button
       data-testid="icon-button"
       onClick={onClick}
@@ -46,7 +64,15 @@ vi.mock('@mui/material/IconButton', () => ({
 }));
 
 vi.mock('@mui/material/Typography', () => ({
-  default: ({ children, variant, gutterBottom }: any) => (
+  default: ({
+    children,
+    variant,
+    gutterBottom,
+  }: {
+    children: React.ReactNode;
+    variant?: string;
+    gutterBottom?: boolean;
+  }) => (
     <div
       data-testid={`typography-${variant}`}
       data-gutter-bottom={gutterBottom}
@@ -71,7 +97,11 @@ vi.mock('../StatsDialog.styles', () => ({
     children,
     open,
     'aria-labelledby': ariaLabelledBy,
-  }: any) =>
+  }: {
+    children: React.ReactNode;
+    open?: boolean;
+    'aria-labelledby'?: string;
+  }) =>
     open ? (
       <div
         data-testid="bootstrap-dialog"
@@ -133,7 +163,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 describe('StatsDialog', () => {
-  let mockUseAllBlocks: any;
+  let mockUseAllBlocks: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();

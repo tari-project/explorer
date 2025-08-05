@@ -70,7 +70,7 @@ function BlockHeader() {
     } else {
       setNextDisabled(false);
     }
-  }, [data?.height, tip]);
+  }, [data, isError, data?.height, tip]);
 
   return (
     <>

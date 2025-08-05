@@ -42,7 +42,7 @@ vi.mock('@services/stores/useMainStore', () => ({
 
 // Mock NumberFlow component
 vi.mock('@number-flow/react', () => ({
-  default: ({ value }: { value: number; format: any }) => (
+  default: ({ value }: { value: number; format?: unknown }) => (
     <span data-testid="number-flow">{value}</span>
   ),
 }));
@@ -53,7 +53,7 @@ vi.mock('react', async () => {
   return {
     ...actual,
     lazy: () => {
-      const Component = ({ value }: { value: number; format: any }) => (
+      const Component = ({ value }: { value: number; format?: unknown }) => (
         <span data-testid="number-flow">{value}</span>
       );
       Component.displayName = 'NumberFlow';
@@ -222,7 +222,7 @@ describe('MinersCTA', () => {
     // Ensure OS is Windows for this test
     (getOS as unknown as MockInstance).mockReturnValue('Windows');
     (useMainStore as unknown as MockInstance).mockImplementation(
-      (selector: any) => {
+      (selector: (state: unknown) => unknown) => {
         const state = {
           isMobile: false,
           setShowDownloadModal: mockSetShowDownloadModal,
@@ -312,7 +312,7 @@ describe('MinersCTA', () => {
     const { useMainStore } = await import('@services/stores/useMainStore');
 
     (useMainStore as unknown as MockInstance).mockImplementation(
-      (selector: any) => {
+      (selector: (state: unknown) => unknown) => {
         const state = {
           isMobile: true,
           setShowDownloadModal: vi.fn(),
