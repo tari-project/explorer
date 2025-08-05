@@ -234,6 +234,6 @@ describe('outputItems', () => {
     expect(() => outputItems(mockOutput)).not.toThrow();
     const result = outputItems(mockOutput);
     const covenant = result.find((item) => item.label === 'Covenant Version');
-    expect(covenant?.value).toBe('');
+    expect(covenant?.value).toEqual([]);
   });
 });

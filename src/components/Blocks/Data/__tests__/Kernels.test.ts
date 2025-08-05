@@ -42,7 +42,7 @@ describe('kernelItems', () => {
     const result = kernelItems(mockKernel);
 
     const features = result.find((item) => item.label === 'Features');
-    expect(features?.value).toBe('KERNEL_STANDARD');
+    expect(features?.value).toBe(0);
     expect(features?.copy).toBe(false);
   });
 

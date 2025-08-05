@@ -90,9 +90,9 @@ export default function MinersCTA({
         data-miners-only="true"
         data-button-only="false"
       >
-        <DotSml theme={theme as any} />
+        <DotSml $theme={theme} />
         <Text
-          theme={theme as any}
+          $theme={theme}
           style={{
             fontSize: '13px',
             letterSpacing: '0.1px',
@@ -133,7 +133,7 @@ export default function MinersCTA({
         data-button-only="true"
       >
         <Button
-          theme={theme as any}
+          $theme={theme}
           href={downloadLink}
           onClick={handleDownloadClick}
           target="_blank"
@@ -148,7 +148,7 @@ export default function MinersCTA({
     <>
       {!isMobile && <DownloadModal />}
       <Wrapper
-        theme={theme as any}
+        $theme={theme}
         $noBackground={noBackground}
         data-testid="miners-cta"
         data-theme={theme}
@@ -158,8 +158,8 @@ export default function MinersCTA({
         data-button-only="false"
       >
         <TextWrapper>
-          <Dot theme={theme as any} />
-          <Text theme={theme as any}>
+          <Dot $theme={theme} />
+          <Text $theme={theme}>
             <NumberWrapper style={{ width: `${numberWidth}px` }}>
               <span ref={numberRef}>
                 <Suspense fallback={<div>Loading...</div>}>
@@ -179,7 +179,7 @@ export default function MinersCTA({
         </TextWrapper>
         <ButtonWrapper>
           <Button
-            theme={theme as any}
+            $theme={theme}
             href={downloadLink}
             onClick={handleDownloadClick}
             target="_blank"

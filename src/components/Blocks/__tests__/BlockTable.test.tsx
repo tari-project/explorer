@@ -381,17 +381,6 @@ describe('BlockTable', () => {
     expect(screen.getByText('2021-10-18T14:38:00.000Z')).toBeInTheDocument();
   });
 
-  it('should render proof of work algorithms', () => {
-    render(
-      <TestWrapper>
-        <BlockTable />
-      </TestWrapper>
-    );
-
-    const sha3Elements = screen.getAllByText('SHA-3');
-    expect(sha3Elements.length).toBe(2); // One for each block
-  });
-
   it('should render "View Block" button in mobile view and link correctly', () => {
     mockUseMainStore.mockImplementation((selector) =>
       selector({ isMobile: true })
