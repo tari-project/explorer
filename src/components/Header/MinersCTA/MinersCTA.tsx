@@ -46,6 +46,7 @@ export default function MinersCTA({
   const setShowDownloadModal = useMainStore(
     (state) => state.setShowDownloadModal
   );
+  const setIsLinux = useMainStore((state) => state.setIsLinux);
 
   useEffect(() => {
     if (numberRef.current) {
@@ -62,21 +63,23 @@ export default function MinersCTA({
       case 'MacOS':
         setDownloadLink(DOWNLOAD_LINKS.mac);
         break;
-      case 'Linux':
-        setDownloadLink(DOWNLOAD_LINKS.linux);
-        break;
       default:
         setDownloadLink(DOWNLOAD_LINKS.default);
     }
   }, [os]);
 
   const handleDownloadClick = () => {
-    window.open(downloadLink, '_blank');
-    if (os === 'Windows' || os === 'MacOS' || os === 'Linux') {
-      setShowDownloadModal(true);
-      setTimeout(() => {
-        setShowDownloadModal(false);
-      }, 20000);
+    setShowDownloadModal(true);
+    setTimeout(() => {
+      setShowDownloadModal(false);
+    }, 20000);
+    if (os === 'Linux') {
+      setIsLinux(true);
+    } else {
+      setIsLinux(false);
+    }
+    if (os === 'Windows' || os === 'MacOS') {
+      window.open(downloadLink, '_blank');
     }
   };
 
@@ -132,12 +135,7 @@ export default function MinersCTA({
         data-miners-only="false"
         data-button-only="true"
       >
-        <Button
-          $theme={theme}
-          href={downloadLink}
-          onClick={handleDownloadClick}
-          target="_blank"
-        >
+        <Button $theme={theme} onClick={handleDownloadClick}>
           <span>{buttonText}</span> <ArrowIcon className="arrow-icon" />
         </Button>
       </ButtonWrapper>
@@ -178,12 +176,7 @@ export default function MinersCTA({
           </Text>
         </TextWrapper>
         <ButtonWrapper>
-          <Button
-            $theme={theme}
-            href={downloadLink}
-            onClick={handleDownloadClick}
-            target="_blank"
-          >
+          <Button $theme={theme} onClick={handleDownloadClick}>
             <span>{buttonText}</span> <ArrowIcon className="arrow-icon" />
           </Button>
         </ButtonWrapper>

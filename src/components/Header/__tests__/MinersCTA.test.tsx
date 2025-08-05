@@ -25,7 +25,6 @@ vi.mock('@utils/downloadLinks', () => ({
     default: 'https://default-download.com',
     windows: 'https://windows-download.com',
     mac: 'https://mac-download.com',
-    linux: 'https://linux-download.com',
   },
 }));
 
@@ -35,6 +34,7 @@ vi.mock('@services/stores/useMainStore', () => ({
       isMobile: false,
       setShowDownloadModal: vi.fn(),
       showDownloadModal: false,
+      setIsLinux: vi.fn(),
     };
     return selector(state);
   }),
@@ -173,7 +173,7 @@ describe('MinersCTA', () => {
 
     // Test MacOS
     (getOS as unknown as MockInstance).mockReturnValue('MacOS');
-    const { rerender } = render(
+    const { unmount: unmountMac } = render(
       <TestWrapper>
         <MinersCTA theme="light" />
       </TestWrapper>
@@ -183,24 +183,12 @@ describe('MinersCTA', () => {
     fireEvent.click(downloadButton);
     expect(mockOpen).toHaveBeenCalledWith('https://mac-download.com', '_blank');
 
-    // Test Linux
-    (getOS as unknown as MockInstance).mockReturnValue('Linux');
-    rerender(
-      <TestWrapper>
-        <MinersCTA theme="light" />
-      </TestWrapper>
-    );
+    unmountMac();
+    mockOpen.mockClear();
 
-    downloadButton = screen.getByText('Download Tari Universe');
-    fireEvent.click(downloadButton);
-    expect(mockOpen).toHaveBeenCalledWith(
-      'https://linux-download.com',
-      '_blank'
-    );
-
-    // Test Unknown OS
+    // Test Unknown OS - should not call window.open (only shows modal)
     (getOS as unknown as MockInstance).mockReturnValue('Unknown');
-    rerender(
+    render(
       <TestWrapper>
         <MinersCTA theme="light" />
       </TestWrapper>
@@ -208,10 +196,8 @@ describe('MinersCTA', () => {
 
     downloadButton = screen.getByText('Download Tari Universe');
     fireEvent.click(downloadButton);
-    expect(mockOpen).toHaveBeenCalledWith(
-      'https://default-download.com',
-      '_blank'
-    );
+    // Unknown OS should not call window.open, only show download modal
+    expect(mockOpen).not.toHaveBeenCalled();
   });
 
   it('should show download modal on supported OS click', async () => {
@@ -226,6 +212,7 @@ describe('MinersCTA', () => {
         const state = {
           isMobile: false,
           setShowDownloadModal: mockSetShowDownloadModal,
+          setIsLinux: vi.fn(),
         };
         return selector(state);
       }
@@ -316,6 +303,7 @@ describe('MinersCTA', () => {
         const state = {
           isMobile: true,
           setShowDownloadModal: vi.fn(),
+          setIsLinux: vi.fn(),
         };
         return selector(state);
       }
