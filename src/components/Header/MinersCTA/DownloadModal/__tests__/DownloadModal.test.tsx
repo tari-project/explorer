@@ -118,6 +118,18 @@ vi.mock('../DownloadModal.styles', () => ({
   Wrapper: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="wrapper">{children}</div>
   ),
+  CloseButton: ({ children, onClick, 'aria-label': ariaLabel }: { 
+    children: React.ReactNode; 
+    onClick?: () => void; 
+    'aria-label'?: string;
+  }) => (
+    <button data-testid="close-button" onClick={onClick} aria-label={ariaLabel}>
+      {children}
+    </button>
+  ),
+  Header: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="header">{children}</div>
+  ),
 }));
 
 // Mock child components
@@ -208,7 +220,7 @@ describe('DownloadModal', () => {
     expect(screen.getByAltText('Tari Logo')).toBeInTheDocument();
   });
 
-  it('should render OS buttons for all platforms', () => {
+  it('should render OS buttons for supported platforms', () => {
     mockUseMainStore.mockImplementation(
       (selector: (state: unknown) => unknown) => {
         const state = {
@@ -223,7 +235,6 @@ describe('DownloadModal', () => {
 
     expect(screen.getByTestId('os-button-mac')).toBeInTheDocument();
     expect(screen.getByTestId('os-button-windows')).toBeInTheDocument();
-    expect(screen.getByTestId('os-button-linux')).toBeInTheDocument();
   });
 
   it('should render close button', () => {
@@ -239,7 +250,7 @@ describe('DownloadModal', () => {
 
     render(<DownloadModal />);
 
-    expect(screen.getByTestId('icon-button')).toBeInTheDocument();
+    expect(screen.getByTestId('close-button')).toBeInTheDocument();
     expect(screen.getByTestId('close-icon')).toBeInTheDocument();
   });
 
@@ -256,7 +267,7 @@ describe('DownloadModal', () => {
 
     render(<DownloadModal />);
 
-    const closeButton = screen.getByTestId('icon-button');
+    const closeButton = screen.getByTestId('close-button');
     fireEvent.click(closeButton);
 
     expect(mockSetShowDownloadModal).toHaveBeenCalledWith(false);
@@ -311,7 +322,7 @@ describe('DownloadModal', () => {
 
     render(<DownloadModal />);
 
-    expect(screen.getByTestId('typography-h1')).toBeInTheDocument();
+    expect(screen.getByTestId('header')).toBeInTheDocument();
     expect(screen.getByTestId('typography-body1')).toBeInTheDocument();
   });
 

@@ -13,6 +13,8 @@ type Store = {
   setIsMobile: (isMobile: boolean) => void;
   searchOpen: boolean;
   setSearchOpen: (searchOpen: boolean) => void;
+  isLinux: boolean;
+  setIsLinux: (isLinux: boolean) => void;
 };
 
 // Mock child components
@@ -73,7 +75,9 @@ describe('PageLayout', () => {
         setShowDownloadModal: vi.fn(),
         setIsMobile: vi.fn(),
         searchOpen: false,
-        setSearchOpen: vi.fn()
+        setSearchOpen: vi.fn(),
+        isLinux: false,
+        setIsLinux: vi.fn()
       };
       return selector(state);
     });
@@ -142,7 +146,9 @@ describe('PageLayout', () => {
         setShowDownloadModal: vi.fn(),
         setIsMobile: vi.fn(),
         searchOpen: false,
-        setSearchOpen: vi.fn()
+        setSearchOpen: vi.fn(),
+        isLinux: false,
+        setIsLinux: vi.fn()
       };
       return selector(state);
     });
@@ -166,7 +172,9 @@ describe('PageLayout', () => {
         setShowDownloadModal: vi.fn(),
         setIsMobile: vi.fn(),
         searchOpen: false,
-        setSearchOpen: vi.fn()
+        setSearchOpen: vi.fn(),
+        isLinux: false,
+        setIsLinux: vi.fn()
       };
       return selector(state);
     });
@@ -247,7 +255,9 @@ describe('PageLayout', () => {
       setShowDownloadModal: vi.fn(),
       setIsMobile: vi.fn(),
       searchOpen: false,
-      setSearchOpen: vi.fn()
+      setSearchOpen: vi.fn(),
+      isLinux: false,
+      setIsLinux: vi.fn()
     };
     expect(selectorFn(mockState)).toBe(true);
   });

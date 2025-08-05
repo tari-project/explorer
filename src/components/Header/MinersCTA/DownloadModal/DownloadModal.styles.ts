@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 
 export const Modal = styled(Box)(() => ({
   width: '100%',
@@ -27,4 +27,19 @@ export const Wrapper = styled(Box)(() => ({
 
 export const ImageWrapper = styled(Box)(() => ({
   zIndex: 1,
+}));
+
+export const CloseButton = styled(IconButton)(({ theme }) => ({
+  position: 'absolute',
+  right: 8,
+  top: 8,
+  color: theme.palette.grey[500],
+}));
+
+export const Header = styled(Typography)(() => ({
+  textTransform: 'uppercase',
+  fontSize: '100px',
+  textAlign: 'center',
+  lineHeight: '90px',
+  maxWidth: '550px',
 }));

@@ -9,6 +9,8 @@ interface Store {
   setIsMobile: (isMobile: boolean) => void;
   searchOpen: boolean;
   setSearchOpen: (searchOpen: boolean) => void;
+  isLinux: boolean;
+  setIsLinux: (isLinux: boolean) => void;
 }
 
 export const useMainStore = create<Store>()((set) => ({
@@ -21,4 +23,6 @@ export const useMainStore = create<Store>()((set) => ({
   setIsMobile: (isMobile: boolean) => set({ isMobile }),
   searchOpen: false,
   setSearchOpen: (searchOpen: boolean) => set({ searchOpen }),
+  isLinux: false,
+  setIsLinux: (isLinux: boolean) => set({ isLinux }),
 }));
