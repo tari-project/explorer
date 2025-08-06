@@ -11,6 +11,8 @@ interface Store {
   setSearchOpen: (searchOpen: boolean) => void;
   isLinux: boolean;
   setIsLinux: (isLinux: boolean) => void;
+  tip: number;
+  setTip: (tip: number) => void;
 }
 
 export const useMainStore = create<Store>()((set) => ({
@@ -25,4 +27,6 @@ export const useMainStore = create<Store>()((set) => ({
   setSearchOpen: (searchOpen: boolean) => set({ searchOpen }),
   isLinux: false,
   setIsLinux: (isLinux: boolean) => set({ isLinux }),
+  tip: 0,
+  setTip: (tip: number) => set({ tip }),
 }));

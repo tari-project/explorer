@@ -11,7 +11,6 @@ src/types/
 ├── index.ts          # Main export file - import all types from here
 ├── api.ts            # API responses and blockchain data structures
 ├── components.ts     # React component props and UI types
-├── stores.ts         # State management and store types
 ├── utils.ts          # Utility types and helper function signatures
 └── README.md         # This documentation
 ```

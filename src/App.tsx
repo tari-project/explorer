@@ -36,15 +36,21 @@ import { useMainStore } from '@services/stores/useMainStore';
 import { useEffect } from 'react';
 import SearchPage from '@routes/SearchPage';
 import SearchPageHeader from '@components/Search/SearchPageHeader';
+import { useAllBlocks } from '@services/api/hooks/useBlocks';
 
 function App() {
   const theme = useTheme();
   const setIsMobile = useMainStore((state) => state.setIsMobile);
+  const setTip = useMainStore((state) => state.setTip);
   const isMobileQuery = useMediaQuery(theme.breakpoints.down('md'));
+  const { data: blocksData } = useAllBlocks();
 
   useEffect(() => {
     setIsMobile(isMobileQuery);
-  }, [isMobileQuery, setIsMobile]);
+    if (blocksData) {
+      setTip(parseInt(blocksData?.tipInfo?.metadata?.best_block_height) || 0);
+    }
+  }, [isMobileQuery, setIsMobile, blocksData, setTip]);
 
   return (
     <>

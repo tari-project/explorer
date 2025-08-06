@@ -74,6 +74,7 @@ vi.mock('@mui/material', () => ({
 // Mock API hook
 vi.mock('@services/api/hooks/useBlocks', () => ({
   useAllBlocks: vi.fn(),
+  useGetBlocksByParam: vi.fn(),
 }));
 
 // Mock theme and colors
@@ -103,6 +104,16 @@ vi.mock('@theme/colors', () => ({
   chartColor: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'],
 }));
 
+// Mock store
+vi.mock('@services/stores/useMainStore', () => ({
+  useMainStore: vi.fn((selector) => {
+    const mockState = {
+      tip: 123456,
+    };
+    return selector ? selector(mockState) : mockState;
+  }),
+}));
+
 // Test wrapper
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
@@ -120,33 +131,33 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 describe('POWChart', () => {
-  let mockUseAllBlocks: ReturnType<typeof vi.fn>;
+  let mockUseGetBlocksByParam: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    const { useAllBlocks } = await import('@services/api/hooks/useBlocks');
-    mockUseAllBlocks = vi.mocked(useAllBlocks);
+    const { useGetBlocksByParam } = await import(
+      '@services/api/hooks/useBlocks'
+    );
+    mockUseGetBlocksByParam = vi.mocked(useGetBlocksByParam);
   });
 
-  const mockPowData = {
-    algoSplit: {
-      moneroRx10: 45,
-      moneroRx20: 30,
-      moneroRx50: 20,
-      moneroRx100: 15,
-      sha3X10: 25,
-      sha3X20: 20,
-      sha3X50: 15,
-      sha3X100: 10,
-      tariRx10: 35,
-      tariRx20: 25,
-      tariRx50: 20,
-      tariRx100: 15,
-    },
+  const mockBlocksData = {
+    headers: [
+      { pow: { pow_algo: '0' }, powText: 'RandomX' },
+      { pow: { pow_algo: '1' }, powText: 'Sha3X' },
+      { pow: { pow_algo: '2' }, powText: 'TariRandomX' },
+      { pow: { pow_algo: '0' }, powText: 'RandomX' },
+      { pow: { pow_algo: '0' }, powText: 'RandomX' },
+      { pow: { pow_algo: '1' }, powText: 'Sha3X' },
+      { pow: { pow_algo: '2' }, powText: 'TariRandomX' },
+      { pow: { pow_algo: '0' }, powText: 'RandomX' },
+      { pow: { pow_algo: '1' }, powText: 'Sha3X' },
+      { pow: { pow_algo: '0' }, powText: 'RandomX' },
+    ],
   };
 
   it('should render loading state', () => {
-    mockUseAllBlocks.mockReturnValue({
+    mockUseGetBlocksByParam.mockReturnValue({
       data: null,
       isLoading: true,
       isError: false,
@@ -172,7 +183,7 @@ describe('POWChart', () => {
 
   it('should render error state', () => {
     const errorMessage = 'Failed to load POW data';
-    mockUseAllBlocks.mockReturnValue({
+    mockUseGetBlocksByParam.mockReturnValue({
       data: null,
       isLoading: false,
       isError: true,
@@ -193,8 +204,8 @@ describe('POWChart', () => {
   });
 
   it('should render bar chart with POW data', () => {
-    mockUseAllBlocks.mockReturnValue({
-      data: mockPowData,
+    mockUseGetBlocksByParam.mockReturnValue({
+      data: mockBlocksData,
       isLoading: false,
       isError: false,
       error: null,
@@ -216,8 +227,8 @@ describe('POWChart', () => {
   });
 
   it('should calculate percentages correctly', () => {
-    mockUseAllBlocks.mockReturnValue({
-      data: mockPowData,
+    mockUseGetBlocksByParam.mockReturnValue({
+      data: mockBlocksData,
       isLoading: false,
       isError: false,
       error: null,
@@ -238,14 +249,14 @@ describe('POWChart', () => {
     expect(barData).toHaveLength(4); // 100, 50, 20, 10 blocks
 
     // Check series names
-    expect(option.series[0].name).toBe('RandomX');
-    expect(option.series[1].name).toBe('Sha 3');
-    expect(option.series[2].name).toBe('Tari RandomX');
+    expect(option.series[0].name).toContain('RandomX');
+    expect(option.series[1].name).toContain('Sha');
+    expect(option.series[2].name).toContain('Tari RandomX');
   });
 
   it('should configure chart with proper options', () => {
-    mockUseAllBlocks.mockReturnValue({
-      data: mockPowData,
+    mockUseGetBlocksByParam.mockReturnValue({
+      data: mockBlocksData,
       isLoading: false,
       isError: false,
       error: null,
@@ -270,7 +281,7 @@ describe('POWChart', () => {
     // Check axis configuration
     expect(option.xAxis.type).toBe('value');
     expect(option.yAxis.type).toBe('category');
-    expect(option.yAxis.data).toEqual(['100', '50', '20', '10']);
+    expect(option.yAxis.data).toEqual(['90', '50', '20', '10']);
 
     // Check series configuration
     expect(option.series[0].type).toBe('bar');
@@ -279,8 +290,8 @@ describe('POWChart', () => {
   });
 
   it('should use correct colors for bar segments', () => {
-    mockUseAllBlocks.mockReturnValue({
-      data: mockPowData,
+    mockUseGetBlocksByParam.mockReturnValue({
+      data: mockBlocksData,
       isLoading: false,
       isError: false,
       error: null,
@@ -300,8 +311,8 @@ describe('POWChart', () => {
   });
 
   it('should handle chart dimensions and styling', () => {
-    mockUseAllBlocks.mockReturnValue({
-      data: mockPowData,
+    mockUseGetBlocksByParam.mockReturnValue({
+      data: mockBlocksData,
       isLoading: false,
       isError: false,
       error: null,
@@ -318,25 +329,12 @@ describe('POWChart', () => {
   });
 
   it('should handle zero values gracefully', () => {
-    const zeroData = {
-      algoSplit: {
-        moneroRx10: 0,
-        moneroRx20: 0,
-        moneroRx50: 0,
-        moneroRx100: 0,
-        sha3X10: 100,
-        sha3X20: 0,
-        sha3X50: 0,
-        sha3X100: 0,
-        tariRx10: 0,
-        tariRx20: 0,
-        tariRx50: 0,
-        tariRx100: 0,
-      },
+    const emptyBlocksData = {
+      headers: [],
     };
 
-    mockUseAllBlocks.mockReturnValue({
-      data: zeroData,
+    mockUseGetBlocksByParam.mockReturnValue({
+      data: emptyBlocksData,
       isLoading: false,
       isError: false,
       error: null,
@@ -359,22 +357,9 @@ describe('POWChart', () => {
   });
 
   it('should handle missing data gracefully', () => {
-    mockUseAllBlocks.mockReturnValue({
+    mockUseGetBlocksByParam.mockReturnValue({
       data: {
-        algoSplit: {
-          moneroRx10: 0,
-          moneroRx20: 0,
-          moneroRx50: 0,
-          moneroRx100: 0,
-          sha3X10: 0,
-          sha3X20: 0,
-          sha3X50: 0,
-          sha3X100: 0,
-          tariRx10: 0,
-          tariRx20: 0,
-          tariRx50: 0,
-          tariRx100: 0,
-        },
+        headers: [],
       },
       isLoading: false,
       isError: false,
@@ -392,8 +377,8 @@ describe('POWChart', () => {
   });
 
   it('should format labels correctly', () => {
-    mockUseAllBlocks.mockReturnValue({
-      data: mockPowData,
+    mockUseGetBlocksByParam.mockReturnValue({
+      data: mockBlocksData,
       isLoading: false,
       isError: false,
       error: null,

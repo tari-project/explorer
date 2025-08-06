@@ -23,28 +23,59 @@
 import ReactEcharts from 'echarts-for-react';
 import { useTheme } from '@mui/material/styles';
 import { chartColor } from '@theme/colors';
-import { useAllBlocks } from '@services/api/hooks/useBlocks';
+import { useGetBlocksByParam } from '@services/api/hooks/useBlocks';
 import { Alert, Skeleton } from '@mui/material';
 import { TransparentBg } from '@components/StyledComponents';
+import { useMainStore } from '@services/stores/useMainStore';
+import { useMemo } from 'react';
 
-interface AlgoSplit {
-  moneroRx10: number;
-  moneroRx20: number;
-  moneroRx50: number;
-  moneroRx100: number;
-  sha3X10: number;
-  sha3X20: number;
-  sha3X50: number;
-  sha3X100: number;
-  tariRx10: number;
-  tariRx20: number;
-  tariRx50: number;
-  tariRx100: number;
+interface Header {
+  pow: {
+    pow_algo: string;
+  };
+  powText: string;
+  height?: number;
 }
 
 const ProofOfWork = () => {
   const theme = useTheme();
-  const { data, isError, isLoading, error } = useAllBlocks();
+  const tip = useMainStore((state) => state.tip);
+  const {
+    data: blocksData,
+    isError,
+    isLoading,
+    error,
+  } = useGetBlocksByParam(tip, 90);
+
+  const headers = blocksData?.headers || [];
+  const pows = headers.map((header: Header) => {
+    return { header: header.pow.pow_algo, powText: header.powText };
+  });
+
+  function calculateAlgoSplit(
+    powsData: Array<{ header: string; powText: string }>,
+    count: number
+  ) {
+    const recentPows = [...powsData].reverse().slice(-count);
+    const counts = {
+      moneroRx: 0,
+      sha3X: 0,
+      tariRx: 0,
+    };
+
+    recentPows.forEach((pow) => {
+      const algo = pow.header;
+      if (algo === '0') {
+        counts.moneroRx++;
+      } else if (algo === '1') {
+        counts.sha3X++;
+      } else if (algo === '2') {
+        counts.tariRx++;
+      }
+    });
+
+    return counts;
+  }
 
   function calculatePercentage(monero: number, sha: number, tari: number) {
     const total = monero + sha + tari;
@@ -60,73 +91,90 @@ const ProofOfWork = () => {
     return [moneroPercentage, shaPercentage, tariPercentage];
   }
 
-  const moneroRx = {
-    10: calculatePercentage(
-      data?.algoSplit.moneroRx10,
-      data?.algoSplit.sha3X10,
-      data?.algoSplit.tariRx10
-    )[0],
-    20: calculatePercentage(
-      data?.algoSplit.moneroRx20,
-      data?.algoSplit.sha3X20,
-      data?.algoSplit.tariRx20
-    )[0],
-    50: calculatePercentage(
-      data?.algoSplit.moneroRx50,
-      data?.algoSplit.sha3X50,
-      data?.algoSplit.tariRx50
-    )[0],
-    100: calculatePercentage(
-      data?.algoSplit.moneroRx100,
-      data?.algoSplit.sha3X100,
-      data?.algoSplit.tariRx100
-    )[0],
-  };
+  const { moneroRx, sha3X, tariRx, splitsMap } = useMemo(() => {
+    const split10 = calculateAlgoSplit(pows, 10);
+    const split20 = calculateAlgoSplit(pows, 20);
+    const split50 = calculateAlgoSplit(pows, 50);
+    const split90 = calculateAlgoSplit(pows, 90);
 
-  const sha3X = {
-    10: calculatePercentage(
-      data?.algoSplit.moneroRx10,
-      data?.algoSplit.sha3X10,
-      data?.algoSplit.tariRx10
-    )[1],
-    20: calculatePercentage(
-      data?.algoSplit.moneroRx20,
-      data?.algoSplit.sha3X20,
-      data?.algoSplit.tariRx20
-    )[1],
-    50: calculatePercentage(
-      data?.algoSplit.moneroRx50,
-      data?.algoSplit.sha3X50,
-      data?.algoSplit.tariRx50
-    )[1],
-    100: calculatePercentage(
-      data?.algoSplit.moneroRx100,
-      data?.algoSplit.sha3X100,
-      data?.algoSplit.tariRx100
-    )[1],
-  };
-  const tariRx = {
-    10: calculatePercentage(
-      data?.algoSplit.moneroRx10,
-      data?.algoSplit.sha3X10,
-      data?.algoSplit.tariRx10
-    )[2],
-    20: calculatePercentage(
-      data?.algoSplit.moneroRx20,
-      data?.algoSplit.sha3X20,
-      data?.algoSplit.tariRx20
-    )[2],
-    50: calculatePercentage(
-      data?.algoSplit.moneroRx50,
-      data?.algoSplit.sha3X50,
-      data?.algoSplit.tariRx50
-    )[2],
-    100: calculatePercentage(
-      data?.algoSplit.moneroRx100,
-      data?.algoSplit.sha3X100,
-      data?.algoSplit.tariRx100
-    )[2],
-  };
+    const moneroRx = {
+      10: calculatePercentage(
+        split10.moneroRx,
+        split10.sha3X,
+        split10.tariRx
+      )[0],
+      20: calculatePercentage(
+        split20.moneroRx,
+        split20.sha3X,
+        split20.tariRx
+      )[0],
+      50: calculatePercentage(
+        split50.moneroRx,
+        split50.sha3X,
+        split50.tariRx
+      )[0],
+      90: calculatePercentage(
+        split90.moneroRx,
+        split90.sha3X,
+        split90.tariRx
+      )[0],
+    };
+
+    const sha3X = {
+      10: calculatePercentage(
+        split10.moneroRx,
+        split10.sha3X,
+        split10.tariRx
+      )[1],
+      20: calculatePercentage(
+        split20.moneroRx,
+        split20.sha3X,
+        split20.tariRx
+      )[1],
+      50: calculatePercentage(
+        split50.moneroRx,
+        split50.sha3X,
+        split50.tariRx
+      )[1],
+      90: calculatePercentage(
+        split90.moneroRx,
+        split90.sha3X,
+        split90.tariRx
+      )[1],
+    };
+
+    const tariRx = {
+      10: calculatePercentage(
+        split10.moneroRx,
+        split10.sha3X,
+        split10.tariRx
+      )[2],
+      20: calculatePercentage(
+        split20.moneroRx,
+        split20.sha3X,
+        split20.tariRx
+      )[2],
+      50: calculatePercentage(
+        split50.moneroRx,
+        split50.sha3X,
+        split50.tariRx
+      )[2],
+      90: calculatePercentage(
+        split90.moneroRx,
+        split90.sha3X,
+        split90.tariRx
+      )[2],
+    };
+
+    const splitsMap = {
+      '10': split10,
+      '20': split20,
+      '50': split50,
+      '90': split90,
+    };
+
+    return { moneroRx, sha3X, tariRx, splitsMap };
+  }, [pows]);
 
   const option = {
     tooltip: {
@@ -137,19 +185,17 @@ const ProofOfWork = () => {
       formatter: function (
         params: Array<{ name: string; color: string; value: number }>
       ) {
-        const moneroBlocks =
-          data?.algoSplit[`moneroRx${params[0].name}` as keyof AlgoSplit];
-        const shaBlocks =
-          data?.algoSplit[`sha3X${params[0].name}` as keyof AlgoSplit];
-        const tariBlocks =
-          data?.algoSplit[`tariRx${params[0].name}` as keyof AlgoSplit];
+        const split = splitsMap[params[0].name as keyof typeof splitsMap];
+        const moneroBlocks = split.moneroRx;
+        const shaBlocks = split.sha3X;
+        const tariBlocks = split.tariRx;
         const moneroColor = params[0].color;
         const shaColor = params[1].color;
         const tariColor = params[2].color;
         return `
           <b>In the last ${params[0].name} blocks:</b><br />
-          <span style="color:${moneroColor};"></span>RandomX: ${moneroBlocks} blocks (${params[0].value}%)<br />
-          <span style="color:${shaColor};"></span>Sha 3: ${shaBlocks} blocks (${params[1].value}%)
+          <span style="color:${moneroColor};"></span>RandomX (Merge Mined): ${moneroBlocks} blocks (${params[0].value}%)<br />
+          <span style="color:${shaColor};"></span>Sha 3: ${shaBlocks} blocks (${params[1].value}%)<br />
           <span style="color:${tariColor};"></span>Tari RandomX: ${tariBlocks} blocks (${params[2].value}%)
         `;
       },
@@ -193,7 +239,7 @@ const ProofOfWork = () => {
       axisLabel: {
         formatter: 'Last {value} blocks',
       },
-      data: ['100', '50', '20', '10'],
+      data: ['90', '50', '20', '10'],
       axisLine: {
         lineStyle: {
           color: theme.palette.text.primary,
@@ -202,17 +248,18 @@ const ProofOfWork = () => {
     },
     series: [
       {
-        name: 'RandomX',
+        name: 'RandomX (MM)',
         type: 'bar',
         stack: 'total',
         label: {
           show: true,
           formatter: `{c}%`,
+          padding: [0, 10, 0, 10],
         },
         emphasis: {
           focus: 'series',
         },
-        data: [moneroRx[100], moneroRx[50], moneroRx[20], moneroRx[10]],
+        data: [moneroRx[90], moneroRx[50], moneroRx[20], moneroRx[10]],
       },
       {
         name: 'Sha 3',
@@ -225,7 +272,7 @@ const ProofOfWork = () => {
         emphasis: {
           focus: 'series',
         },
-        data: [sha3X[100], sha3X[50], sha3X[20], sha3X[10]],
+        data: [sha3X[90], sha3X[50], sha3X[20], sha3X[10]],
       },
       {
         name: 'Tari RandomX',
@@ -238,7 +285,7 @@ const ProofOfWork = () => {
         emphasis: {
           focus: 'series',
         },
-        data: [tariRx[100], tariRx[50], tariRx[20], tariRx[10]],
+        data: [tariRx[90], tariRx[50], tariRx[20], tariRx[10]],
       },
     ],
   };

@@ -1,4 +1,11 @@
-import { describe, it, expect, vi, beforeEach, type MockedFunction } from 'vitest';
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  type MockedFunction,
+} from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import MainLayout from '../MainLayout';
@@ -15,6 +22,37 @@ type Store = {
   setSearchOpen: (searchOpen: boolean) => void;
   isLinux: boolean;
   setIsLinux: (isLinux: boolean) => void;
+  tip: number;
+  setTip: (tip: number) => void;
+};
+
+// Helper function to create mock store state
+const createMockStoreState = (
+  overrides: Partial<Store> = {}
+): Store => ({
+  showMobileMenu: false,
+  setShowMobileMenu: vi.fn(),
+  showDownloadModal: false,
+  setShowDownloadModal: vi.fn(),
+  isMobile: false,
+  setIsMobile: vi.fn(),
+  searchOpen: false,
+  setSearchOpen: vi.fn(),
+  isLinux: false,
+  setIsLinux: vi.fn(),
+  tip: 0,
+  setTip: vi.fn(),
+  ...overrides,
+});
+
+// Helper function to setup store mock with custom state
+const setupStoreMock = (stateOverrides: Partial<Store> = {}) => {
+  (
+    useMainStore as unknown as MockedFunction<typeof useMainStore>
+  ).mockImplementation((selector: (state: Store) => unknown) => {
+    const state = createMockStoreState(stateOverrides);
+    return selector(state);
+  });
 };
 
 // Mock child components
@@ -58,21 +96,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe('MainLayout', () => {
   beforeEach(() => {
-    (useMainStore as unknown as MockedFunction<typeof useMainStore>).mockImplementation((selector: (state: Store) => unknown) => {
-      const state: Store = {
-        isMobile: false,
-        showMobileMenu: false,
-        setShowMobileMenu: vi.fn(),
-        showDownloadModal: false,
-        setShowDownloadModal: vi.fn(),
-        setIsMobile: vi.fn(),
-        searchOpen: false,
-        setSearchOpen: vi.fn(),
-        isLinux: false,
-        setIsLinux: vi.fn()
-      };
-      return selector(state);
-    });
+    setupStoreMock();
   });
 
   it('should render all main layout components', () => {
@@ -89,21 +113,7 @@ describe('MainLayout', () => {
   });
 
   it('should not render mobile stats box when isMobile is false', () => {
-    (useMainStore as unknown as MockedFunction<typeof useMainStore>).mockImplementation((selector: (state: Store) => unknown) => {
-      const state: Store = {
-        isMobile: false,
-        showMobileMenu: false,
-        setShowMobileMenu: vi.fn(),
-        showDownloadModal: false,
-        setShowDownloadModal: vi.fn(),
-        setIsMobile: vi.fn(),
-        searchOpen: false,
-        setSearchOpen: vi.fn(),
-        isLinux: false,
-        setIsLinux: vi.fn()
-      };
-      return selector(state);
-    });
+    setupStoreMock({ isMobile: false });
 
     render(
       <TestWrapper>
@@ -115,21 +125,7 @@ describe('MainLayout', () => {
   });
 
   it('should render mobile stats box when isMobile is true', () => {
-    (useMainStore as unknown as MockedFunction<typeof useMainStore>).mockImplementation((selector: (state: Store) => unknown) => {
-      const state: Store = {
-        isMobile: true,
-        showMobileMenu: false,
-        setShowMobileMenu: vi.fn(),
-        showDownloadModal: false,
-        setShowDownloadModal: vi.fn(),
-        setIsMobile: vi.fn(),
-        searchOpen: false,
-        setSearchOpen: vi.fn(),
-        isLinux: false,
-        setIsLinux: vi.fn()
-      };
-      return selector(state);
-    });
+    setupStoreMock({ isMobile: true });
 
     render(
       <TestWrapper>
@@ -210,19 +206,10 @@ describe('MainLayout', () => {
     expect(useMainStore).toHaveBeenCalledWith(expect.any(Function));
 
     // Test the selector function
-    const selectorFn = (useMainStore as unknown as MockedFunction<typeof useMainStore>).mock.calls[0][0];
-    const mockState: Store = {
-      isMobile: true,
-      showMobileMenu: false,
-      setShowMobileMenu: vi.fn(),
-      showDownloadModal: false,
-      setShowDownloadModal: vi.fn(),
-      setIsMobile: vi.fn(),
-      searchOpen: false,
-      setSearchOpen: vi.fn(),
-      isLinux: false,
-      setIsLinux: vi.fn()
-    };
+    const selectorFn = (
+      useMainStore as unknown as MockedFunction<typeof useMainStore>
+    ).mock.calls[0][0];
+    const mockState = createMockStoreState({ isMobile: true });
     expect(selectorFn(mockState)).toBe(true);
   });
 });

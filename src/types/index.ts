@@ -7,9 +7,6 @@ export * from './api';
 // === Component Types ===
 export * from './components';
 
-// === Store Types ===
-export * from './stores';
-
 // === Utility Types ===
 export * from './utils';
 
