@@ -194,9 +194,15 @@ const ProofOfWork = () => {
         const tariColor = params[2].color;
         return `
           <b>In the last ${params[0].name} blocks:</b><br />
-          <span style="color:${moneroColor};"></span>RandomX (Merge Mined): ${moneroBlocks} blocks (${params[0].value}%)<br />
-          <span style="color:${shaColor};"></span>Sha 3: ${shaBlocks} blocks (${params[1].value}%)<br />
-          <span style="color:${tariColor};"></span>Tari RandomX: ${tariBlocks} blocks (${params[2].value}%)
+          <span style="color:${moneroColor};"></span>RandomX (Merge Mined): ${moneroBlocks} block${
+          moneroBlocks > 1 ? 's' : ''
+        } (${params[0].value}%)<br />
+          <span style="color:${shaColor};"></span>Sha 3: ${shaBlocks} block${
+          shaBlocks > 1 ? 's' : ''
+        } (${params[1].value}%)<br />
+          <span style="color:${tariColor};"></span>Tari RandomX: ${tariBlocks} block${
+          tariBlocks > 1 ? 's' : ''
+        } (${params[2].value}%)
         `;
       },
     },
@@ -237,7 +243,7 @@ const ProofOfWork = () => {
     yAxis: {
       type: 'category',
       axisLabel: {
-        formatter: 'Last {value} blocks',
+        formatter: 'Last {value} blocks}',
       },
       data: ['90', '50', '20', '10'],
       axisLine: {
