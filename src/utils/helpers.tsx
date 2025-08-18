@@ -20,7 +20,7 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { ChangeEvent } from 'react';
+import { ChangeEvent } from "react";
 
 const renderJson = (json: unknown): React.ReactNode => {
   if (Array.isArray(json)) {
@@ -38,11 +38,11 @@ const renderJson = (json: unknown): React.ReactNode => {
         ],
       </>
     );
-  } else if (typeof json === 'object' && json !== null) {
+  } else if (typeof json === "object" && json !== null) {
     const obj = json as Record<string, unknown>;
     return (
       <>
-        {'{'}
+        {"{"}
         <ul>
           {Object.keys(obj).map((key) => (
             <li key={key}>
@@ -50,24 +50,23 @@ const renderJson = (json: unknown): React.ReactNode => {
             </li>
           ))}
         </ul>
-        {'}'}
+        {"}"}
       </>
     );
   } else {
-    if (typeof json === 'string')
-      return <span className="string">"{json}"</span>;
+    if (typeof json === "string") return <span className="string">"{json}"</span>;
     return <span className="other">{String(json)}</span>;
   }
 };
 
 function removeTagged(obj: unknown): unknown {
   if (obj === undefined) {
-    return 'undefined';
+    return "undefined";
   }
-  if (typeof obj === 'object' && obj !== null) {
+  if (typeof obj === "object" && obj !== null) {
     const rec = obj as Record<string, unknown>;
-    if (rec['@@TAGGED@@'] !== undefined) {
-      const tagged = rec['@@TAGGED@@'] as unknown[];
+    if (rec["@@TAGGED@@"] !== undefined) {
+      const tagged = rec["@@TAGGED@@"] as unknown[];
       return tagged[1];
     }
   }
@@ -77,46 +76,41 @@ function removeTagged(obj: unknown): unknown {
 function toHexString(byteArray: unknown): string {
   if (Array.isArray(byteArray)) {
     return Array.from(byteArray, function (byte) {
-      return ('0' + (byte & 0xff).toString(16)).slice(-2);
-    }).join('');
+      return ("0" + (byte & 0xff).toString(16)).slice(-2);
+    }).join("");
   }
   if (byteArray === undefined) {
-    return 'undefined';
+    return "undefined";
   }
   if (
-    typeof byteArray === 'object' &&
+    typeof byteArray === "object" &&
     byteArray !== null &&
-    (byteArray as Record<string, unknown>)['@@TAGGED@@'] !== undefined
+    (byteArray as Record<string, unknown>)["@@TAGGED@@"] !== undefined
   ) {
-    const tagged = (byteArray as Record<string, unknown>)[
-      '@@TAGGED@@'
-    ] as unknown[];
+    const tagged = (byteArray as Record<string, unknown>)["@@TAGGED@@"] as unknown[];
     return toHexString(tagged[1] as number[]);
   }
   // Only allow arrays, tagged objects, or undefined. All else unsupported.
-  return 'Unsupported type';
+  return "Unsupported type";
 }
 
 function fromHexString(hexString: string) {
   const res: number[] = [];
   for (let i = 0; i < hexString.length; i += 2) {
-    res.push(Number('0x' + hexString.substring(i, i + 2)));
+    res.push(Number("0x" + hexString.substring(i, i + 2)));
   }
   return res;
 }
 
 function shortenString(string: string, start: number = 8, end: number = 8) {
-  return string.substring(0, start) + '...' + string.slice(-end);
+  return string.substring(0, start) + "..." + string.slice(-end);
 }
 
 function emptyRows(page: number, rowsPerPage: number, array: unknown[]) {
   return page > 0 ? Math.max(0, (1 + page) * rowsPerPage - array.length) : 0;
 }
 
-function handleChangePage(
-  newPage: number,
-  setPage: React.Dispatch<React.SetStateAction<number>>
-) {
+function handleChangePage(newPage: number, setPage: React.Dispatch<React.SetStateAction<number>>) {
   setPage(newPage);
 }
 
@@ -133,11 +127,11 @@ function formatTimestamp(timestamp: number) {
   const date = new Date(timestamp * 1000);
 
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
@@ -153,23 +147,23 @@ function validateHash(hash: string): boolean {
 }
 
 function formatHash(number: number, decimals: number = 1) {
-  const suffixes = ['', 'K', 'M', 'G', 'T', 'P'];
+  const suffixes = ["", "K", "M", "G", "T", "P"];
   let suffixIndex = 0;
   while (number >= 1000 && suffixIndex < suffixes.length - 1) {
     number /= 1000;
     suffixIndex++;
   }
-  return number.toFixed(decimals) + suffixes[suffixIndex] + 'H';
+  return number.toFixed(decimals) + suffixes[suffixIndex] + "H";
 }
 
 function formatNumber(number: number | undefined | null, decimals: number = 2) {
   if (number === undefined || number === null) {
-    return 'N/A';
+    return "N/A";
   }
   if (number < 1000000) {
     return number.toLocaleString();
   }
-  const suffixes = ['', 'K', 'M', 'B', 'T'];
+  const suffixes = ["", "K", "M", "B", "T"];
   let suffixIndex = 0;
   while (number >= 1000 && suffixIndex < suffixes.length - 1) {
     number /= 1000;
@@ -179,23 +173,26 @@ function formatNumber(number: number | undefined | null, decimals: number = 2) {
 }
 
 function formatXTM(amount: number): string {
-  return amount / 1_000_000 + ' XTM';
+  return amount / 1_000_000 + " XTM";
 }
 
-function powCheck(num: string): string {
-  let powText = '';
+function powCheck(num: string | number): string {
+  if (typeof num === "number") {
+    num = num.toString();
+  }
+  let powText = "";
   switch (num) {
-    case '0':
-      powText = 'RandomX (Merge Mined)';
+    case "0":
+      powText = "RandomX (Merge Mined)";
       break;
-    case '1':
-      powText = 'SHA3x';
+    case "1":
+      powText = "SHA3x";
       break;
-    case '2':
-      powText = 'RandomX';
+    case "2":
+      powText = "RandomX";
       break;
     default:
-      powText = 'Unknown';
+      powText = "Unknown";
       break;
   }
   return powText;
