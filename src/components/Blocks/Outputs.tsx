@@ -1,20 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
-import type { TransactionOutput } from '@types';
-import { TextField, Stack, Button, Alert } from '@mui/material';
-import {
-  useGetBlockByHeightOrHash,
-  useGetPaginatedData,
-} from '@services/api/hooks/useBlocks';
-import Pagination from '@mui/material/Pagination';
-import GenerateAccordion from './GenerateAccordion';
-import FetchStatusCheck from '@components/FetchStatusCheck';
-import { outputItems } from './Data/Outputs';
-import SearchIcon from '@mui/icons-material/Search';
-import IconButton from '@mui/material/IconButton';
-import { useLocation } from 'react-router-dom';
-import { payrefSearch } from '@utils/searchFunctions';
-import InnerHeading from '@components/InnerHeading';
-import { validatePayRefQuery } from '@utils/validatePayRefQuery';
+import { useState, useEffect, useRef } from "react";
+import type { TransactionOutput } from "@types";
+import { TextField, Stack, Button, Alert } from "@mui/material";
+import { useGetBlockByHeightOrHash, useGetPaginatedData } from "@services/api/hooks/useBlocks";
+import Pagination from "@mui/material/Pagination";
+import GenerateAccordion from "./GenerateAccordion";
+import FetchStatusCheck from "@components/FetchStatusCheck";
+import { outputItems } from "./Data/Outputs";
+import SearchIcon from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
+import { useLocation } from "react-router-dom";
+import { payrefSearch, commitmentSearch } from "@utils/searchFunctions";
+import InnerHeading from "@components/InnerHeading";
+import { validatePayRefQuery } from "@utils/validatePayRefQuery";
 
 interface OutputsProps {
   blockHeight: string;
@@ -25,28 +22,21 @@ interface OutputsProps {
 function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const payrefParams = params.get('payref');
+  const payrefParams = params.get("payref");
+  const commitmentParams = params.get("commitment");
   const foundRef = useRef<HTMLDivElement>(null);
 
   const [page, setPage] = useState(1);
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const { data: blockData } = useGetBlockByHeightOrHash(blockHeight);
-  const {
-    data: paginatedData,
-    isFetching,
-    isError,
-  } = useGetPaginatedData(blockHeight, type, startIndex, endIndex);
-  const { data: outputsData } = useGetPaginatedData(
-    blockHeight,
-    'outputs',
-    0,
-    blockData?.body?.outputs_length
-  );
+  const { data: paginatedData, isFetching, isError } = useGetPaginatedData(blockHeight, type, startIndex, endIndex);
+  const { data: outputsData } = useGetPaginatedData(blockHeight, "outputs", 0, blockData?.body?.outputs_length);
   const [expanded, setExpanded] = useState<string | false>(false);
   const [searchValue, setSearchValue] = useState({
-    payref: '',
+    query: "",
   });
+  const [foundType, setFoundType] = useState<"payref" | "commitment" | null>(null);
   const [foundIndex, setFoundIndex] = useState<number | null>(null);
   const [foundPage, setFoundPage] = useState<number | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
@@ -54,30 +44,23 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
   const [isInvalidQuery, setIsInvalidQuery] = useState(false);
 
   useEffect(() => {
-    if (
-      foundIndex !== null &&
-      foundIndex >= 0 &&
-      foundPage === page &&
-      expanded
-    ) {
+    if (foundIndex !== null && foundIndex >= 0 && foundPage === page && expanded) {
       const el = foundRef.current;
       if (el) {
         const rect = el.getBoundingClientRect();
-        const scrollTop =
-          window.pageYOffset || document.documentElement.scrollTop;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const top = rect.top + scrollTop - 150;
-        window.scrollTo({ top, behavior: 'smooth' });
+        window.scrollTo({ top, behavior: "smooth" });
       }
     }
   }, [foundIndex, foundPage, page, expanded]);
 
-  const dataLength = 'outputs_length';
-  const title = 'Output';
+  const dataLength = "outputs_length";
+  const title = "Output";
 
-  const handleChange =
-    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   const totalItems = blockData?.body[dataLength] || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -94,16 +77,43 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
 
   const handleOutputsSearch = () => {
     setHasSearched(true);
-    if (!validatePayRefQuery(searchValue.payref)) {
+    const query = searchValue.query.trim();
+
+    if (!query) {
       setIsInvalidQuery(true);
       setFoundIndex(null);
       setFoundPage(null);
+      setFoundType(null);
       return;
     }
+
+    if (!validatePayRefQuery(query)) {
+      setIsInvalidQuery(true);
+      setFoundIndex(null);
+      setFoundPage(null);
+      setFoundType(null);
+      return;
+    }
+
     setIsInvalidQuery(false);
     if (outputsData?.body?.data) {
-      const idx = payrefSearch(searchValue.payref, outputsData.body.data);
+      let idx: number | null = null;
+      let type: "payref" | "commitment" | null = null;
+
+      // First try PayRef search
+      idx = payrefSearch(query, outputsData.body.data);
+      if (idx !== null && idx >= 0) {
+        type = "payref";
+      } else {
+        // If PayRef not found, try commitment search
+        idx = commitmentSearch(query, outputsData.body.data);
+        if (idx !== null && idx >= 0) {
+          type = "commitment";
+        }
+      }
+
       setFoundIndex(idx);
+      setFoundType(type);
 
       if (idx !== null && idx >= 0) {
         const outputPage = Math.floor(idx / itemsPerPage) + 1;
@@ -111,10 +121,8 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
         setPage(outputPage);
 
         setTimeout(() => {
-          const indexOnPage = idx % itemsPerPage;
-          const foundPanel = `panel${
-            (outputPage - 1) * itemsPerPage + 1 + indexOnPage
-          }`;
+          const indexOnPage = idx! % itemsPerPage;
+          const foundPanel = `panel${(outputPage - 1) * itemsPerPage + 1 + indexOnPage}`;
           setExpanded(foundPanel);
         }, 0);
       } else {
@@ -124,9 +132,10 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
   };
 
   const handleClear = () => {
-    setSearchValue({ payref: '' });
+    setSearchValue({ query: "" });
     setFoundIndex(null);
     setFoundPage(null);
+    setFoundType(null);
     setHasSearched(false);
     setExpanded(false);
     setShowSearch(false);
@@ -134,14 +143,32 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
   };
 
   useEffect(() => {
-    if (payrefParams && outputsData?.body?.data) {
+    if ((payrefParams || commitmentParams) && outputsData?.body?.data) {
       setShowSearch(true);
+      const query = payrefParams || commitmentParams || "";
       setSearchValue({
-        payref: payrefParams || '',
+        query,
       });
 
-      const idx = payrefSearch(payrefParams || '', outputsData.body.data);
+      let idx: number | null = null;
+      let type: "payref" | "commitment" | null = null;
+
+      if (payrefParams) {
+        idx = payrefSearch(payrefParams, outputsData.body.data);
+        if (idx !== null && idx >= 0) {
+          type = "payref";
+        }
+      }
+
+      if (idx === null && commitmentParams) {
+        idx = commitmentSearch(commitmentParams, outputsData.body.data);
+        if (idx !== null && idx >= 0) {
+          type = "commitment";
+        }
+      }
+
       setFoundIndex(idx);
+      setFoundType(type);
 
       if (idx !== null && idx >= 0) {
         const outputPage = Math.floor(idx / itemsPerPage) + 1;
@@ -149,10 +176,8 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
         setPage(outputPage);
 
         setTimeout(() => {
-          const indexOnPage = idx % itemsPerPage;
-          const foundPanel = `panel${
-            (outputPage - 1) * itemsPerPage + 1 + indexOnPage
-          }`;
+          const indexOnPage = idx! % itemsPerPage;
+          const foundPanel = `panel${(outputPage - 1) * itemsPerPage + 1 + indexOnPage}`;
           setExpanded(foundPanel);
         }, 0);
       } else {
@@ -160,7 +185,7 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       }
       setHasSearched(true);
     }
-  }, [payrefParams, outputsData, itemsPerPage]);
+  }, [payrefParams, commitmentParams, outputsData, itemsPerPage]);
 
   let renderItems;
 
@@ -172,6 +197,13 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       const expandedPanel = `panel${adjustedIndex}`;
       const items = outputItems(content);
 
+      const tabName =
+        foundType === "payref"
+          ? `PayRef found in ${title}`
+          : foundType === "commitment"
+          ? `Commitment found in ${title}`
+          : `Found in ${title}`;
+
       renderItems = (
         <div ref={foundRef}>
           <GenerateAccordion
@@ -180,7 +212,7 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
             expanded={expanded}
             handleChange={handleChange}
             expandedPanel={expandedPanel}
-            tabName={`PayRef found in ${title}`}
+            tabName={tabName}
             key={adjustedIndex}
             isHighlighted={true}
           />
@@ -190,49 +222,35 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       renderItems = null;
     }
   } else {
-    renderItems = displayedItems?.map(
-      (content: TransactionOutput, index: number) => {
-        const adjustedIndex = startIndex + 1 + index;
-        const expandedPanel = `panel${adjustedIndex}`;
-        const items = outputItems(content);
+    renderItems = displayedItems?.map((content: TransactionOutput, index: number) => {
+      const adjustedIndex = startIndex + 1 + index;
+      const expandedPanel = `panel${adjustedIndex}`;
+      const items = outputItems(content);
 
-        const shouldHighlight =
-          foundIndex !== null &&
-          foundPage === page &&
-          foundIndex % itemsPerPage === index;
+      const shouldHighlight = foundIndex !== null && foundPage === page && foundIndex % itemsPerPage === index;
 
-        return (
-          <div ref={shouldHighlight ? foundRef : undefined} key={adjustedIndex}>
-            <GenerateAccordion
-              items={items}
-              adjustedIndex={adjustedIndex}
-              expanded={expanded}
-              handleChange={handleChange}
-              expandedPanel={expandedPanel}
-              tabName={title}
-              isHighlighted={shouldHighlight}
-            />
-          </div>
-        );
-      }
-    );
+      return (
+        <div ref={shouldHighlight ? foundRef : undefined} key={adjustedIndex}>
+          <GenerateAccordion
+            items={items}
+            adjustedIndex={adjustedIndex}
+            expanded={expanded}
+            handleChange={handleChange}
+            expandedPanel={expandedPanel}
+            tabName={title}
+            isHighlighted={shouldHighlight}
+          />
+        </div>
+      );
+    });
   }
 
-  const handlePageChange = (
-    _event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
   if (isFetching || isError) {
-    return (
-      <FetchStatusCheck
-        isLoading={isFetching}
-        isError={isError}
-        errorMessage="Error"
-      />
-    );
+    return <FetchStatusCheck isLoading={isFetching} isError={isError} errorMessage="Error" />;
   }
 
   return (
@@ -240,11 +258,11 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       <InnerHeading
         icon={
           <IconButton
-            aria-label={showSearch ? 'Hide search' : 'Show search'}
+            aria-label={showSearch ? "Hide search" : "Show search"}
             onClick={() => setShowSearch((prev) => !prev)}
             size="large"
           >
-            <SearchIcon color={showSearch ? 'primary' : 'inherit'} />
+            <SearchIcon color={showSearch ? "primary" : "inherit"} />
           </IconButton>
         }
       >
@@ -253,15 +271,15 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       {showSearch && (
         <Stack gap={1} pb={2}>
           <TextField
-            label="Search by Payment Reference (PayRef)"
-            placeholder="Enter 64-character PayRef hash"
-            name="payref"
+            label="Search by Payment Reference or Commitment"
+            placeholder="Enter 64-character PayRef or Commitment hash"
+            name="query"
             variant="outlined"
             size="small"
-            value={searchValue.payref}
+            value={searchValue.query}
             onChange={handleSearchChange}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 handleOutputsSearch();
               }
             }}
@@ -269,7 +287,6 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
             fullWidth
             InputLabelProps={{ shrink: true }}
             error={isInvalidQuery}
-            helperText={isInvalidQuery ? 'Invalid PayRef format' : ''}
           />
 
           <Stack direction="row" gap={1} justifyContent="flex-end">
@@ -280,7 +297,7 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
           </Stack>
           {isInvalidQuery && (
             <Alert severity="error" sx={{ mt: 1 }} variant="standard">
-              Please enter a valid PayRef.
+              Please enter a valid 64-character hash.
             </Alert>
           )}
           {hasSearched && !isInvalidQuery && foundIndex === null && (
@@ -292,18 +309,17 @@ function Outputs({ blockHeight, type, itemsPerPage }: OutputsProps) {
       )}
       {renderItems}
       <Stack justifyContent="center" mt={2} direction="row">
-        {totalItems > itemsPerPage &&
-          !(foundIndex !== null && foundIndex >= 0 && foundPage === page) && (
-            <Pagination
-              count={totalPages}
-              page={page}
-              onChange={handlePageChange}
-              showFirstButton
-              showLastButton
-              color="primary"
-              variant="outlined"
-            />
-          )}
+        {totalItems > itemsPerPage && !(foundIndex !== null && foundIndex >= 0 && foundPage === page) && (
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+            showFirstButton
+            showLastButton
+            color="primary"
+            variant="outlined"
+          />
+        )}
       </Stack>
     </>
   );

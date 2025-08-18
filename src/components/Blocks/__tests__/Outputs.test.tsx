@@ -271,12 +271,12 @@ describe('Outputs', () => {
     // Click to show search
     fireEvent.click(screen.getByLabelText(/Show search|Hide search/));
     expect(
-      screen.getByLabelText('Search by Payment Reference (PayRef)')
+      screen.getByLabelText('Search by Payment Reference or Commitment')
     ).toBeInTheDocument();
     // Click to hide search
     fireEvent.click(screen.getByLabelText(/Show search|Hide search/));
     expect(
-      screen.queryByLabelText('Search by Payment Reference (PayRef)')
+      screen.queryByLabelText('Search by Payment Reference or Commitment')
     ).not.toBeInTheDocument();
   });
 
@@ -294,7 +294,7 @@ describe('Outputs', () => {
     );
     fireEvent.click(screen.getByLabelText(/Show search|Hide search/));
     fireEvent.change(
-      screen.getByLabelText('Search by Payment Reference (PayRef)'),
+      screen.getByLabelText('Search by Payment Reference or Commitment'),
       {
         target: { value: 'short' },
       }
@@ -302,7 +302,7 @@ describe('Outputs', () => {
     fireEvent.click(screen.getByText('Search'));
     await waitFor(() => {
       expect(
-        screen.getByText('Please enter a valid PayRef.')
+        screen.getByText('Please enter a valid 64-character hash.')
       ).toBeInTheDocument();
     });
   });

@@ -20,15 +20,15 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { useQuery } from '@tanstack/react-query';
-import { apiError } from '../helpers/types';
-import { jsonRpc } from '../helpers/jsonRpc';
+import { useQuery } from "@tanstack/react-query";
+import { apiError } from "../helpers/types";
+import { jsonRpc } from "../helpers/jsonRpc";
 
 const address = import.meta.env.VITE_ADDRESS;
 
 export const useAllBlocks = () => {
   return useQuery({
-    queryKey: ['blocks'],
+    queryKey: ["blocks"],
     queryFn: () =>
       jsonRpc(`${address}/?json`).then((resp) => {
         return resp;
@@ -42,7 +42,7 @@ export const useAllBlocks = () => {
 
 export const useGetBlocksByParam = (from: number, limit: number) => {
   return useQuery({
-    queryKey: ['blocks', from, limit],
+    queryKey: ["blocks", from, limit],
     queryFn: () =>
       jsonRpc(`${address}/?from=${from}&limit=${limit}&json`).then((resp) => {
         return resp;
@@ -57,32 +57,25 @@ export const useGetBlocksByParam = (from: number, limit: number) => {
 export const useGetBlockByHeightOrHash = (blockHeight: string) => {
   blockHeight = blockHeight.toLowerCase();
   return useQuery({
-    queryKey: ['block', blockHeight],
+    queryKey: ["block", blockHeight],
     queryFn: () =>
-      jsonRpc(`${address}/blocks/${blockHeight}?json`, 'Block not found').then(
-        (resp) => {
-          return resp;
-        }
-      ),
+      jsonRpc(`${address}/blocks/${blockHeight}?json`, "Block not found").then((resp) => {
+        return resp;
+      }),
     onError: (error: apiError) => {
       return error;
     },
   });
 };
 
-export const useGetPaginatedData = (
-  blockHeight: string,
-  what: string,
-  from: number,
-  to: number
-) => {
+export const useGetPaginatedData = (blockHeight: string, what: string, from: number, to: number) => {
   blockHeight = blockHeight.toLowerCase();
   return useQuery({
-    queryKey: ['block', blockHeight, what, from, to],
+    queryKey: ["block", blockHeight, what, from, to],
     queryFn: () =>
       jsonRpc(
         `${address}/block_data/${blockHeight}?what=${what}&from=${from.toString()}&to=${to.toString()}&json`,
-        'Block not found'
+        "Block not found"
       ).then((resp) => {
         return resp;
       }),
@@ -94,16 +87,16 @@ export const useGetPaginatedData = (
 
 export const useSearchByKernel = (nonces: string[], signatures: string[]) => {
   return useQuery({
-    queryKey: ['searchByKernel'],
+    queryKey: ["searchByKernel"],
     queryFn: () => {
-      const encodedNonces = nonces.map(encodeURIComponent).join(',');
-      const encodedSignatures = signatures.map(encodeURIComponent).join(',');
+      const encodedNonces = nonces.map(encodeURIComponent).join(",");
+      const encodedSignatures = signatures.map(encodeURIComponent).join(",");
 
-      return jsonRpc(
-        `${address}/search_kernels?nonces=${encodedNonces}&signatures=${encodedSignatures}&json`
-      ).then((resp) => {
-        return resp;
-      });
+      return jsonRpc(`${address}/search_kernels?nonces=${encodedNonces}&signatures=${encodedSignatures}&json`).then(
+        (resp) => {
+          return resp;
+        }
+      );
     },
     onError: (error: apiError) => {
       error;
@@ -111,15 +104,12 @@ export const useSearchByKernel = (nonces: string[], signatures: string[]) => {
   });
 };
 
-export const useSearchByPayref = (payref: string) => {
-  payref = payref.toLowerCase();
+export const useSearchByHashOrNumber = (hash: string) => {
+  hash = hash.toLowerCase();
   return useQuery({
-    queryKey: ['payref', payref],
+    queryKey: ["hash", hash],
     queryFn: () =>
-      jsonRpc(
-        `${address}/search_outputs_by_payref?payref=${payref}&json`,
-        'PayRef not found'
-      ).then((resp) => {
+      jsonRpc(`${address}/search_by_hash_or_height?hash_or_number=${hash}&json`, "Hash not found").then((resp) => {
         return resp;
       }),
     onError: (error: apiError) => {

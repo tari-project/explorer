@@ -56,4 +56,22 @@ const payrefSearch = (payref: string, outputs: unknown[]): number | null => {
   return foundIndex !== -1 ? foundIndex : null;
 };
 
-export { kernelSearch, payrefSearch };
+const commitmentSearch = (commitment: string, outputs: unknown[]): number | null => {
+  if (!outputs) return null;
+  commitment = commitment.toLowerCase();
+
+  const foundIndex = outputs.findIndex((output) => {
+    const o = output as Record<string, unknown>;
+    const commitmentData = o.commitment as Record<string, unknown>;
+    const commitmentHex = toHexString(commitmentData.data as number[]);
+    const commitmentMatch = commitment ? commitmentHex === commitment : false;
+    if (commitment) {
+      return commitmentMatch;
+    }
+    return false;
+  });
+
+  return foundIndex !== -1 ? foundIndex : null;
+};
+
+export { kernelSearch, payrefSearch, commitmentSearch };

@@ -20,39 +20,28 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { useState } from 'react';
-import { TypographyData } from '@components/StyledComponents';
-import { Typography, Grid, Divider, Pagination, Alert } from '@mui/material';
-import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
-import { Link } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import CopyToClipboard from '@components/CopyToClipboard';
-import { useMainStore } from '@services/stores/useMainStore';
-import InnerHeading from '@components/InnerHeading';
+import { useState, Fragment } from "react";
+import { TypographyData } from "@components/StyledComponents";
+import { Typography, Grid, Divider, Pagination, Alert } from "@mui/material";
+import { toHexString, shortenString, formatTimestamp } from "@utils/helpers";
+import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CopyToClipboard from "@components/CopyToClipboard";
+import { useMainStore } from "@services/stores/useMainStore";
+import InnerHeading from "@components/InnerHeading";
 
 interface BlockData {
-  height?: number;
-  header?: {
-    hash?: { data?: number[] };
-    prev_hash?: { data?: number[] };
-    timestamp?: number;
-    target_difficulty?: number;
-    achieved_difficulty?: number;
-    total_kernel_offset?: { data?: number[] };
-    nonce?: number;
-    pow?: {
-      pow_algo?: number;
-      accumulated_monero_difficulty?: number;
-      accumulated_blake_difficulty?: number;
-    };
-  };
+  block_height?: string;
+  block_hash?: { type?: string; data?: number[] };
+  mined_timestamp?: string;
+  search_type?: string;
 }
 
-function BlockTable({ data }: { data: BlockData | undefined }) {
+function BlockTable({ data }: { data: BlockData[] }) {
   const [page, setPage] = useState(1);
   const isMobile = useMainStore((state) => state.isMobile);
-  const totalItems = data ? 1 : 0;
+  const totalItems = data?.length || 0;
   const itemsPerPage = 10;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -60,7 +49,7 @@ function BlockTable({ data }: { data: BlockData | undefined }) {
     setPage(value);
   };
 
-  if (!data) {
+  if (!data || data.length === 0) {
     return (
       <Alert severity="error" variant="outlined">
         No blocks found.
@@ -68,48 +57,61 @@ function BlockTable({ data }: { data: BlockData | undefined }) {
     );
   }
 
-  const height = data?.height || 'no data';
-  const hash = data?.header?.hash?.data || 'no data';
-  const timestamp = data?.header?.timestamp || 'no data';
-
   function Mobile() {
     const col1 = 4;
     const col2 = 8;
 
     return (
-      <Grid container spacing={2} pl={0} pr={0} pb={2}>
-        <Grid item xs={col1}>
-          <Typography variant="body2">Height</Typography>
-        </Grid>
-        <Grid item xs={col2}>
-          <TypographyData variant="body2">{height}</TypographyData>
-        </Grid>
-        <Grid item xs={col1}>
-          <Typography variant="body2">Hash</Typography>
-        </Grid>
-        <Grid item xs={col2}>
-          <TypographyData variant="body2">
-            {shortenString(toHexString(hash), 6, 6)}
-            <CopyToClipboard copy={toHexString(hash)} />
-          </TypographyData>
-        </Grid>
-        <Grid item xs={col1}>
-          <Typography variant="body2">Timestamp</Typography>
-        </Grid>
-        <Grid item xs={col2}>
-          <TypographyData variant="body2">
-            {typeof timestamp === 'number'
-              ? formatTimestamp(timestamp)
-              : timestamp}
-          </TypographyData>
-        </Grid>
-        <Grid item xs={12}>
-          <Link to={`/blocks/${height}`}>
-            <Button variant="outlined" fullWidth>
-              View Block
-            </Button>
-          </Link>
-        </Grid>
+      <Grid container spacing={2} pl={0} pr={0}>
+        {data.map((block: BlockData, index: number) => {
+          const height = block?.block_height || "no data";
+          const hash = block?.block_hash?.data || "no data";
+          const timestamp = block?.mined_timestamp || "no data";
+
+          return (
+            <Fragment key={index}>
+              <Grid item xs={12} key={index}>
+                <Grid container spacing={2} pl={0} pr={0} pb={2}>
+                  <Grid item xs={col1}>
+                    <Typography variant="body2">Height</Typography>
+                  </Grid>
+                  <Grid item xs={col2}>
+                    <TypographyData variant="body2">{height}</TypographyData>
+                  </Grid>
+                  <Grid item xs={col1}>
+                    <Typography variant="body2">Hash</Typography>
+                  </Grid>
+                  <Grid item xs={col2}>
+                    <TypographyData variant="body2">
+                      {shortenString(toHexString(hash), 6, 6)}
+                      <CopyToClipboard copy={toHexString(hash)} />
+                    </TypographyData>
+                  </Grid>
+                  <Grid item xs={col1}>
+                    <Typography variant="body2">Timestamp</Typography>
+                  </Grid>
+                  <Grid item xs={col2}>
+                    <TypographyData variant="body2">
+                      {typeof timestamp === "string" && !isNaN(Number(timestamp))
+                        ? formatTimestamp(Number(timestamp))
+                        : timestamp}
+                    </TypographyData>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Link to={`/blocks/${height}`}>
+                      <Button variant="outlined" fullWidth>
+                        View Block
+                      </Button>
+                    </Link>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+              </Grid>
+            </Fragment>
+          );
+        })}
       </Grid>
     );
   }
@@ -131,24 +133,41 @@ function BlockTable({ data }: { data: BlockData | undefined }) {
           <Grid item xs={col3} md={col3} lg={col3}>
             <Typography variant="body2">Timestamp</Typography>
           </Grid>
-          <Grid item xs={col1} md={col1} lg={col1}>
-            <TypographyData>
-              <Link to={`/blocks/${height}`}>{height}</Link>
-            </TypographyData>
-          </Grid>
-          <Grid item xs={col2} md={col2} lg={col2}>
-            <TypographyData>
-              {shortenString(toHexString(hash), 6, 6)}
-              <CopyToClipboard copy={toHexString(hash)} />
-            </TypographyData>
-          </Grid>
-          <Grid item xs={col3} md={col3} lg={col3}>
-            <TypographyData>
-              {typeof timestamp === 'number'
-                ? formatTimestamp(timestamp)
-                : timestamp}
-            </TypographyData>
-          </Grid>
+        </Grid>
+        <Grid container spacing={2} pl={0} pr={0} pb={2}>
+          {data
+            ?.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+            .map((block: BlockData, index: number) => {
+              const height = block?.block_height || "no data";
+              const hash = block?.block_hash?.data || "no data";
+              const timestamp = block?.mined_timestamp || "no data";
+
+              return (
+                <Fragment key={index}>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={col1} md={col1} lg={col1}>
+                    <TypographyData>
+                      <Link to={`/blocks/${height}`}>{height}</Link>
+                    </TypographyData>
+                  </Grid>
+                  <Grid item xs={col2} md={col2} lg={col2}>
+                    <TypographyData>
+                      {shortenString(toHexString(hash), 6, 6)}
+                      <CopyToClipboard copy={toHexString(hash)} />
+                    </TypographyData>
+                  </Grid>
+                  <Grid item xs={col3} md={col3} lg={col3}>
+                    <TypographyData>
+                      {typeof timestamp === "string" && !isNaN(Number(timestamp))
+                        ? formatTimestamp(Number(timestamp))
+                        : timestamp}
+                    </TypographyData>
+                  </Grid>
+                </Fragment>
+              );
+            })}
         </Grid>
       </>
     );
@@ -156,17 +175,11 @@ function BlockTable({ data }: { data: BlockData | undefined }) {
 
   return (
     <>
-      <InnerHeading>Found in Block{totalItems > 1 && 's'}:</InnerHeading>
+      <InnerHeading>Found in Block{totalItems > 1 && "s"}:</InnerHeading>
       {isMobile ? <Mobile /> : <Desktop />}
       <Divider />
       {totalItems > itemsPerPage && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          pt={2}
-          pb={2}
-        >
+        <Box display="flex" justifyContent="center" alignItems="center" pt={2} pb={2}>
           <Pagination
             count={totalPages}
             color="primary"

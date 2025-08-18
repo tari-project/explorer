@@ -20,101 +20,40 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { GradientPaper } from '@components/StyledComponents';
-import { Alert, Grid } from '@mui/material';
-import { useLocation } from 'react-router-dom';
-import {
-  useSearchByPayref,
-  useGetBlockByHeightOrHash,
-} from '@services/api/hooks/useBlocks';
-import FetchStatusCheck from '@components/FetchStatusCheck';
-import PayRefTable from '@components/Search/PayRefTable';
-import BlockTable from '@components/Search/BlockTable';
-import useSearchStatusStore from '@services/stores/useSearchStatusStore';
-import { useEffect } from 'react';
-import { validateHash } from '@utils/helpers';
+import { GradientPaper } from "@components/StyledComponents";
+import { Alert, Grid } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import { useSearchByHashOrNumber } from "@services/api/hooks/useBlocks";
+import FetchStatusCheck from "@components/FetchStatusCheck";
+import PayRefTable from "@components/Search/PayRefTable";
+import BlockTable from "@components/Search/BlockTable";
+import useSearchStatusStore from "@services/stores/useSearchStatusStore";
+import { useEffect } from "react";
+import { validateHash } from "@utils/helpers";
+
+interface SearchResultItem {
+  search_type?: string;
+  block_height?: string;
+  block_hash?: { type?: string; data?: number[] };
+  mined_timestamp?: string;
+  payment_reference_hex?: string;
+  is_spent?: boolean;
+  min_value_promise?: number;
+  commitment?: { data?: number[] };
+  spent_block_hash?: { data?: number[] };
+}
 
 function SearchPage() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
-  const hash = params.get('hash') || params.get('payref') || '';
+  const hash = params.get("hash") || params.get("payref") || "";
   const isHash = validateHash(hash);
 
   const setStatus = useSearchStatusStore((state) => state.setStatus);
   const setMessage = useSearchStatusStore((state) => state.setMessage);
 
-  const {
-    data: payrefData,
-    isFetching: isPayrefLoading,
-    isError: isPayrefError,
-    isSuccess: isPayrefSuccess,
-    error: payrefError,
-  } = useSearchByPayref(hash);
-
-  const {
-    data: blockData,
-    isFetching: isBlockLoading,
-    isError: isBlockError,
-    isSuccess: isBlockSuccess,
-    error: blockError,
-  } = useGetBlockByHeightOrHash(hash);
-
-  let showFetchStatusCheck = true;
-  let isLoading = true;
-  let isError = false;
-  let isSuccess = false;
-
-  if (!isHash) {
-    showFetchStatusCheck = false;
-    isLoading = false;
-    isError = true;
-    isSuccess = false;
-  } else if (isPayrefLoading) {
-    showFetchStatusCheck = true;
-    isLoading = true;
-    isError = false;
-    isSuccess = false;
-  } else if (isPayrefSuccess && payrefData?.items.length > 0) {
-    showFetchStatusCheck = false;
-    isLoading = false;
-    isError = false;
-    isSuccess = true;
-
-    // If payref search returns exactly one result, redirect to block with payref
-    if (payrefData.items.length === 1) {
-      const blockHeight = payrefData.items[0].block_height;
-      window.location.replace(`/blocks/${blockHeight}?payref=${hash}`);
-    }
-  } else if (
-    isPayrefError ||
-    (payrefData?.items.length === 0 && !isBlockLoading)
-  ) {
-    if (isBlockLoading) {
-      showFetchStatusCheck = true;
-      isLoading = true;
-      isError = false;
-      isSuccess = false;
-    } else if (isBlockError || !blockData) {
-      showFetchStatusCheck = true;
-      isLoading = false;
-      isError = true;
-      isSuccess = false;
-    } else if (isBlockSuccess && blockData) {
-      showFetchStatusCheck = false;
-      isLoading = false;
-      isError = false;
-      isSuccess = true;
-
-      // If payref search returns nothing, but block search succeeds, redirect to block
-      window.location.replace(`/blocks/${blockData.header.height}`);
-    }
-  } else {
-    showFetchStatusCheck = false;
-    isLoading = true;
-    isError = false;
-    isSuccess = false;
-  }
+  const { data, isFetching: isLoading, isError, isSuccess, error } = useSearchByHashOrNumber(hash);
 
   useEffect(() => {
     setStatus({
@@ -123,30 +62,22 @@ function SearchPage() {
       isSuccess,
     });
     if (isError) {
-      setMessage('Not found');
+      setMessage("Not found");
     } else if (isSuccess) {
-      setMessage('Block found');
+      setMessage("Block found");
     } else if (isLoading) {
-      setMessage('Searching...');
+      setMessage("Searching...");
     } else {
-      setMessage('');
+      setMessage("");
     }
-  }, [
-    isLoading,
-    isError,
-    payrefError,
-    isSuccess,
-    blockError,
-    setStatus,
-    setMessage,
-  ]);
+  }, [isLoading, isError, isSuccess, setStatus, setMessage]);
 
   if (!isHash) {
     return (
       <Grid item xs={12} md={12} lg={12}>
         <GradientPaper>
           <Alert variant="outlined" severity="error">
-            {' '}
+            {" "}
             Invalid hash. Please enter a valid 64-character hexadecimal hash.
           </Alert>
         </GradientPaper>
@@ -154,29 +85,69 @@ function SearchPage() {
     );
   }
 
-  if (showFetchStatusCheck || isLoading) {
+  if (isLoading || isError) {
     return (
       <Grid item xs={12} md={12} lg={12}>
         <GradientPaper>
-          <FetchStatusCheck
-            isError={isError}
-            isLoading={isLoading}
-            errorMessage={
-              payrefError?.message || blockError?.message || 'Not found'
-            }
-          />
+          <FetchStatusCheck isError={isError} isLoading={isLoading} errorMessage={error?.message || "Not found"} />
         </GradientPaper>
       </Grid>
     );
   }
 
+  const payrefItems = data?.items?.filter((item: SearchResultItem) => item.search_type === "Payref") || [];
+  const hashItems = data?.items?.filter((item: SearchResultItem) => item.search_type === "#hash") || [];
+  const heightItems = data?.items?.filter((item: SearchResultItem) => item.search_type === "#height") || [];
+  const commitmentItems = data?.items?.filter((item: SearchResultItem) => item.search_type === "Commitment") || [];
+
+  if (payrefItems.length === 1) {
+    const blockHeight = payrefItems[0].block_height;
+    window.location.replace(`/blocks/${blockHeight}?payref=${hash}`);
+  }
+  if (hashItems.length === 1) {
+    const blockHeight = hashItems[0].block_height;
+    window.location.replace(`/blocks/${blockHeight}`);
+  }
+  if (heightItems.length === 1) {
+    const blockHeight = heightItems[0].block_height;
+    window.location.replace(`/blocks/${blockHeight}`);
+  }
+  if (commitmentItems.length === 1) {
+    const blockHeight = commitmentItems[0].block_height;
+    window.location.replace(`/blocks/${blockHeight}?commitment=${hash}`);
+  }
+
   return (
     <Grid item xs={12} md={12} lg={12}>
       <GradientPaper>
-        {payrefData?.items.length > 0 && (
-          <PayRefTable data={payrefData?.items || []} />
+        {data?.items && data.items.length > 0 ? (
+          <>
+            {payrefItems.length > 0 && (
+              <>
+                <PayRefTable data={payrefItems} />
+              </>
+            )}
+            {hashItems.length > 0 && (
+              <>
+                <BlockTable data={hashItems} />
+              </>
+            )}
+            {heightItems.length > 0 && (
+              <>
+                <BlockTable data={heightItems} />
+              </>
+            )}
+            {commitmentItems.length > 0 && (
+              <>
+                <BlockTable data={commitmentItems} />
+              </>
+            )}
+          </>
+        ) : (
+          <Alert variant="outlined" severity="error">
+            No results found for the provided hash.
+          </Alert>
         )}
-        {blockData?.height && <BlockTable data={blockData || []} />}
       </GradientPaper>
     </Grid>
   );
