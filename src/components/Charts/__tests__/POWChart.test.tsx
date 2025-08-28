@@ -89,6 +89,7 @@ const mockTheme = {
       400: '#bdbdbd',
       500: '#9e9e9e',
     },
+    divider: '#e0e0e0',
   },
 };
 
@@ -142,6 +143,10 @@ describe('POWChart', () => {
       tariRx20: 25,
       tariRx50: 20,
       tariRx100: 15,
+      cuckaroo10: 20,
+      cuckaroo20: 15,
+      cuckaroo50: 10,
+      cuckaroo100: 5,
     },
   };
 
@@ -212,7 +217,7 @@ describe('POWChart', () => {
     const option = JSON.parse(chart.getAttribute('data-option') || '{}');
     expect(option.series).toBeDefined();
     expect(option.series[0].type).toBe('bar');
-    expect(option.series).toHaveLength(3); // RandomX, Sha3, TariRandomX
+    expect(option.series).toHaveLength(4); // RandomX, Sha3, TariRandomX, Cuckaroo
   });
 
   it('should calculate percentages correctly', () => {
@@ -241,6 +246,7 @@ describe('POWChart', () => {
     expect(option.series[0].name).toBe('RandomX');
     expect(option.series[1].name).toBe('Sha 3');
     expect(option.series[2].name).toBe('Tari RandomX');
+    expect(option.series[3].name).toBe('Cuckaroo 29');
   });
 
   it('should configure chart with proper options', () => {
@@ -296,7 +302,7 @@ describe('POWChart', () => {
     const option = JSON.parse(chart.getAttribute('data-option') || '{}');
 
     // Check that colors are set globally
-    expect(option.color).toEqual(['#98D8C8', '#FFA07A', '#45B7D1']);
+    expect(option.color).toEqual(['#98D8C8', '#FFA07A', '#45B7D1', '#4ECDC4']);
   });
 
   it('should handle chart dimensions and styling', () => {
@@ -332,6 +338,10 @@ describe('POWChart', () => {
         tariRx20: 0,
         tariRx50: 0,
         tariRx100: 0,
+        cuckaroo10: 0,
+        cuckaroo20: 0,
+        cuckaroo50: 0,
+        cuckaroo100: 0,
       },
     };
 
@@ -352,7 +362,7 @@ describe('POWChart', () => {
     const option = JSON.parse(chart.getAttribute('data-option') || '{}');
 
     // Should still render all series even if some have 0 values
-    expect(option.series).toHaveLength(3);
+    expect(option.series).toHaveLength(4);
 
     // Check that the component handles zero values gracefully
     expect(option.series[0].data).toHaveLength(4); // 4 time periods
@@ -374,6 +384,10 @@ describe('POWChart', () => {
           tariRx20: 0,
           tariRx50: 0,
           tariRx100: 0,
+          cuckaroo10: 0,
+          cuckaroo20: 0,
+          cuckaroo50: 0,
+          cuckaroo100: 0,
         },
       },
       isLoading: false,
@@ -414,5 +428,53 @@ describe('POWChart', () => {
 
     // Check emphasis configuration
     expect(option.series[0].emphasis.focus).toBe('series');
+  });
+
+  it('should use theme colors for chart elements', () => {
+    mockUseAllBlocks.mockReturnValue({
+      data: mockPowData,
+      isLoading: false,
+      isError: false,
+      error: null,
+    });
+
+    render(
+      <TestWrapper>
+        <POWChart />
+      </TestWrapper>
+    );
+
+    const chart = screen.getByTestId('echarts');
+    const option = JSON.parse(chart.getAttribute('data-option') || '{}');
+
+    // Check that theme colors are applied to legend
+    expect(option.legend.textStyle.color).toBe('#000000');
+
+    // Check that theme colors are applied to axes
+    expect(option.xAxis.axisLine.lineStyle.color).toBe('#000000');
+    expect(option.yAxis.axisLine.lineStyle.color).toBe('#000000');
+    expect(option.xAxis.splitLine.lineStyle.color).toBe('#e0e0e0');
+  });
+
+  it('should have proper tooltip configuration', () => {
+    mockUseAllBlocks.mockReturnValue({
+      data: mockPowData,
+      isLoading: false,
+      isError: false,
+      error: null,
+    });
+
+    render(
+      <TestWrapper>
+        <POWChart />
+      </TestWrapper>
+    );
+
+    const chart = screen.getByTestId('echarts');
+    const option = JSON.parse(chart.getAttribute('data-option') || '{}');
+
+    // Check tooltip configuration
+    expect(option.tooltip.trigger).toBe('axis');
+    expect(option.tooltip.axisPointer.type).toBe('shadow');
   });
 });

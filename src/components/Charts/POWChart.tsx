@@ -40,44 +40,136 @@ interface AlgoSplit {
   tariRx20: number;
   tariRx50: number;
   tariRx100: number;
+  cuckaroo10: number;
+  cuckaroo20: number;
+  cuckaroo50: number;
+  cuckaroo100: number;
 }
 
 const ProofOfWork = () => {
   const theme = useTheme();
   const { data, isError, isLoading, error } = useAllBlocks();
 
-  function calculatePercentage(monero: number, sha: number, tari: number) {
-    const total = monero + sha + tari;
+  function calculatePercentage(monero: number, sha: number, tari: number, cuckaroo: number) {
+    const total = monero + sha + tari + cuckaroo;
     let moneroPercentage = Math.round((monero / total) * 100);
     let shaPercentage = Math.round((sha / total) * 100);
     const tariPercentage = Math.round((tari / total) * 100);
-    const diff = 100 - (moneroPercentage + shaPercentage + tariPercentage);
+    const cuckarooPercentage = Math.round((cuckaroo / total) * 100);
+    const diff = 100 - (moneroPercentage + shaPercentage + tariPercentage + cuckarooPercentage);
     if (diff > 0) {
       moneroPercentage += diff;
     } else if (diff < 0) {
       shaPercentage += diff;
     }
-    return [moneroPercentage, shaPercentage, tariPercentage];
+    return [moneroPercentage, shaPercentage, tariPercentage, cuckarooPercentage];
   }
 
   const moneroRx = {
-    10: calculatePercentage(data?.algoSplit.moneroRx10, data?.algoSplit.sha3X10, data?.algoSplit.tariRx10)[0],
-    20: calculatePercentage(data?.algoSplit.moneroRx20, data?.algoSplit.sha3X20, data?.algoSplit.tariRx20)[0],
-    50: calculatePercentage(data?.algoSplit.moneroRx50, data?.algoSplit.sha3X50, data?.algoSplit.tariRx50)[0],
-    100: calculatePercentage(data?.algoSplit.moneroRx100, data?.algoSplit.sha3X100, data?.algoSplit.tariRx100)[0],
+    10: calculatePercentage(
+      data?.algoSplit.moneroRx10 || 0,
+      data?.algoSplit.sha3X10 || 0,
+      data?.algoSplit.tariRx10 || 0,
+      data?.algoSplit.cuckaroo10 || 0
+    )[0],
+    20: calculatePercentage(
+      data?.algoSplit.moneroRx20 || 0,
+      data?.algoSplit.sha3X20 || 0,
+      data?.algoSplit.tariRx20 || 0,
+      data?.algoSplit.cuckaroo20 || 0
+    )[0],
+    50: calculatePercentage(
+      data?.algoSplit.moneroRx50 || 0,
+      data?.algoSplit.sha3X50 || 0,
+      data?.algoSplit.tariRx50 || 0,
+      data?.algoSplit.cuckaroo50 || 0
+    )[0],
+    100: calculatePercentage(
+      data?.algoSplit.moneroRx100 || 0,
+      data?.algoSplit.sha3X100 || 0,
+      data?.algoSplit.tariRx100 || 0,
+      data?.algoSplit.cuckaroo100 || 0
+    )[0],
   };
 
   const sha3X = {
-    10: calculatePercentage(data?.algoSplit.moneroRx10, data?.algoSplit.sha3X10, data?.algoSplit.tariRx10)[1],
-    20: calculatePercentage(data?.algoSplit.moneroRx20, data?.algoSplit.sha3X20, data?.algoSplit.tariRx20)[1],
-    50: calculatePercentage(data?.algoSplit.moneroRx50, data?.algoSplit.sha3X50, data?.algoSplit.tariRx50)[1],
-    100: calculatePercentage(data?.algoSplit.moneroRx100, data?.algoSplit.sha3X100, data?.algoSplit.tariRx100)[1],
+    10: calculatePercentage(
+      data?.algoSplit.moneroRx10 || 0,
+      data?.algoSplit.sha3X10 || 0,
+      data?.algoSplit.tariRx10 || 0,
+      data?.algoSplit.cuckaroo10 || 0
+    )[1],
+    20: calculatePercentage(
+      data?.algoSplit.moneroRx20 || 0,
+      data?.algoSplit.sha3X20 || 0,
+      data?.algoSplit.tariRx20 || 0,
+      data?.algoSplit.cuckaroo20 || 0
+    )[1],
+    50: calculatePercentage(
+      data?.algoSplit.moneroRx50 || 0,
+      data?.algoSplit.sha3X50 || 0,
+      data?.algoSplit.tariRx50 || 0,
+      data?.algoSplit.cuckaroo50 || 0
+    )[1],
+    100: calculatePercentage(
+      data?.algoSplit.moneroRx100 || 0,
+      data?.algoSplit.sha3X100 || 0,
+      data?.algoSplit.tariRx100 || 0,
+      data?.algoSplit.cuckaroo100 || 0
+    )[1],
   };
   const tariRx = {
-    10: calculatePercentage(data?.algoSplit.moneroRx10, data?.algoSplit.sha3X10, data?.algoSplit.tariRx10)[2],
-    20: calculatePercentage(data?.algoSplit.moneroRx20, data?.algoSplit.sha3X20, data?.algoSplit.tariRx20)[2],
-    50: calculatePercentage(data?.algoSplit.moneroRx50, data?.algoSplit.sha3X50, data?.algoSplit.tariRx50)[2],
-    100: calculatePercentage(data?.algoSplit.moneroRx100, data?.algoSplit.sha3X100, data?.algoSplit.tariRx100)[2],
+    10: calculatePercentage(
+      data?.algoSplit.moneroRx10 || 0,
+      data?.algoSplit.sha3X10 || 0,
+      data?.algoSplit.tariRx10 || 0,
+      data?.algoSplit.cuckaroo10 || 0
+    )[2],
+    20: calculatePercentage(
+      data?.algoSplit.moneroRx20 || 0,
+      data?.algoSplit.sha3X20 || 0,
+      data?.algoSplit.tariRx20 || 0,
+      data?.algoSplit.cuckaroo20 || 0
+    )[2],
+    50: calculatePercentage(
+      data?.algoSplit.moneroRx50 || 0,
+      data?.algoSplit.sha3X50 || 0,
+      data?.algoSplit.tariRx50 || 0,
+      data?.algoSplit.cuckaroo50 || 0
+    )[2],
+    100: calculatePercentage(
+      data?.algoSplit.moneroRx100 || 0,
+      data?.algoSplit.sha3X100 || 0,
+      data?.algoSplit.tariRx100 || 0,
+      data?.algoSplit.cuckaroo100 || 0
+    )[2],
+  };
+
+  const cuckaroo = {
+    10: calculatePercentage(
+      data?.algoSplit.moneroRx10 || 0,
+      data?.algoSplit.sha3X10 || 0,
+      data?.algoSplit.tariRx10 || 0,
+      data?.algoSplit.cuckaroo10 || 0
+    )[3],
+    20: calculatePercentage(
+      data?.algoSplit.moneroRx20 || 0,
+      data?.algoSplit.sha3X20 || 0,
+      data?.algoSplit.tariRx20 || 0,
+      data?.algoSplit.cuckaroo20 || 0
+    )[3],
+    50: calculatePercentage(
+      data?.algoSplit.moneroRx50 || 0,
+      data?.algoSplit.sha3X50 || 0,
+      data?.algoSplit.tariRx50 || 0,
+      data?.algoSplit.cuckaroo50 || 0
+    )[3],
+    100: calculatePercentage(
+      data?.algoSplit.moneroRx100 || 0,
+      data?.algoSplit.sha3X100 || 0,
+      data?.algoSplit.tariRx100 || 0,
+      data?.algoSplit.cuckaroo100 || 0
+    )[3],
   };
 
   const option = {
@@ -87,17 +179,28 @@ const ProofOfWork = () => {
         type: "shadow",
       },
       formatter: function (params: Array<{ name: string; color: string; value: number }>) {
-        const moneroBlocks = data?.algoSplit[`moneroRx${params[0].name}` as keyof AlgoSplit];
-        const shaBlocks = data?.algoSplit[`sha3X${params[0].name}` as keyof AlgoSplit];
-        const tariBlocks = data?.algoSplit[`tariRx${params[0].name}` as keyof AlgoSplit];
+        const moneroBlocks = data?.algoSplit[`moneroRx${params[0].name}` as keyof AlgoSplit] || 0;
+        const shaBlocks = data?.algoSplit[`sha3X${params[0].name}` as keyof AlgoSplit] || 0;
+        const tariBlocks = data?.algoSplit[`tariRx${params[0].name}` as keyof AlgoSplit] || 0;
+        const cuckarooBlocks = data?.algoSplit[`cuckaroo${params[0].name}` as keyof AlgoSplit] || 0;
         const moneroColor = params[0].color;
         const shaColor = params[1].color;
         const tariColor = params[2].color;
+        const cuckarooColor = params[3].color;
         return `
           <b>In the last ${params[0].name} blocks:</b><br />
-          <span style="display:inline-block;width:8px;height:8px;background-color:${moneroColor};border-radius:50%;margin-right:5px;"></span>RandomX: ${moneroBlocks} ${moneroBlocks === 1 ? 'block' : 'blocks'} (${params[0].value}%)<br />
-          <span style="display:inline-block;width:8px;height:8px;background-color:${shaColor};border-radius:50%;margin-right:5px;"></span>Sha 3: ${shaBlocks} ${shaBlocks === 1 ? 'block' : 'blocks'} (${params[1].value}%)<br />
-          <span style="display:inline-block;width:8px;height:8px;background-color:${tariColor};border-radius:50%;margin-right:5px;"></span>Tari RandomX: ${tariBlocks} ${tariBlocks === 1 ? 'block' : 'blocks'} (${params[2].value}%)
+          <span style="display:inline-block;width:8px;height:8px;background-color:${moneroColor};border-radius:50%;margin-right:5px;"></span>RandomX: ${moneroBlocks} ${
+          moneroBlocks === 1 ? "block" : "blocks"
+        } (${params[0].value}%)<br />
+          <span style="display:inline-block;width:8px;height:8px;background-color:${shaColor};border-radius:50%;margin-right:5px;"></span>Sha 3: ${shaBlocks} ${
+          shaBlocks === 1 ? "block" : "blocks"
+        } (${params[1].value}%)<br />
+          <span style="display:inline-block;width:8px;height:8px;background-color:${tariColor};border-radius:50%;margin-right:5px;"></span>Tari RandomX: ${tariBlocks} ${
+          tariBlocks === 1 ? "block" : "blocks"
+        } (${params[2].value}%)<br />
+          <span style="display:inline-block;width:8px;height:8px;background-color:${cuckarooColor};border-radius:50%;margin-right:5px;"></span>Cuckaroo 29: ${cuckarooBlocks} ${
+          cuckarooBlocks === 1 ? "block" : "blocks"
+        } (${params[3].value}%)
         `;
       },
     },
@@ -107,7 +210,7 @@ const ProofOfWork = () => {
       },
       bottom: 10,
     },
-    color: [chartColor[4], chartColor[3], chartColor[2]],
+    color: [chartColor[4], chartColor[3], chartColor[2], chartColor[1]],
     grid: {
       left: "2%",
       right: "2%",
@@ -186,6 +289,19 @@ const ProofOfWork = () => {
           focus: "series",
         },
         data: [tariRx[100], tariRx[50], tariRx[20], tariRx[10]],
+      },
+      {
+        name: "Cuckaroo 29",
+        type: "bar",
+        stack: "total",
+        label: {
+          show: true,
+          formatter: `{c}%`,
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: [cuckaroo[100], cuckaroo[50], cuckaroo[20], cuckaroo[10]],
       },
     ],
   };

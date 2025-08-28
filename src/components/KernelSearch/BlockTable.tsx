@@ -72,7 +72,7 @@ function BlockTable({ data }: BlockTableProps) {
                 <Grid item xs={col2}>
                   <TypographyData>
                     <Link to={`/blocks/${height}`}>
-                      {height.toLocaleString()}{' '}
+                      {height.toLocaleString('en-US')}{' '}
                     </Link>
                   </TypographyData>
                 </Grid>
@@ -199,7 +199,7 @@ function BlockTable({ data }: BlockTableProps) {
                   <Grid item xs={col1} md={col1} lg={col1}>
                     <TypographyData>
                       <Link to={`/blocks/${height}`}>
-                        {height.toLocaleString()}
+                        {height.toLocaleString('en-US')}
                       </Link>
                     </TypographyData>
                   </Grid>

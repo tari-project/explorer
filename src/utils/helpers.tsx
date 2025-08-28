@@ -191,6 +191,9 @@ function powCheck(num: string | number): string {
     case "2":
       powText = "RandomX";
       break;
+    case "3":
+      powText = "Cuckaroo 29";
+      break;
     default:
       powText = "Unknown";
       break;
