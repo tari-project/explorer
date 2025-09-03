@@ -52,14 +52,16 @@ function StatsMobile({
           stats={[
             { label: "Tari RandomX:", value: tariRandomXHashRate },
             { label: "Sha3X:", value: shaHashRate },
-          ]}
-        />
-        <StatsItems
-          stats={[
             { label: "RandomX:", value: moneroHashRate },
             { label: "Cuckaroo29:", value: cuckarooHashRate },
           ]}
         />
+        {/* <StatsItems
+          stats={[
+            { label: "RandomX:", value: moneroHashRate },
+            { label: "Cuckaroo29:", value: cuckarooHashRate },
+          ]}
+        /> */}
       </StatsRowSml>
     </StatsWrapperSml>
   );
