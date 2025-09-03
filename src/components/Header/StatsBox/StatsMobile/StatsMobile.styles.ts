@@ -26,7 +26,7 @@ export const Wrapper = styled(Box)(({ theme }) => ({
 export const StatsWrapperSml = styled(Box)(() => ({
   display: "flex",
   flexDirection: "row",
-  gap: "16px",
+  gap: "4px",
   justifyContent: "space-between",
   alignItems: "flex-start",
   width: "100%",
