@@ -198,7 +198,7 @@ const ProofOfWork = () => {
           <span style="display:inline-block;width:8px;height:8px;background-color:${tariColor};border-radius:50%;margin-right:5px;"></span>Tari RandomX: ${tariBlocks} ${
           tariBlocks === 1 ? "block" : "blocks"
         } (${params[2].value}%)<br />
-          <span style="display:inline-block;width:8px;height:8px;background-color:${cuckarooColor};border-radius:50%;margin-right:5px;"></span>Cuckaroo 29: ${cuckarooBlocks} ${
+          <span style="display:inline-block;width:8px;height:8px;background-color:${cuckarooColor};border-radius:50%;margin-right:5px;"></span>Cuckaroo29: ${cuckarooBlocks} ${
           cuckarooBlocks === 1 ? "block" : "blocks"
         } (${params[3].value}%)
         `;
@@ -291,7 +291,7 @@ const ProofOfWork = () => {
         data: [tariRx[100], tariRx[50], tariRx[20], tariRx[10]],
       },
       {
-        name: "Cuckaroo 29",
+        name: "Cuckaroo29",
         type: "bar",
         stack: "total",
         label: {

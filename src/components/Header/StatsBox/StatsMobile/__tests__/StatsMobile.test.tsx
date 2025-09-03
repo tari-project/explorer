@@ -24,12 +24,13 @@ describe('StatsMobile', () => {
   const mockProps = {
     moneroHashRate: '12.3TH/s',
     shaHashRate: '9.9TH/s',
-    tariRandomXHashRate: '5.4TH/s', 
+    tariRandomXHashRate: '5.4TH/s',
+    cuckarooHashRate: '3.2TH/s', 
     averageBlockTime: '4m',
     blockHeight: '123,456'
   }
 
-  it('should render all five statistics items', () => {
+  it('should render all six statistics items', () => {
     render(
       <TestWrapper>
         <StatsMobile {...mockProps} />
@@ -37,7 +38,7 @@ describe('StatsMobile', () => {
     )
 
     const statsItems = screen.getAllByTestId('stats-item-mobile')
-    expect(statsItems).toHaveLength(5)
+    expect(statsItems).toHaveLength(6)
   })
 
   it('should display correct values for each statistic', () => {
@@ -51,8 +52,9 @@ describe('StatsMobile', () => {
     expect(values[0]).toHaveTextContent('12.3TH/s') // RandomX Hash Rate
     expect(values[1]).toHaveTextContent('9.9TH/s')  // Sha3X Hash Rate  
     expect(values[2]).toHaveTextContent('5.4TH/s')  // Tari RandomX Hash Rate
-    expect(values[3]).toHaveTextContent('4m')       // Avg Block Time
-    expect(values[4]).toHaveTextContent('123,456')  // Block Height
+    expect(values[3]).toHaveTextContent('3.2TH/s')  // Cuckaroo29 Hash Rate
+    expect(values[4]).toHaveTextContent('4m')       // Avg Block Time
+    expect(values[5]).toHaveTextContent('123,456')  // Block Height
   })
 
   it('should apply lowerCase prop to average block time only', () => {
@@ -64,12 +66,13 @@ describe('StatsMobile', () => {
 
     const values = screen.getAllByTestId('value')
     
-    // Only the 4th item (avg block time) should have lowercase class
+    // Only the 5th item (avg block time) should have lowercase class
     expect(values[0]).not.toHaveClass('lowercase') // RandomX
     expect(values[1]).not.toHaveClass('lowercase') // Sha3X  
     expect(values[2]).not.toHaveClass('lowercase') // Tari RandomX
-    expect(values[3]).toHaveClass('lowercase')     // Avg Block Time
-    expect(values[4]).not.toHaveClass('lowercase') // Block Height
+    expect(values[3]).not.toHaveClass('lowercase') // Cuckaroo29
+    expect(values[4]).toHaveClass('lowercase')     // Avg Block Time
+    expect(values[5]).not.toHaveClass('lowercase') // Block Height
   })
 
   it('should use multiline labels for mobile compact display', () => {
@@ -99,7 +102,7 @@ describe('StatsMobile', () => {
     
     // Should contain a row structure for mobile layout
     const statsItems = screen.getAllByTestId('stats-item-mobile')
-    expect(statsItems).toHaveLength(5)
+    expect(statsItems).toHaveLength(6)
   })
 
   it('should handle empty string values gracefully', () => {
@@ -107,6 +110,7 @@ describe('StatsMobile', () => {
       moneroHashRate: '',
       shaHashRate: '',
       tariRandomXHashRate: '',
+      cuckarooHashRate: '',
       averageBlockTime: '',
       blockHeight: ''
     }
@@ -118,7 +122,7 @@ describe('StatsMobile', () => {
     )
 
     const statsItems = screen.getAllByTestId('stats-item-mobile')
-    expect(statsItems).toHaveLength(5)
+    expect(statsItems).toHaveLength(6)
     
     const values = screen.getAllByTestId('value')
     values.forEach(value => {
@@ -135,11 +139,11 @@ describe('StatsMobile', () => {
 
     // Mobile component should be contained within proper wrapper structure
     const statsItems = screen.getAllByTestId('stats-item-mobile')
-    expect(statsItems).toHaveLength(5)
+    expect(statsItems).toHaveLength(6)
     
     // All stats should be rendered in mobile-optimized format
-    expect(screen.getAllByTestId('value')).toHaveLength(5)
-    expect(screen.getAllByTestId('label')).toHaveLength(5)
+    expect(screen.getAllByTestId('value')).toHaveLength(6)
+    expect(screen.getAllByTestId('label')).toHaveLength(6)
   })
 
   it('should handle different hash rate magnitudes correctly', () => {
@@ -147,6 +151,7 @@ describe('StatsMobile', () => {
       moneroHashRate: '1.5KH/s',
       shaHashRate: '2.5MH/s', 
       tariRandomXHashRate: '3.5GH/s',
+      cuckarooHashRate: '4.1TH/s',
       averageBlockTime: '2m',
       blockHeight: '999,999'
     }
@@ -161,7 +166,8 @@ describe('StatsMobile', () => {
     expect(values[0]).toHaveTextContent('1.5KH/s')
     expect(values[1]).toHaveTextContent('2.5MH/s')
     expect(values[2]).toHaveTextContent('3.5GH/s')
-    expect(values[3]).toHaveTextContent('2m')
-    expect(values[4]).toHaveTextContent('999,999')
+    expect(values[3]).toHaveTextContent('4.1TH/s')
+    expect(values[4]).toHaveTextContent('2m')
+    expect(values[5]).toHaveTextContent('999,999')
   })
 })

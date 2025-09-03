@@ -1,10 +1,11 @@
-import { StatsWrapperSml, StatsRowSml } from './StatsMobile.styles';
-import StatsItem from './StatsItem/StatsItem';
+import { StatsWrapperSml, StatsRowSml } from "./StatsMobile.styles";
+import StatsItem from "./StatsItem/StatsItem";
 
 interface StatsBoxProps {
   moneroHashRate: string;
   shaHashRate: string;
   tariRandomXHashRate: string;
+  cuckarooHashRate: string;
   averageBlockTime: string;
   blockHeight: string;
 }
@@ -13,6 +14,7 @@ function StatsMobile({
   moneroHashRate,
   shaHashRate,
   tariRandomXHashRate,
+  cuckarooHashRate,
   averageBlockTime,
   blockHeight,
 }: StatsBoxProps) {
@@ -48,6 +50,16 @@ function StatsMobile({
             </>
           }
           value={tariRandomXHashRate}
+        />
+        <StatsItem
+          label={
+            <>
+              Cuckaroo29
+              <br />
+              Hash Rate
+            </>
+          }
+          value={cuckarooHashRate}
         />
         <StatsItem
           label={
