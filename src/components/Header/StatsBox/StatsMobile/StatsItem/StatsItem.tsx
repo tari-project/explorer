@@ -12,7 +12,7 @@ interface Props {
 
 export function StatsItems({ stats }: { stats: Props[] }) {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.between("xs", 500));
 
   if (isSmallScreen) {
     return (
