@@ -1,5 +1,7 @@
 import { StatsWrapperSml, StatsRowSml } from "./StatsMobile.styles";
-import StatsItem from "./StatsItem/StatsItem";
+import StatsItem, { StatsItems } from "./StatsItem/StatsItem";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 
 interface StatsBoxProps {
   moneroHashRate: string;
@@ -21,66 +23,42 @@ function StatsMobile({
   return (
     <StatsWrapperSml>
       <StatsRowSml>
-        <StatsItem
-          label={
-            <>
-              RandomX
-              <br />
-              Hash Rate
-            </>
-          }
-          value={moneroHashRate}
+        <Typography
+          variant="h6"
+          style={{
+            textTransform: "uppercase",
+            color: "#fff",
+            lineHeight: "1.2",
+          }}
+        >
+          Network Stats
+        </Typography>
+        <StatsItem label="Block Height:" value={blockHeight} />
+        <StatsItem label="Avg Block Time:" value={averageBlockTime} lowerCase />
+      </StatsRowSml>
+      <Divider orientation="vertical" flexItem sx={{ borderColor: "rgba(255, 255, 255, 0.1)" }} />
+      <StatsRowSml>
+        <Typography
+          variant="h6"
+          style={{
+            textTransform: "uppercase",
+            color: "#fff",
+            lineHeight: "1.2",
+          }}
+        >
+          Hash Rates
+        </Typography>
+        <StatsItems
+          stats={[
+            { label: "Tari RandomX:", value: tariRandomXHashRate },
+            { label: "Sha3X:", value: shaHashRate },
+          ]}
         />
-        <StatsItem
-          label={
-            <>
-              Sha3X
-              <br />
-              Hash Rate
-            </>
-          }
-          value={shaHashRate}
-        />
-        <StatsItem
-          label={
-            <>
-              Tari RandomX
-              <br />
-              Hash Rate
-            </>
-          }
-          value={tariRandomXHashRate}
-        />
-        <StatsItem
-          label={
-            <>
-              Cuckaroo29
-              <br />
-              Hash Rate
-            </>
-          }
-          value={cuckarooHashRate}
-        />
-        <StatsItem
-          label={
-            <>
-              Avg Block
-              <br />
-              Time
-            </>
-          }
-          value={averageBlockTime}
-          lowerCase
-        />
-        <StatsItem
-          label={
-            <>
-              Tip
-              <br />
-              Height
-            </>
-          }
-          value={blockHeight}
+        <StatsItems
+          stats={[
+            { label: "RandomX:", value: moneroHashRate },
+            { label: "Cuckaroo29:", value: cuckarooHashRate },
+          ]}
         />
       </StatsRowSml>
     </StatsWrapperSml>
