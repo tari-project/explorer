@@ -1,8 +1,17 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { ThemeProvider } from '@mui/material/styles'
 import StatsMobile from '../StatsMobile'
 import { lightTheme } from '@theme/themes'
+
+// Mock zustand store
+const mockSetShowStats = vi.fn()
+vi.mock('@services/stores/useMainStore', () => ({
+  useMainStore: vi.fn(() => ({
+    showStats: true,
+    setShowStats: mockSetShowStats
+  }))
+}))
 
 // Mock StatsItem component
 vi.mock('../StatsItem/StatsItem', () => ({
@@ -10,6 +19,16 @@ vi.mock('../StatsItem/StatsItem', () => ({
     <div data-testid={`stats-item-mobile`}>
       <span data-testid="value" className={lowerCase ? 'lowercase' : ''}>{value}</span>
       <span data-testid="label">{typeof label === 'string' ? label : 'multiline-label'}</span>
+    </div>
+  ),
+  StatsItems: ({ stats }: { stats: Array<{ label: React.ReactNode; value: string; lowerCase?: boolean }> }) => (
+    <div data-testid="stats-items">
+      {stats.map((stat, index) => (
+        <div key={index} data-testid={`stats-item-mobile`}>
+          <span data-testid="value" className={stat.lowerCase ? 'lowercase' : ''}>{stat.value}</span>
+          <span data-testid="label">{typeof stat.label === 'string' ? stat.label : 'multiline-label'}</span>
+        </div>
+      ))}
     </div>
   )
 }))
@@ -30,6 +49,10 @@ describe('StatsMobile', () => {
     blockHeight: '123,456'
   }
 
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('should render all six statistics items', () => {
     render(
       <TestWrapper>
@@ -49,12 +72,12 @@ describe('StatsMobile', () => {
     )
 
     const values = screen.getAllByTestId('value')
-    expect(values[0]).toHaveTextContent('12.3TH/s') // RandomX Hash Rate
+    expect(values[0]).toHaveTextContent('5.4TH/s')  // Tari RandomX Hash Rate
     expect(values[1]).toHaveTextContent('9.9TH/s')  // Sha3X Hash Rate  
-    expect(values[2]).toHaveTextContent('5.4TH/s')  // Tari RandomX Hash Rate
+    expect(values[2]).toHaveTextContent('12.3TH/s') // RandomX Hash Rate
     expect(values[3]).toHaveTextContent('3.2TH/s')  // Cuckaroo29 Hash Rate
-    expect(values[4]).toHaveTextContent('4m')       // Avg Block Time
-    expect(values[5]).toHaveTextContent('123,456')  // Block Height
+    expect(values[4]).toHaveTextContent('123,456')  // Block Height
+    expect(values[5]).toHaveTextContent('4m')       // Avg Block Time
   })
 
   it('should apply lowerCase prop to average block time only', () => {
@@ -66,16 +89,16 @@ describe('StatsMobile', () => {
 
     const values = screen.getAllByTestId('value')
     
-    // Only the 5th item (avg block time) should have lowercase class
-    expect(values[0]).not.toHaveClass('lowercase') // RandomX
+    // Only the 6th item (avg block time) should have lowercase class
+    expect(values[0]).not.toHaveClass('lowercase') // Tari RandomX
     expect(values[1]).not.toHaveClass('lowercase') // Sha3X  
-    expect(values[2]).not.toHaveClass('lowercase') // Tari RandomX
+    expect(values[2]).not.toHaveClass('lowercase') // RandomX
     expect(values[3]).not.toHaveClass('lowercase') // Cuckaroo29
-    expect(values[4]).toHaveClass('lowercase')     // Avg Block Time
-    expect(values[5]).not.toHaveClass('lowercase') // Block Height
+    expect(values[4]).not.toHaveClass('lowercase') // Block Height
+    expect(values[5]).toHaveClass('lowercase')     // Avg Block Time
   })
 
-  it('should use multiline labels for mobile compact display', () => {
+  it('should use labels for mobile compact display', () => {
     render(
       <TestWrapper>
         <StatsMobile {...mockProps} />
@@ -84,10 +107,14 @@ describe('StatsMobile', () => {
 
     const labels = screen.getAllByTestId('label')
     
-    // All labels should be rendered as multiline (React nodes with <br/>)
-    labels.forEach(label => {
-      expect(label).toHaveTextContent('multiline-label')
-    })
+    // Should render all labels
+    expect(labels).toHaveLength(6)
+    expect(labels[0]).toHaveTextContent('Tari RandomX:')
+    expect(labels[1]).toHaveTextContent('Sha3X:')
+    expect(labels[2]).toHaveTextContent('RandomX:')
+    expect(labels[3]).toHaveTextContent('Cuckaroo29:')
+    expect(labels[4]).toHaveTextContent('Block Height:')
+    expect(labels[5]).toHaveTextContent('Avg Block Time:')
   })
 
   it('should render with mobile-specific layout structure', () => {
@@ -163,11 +190,30 @@ describe('StatsMobile', () => {
     )
 
     const values = screen.getAllByTestId('value')
-    expect(values[0]).toHaveTextContent('1.5KH/s')
-    expect(values[1]).toHaveTextContent('2.5MH/s')
-    expect(values[2]).toHaveTextContent('3.5GH/s')
-    expect(values[3]).toHaveTextContent('4.1TH/s')
-    expect(values[4]).toHaveTextContent('2m')
-    expect(values[5]).toHaveTextContent('999,999')
+    expect(values[0]).toHaveTextContent('3.5GH/s')  // Tari RandomX
+    expect(values[1]).toHaveTextContent('2.5MH/s')  // Sha3X
+    expect(values[2]).toHaveTextContent('1.5KH/s')  // RandomX
+    expect(values[3]).toHaveTextContent('4.1TH/s')  // Cuckaroo29
+    expect(values[4]).toHaveTextContent('999,999')  // Block Height
+    expect(values[5]).toHaveTextContent('2m')       // Avg Block Time
+  })
+
+  it('should render toggle button and handle stats visibility', () => {
+    render(
+      <TestWrapper>
+        <StatsMobile {...mockProps} />
+      </TestWrapper>
+    )
+
+    // Should render the toggle button (it's a clickable Box, not a button)
+    const toggleButton = screen.getByTestId('KeyboardArrowDownIcon').parentElement
+    expect(toggleButton).toBeInTheDocument()
+
+    // Should show stats when showStats is true
+    expect(screen.getAllByTestId('stats-item-mobile')).toHaveLength(6)
+
+    // Should call setShowStats when toggle button is clicked
+    fireEvent.click(toggleButton!)
+    expect(mockSetShowStats).toHaveBeenCalledWith(false)
   })
 })

@@ -42,7 +42,7 @@ describe('StatsItem (Mobile)', () => {
     expect(screen.getByText('12.3TH/s')).toBeInTheDocument()
   })
 
-  it('should display value above label in correct order', () => {
+  it('should display label before value in correct order', () => {
     const { container } = render(
       <TestWrapper>
         <StatsItem label="Hash Rate" value="12.3TH/s" />
@@ -52,12 +52,12 @@ describe('StatsItem (Mobile)', () => {
     const valueElement = screen.getByText('12.3TH/s')
     const labelElement = screen.getByText('Hash Rate')
     
-    // Value should appear before label in DOM order
+    // Label should appear before value in DOM order
     const elements = Array.from(container.querySelectorAll('*'))
     const valueIndex = elements.indexOf(valueElement)
     const labelIndex = elements.indexOf(labelElement)
     
-    expect(valueIndex).toBeLessThan(labelIndex)
+    expect(labelIndex).toBeLessThan(valueIndex)
   })
 
   it('should apply lowerCase styling when prop is true', () => {
