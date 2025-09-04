@@ -24,7 +24,7 @@ import ReactEcharts from "echarts-for-react";
 import { useTheme } from "@mui/material/styles";
 import { chartColor } from "@theme/colors";
 import { useAllBlocks } from "@services/api/hooks/useBlocks";
-import { formatHash } from "@utils/helpers";
+import { formatHash, formatC29 } from "@utils/helpers";
 import { useState, useEffect } from "react";
 import { Alert, Skeleton } from "@mui/material";
 import { TransparentBg } from "@components/StyledComponents";
@@ -108,7 +108,7 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
       formatter: (params: Array<{ seriesName: string; value: number; dataIndex: number }>) => {
         const tooltipContent = params.map((param: { seriesName: string; value: number; dataIndex: number }) => {
           const seriesName = param.seriesName;
-          const value = formatHash(param.value, 2);
+          const value = type === "Cuckaroo29" ? formatC29(param.value, 2) : formatHash(param.value, 2);
           return `${seriesName}: ${value}`;
         });
         const blockNumber = display[params[0].dataIndex].blockNumber;
@@ -164,7 +164,7 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
         },
       },
       axisLabel: {
-        formatter: (value: number) => formatHash(value, 2),
+        formatter: (value: number) => (type === "Cuckaroo29" ? formatC29(value, 0) : formatHash(value, 0)),
       },
     },
     dataZoom: [
@@ -204,7 +204,7 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
   }
 
   // Check if data is empty or all values are zero
-  const hasData = display.length > 0 && display.some(item => item.hashRate > 0);
+  const hasData = display.length > 0 && display.some((item) => item.hashRate > 0);
 
   if (!hasData) {
     return null;
