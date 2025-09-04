@@ -62,6 +62,7 @@ vi.mock("@mui/material", () => ({
       Loading...
     </div>
   ),
+  useMediaQuery: vi.fn(() => false), // Default to desktop (false)
 }));
 
 // Mock API hook
@@ -83,6 +84,9 @@ const mockTheme = {
       500: "#9e9e9e",
     },
     divider: "#e0e0e0",
+  },
+  breakpoints: {
+    down: vi.fn(() => "max-width: 600px"),
   },
 };
 
@@ -254,7 +258,7 @@ describe("POWChart", () => {
     // Check tooltip configuration
     expect(option.tooltip.trigger).toBe("axis");
 
-    // Check legend configuration
+    // Check legend configuration (desktop mode)
     expect(option.legend).toBeDefined();
     expect(option.legend.bottom).toBe(10);
 
@@ -306,6 +310,67 @@ describe("POWChart", () => {
 
     const chart = screen.getByTestId("echarts");
     expect(chart).toBeInTheDocument();
+  });
+
+  it("should render single-row legend on desktop", async () => {
+    const { useMediaQuery } = await import("@mui/material");
+    vi.mocked(useMediaQuery).mockReturnValue(false); // Desktop
+
+    mockUseAllBlocks.mockReturnValue({
+      data: mockPowData,
+      isLoading: false,
+      isError: false,
+      error: null,
+    });
+
+    render(
+      <TestWrapper>
+        <POWChart />
+      </TestWrapper>
+    );
+
+    const chart = screen.getByTestId("echarts");
+    const option = JSON.parse(chart.getAttribute("data-option") || "{}");
+
+    // Desktop should have a single legend object, not an array
+    expect(Array.isArray(option.legend)).toBe(false);
+    expect(option.legend.bottom).toBe(10);
+    expect(option.legend.textStyle.color).toBe("#000000");
+  });
+
+  it("should render two-row legend on mobile", async () => {
+    const { useMediaQuery } = await import("@mui/material");
+    vi.mocked(useMediaQuery).mockReturnValue(true); // Mobile
+
+    mockUseAllBlocks.mockReturnValue({
+      data: mockPowData,
+      isLoading: false,
+      isError: false,
+      error: null,
+    });
+
+    render(
+      <TestWrapper>
+        <POWChart />
+      </TestWrapper>
+    );
+
+    const chart = screen.getByTestId("echarts");
+    const option = JSON.parse(chart.getAttribute("data-option") || "{}");
+
+    // Mobile should have an array of two legend objects
+    expect(Array.isArray(option.legend)).toBe(true);
+    expect(option.legend).toHaveLength(2);
+    
+    // First legend (top row)
+    expect(option.legend[0].data).toEqual(["RandomX", "Sha 3"]);
+    expect(option.legend[0].bottom).toBe(30);
+    expect(option.legend[0].left).toBe("center");
+    
+    // Second legend (bottom row)
+    expect(option.legend[1].data).toEqual(["Tari RandomX", "Cuckaroo29"]);
+    expect(option.legend[1].bottom).toBe(10);
+    expect(option.legend[1].left).toBe("center");
   });
 
   it("should handle zero values gracefully", () => {
@@ -415,7 +480,10 @@ describe("POWChart", () => {
     expect(option.series[0].emphasis.focus).toBe("series");
   });
 
-  it("should use theme colors for chart elements", () => {
+  it("should use theme colors for chart elements", async () => {
+    const { useMediaQuery } = await import("@mui/material");
+    vi.mocked(useMediaQuery).mockReturnValue(false); // Desktop mode for consistent legend structure
+
     mockUseAllBlocks.mockReturnValue({
       data: mockPowData,
       isLoading: false,
@@ -432,7 +500,7 @@ describe("POWChart", () => {
     const chart = screen.getByTestId("echarts");
     const option = JSON.parse(chart.getAttribute("data-option") || "{}");
 
-    // Check that theme colors are applied to legend
+    // Check that theme colors are applied to legend (desktop mode)
     expect(option.legend.textStyle.color).toBe("#000000");
 
     // Check that theme colors are applied to axes

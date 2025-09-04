@@ -26,6 +26,7 @@ import { chartColor } from "@theme/colors";
 import { useAllBlocks } from "@services/api/hooks/useBlocks";
 import { Alert, Skeleton } from "@mui/material";
 import { TransparentBg } from "@components/StyledComponents";
+import { useMediaQuery } from "@mui/material";
 
 interface AlgoSplit {
   moneroRx10: number;
@@ -49,6 +50,7 @@ interface AlgoSplit {
 const ProofOfWork = () => {
   const theme = useTheme();
   const { data, isError, isLoading, error } = useAllBlocks();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   function calculatePercentage(monero: number, sha: number, tari: number, cuckaroo: number) {
     const total = monero + sha + tari + cuckaroo;
@@ -204,17 +206,42 @@ const ProofOfWork = () => {
         `;
       },
     },
-    legend: {
-      textStyle: {
-        color: theme.palette.text.primary,
-      },
-      bottom: 10,
-    },
+    legend: isMobile
+      ? [
+          {
+            data: ["RandomX", "Sha 3"],
+            textStyle: {
+              color: theme.palette.text.primary,
+            },
+            bottom: 30,
+            left: "center",
+            itemGap: 20,
+            itemWidth: 12,
+            itemHeight: 8,
+          },
+          {
+            data: ["Tari RandomX", "Cuckaroo29"],
+            textStyle: {
+              color: theme.palette.text.primary,
+            },
+            bottom: 10,
+            left: "center",
+            itemGap: 20,
+            itemWidth: 12,
+            itemHeight: 8,
+          },
+        ]
+      : {
+          textStyle: {
+            color: theme.palette.text.primary,
+          },
+          bottom: 10,
+        },
     color: [chartColor[4], chartColor[3], chartColor[2], chartColor[1]],
     grid: {
       left: "2%",
       right: "2%",
-      bottom: "15%",
+      bottom: isMobile ? "25%" : "15%",
       top: "5%",
       containLabel: true,
     },
