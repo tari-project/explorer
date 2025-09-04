@@ -37,16 +37,10 @@ vi.mock('@utils/helpers', () => ({
     return `${hashRate}H/s`;
   }),
   formatC29: vi.fn((hashRateGps: number, precision: number = 0) => {
-    const suffixes = ["g/s", "Kg/s", "Mg/s", "Gg/s"];
-    let suffixIndex = 0;
-    let value = hashRateGps;
-
-    while (value >= 1000 && suffixIndex < suffixes.length - 1) {
-      value /= 1000;
-      suffixIndex++;
+    if (hashRateGps >= 1000) {
+      return `${(hashRateGps / 1000).toFixed(precision)}Kg`;
     }
-
-    return `${value.toFixed(precision)}${suffixes[suffixIndex]}`;
+    return `${hashRateGps.toFixed(precision)}g`;
   }),
 }));
 

@@ -177,16 +177,10 @@ function formatXTM(amount: number): string {
 }
 
 function formatC29(hashRateGps: number, precision: number = 0): string {
-  const suffixes = ["g/s", "Kg/s", "Mg/s", "Gg/s"];
-  let suffixIndex = 0;
-  let value = hashRateGps;
-
-  while (value >= 1000 && suffixIndex < suffixes.length - 1) {
-    value /= 1000;
-    suffixIndex++;
+  if (hashRateGps >= 1000) {
+    return `${(hashRateGps / 1000).toFixed(precision)}Kg`;
   }
-
-  return `${value.toFixed(precision)}${suffixes[suffixIndex]}`;
+  return `${hashRateGps.toFixed(precision)}g`;
 }
 
 function powCheck(num: string | number): string {
