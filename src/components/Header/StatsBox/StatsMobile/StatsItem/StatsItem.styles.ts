@@ -12,7 +12,7 @@ export const StyledBox = styled(Box)({
 export const ValueTypography = styled(Typography, {
   shouldForwardProp: (prop) => prop !== "lowerCase",
 })<{ lowerCase?: boolean }>(({ lowerCase }) => ({
-  textTransform: lowerCase ? "lowercase" : "uppercase",
+  textTransform: lowerCase ? "none" : "uppercase",
   fontSize: "11px",
   color: "#fff",
   fontWeight: "bold",

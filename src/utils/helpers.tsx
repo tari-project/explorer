@@ -176,6 +176,19 @@ function formatXTM(amount: number): string {
   return amount / 1_000_000 + " XTM";
 }
 
+function formatC29(hashRateGps: number, precision: number = 0): string {
+  const suffixes = ["g/s", "Kg/s", "Mg/s", "Gg/s"];
+  let suffixIndex = 0;
+  let value = hashRateGps;
+
+  while (value >= 1000 && suffixIndex < suffixes.length - 1) {
+    value /= 1000;
+    suffixIndex++;
+  }
+
+  return `${value.toFixed(precision)}${suffixes[suffixIndex]}`;
+}
+
 function powCheck(num: string | number): string {
   if (typeof num === "number") {
     num = num.toString();
@@ -216,5 +229,6 @@ export {
   formatHash,
   formatXTM,
   formatNumber,
+  formatC29,
   powCheck,
 };

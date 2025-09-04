@@ -1,6 +1,6 @@
 import numeral from "numeral";
 import { useAllBlocks } from "@services/api/hooks/useBlocks";
-import { formatHash } from "@utils/helpers";
+import { formatHash, formatC29 } from "@utils/helpers";
 import StatsDesktop from "./StatsDesktop/StatsDesktop";
 import StatsMobile from "./StatsMobile/StatsMobile";
 
@@ -24,7 +24,7 @@ function StatsBox({ variant }: StatsBoxProps) {
   const formattedMoneroHashRate = formatHash(latestMoneroHashRate);
   const formattedSha3HashRate = formatHash(latestShaHashRate);
   const formattedTRXHashRate = formatHash(latestTRXHashRate);
-  const formattedCuckarooHashRate = formatHash(latestCuckarooHashRate);
+  const formattedCuckarooHashRate = formatC29(latestCuckarooHashRate);
 
   return variant === "mobile" ? (
     <StatsMobile

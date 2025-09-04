@@ -61,7 +61,7 @@ describe("StatsDesktop", () => {
     expect(values[5]).toHaveTextContent("123,456"); // Block Height
   });
 
-  it("should apply lowerCase prop to average block time only", () => {
+  it("should apply lowerCase prop to Cuckaroo29 and average block time", () => {
     render(
       <TestWrapper>
         <StatsDesktop {...mockProps} />
@@ -70,11 +70,11 @@ describe("StatsDesktop", () => {
 
     const values = screen.getAllByTestId("value");
 
-    // Only the average block time (5th item, index 4) should have lowercase class
+    // Cuckaroo29 and average block time should have lowercase class
     expect(values[0]).not.toHaveClass("lowercase"); // RandomX
     expect(values[1]).not.toHaveClass("lowercase"); // Sha3X
     expect(values[2]).not.toHaveClass("lowercase"); // Tari RandomX
-    expect(values[3]).not.toHaveClass("lowercase"); // Cuckaroo29
+    expect(values[3]).toHaveClass("lowercase"); // Cuckaroo29
     expect(values[4]).toHaveClass("lowercase"); // Average Block Time
     expect(values[5]).not.toHaveClass("lowercase"); // Block Height
   });

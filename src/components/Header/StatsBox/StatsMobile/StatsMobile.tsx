@@ -57,7 +57,7 @@ function StatsMobile({
                 { label: "Tari RandomX:", value: tariRandomXHashRate },
                 { label: "Sha3X:", value: shaHashRate },
                 { label: "RandomX:", value: moneroHashRate },
-                { label: "Cuckaroo29:", value: cuckarooHashRate },
+                { label: "Cuckaroo29:", value: cuckarooHashRate, lowerCase: true },
               ]}
             />
           </StatsRowSml>

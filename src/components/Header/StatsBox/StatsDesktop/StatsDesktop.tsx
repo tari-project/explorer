@@ -59,6 +59,7 @@ function StatsDesktop({
           </>
         }
         value={cuckarooHashRate}
+        lowerCase
       />
       <StatsItem
         label={
