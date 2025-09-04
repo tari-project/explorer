@@ -366,12 +366,35 @@ describe('HashRates', () => {
       </TestWrapper>
     );
 
-    const chart = screen.getByTestId('echarts');
-    expect(chart).toBeInTheDocument();
+    // Should return null when no data is available
+    expect(screen.queryByTestId('echarts')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('skeleton')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('alert')).not.toBeInTheDocument();
+  });
 
-    // Should still render chart even with empty data
-    const option = JSON.parse(chart.getAttribute('data-option') || '{}');
-    expect(option.series).toBeDefined();
+  it('should return null when all hash rate values are zero', () => {
+    mockUseAllBlocks.mockReturnValue({
+      data: {
+        tipInfo: { metadata: { best_block_height: 100000 } },
+        moneroRandomxHashRates: Array(180).fill(0),
+        sha3xHashRates: Array(180).fill(0),
+        tariRandomxHashRates: Array(180).fill(0),
+      },
+      isLoading: false,
+      isError: false,
+      error: null,
+    });
+
+    render(
+      <TestWrapper>
+        <HashRates type="RandomX" />
+      </TestWrapper>
+    );
+
+    // Should return null when all hash rates are zero
+    expect(screen.queryByTestId('echarts')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('skeleton')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('alert')).not.toBeInTheDocument();
   });
 
   it('should use formatHash helper for tooltip formatting', () => {

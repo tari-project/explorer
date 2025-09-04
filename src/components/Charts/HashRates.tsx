@@ -203,6 +203,13 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     return <Skeleton variant="rounded" height={300} />;
   }
 
+  // Check if data is empty or all values are zero
+  const hasData = display.length > 0 && display.some(item => item.hashRate > 0);
+
+  if (!hasData) {
+    return null;
+  }
+
   return <ReactEcharts option={option} />;
 };
 
