@@ -9,8 +9,7 @@ import {
 import StatsItem, { StatsItems } from "./StatsItem/StatsItem";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { IoInformation, IoClose } from "react-icons/io5";
 import Collapse from "@mui/material/Collapse";
 import { useMainStore } from "@services/stores/useMainStore";
 
@@ -36,8 +35,8 @@ function StatsMobile({
   return (
     <StatsMobileContainer>
       <ToggleContainer>
-        <ToggleButton onClick={() => setShowStats(!showStats)}>
-          <ToggleIcon component={showStats ? KeyboardArrowDownIcon : KeyboardArrowUpIcon} />
+        <ToggleButton onClick={() => setShowStats(!showStats)} data-testid="stats-toggle-button">
+          <ToggleIcon component={showStats ? IoClose : IoInformation} />
         </ToggleButton>
       </ToggleContainer>
       <Collapse in={showStats}>
