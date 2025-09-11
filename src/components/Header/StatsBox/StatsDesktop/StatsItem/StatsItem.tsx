@@ -1,11 +1,7 @@
-import {
-  StyledBox,
-  ValueTypography,
-  LabelTypography,
-} from './StatsItem.styles';
+import { StyledBox, ValueTypography, LabelTypography } from "./StatsItem.styles";
 
 interface Props {
-  label: string;
+  label: string | JSX.Element;
   value: string;
   lowerCase?: boolean;
 }

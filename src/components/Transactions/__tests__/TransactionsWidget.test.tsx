@@ -33,7 +33,7 @@ vi.mock('./TransactionsWidget.styles', () => ({
   IconWrapper: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
 }));
 vi.mock('@utils/helpers', () => ({
-  formatNumber: (n: number) => n.toLocaleString(),
+  formatNumber: (n: number) => n.toLocaleString('en-US'),
 }));
 
 describe('TransactionsWidget', () => {

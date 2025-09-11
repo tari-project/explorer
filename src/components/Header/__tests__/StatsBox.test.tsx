@@ -27,7 +27,7 @@ vi.mock('@services/api/hooks/useBlocks', () => ({
   })),
 }));
 
-// Mock formatHash utility
+// Mock formatHash and formatC29 utilities
 vi.mock('@utils/helpers', () => ({
   formatHash: vi.fn((hashRate: number) => {
     if (hashRate >= 1e12) return `${(hashRate / 1e12).toFixed(1)}TH/s`;
@@ -35,6 +35,12 @@ vi.mock('@utils/helpers', () => ({
     if (hashRate >= 1e6) return `${(hashRate / 1e6).toFixed(1)}MH/s`;
     if (hashRate >= 1e3) return `${(hashRate / 1e3).toFixed(1)}KH/s`;
     return `${hashRate}H/s`;
+  }),
+  formatC29: vi.fn((hashRateGps: number, precision: number = 0) => {
+    if (hashRateGps >= 1000) {
+      return `${(hashRateGps / 1000).toFixed(precision)}Kg`;
+    }
+    return `${hashRateGps.toFixed(precision)}g`;
   }),
 }));
 

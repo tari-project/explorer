@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface Store {
   showMobileMenu: boolean;
@@ -11,18 +11,21 @@ interface Store {
   setSearchOpen: (searchOpen: boolean) => void;
   isLinux: boolean;
   setIsLinux: (isLinux: boolean) => void;
+  showStats: boolean;
+  setShowStats: (showStats: boolean) => void;
 }
 
 export const useMainStore = create<Store>()((set) => ({
   showMobileMenu: false,
   setShowMobileMenu: (showMobileMenu: boolean) => set({ showMobileMenu }),
   showDownloadModal: false,
-  setShowDownloadModal: (showDownloadModal: boolean) =>
-    set({ showDownloadModal }),
+  setShowDownloadModal: (showDownloadModal: boolean) => set({ showDownloadModal }),
   isMobile: false,
   setIsMobile: (isMobile: boolean) => set({ isMobile }),
   searchOpen: false,
   setSearchOpen: (searchOpen: boolean) => set({ searchOpen }),
   isLinux: false,
   setIsLinux: (isLinux: boolean) => set({ isLinux }),
+  showStats: true,
+  setShowStats: (showStats: boolean) => set({ showStats }),
 }));

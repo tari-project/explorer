@@ -20,25 +20,27 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { GradientPaper } from '@components/StyledComponents';
-import { Grid } from '@mui/material';
-import MempoolWidget from '@components/Mempool/MempoolWidget';
-import VNTable from '@components/VNs/VNTable';
-import BlockWidget from '@components/Blocks/BlockWidget';
-import BlockTimes from '@components/Charts/BlockTimes';
-import HashRates from '@components/Charts/HashRates';
-import POWChart from '@components/Charts/POWChart';
-import Transactions from '@components/Transactions/TransactionsWidget';
-import InnerHeading from '@components/InnerHeading';
-import { useLocation } from 'react-router-dom';
-import { useTheme, useMediaQuery } from '@mui/material';
+import { GradientPaper } from "@components/StyledComponents";
+import { Grid } from "@mui/material";
+import MempoolWidget from "@components/Mempool/MempoolWidget";
+import VNTable from "@components/VNs/VNTable";
+import BlockWidget from "@components/Blocks/BlockWidget";
+import BlockTimes from "@components/Charts/BlockTimes";
+import HashRates from "@components/Charts/HashRates";
+import POWChart from "@components/Charts/POWChart";
+import Transactions from "@components/Transactions/TransactionsWidget";
+import InnerHeading from "@components/InnerHeading";
+import { useLocation } from "react-router-dom";
+import { useTheme, useMediaQuery } from "@mui/material";
+import { useAllBlocks } from "@services/api/hooks/useBlocks";
 
 function BlockExplorerPage() {
   const theme = useTheme();
-  const isLgUp = useMediaQuery(theme.breakpoints.up('lg'));
+  const isLgUp = useMediaQuery(theme.breakpoints.up("lg"));
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const hash = params.get('hash') || '';
+  const hash = params.get("hash") || "";
+  const { data } = useAllBlocks();
 
   if (hash) {
     window.location.href = `/search?hash=${hash}`;
@@ -59,8 +61,8 @@ function BlockExplorerPage() {
         md={12}
         lg={6}
         style={{
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
           gap: theme.spacing(3),
         }}
       >
@@ -83,8 +85,8 @@ function BlockExplorerPage() {
         md={12}
         lg={6}
         style={{
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
           gap: theme.spacing(3),
         }}
       >
@@ -100,15 +102,26 @@ function BlockExplorerPage() {
         <GradientPaper>
           <InnerHeading>Hash Rates</InnerHeading>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <HashRates type="RandomX" />
-            </Grid>
-            <Grid item xs={12}>
-              <HashRates type="Sha3" />
-            </Grid>
-            <Grid item xs={12}>
-              <HashRates type="TariRandomX" />
-            </Grid>
+            {data?.moneroRandomxHashRates && (
+              <Grid item xs={12}>
+                <HashRates type="RandomX" />
+              </Grid>
+            )}
+            {data?.sha3xHashRates && (
+              <Grid item xs={12}>
+                <HashRates type="Sha3" />
+              </Grid>
+            )}
+            {data?.tariRandomxHashRates && (
+              <Grid item xs={12}>
+                <HashRates type="TariRandomX" />
+              </Grid>
+            )}
+            {data?.cuckarooHashRates && (
+              <Grid item xs={12}>
+                <HashRates type="Cuckaroo29" />
+              </Grid>
+            )}
           </Grid>
         </GradientPaper>
         <GradientPaper>

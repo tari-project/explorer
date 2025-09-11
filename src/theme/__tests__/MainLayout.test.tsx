@@ -15,6 +15,8 @@ type Store = {
   setSearchOpen: (searchOpen: boolean) => void;
   isLinux: boolean;
   setIsLinux: (isLinux: boolean) => void;
+  showStats: boolean;
+  setShowStats: (showStats: boolean) => void;
 };
 
 // Mock child components
@@ -69,7 +71,9 @@ describe('MainLayout', () => {
         searchOpen: false,
         setSearchOpen: vi.fn(),
         isLinux: false,
-        setIsLinux: vi.fn()
+        setIsLinux: vi.fn(),
+        showStats: true,
+        setShowStats: vi.fn()
       };
       return selector(state);
     });
@@ -100,7 +104,9 @@ describe('MainLayout', () => {
         searchOpen: false,
         setSearchOpen: vi.fn(),
         isLinux: false,
-        setIsLinux: vi.fn()
+        setIsLinux: vi.fn(),
+        showStats: true,
+        setShowStats: vi.fn()
       };
       return selector(state);
     });
@@ -126,7 +132,9 @@ describe('MainLayout', () => {
         searchOpen: false,
         setSearchOpen: vi.fn(),
         isLinux: false,
-        setIsLinux: vi.fn()
+        setIsLinux: vi.fn(),
+        showStats: true,
+        setShowStats: vi.fn()
       };
       return selector(state);
     });
@@ -221,7 +229,9 @@ describe('MainLayout', () => {
       searchOpen: false,
       setSearchOpen: vi.fn(),
       isLinux: false,
-      setIsLinux: vi.fn()
+      setIsLinux: vi.fn(),
+      showStats: true,
+      setShowStats: vi.fn()
     };
     expect(selectorFn(mockState)).toBe(true);
   });

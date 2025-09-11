@@ -1,9 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@mui/material/styles';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MemoryRouter } from 'react-router-dom';
-import BlockWidget from '../BlockWidget';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { ThemeProvider } from "@mui/material/styles";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MemoryRouter } from "react-router-dom";
+import BlockWidget from "../BlockWidget";
 
 interface TypographyProps {
   children: React.ReactNode;
@@ -59,24 +59,16 @@ interface Theme {
 }
 
 // Mock components and dependencies
-vi.mock('@components/StyledComponents', () => ({
-  TypographyData: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="typography-data">{children}</div>
-  ),
-  TransparentBg: ({
-    children,
-    height,
-  }: {
-    children: React.ReactNode;
-    height?: string;
-  }) => (
+vi.mock("@components/StyledComponents", () => ({
+  TypographyData: ({ children }: { children: React.ReactNode }) => <div data-testid="typography-data">{children}</div>,
+  TransparentBg: ({ children, height }: { children: React.ReactNode; height?: string }) => (
     <div data-testid="transparent-bg" data-height={height}>
       {children}
     </div>
   ),
 }));
 
-vi.mock('@components/CopyToClipboard', () => ({
+vi.mock("@components/CopyToClipboard", () => ({
   default: ({ copy }: { copy: string }) => (
     <div data-testid="copy-to-clipboard" data-copy={copy}>
       Copy
@@ -85,23 +77,13 @@ vi.mock('@components/CopyToClipboard', () => ({
 }));
 
 // Mock MUI components
-vi.mock('@mui/material', () => ({
+vi.mock("@mui/material", () => ({
   Typography: ({ children, variant }: TypographyProps) => (
     <div data-testid="typography" data-variant={variant}>
       {children}
     </div>
   ),
-  Grid: ({
-    children,
-    item,
-    container,
-    xs,
-    md,
-    lg,
-    spacing,
-    style,
-    ...props
-  }: GridProps) => (
+  Grid: ({ children, item, container, xs, md, lg, spacing, style, ...props }: GridProps) => (
     <div
       data-testid="grid"
       data-item={item}
@@ -121,15 +103,7 @@ vi.mock('@mui/material', () => ({
       ---
     </div>
   ),
-  Button: ({
-    children,
-    variant,
-    fullWidth,
-    href,
-    color,
-    style,
-    ...props
-  }: ButtonProps) => (
+  Button: ({ children, variant, fullWidth, href, color, style, ...props }: ButtonProps) => (
     <button
       data-testid="button"
       data-variant={variant}
@@ -155,35 +129,30 @@ vi.mock('@mui/material', () => ({
 }));
 
 // Mock Link from react-router-dom
-vi.mock('react-router-dom', () => ({
+vi.mock("react-router-dom", () => ({
   Link: ({ to, children }: { to: string; children: React.ReactNode }) => (
     <a data-testid="link" data-to={to}>
       {children}
     </a>
   ),
-  MemoryRouter: ({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  ),
+  MemoryRouter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
 // Mock helper functions
-vi.mock('@utils/helpers', () => ({
+vi.mock("@utils/helpers", () => ({
   toHexString: vi.fn((data) => `hex_${data}`),
-  shortenString: vi.fn(
-    (str, start, end) =>
-      `${str.substring(0, start)}...${str.substring(str.length - end)}`
-  ),
+  shortenString: vi.fn((str, start, end) => `${str.substring(0, start)}...${str.substring(str.length - end)}`),
   formatTimestamp: vi.fn((timestamp) => `formatted_${timestamp}`),
   powCheck: vi.fn((algo) => `pow_${algo}`),
 }));
 
 // Mock API hook
-vi.mock('@services/api/hooks/useBlocks', () => ({
+vi.mock("@services/api/hooks/useBlocks", () => ({
   useAllBlocks: vi.fn(),
 }));
 
 // Mock store
-vi.mock('@services/stores/useMainStore', () => ({
+vi.mock("@services/stores/useMainStore", () => ({
   useMainStore: vi.fn(),
 }));
 
@@ -191,16 +160,14 @@ vi.mock('@services/stores/useMainStore', () => ({
 const mockTheme = {
   spacing: vi.fn((value: number) => `${value * 8}px`),
   palette: {
-    background: { paper: '#ffffff' },
-    divider: '#e0e0e0',
+    background: { paper: "#ffffff" },
+    divider: "#e0e0e0",
   },
 };
 
-vi.mock('@mui/material/styles', () => ({
+vi.mock("@mui/material/styles", () => ({
   useTheme: () => mockTheme,
-  ThemeProvider: ({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  ),
+  ThemeProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
 // Test wrapper
@@ -221,14 +188,14 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-describe('BlockWidget', () => {
+describe("BlockWidget", () => {
   let mockUseAllBlocks: ReturnType<typeof vi.fn>;
   let mockUseMainStore: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    const { useAllBlocks } = await import('@services/api/hooks/useBlocks');
-    const { useMainStore } = await import('@services/stores/useMainStore');
+    const { useAllBlocks } = await import("@services/api/hooks/useBlocks");
+    const { useMainStore } = await import("@services/stores/useMainStore");
     mockUseAllBlocks = vi.mocked(useAllBlocks);
     mockUseMainStore = vi.mocked(useMainStore);
   });
@@ -239,7 +206,7 @@ describe('BlockWidget', () => {
         height: 12345,
         timestamp: 1640995200,
         pow: { pow_algo: 1 },
-        hash: { data: 'block_hash_1' },
+        hash: { data: "block_hash_1" },
         kernels: 5,
         outputs: 10,
       },
@@ -247,19 +214,19 @@ describe('BlockWidget', () => {
         height: 12346,
         timestamp: 1640995260,
         pow: { pow_algo: 2 },
-        hash: { data: 'block_hash_2' },
+        hash: { data: "block_hash_2" },
         kernels: 3,
         outputs: 8,
       },
     ],
   };
 
-  describe('Mobile View', () => {
+  describe("Mobile View", () => {
     beforeEach(() => {
       mockUseMainStore.mockReturnValue(true); // isMobile = true
     });
 
-    it('should render mobile loading state', () => {
+    it("should render mobile loading state", () => {
       mockUseAllBlocks.mockReturnValue({
         data: null,
         isLoading: true,
@@ -273,16 +240,16 @@ describe('BlockWidget', () => {
         </TestWrapper>
       );
 
-      const skeletons = screen.getAllByTestId('skeleton');
+      const skeletons = screen.getAllByTestId("skeleton");
       expect(skeletons).toHaveLength(5); // mobileCount
       skeletons.forEach((skeleton) => {
-        expect(skeleton).toHaveAttribute('data-height', '300');
-        expect(skeleton).toHaveAttribute('data-variant', 'rounded');
+        expect(skeleton).toHaveAttribute("data-height", "300");
+        expect(skeleton).toHaveAttribute("data-variant", "rounded");
       });
     });
 
-    it('should render mobile error state', () => {
-      const errorMessage = 'Failed to load blocks';
+    it("should render mobile error state", () => {
+      const errorMessage = "Failed to load blocks";
       mockUseAllBlocks.mockReturnValue({
         data: null,
         isLoading: false,
@@ -296,14 +263,14 @@ describe('BlockWidget', () => {
         </TestWrapper>
       );
 
-      expect(screen.getByTestId('transparent-bg')).toBeInTheDocument();
-      const alert = screen.getByTestId('alert');
-      expect(alert).toHaveAttribute('data-severity', 'error');
-      expect(alert).toHaveAttribute('data-variant', 'outlined');
+      expect(screen.getByTestId("transparent-bg")).toBeInTheDocument();
+      const alert = screen.getByTestId("alert");
+      expect(alert).toHaveAttribute("data-severity", "error");
+      expect(alert).toHaveAttribute("data-variant", "outlined");
       expect(alert).toHaveTextContent(errorMessage);
     });
 
-    it('should render mobile block data', () => {
+    it("should render mobile block data", () => {
       mockUseAllBlocks.mockReturnValue({
         data: mockBlockData,
         isLoading: false,
@@ -318,30 +285,30 @@ describe('BlockWidget', () => {
       );
 
       // Check for block height links
-      const heightLinks = screen.getAllByTestId('link');
-      expect(heightLinks[0]).toHaveAttribute('data-to', '/blocks/12345');
-      expect(heightLinks[0]).toHaveTextContent('12,345');
+      const heightLinks = screen.getAllByTestId("link");
+      expect(heightLinks[0]).toHaveAttribute("data-to", "/blocks/12345");
+      expect(heightLinks[0]).toHaveTextContent("12 345");
 
       // Check for formatted timestamps
-      expect(screen.getByText('formatted_1640995200')).toBeInTheDocument();
+      expect(screen.getByText("formatted_1640995200")).toBeInTheDocument();
 
       // Check for PoW data
-      expect(screen.getByText('pow_1')).toBeInTheDocument();
+      expect(screen.getByText("pow_1")).toBeInTheDocument();
 
       // Check for kernels and outputs
-      expect(screen.getByText('5')).toBeInTheDocument(); // kernels
-      expect(screen.getByText('10')).toBeInTheDocument(); // outputs
+      expect(screen.getByText("5")).toBeInTheDocument(); // kernels
+      expect(screen.getByText("10")).toBeInTheDocument(); // outputs
 
       // Check for View All Blocks button
-      const viewAllButton = screen.getByRole('button', {
-        name: 'View All Blocks',
+      const viewAllButton = screen.getByRole("button", {
+        name: "View All Blocks",
       });
-      expect(viewAllButton).toHaveAttribute('data-href', '/blocks/');
-      expect(viewAllButton).toHaveAttribute('data-color', 'secondary');
-      expect(viewAllButton).toHaveAttribute('data-variant', 'contained');
+      expect(viewAllButton).toHaveAttribute("data-href", "/blocks/");
+      expect(viewAllButton).toHaveAttribute("data-color", "secondary");
+      expect(viewAllButton).toHaveAttribute("data-variant", "contained");
     });
 
-    it('should limit mobile display to 5 blocks', () => {
+    it("should limit mobile display to 5 blocks", () => {
       const manyBlocks = {
         headers: Array.from({ length: 10 }, (_, i) => ({
           height: 12345 + i,
@@ -367,17 +334,17 @@ describe('BlockWidget', () => {
       );
 
       // Should only display 5 blocks in mobile view
-      const heightLabels = screen.getAllByText('Height');
+      const heightLabels = screen.getAllByText("Height");
       expect(heightLabels).toHaveLength(5);
     });
   });
 
-  describe('Desktop View', () => {
+  describe("Desktop View", () => {
     beforeEach(() => {
       mockUseMainStore.mockReturnValue(false); // isMobile = false
     });
 
-    it('should render desktop loading state', () => {
+    it("should render desktop loading state", () => {
       mockUseAllBlocks.mockReturnValue({
         data: null,
         isLoading: true,
@@ -391,16 +358,16 @@ describe('BlockWidget', () => {
         </TestWrapper>
       );
 
-      const skeletons = screen.getAllByTestId('skeleton');
+      const skeletons = screen.getAllByTestId("skeleton");
       expect(skeletons).toHaveLength(11); // desktopCount + 2
       skeletons.forEach((skeleton) => {
-        expect(skeleton).toHaveAttribute('data-height', '60');
-        expect(skeleton).toHaveAttribute('data-variant', 'rounded');
+        expect(skeleton).toHaveAttribute("data-height", "60");
+        expect(skeleton).toHaveAttribute("data-variant", "rounded");
       });
     });
 
-    it('should render desktop error state', () => {
-      const errorMessage = 'Network error';
+    it("should render desktop error state", () => {
+      const errorMessage = "Network error";
       mockUseAllBlocks.mockReturnValue({
         data: null,
         isLoading: false,
@@ -414,14 +381,14 @@ describe('BlockWidget', () => {
         </TestWrapper>
       );
 
-      const transparentBg = screen.getByTestId('transparent-bg');
-      expect(transparentBg).toHaveAttribute('data-height', '850px');
+      const transparentBg = screen.getByTestId("transparent-bg");
+      expect(transparentBg).toHaveAttribute("data-height", "850px");
 
-      const alert = screen.getByTestId('alert');
+      const alert = screen.getByTestId("alert");
       expect(alert).toHaveTextContent(errorMessage);
     });
 
-    it('should render desktop table headers', () => {
+    it("should render desktop table headers", () => {
       mockUseAllBlocks.mockReturnValue({
         data: mockBlockData,
         isLoading: false,
@@ -436,15 +403,15 @@ describe('BlockWidget', () => {
       );
 
       // Check table headers
-      expect(screen.getByText('Height')).toBeInTheDocument();
-      expect(screen.getByText('Time')).toBeInTheDocument();
-      expect(screen.getByText('Proof of Work')).toBeInTheDocument();
-      expect(screen.getByText('Hash')).toBeInTheDocument();
-      expect(screen.getByText('Kernels')).toBeInTheDocument();
-      expect(screen.getByText('Outputs')).toBeInTheDocument();
+      expect(screen.getByText("Height")).toBeInTheDocument();
+      expect(screen.getByText("Time")).toBeInTheDocument();
+      expect(screen.getByText("Proof of Work")).toBeInTheDocument();
+      expect(screen.getByText("Hash")).toBeInTheDocument();
+      expect(screen.getByText("Kernels")).toBeInTheDocument();
+      expect(screen.getByText("Outputs")).toBeInTheDocument();
     });
 
-    it('should render desktop block data in table format', () => {
+    it("should render desktop block data in table format", () => {
       mockUseAllBlocks.mockReturnValue({
         data: mockBlockData,
         isLoading: false,
@@ -459,27 +426,21 @@ describe('BlockWidget', () => {
       );
 
       // Check for height links
-      const heightLinks = screen.getAllByTestId('link');
-      expect(heightLinks[0]).toHaveAttribute('data-to', '/blocks/12345');
-      expect(heightLinks[1]).toHaveAttribute('data-to', '/blocks/12346');
+      const heightLinks = screen.getAllByTestId("link");
+      expect(heightLinks[0]).toHaveAttribute("data-to", "/blocks/12345");
+      expect(heightLinks[1]).toHaveAttribute("data-to", "/blocks/12346");
 
       // Check copy to clipboard components
-      const copyComponents = screen.getAllByTestId('copy-to-clipboard');
-      expect(copyComponents[0]).toHaveAttribute(
-        'data-copy',
-        'hex_block_hash_1'
-      );
-      expect(copyComponents[1]).toHaveAttribute(
-        'data-copy',
-        'hex_block_hash_2'
-      );
+      const copyComponents = screen.getAllByTestId("copy-to-clipboard");
+      expect(copyComponents[0]).toHaveAttribute("data-copy", "hex_block_hash_1");
+      expect(copyComponents[1]).toHaveAttribute("data-copy", "hex_block_hash_2");
 
       // Check dividers
-      const dividers = screen.getAllByTestId('divider');
+      const dividers = screen.getAllByTestId("divider");
       expect(dividers.length).toBeGreaterThan(0);
     });
 
-    it('should limit desktop display to 9 blocks', () => {
+    it("should limit desktop display to 9 blocks", () => {
       const manyBlocks = {
         headers: Array.from({ length: 15 }, (_, i) => ({
           height: 12345 + i,
@@ -505,17 +466,17 @@ describe('BlockWidget', () => {
       );
 
       // Should only display 9 blocks in desktop view
-      const heightLinks = screen.getAllByTestId('link');
+      const heightLinks = screen.getAllByTestId("link");
       expect(heightLinks).toHaveLength(9); // Only 9 height links for blocks
     });
   });
 
-  describe('Common functionality', () => {
+  describe("Common functionality", () => {
     beforeEach(() => {
       mockUseMainStore.mockReturnValue(false); // desktop by default
     });
 
-    it('should use theme spacing', () => {
+    it("should use theme spacing", () => {
       mockUseAllBlocks.mockReturnValue({
         data: mockBlockData,
         isLoading: false,
@@ -532,7 +493,7 @@ describe('BlockWidget', () => {
       expect(mockTheme.spacing).toHaveBeenCalledWith(3);
     });
 
-    it('should handle empty data gracefully', () => {
+    it("should handle empty data gracefully", () => {
       mockUseAllBlocks.mockReturnValue({
         data: { headers: [] },
         isLoading: false,
@@ -547,12 +508,10 @@ describe('BlockWidget', () => {
       );
 
       // Should still render View All Blocks button
-      expect(
-        screen.getByRole('button', { name: 'View All Blocks' })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "View All Blocks" })).toBeInTheDocument();
     });
 
-    it('should call helper functions with correct parameters', () => {
+    it("should call helper functions with correct parameters", () => {
       mockUseAllBlocks.mockReturnValue({
         data: mockBlockData,
         isLoading: false,
@@ -567,9 +526,9 @@ describe('BlockWidget', () => {
       );
 
       // Helper functions should be called with the mocked return values
-      expect(screen.getByText('hex_bl...hash_1')).toBeInTheDocument();
-      expect(screen.getByText('formatted_1640995200')).toBeInTheDocument();
-      expect(screen.getByText('pow_1')).toBeInTheDocument();
+      expect(screen.getByText("hex_bl...hash_1")).toBeInTheDocument();
+      expect(screen.getByText("formatted_1640995200")).toBeInTheDocument();
+      expect(screen.getByText("pow_1")).toBeInTheDocument();
     });
   });
 });

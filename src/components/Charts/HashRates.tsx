@@ -20,17 +20,17 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import ReactEcharts from 'echarts-for-react';
-import { useTheme } from '@mui/material/styles';
-import { chartColor } from '@theme/colors';
-import { useAllBlocks } from '@services/api/hooks/useBlocks';
-import { formatHash } from '@utils/helpers';
-import { useState, useEffect } from 'react';
-import { Alert, Skeleton } from '@mui/material';
-import { TransparentBg } from '@components/StyledComponents';
+import ReactEcharts from "echarts-for-react";
+import { useTheme } from "@mui/material/styles";
+import { chartColor } from "@theme/colors";
+import { useAllBlocks } from "@services/api/hooks/useBlocks";
+import { formatHash, formatC29 } from "@utils/helpers";
+import { useState, useEffect } from "react";
+import { Alert, Skeleton } from "@mui/material";
+import { TransparentBg } from "@components/StyledComponents";
 
 interface HashRatesProps {
-  type: 'RandomX' | 'Sha3' | 'TariRandomX';
+  type: "RandomX" | "Sha3" | "TariRandomX" | "Cuckaroo29";
 }
 
 interface Display {
@@ -42,19 +42,18 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
   const { data, isLoading, isError, error } = useAllBlocks();
   const theme = useTheme();
   const tip = data?.tipInfo?.metadata.best_block_height;
-  const [display, setDisplay] = useState<Display[]>([
-    { blockNumber: 0, hashRate: 0 },
-  ]);
+  const [display, setDisplay] = useState<Display[]>([{ blockNumber: 0, hashRate: 0 }]);
   const [noOfBlocks, setNoOfBlocks] = useState(180);
   const zoomAmount = 20;
   const name = type;
   const colorMap: { [key: string]: string } = {
     RandomX: chartColor[4],
     Sha3: chartColor[3],
+    Cuckaroo29: chartColor[1],
     default: chartColor[2],
   };
 
-  const color = colorMap[type] || colorMap['default'];
+  const color = colorMap[type] || colorMap["default"];
   const minValue = display
     .map((item) => item.hashRate)
     .reduce((acc, cur) => {
@@ -75,9 +74,10 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
 
   useEffect(() => {
     const hashRatesMap: { [key: string]: number[] } = {
-      RandomX: data?.moneroRandomxHashRates,
-      Sha3: data?.sha3xHashRates,
-      TariRandomX: data?.tariRandomxHashRates,
+      RandomX: data?.moneroRandomxHashRates || [],
+      Sha3: data?.sha3xHashRates || [],
+      TariRandomX: data?.tariRandomxHashRates || [],
+      Cuckaroo29: data?.cuckarooHashRates || [],
     };
     const display: Display[] = [];
     const ascendingBlockNumbers: number[] = [];
@@ -104,21 +104,15 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
 
   const option = {
     tooltip: {
-      trigger: 'axis',
-      formatter: (
-        params: Array<{ seriesName: string; value: number; dataIndex: number }>
-      ) => {
-        const tooltipContent = params.map(
-          (param: { seriesName: string; value: number; dataIndex: number }) => {
-            const seriesName = param.seriesName;
-            const value = formatHash(param.value, 2);
-            return `${seriesName}: ${value}`;
-          }
-        );
+      trigger: "axis",
+      formatter: (params: Array<{ seriesName: string; value: number; dataIndex: number }>) => {
+        const tooltipContent = params.map((param: { seriesName: string; value: number; dataIndex: number }) => {
+          const seriesName = param.seriesName;
+          const value = type === "Cuckaroo29" ? formatC29(param.value, 2) : formatHash(param.value, 2);
+          return `${seriesName}: ${value}`;
+        });
         const blockNumber = display[params[0].dataIndex].blockNumber;
-        return `<b>Block ${blockNumber}</b><br/>${tooltipContent.join(
-          '<br/>'
-        )}`;
+        return `<b>Block ${blockNumber}</b><br/>${tooltipContent.join("<br/>")}`;
       },
     },
     legend: {
@@ -126,19 +120,19 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
       textStyle: {
         color: theme.palette.text.primary,
       },
-      top: '0',
-      right: '0',
+      top: "0",
+      right: "0",
     },
     color,
     grid: {
-      left: '2%',
-      right: '2%',
-      bottom: '20%',
-      top: '5%',
+      left: "2%",
+      right: "2%",
+      bottom: "20%",
+      top: "5%",
       containLabel: true,
     },
     xAxis: {
-      type: 'category',
+      type: "category",
       data: generateDataArray(noOfBlocks),
       axisLine: {
         lineStyle: {
@@ -151,13 +145,13 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
           if (display && display[index]) {
             return display[index].blockNumber;
           }
-          return '';
+          return "";
         },
       },
     },
     yAxis: {
-      type: 'value',
-      boundaryGap: ['10%', '10%'],
+      type: "value",
+      boundaryGap: ["10%", "10%"],
       min: minValueWithMargin,
       axisLine: {
         lineStyle: {
@@ -170,17 +164,17 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
         },
       },
       axisLabel: {
-        formatter: (value: number) => formatHash(value, 2),
+        formatter: (value: number) => (type === "Cuckaroo29" ? formatC29(value, 0) : formatHash(value, 0)),
       },
     },
     dataZoom: [
       {
-        type: 'slider',
+        type: "slider",
         start: noOfBlocks - zoomAmount,
         end: noOfBlocks,
       },
       {
-        type: 'inside',
+        type: "inside",
         start: noOfBlocks - zoomAmount,
         end: noOfBlocks,
       },
@@ -188,7 +182,7 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
     series: [
       {
         name,
-        type: 'line',
+        type: "line",
         smooth: false,
         data: display.map((item) => item.hashRate),
       },
@@ -207,6 +201,13 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
 
   if (isLoading) {
     return <Skeleton variant="rounded" height={300} />;
+  }
+
+  // Check if data is empty or all values are zero
+  const hasData = display.length > 0 && display.some((item) => item.hashRate > 0);
+
+  if (!hasData) {
+    return null;
   }
 
   return <ReactEcharts option={option} />;

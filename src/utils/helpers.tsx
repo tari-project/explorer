@@ -176,6 +176,13 @@ function formatXTM(amount: number): string {
   return amount / 1_000_000 + " XTM";
 }
 
+function formatC29(hashRateGps: number, precision: number = 0): string {
+  if (hashRateGps >= 1000) {
+    return `${(hashRateGps / 1000).toFixed(precision)}Kg`;
+  }
+  return `${hashRateGps.toFixed(precision)}g`;
+}
+
 function powCheck(num: string | number): string {
   if (typeof num === "number") {
     num = num.toString();
@@ -190,6 +197,9 @@ function powCheck(num: string | number): string {
       break;
     case "2":
       powText = "RandomX";
+      break;
+    case "3":
+      powText = "Cuckaroo29";
       break;
     default:
       powText = "Unknown";
@@ -213,5 +223,6 @@ export {
   formatHash,
   formatXTM,
   formatNumber,
+  formatC29,
   powCheck,
 };
