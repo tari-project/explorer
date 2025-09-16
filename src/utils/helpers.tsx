@@ -176,11 +176,11 @@ function formatXTM(amount: number): string {
   return amount / 1_000_000 + " XTM";
 }
 
-function formatC29(hashRateGps: number, precision: number = 0): string {
+function formatC29(hashRateGps: number, precision: number = 2): string {
   if (hashRateGps >= 1000) {
     return `${(hashRateGps / 1000).toFixed(precision)}Kg`;
   }
-  return `${hashRateGps.toFixed(precision)}g`;
+  return `${hashRateGps.toFixed(0)}g`;
 }
 
 function powCheck(num: string | number): string {
