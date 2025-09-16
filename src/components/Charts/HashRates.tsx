@@ -108,7 +108,7 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
       formatter: (params: Array<{ seriesName: string; value: number; dataIndex: number }>) => {
         const tooltipContent = params.map((param: { seriesName: string; value: number; dataIndex: number }) => {
           const seriesName = param.seriesName;
-          const value = type === "Cuckaroo29" ? formatC29(param.value, 2) : formatHash(param.value, 2);
+          const value = type === "Cuckaroo29" ? param.value.toFixed(1) + "g" : formatHash(param.value, 2);
           return `${seriesName}: ${value}`;
         });
         const blockNumber = display[params[0].dataIndex].blockNumber;
@@ -164,7 +164,7 @@ const HashRates: React.FC<HashRatesProps> = ({ type }) => {
         },
       },
       axisLabel: {
-        formatter: (value: number) => (type === "Cuckaroo29" ? formatC29(value, 0) : formatHash(value, 0)),
+        formatter: (value: number) => (type === "Cuckaroo29" ? formatC29(value, 1) : formatHash(value, 0)),
       },
     },
     dataZoom: [
