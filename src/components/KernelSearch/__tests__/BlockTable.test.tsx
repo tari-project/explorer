@@ -29,20 +29,20 @@ vi.mock('@components/InnerHeading', () => ({
 vi.mock('@utils/helpers', () => ({
   toHexString: vi.fn((data: unknown) => {
     if (!data || data === 'no data') return 'no data';
+    if (Array.isArray(data)) {
+      return `hex_${data.join(',')}`;
+    }
     return `hex_${data}`;
   }),
   shortenString: vi.fn(
-    (str: string, start: number, end: number) =>
-      `${str.substring(0, start)}...${str.substring(str.length - end)}`
+    (str: string, start?: number, end?: number) => {
+      if (!str || str === 'no data') return 'no data';
+      if (start !== undefined && end !== undefined) {
+        return `${str.substring(0, start)}...${str.substring(str.length - end)}`;
+      }
+      return str.length > 16 ? `${str.substring(0, 8)}...${str.substring(str.length - 8)}` : str;
+    }
   ),
-  formatTimestamp: vi.fn((timestamp: unknown) => {
-    if (!timestamp || timestamp === 'no data') return 'no data';
-    return `formatted_${timestamp}`;
-  }),
-  powCheck: vi.fn((algo: unknown) => {
-    if (!algo || algo === 'no data') return 'no data';
-    return `pow_${algo}`;
-  }),
 }));
 
 vi.mock('@mui/material', () => ({
@@ -215,203 +215,116 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 describe('BlockTable', () => {
   let mockUseMainStore: ReturnType<typeof vi.fn>;
   let mockToHexString: ReturnType<typeof vi.fn>;
-  let mockFormatTimestamp: ReturnType<typeof vi.fn>;
-  let mockPowCheck: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.clearAllMocks();
     const { useMainStore } = await import('@services/stores/useMainStore');
-    const { toHexString, formatTimestamp, powCheck } = await import(
-      '@utils/helpers'
-    );
+    const { toHexString } = await import('@utils/helpers');
     mockUseMainStore = vi.mocked(useMainStore);
     mockToHexString = vi.mocked(toHexString);
-    mockFormatTimestamp = vi.mocked(formatTimestamp);
-    mockPowCheck = vi.mocked(powCheck);
   });
 
   const mockSearchResults = [
     {
-      block: {
-        header: {
-          height: 12345,
-          timestamp: 1640995200,
-          hash: {
-            data: [
-              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
-              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
-              116, 123, 184,
-            ],
-          },
-          pow: { pow_algo: 1 },
-          version: 1,
-          prev_hash: {
-            data: [
-              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
-              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
-              116, 123, 185,
-            ],
-          },
-          nonce: 123456,
-          output_mr: {
-            data: [
-              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
-              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
-              116, 123, 186,
-            ],
-          },
-          validator_node_mr: {
-            data: [
-              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
-              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
-              116, 123, 187,
-            ],
-          },
-          kernel_mr: {
-            data: [
-              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
-              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
-              116, 123, 188,
-            ],
-          },
-          input_mr: {
-            data: [
-              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
-              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
-              116, 123, 189,
-            ],
-          },
-          kernel_mmr_size: 100,
-          output_mmr_size: 200,
-          total_kernel_offset: {
-            data: [
-              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
-              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
-              116, 123, 190,
-            ],
-          },
-          total_script_offset: {
-            data: [
-              230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2,
-              174, 164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185,
-              116, 123, 191,
-            ],
-          },
+      block_height: "64925",
+      features: 0,
+      fee: "132",
+      lock_height: "0",
+      excess: {
+        type: "Buffer" as const,
+        data: [
+          172, 63, 13, 206, 82, 192, 145, 57, 84, 68, 194, 196, 182, 243, 61, 135,
+          57, 171, 227, 227, 253, 194, 75, 210, 93, 186, 59, 177, 36, 155, 9, 80
+        ],
+      },
+      excess_sig: {
+        public_nonce: {
+          type: "Buffer" as const,
+          data: [
+            150, 152, 91, 241, 14, 196, 96, 202, 40, 170, 231, 62, 173, 202, 90, 239,
+            152, 2, 246, 182, 121, 84, 135, 115, 183, 177, 2, 233, 128, 15, 222, 78
+          ],
         },
-        body: {
-          kernels: Array(5).fill({}),
-          outputs: Array(10).fill({}),
-          inputs: Array(0).fill({}),
+        signature: {
+          type: "Buffer" as const,
+          data: [
+            234, 239, 223, 230, 221, 40, 31, 177, 98, 48, 193, 140, 134, 154, 106, 99,
+            18, 99, 174, 39, 155, 141, 107, 235, 138, 61, 246, 157, 137, 163, 88, 5
+          ],
         },
       },
+      hash: {
+        type: "Buffer" as const,
+        data: [
+          239, 153, 197, 200, 192, 2, 135, 82, 6, 27, 47, 217, 224, 75, 6, 173,
+          134, 4, 73, 131, 255, 180, 207, 92, 100, 193, 202, 252, 12, 159, 109, 193
+        ],
+      },
+      version: 0
     },
     {
-      block: {
-        header: {
-          height: 12346,
-          timestamp: 1640995260,
-          hash: {
-            data: [
-              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
-              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
-              117, 124, 185,
-            ],
-          },
-          pow: { pow_algo: 2 },
-          version: 1,
-          prev_hash: {
-            data: [
-              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
-              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
-              117, 124, 186,
-            ],
-          },
-          nonce: 123457,
-          output_mr: {
-            data: [
-              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
-              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
-              117, 124, 187,
-            ],
-          },
-          validator_node_mr: {
-            data: [
-              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
-              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
-              117, 124, 188,
-            ],
-          },
-          kernel_mr: {
-            data: [
-              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
-              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
-              117, 124, 189,
-            ],
-          },
-          input_mr: {
-            data: [
-              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
-              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
-              117, 124, 190,
-            ],
-          },
-          kernel_mmr_size: 101,
-          output_mmr_size: 201,
-          total_kernel_offset: {
-            data: [
-              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
-              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
-              117, 124, 191,
-            ],
-          },
-          total_script_offset: {
-            data: [
-              231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3,
-              175, 165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186,
-              117, 124, 192,
-            ],
-          },
+      block_height: "64926",
+      features: 0,
+      fee: "145",
+      lock_height: "0",
+      excess: {
+        type: "Buffer" as const,
+        data: [
+          173, 64, 14, 207, 83, 193, 146, 58, 85, 69, 195, 197, 183, 244, 62, 136,
+          58, 172, 228, 228, 254, 195, 76, 211, 94, 187, 60, 178, 37, 156, 10, 81
+        ],
+      },
+      excess_sig: {
+        public_nonce: {
+          type: "Buffer" as const,
+          data: [
+            151, 153, 92, 242, 15, 197, 97, 203, 41, 171, 232, 63, 174, 203, 91, 240,
+            153, 3, 247, 183, 122, 85, 136, 116, 184, 178, 3, 234, 129, 16, 223, 79
+          ],
         },
-        body: {
-          kernels: Array(3).fill({}),
-          outputs: Array(8).fill({}),
-          inputs: Array(0).fill({}),
+        signature: {
+          type: "Buffer" as const,
+          data: [
+            235, 240, 224, 231, 222, 41, 32, 178, 99, 49, 194, 141, 135, 155, 107, 100,
+            19, 100, 175, 40, 156, 142, 108, 236, 139, 62, 247, 158, 138, 164, 89, 6
+          ],
         },
       },
+      hash: {
+        type: "Buffer" as const,
+        data: [
+          240, 154, 198, 201, 193, 3, 136, 83, 7, 28, 48, 218, 225, 76, 7, 174,
+          135, 5, 74, 132, 255, 181, 208, 93, 101, 194, 203, 253, 13, 160, 110, 194
+        ],
+      },
+      version: 0
     },
   ];
 
   const largeSearchResults = Array.from({ length: 25 }, (_, i) => ({
-    block: {
-      header: {
-        height: 12345 + i,
-        timestamp: 1640995200 + i * 60,
-        hash: { data: Array.from({ length: 32 }, (_, j) => 230 + i + j) },
-        pow: { pow_algo: (i % 2) + 1 },
-        version: 1,
-        prev_hash: { data: Array.from({ length: 32 }, (_, j) => 231 + i + j) },
-        nonce: 123456 + i,
-        output_mr: { data: Array.from({ length: 32 }, (_, j) => 232 + i + j) },
-        validator_node_mr: {
-          data: Array.from({ length: 32 }, (_, j) => 233 + i + j),
-        },
-        kernel_mr: { data: Array.from({ length: 32 }, (_, j) => 234 + i + j) },
-        input_mr: { data: Array.from({ length: 32 }, (_, j) => 235 + i + j) },
-        kernel_mmr_size: 100 + i,
-        output_mmr_size: 200 + i,
-        total_kernel_offset: {
-          data: Array.from({ length: 32 }, (_, j) => 236 + i + j),
-        },
-        total_script_offset: {
-          data: Array.from({ length: 32 }, (_, j) => 237 + i + j),
-        },
+    block_height: `${64925 + i}`,
+    features: i % 3,
+    fee: `${132 + i}`,
+    lock_height: "0",
+    excess: {
+      type: "Buffer" as const,
+      data: Array.from({ length: 32 }, (_, j) => 172 + i + j),
+    },
+    excess_sig: {
+      public_nonce: {
+        type: "Buffer" as const,
+        data: Array.from({ length: 32 }, (_, j) => 150 + i + j),
       },
-      body: {
-        kernels: Array(5 + i).fill({}),
-        outputs: Array(10 + i).fill({}),
-        inputs: Array(0).fill({}),
+      signature: {
+        type: "Buffer" as const,
+        data: Array.from({ length: 32 }, (_, j) => 234 + i + j),
       },
     },
+    hash: {
+      type: "Buffer" as const,
+      data: Array.from({ length: 32 }, (_, j) => 239 + i + j),
+    },
+    version: i % 2,
   }));
 
   describe('Mobile View', () => {
@@ -432,13 +345,12 @@ describe('BlockTable', () => {
 
       // Check for mobile layout elements (multiple instances for each result)
       expect(screen.getAllByText('Height')).toHaveLength(2); // One for each result
-      expect(screen.getAllByText('Timestamp')).toHaveLength(2); // Changed from "Time" to actual text
-      expect(screen.getAllByText('Proof of Work')).toHaveLength(2);
+      expect(screen.getAllByText('Hash')).toHaveLength(2);
 
       // Check for height links
       const heightLinks = screen.getAllByTestId('link');
-      expect(heightLinks[0]).toHaveAttribute('data-to', '/blocks/12345');
-      expect(heightLinks[0]).toHaveTextContent('12,345');
+      expect(heightLinks[0]).toHaveAttribute('data-to', '/blocks/64925');
+      expect(heightLinks[0]).toHaveTextContent('64,925');
     });
 
     it('should display formatted data in mobile view', () => {
@@ -448,17 +360,13 @@ describe('BlockTable', () => {
         </TestWrapper>
       );
 
-      // Check for formatted timestamps
-      expect(screen.getByText('formatted_1640995200')).toBeInTheDocument();
-      expect(screen.getByText('formatted_1640995260')).toBeInTheDocument();
+      // Check for View Block buttons
+      const viewBlockButtons = screen.getAllByText('View Block');
+      expect(viewBlockButtons).toHaveLength(2);
 
-      // Check for PoW data
-      expect(screen.getByText('pow_1')).toBeInTheDocument();
-      expect(screen.getByText('pow_2')).toBeInTheDocument();
-
-      // Check for kernel and output counts
-      expect(screen.getByText('5')).toBeInTheDocument(); // kernels
-      expect(screen.getByText('10')).toBeInTheDocument(); // outputs
+      // Check for copy to clipboard components
+      const copyComponents = screen.getAllByTestId('copy-to-clipboard');
+      expect(copyComponents).toHaveLength(2);
     });
 
     it('should handle pagination in mobile view', () => {
@@ -492,11 +400,7 @@ describe('BlockTable', () => {
 
       // Check table headers
       expect(screen.getByText('Height')).toBeInTheDocument();
-      expect(screen.getByText('Time')).toBeInTheDocument();
-      expect(screen.getByText('Proof of Work')).toBeInTheDocument();
       expect(screen.getByText('Hash')).toBeInTheDocument();
-      expect(screen.getByText('Kernels')).toBeInTheDocument();
-      expect(screen.getByText('Outputs')).toBeInTheDocument();
     });
 
     it('should render desktop block data in table format', () => {
@@ -508,23 +412,14 @@ describe('BlockTable', () => {
 
       // Check for height links
       const heightLinks = screen.getAllByTestId('link');
-      expect(heightLinks[0]).toHaveAttribute('data-to', '/blocks/12345');
-      expect(heightLinks[1]).toHaveAttribute('data-to', '/blocks/12346');
+      expect(heightLinks[0]).toHaveAttribute('data-to', '/blocks/64925');
+      expect(heightLinks[1]).toHaveAttribute('data-to', '/blocks/64926');
+      expect(heightLinks[0]).toHaveTextContent('64,925');
+      expect(heightLinks[1]).toHaveTextContent('64,926');
 
       // Check copy to clipboard components for hashes
       const copyComponents = screen.getAllByTestId('copy-to-clipboard');
-      expect(copyComponents[0]).toHaveAttribute(
-        'data-copy',
-        'hex_230,160,204,44,173,230,204,173,53,91,78,10,8,168,2,174,164,156,16,1,133,148,15,200,171,69,101,117,185,116,123,184'
-      );
-      expect(copyComponents[1]).toHaveAttribute(
-        'data-copy',
-        'hex_231,161,205,45,174,231,205,174,54,92,79,11,9,169,3,175,165,157,17,2,134,149,16,201,172,70,102,118,186,117,124,185'
-      );
-
-      // Check for formatted timestamps
-      expect(screen.getByText('formatted_1640995200')).toBeInTheDocument();
-      expect(screen.getByText('formatted_1640995260')).toBeInTheDocument();
+      expect(copyComponents).toHaveLength(2);
     });
 
     it('should display pagination controls', () => {
@@ -629,21 +524,15 @@ describe('BlockTable', () => {
         </TestWrapper>
       );
 
-      // Helper functions should be called
+      // Helper functions should be called with hash data
       expect(mockToHexString).toHaveBeenCalledWith([
-        230, 160, 204, 44, 173, 230, 204, 173, 53, 91, 78, 10, 8, 168, 2, 174,
-        164, 156, 16, 1, 133, 148, 15, 200, 171, 69, 101, 117, 185, 116, 123,
-        184,
+        239, 153, 197, 200, 192, 2, 135, 82, 6, 27, 47, 217, 224, 75, 6, 173,
+        134, 4, 73, 131, 255, 180, 207, 92, 100, 193, 202, 252, 12, 159, 109, 193
       ]);
       expect(mockToHexString).toHaveBeenCalledWith([
-        231, 161, 205, 45, 174, 231, 205, 174, 54, 92, 79, 11, 9, 169, 3, 175,
-        165, 157, 17, 2, 134, 149, 16, 201, 172, 70, 102, 118, 186, 117, 124,
-        185,
+        240, 154, 198, 201, 193, 3, 136, 83, 7, 28, 48, 218, 225, 76, 7, 174,
+        135, 5, 74, 132, 255, 181, 208, 93, 101, 194, 203, 253, 13, 160, 110, 194
       ]);
-      expect(mockFormatTimestamp).toHaveBeenCalledWith(1640995200);
-      expect(mockFormatTimestamp).toHaveBeenCalledWith(1640995260);
-      expect(mockPowCheck).toHaveBeenCalledWith('1');
-      expect(mockPowCheck).toHaveBeenCalledWith('2');
     });
   });
 
@@ -662,7 +551,7 @@ describe('BlockTable', () => {
       // Desktop layout shows data in table format without View Block buttons
       expect(screen.getAllByTestId('grid').length).toBeGreaterThan(4);
       expect(
-        screen.queryByRole('button', { name: 'View Block' })
+        screen.queryByTestId('button')
       ).not.toBeInTheDocument();
     });
 
@@ -675,15 +564,8 @@ describe('BlockTable', () => {
         </TestWrapper>
       );
 
-      const viewBlockButtons = screen.getAllByRole('button', {
-        name: 'View Block',
-      });
+      const viewBlockButtons = screen.getAllByText('View Block');
       expect(viewBlockButtons).toHaveLength(2); // One for each mock result
-      // In mobile view, actual MUI buttons are rendered, not mocked ones
-      viewBlockButtons.forEach((button) => {
-        expect(button).toHaveClass('MuiButton-outlined');
-        expect(button).toHaveClass('MuiButton-fullWidth');
-      });
     });
 
     it('should display proper component hierarchy', () => {

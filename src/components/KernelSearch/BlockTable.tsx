@@ -20,29 +20,26 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { useState, Fragment } from 'react';
-import type { Block } from '@types';
-import { TypographyData } from '@components/StyledComponents';
-import { Typography, Grid, Divider, Pagination } from '@mui/material';
-import { toHexString, shortenString, formatTimestamp } from '@utils/helpers';
-import { Link } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import CopyToClipboard from '@components/CopyToClipboard';
-import { useMainStore } from '@services/stores/useMainStore';
-import InnerHeading from '@components/InnerHeading';
-import { powCheck } from '@utils/helpers';
+import { useState, Fragment } from "react";
+import { TypographyData } from "@components/StyledComponents";
+import { Typography, Grid, Divider, Pagination } from "@mui/material";
+import { toHexString, shortenString } from "@utils/helpers";
+import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CopyToClipboard from "@components/CopyToClipboard";
+import { useMainStore } from "@services/stores/useMainStore";
+import InnerHeading from "@components/InnerHeading";
+import { KernelSearchItem } from "@types";
 
-interface BlockTableProps {
-  data: Array<{ block: Block }>;
-}
-
-function BlockTable({ data }: BlockTableProps) {
+function BlockTable({ data }: { data: KernelSearchItem[] | undefined }) {
   const [page, setPage] = useState(1);
   const isMobile = useMainStore((state) => state.isMobile);
   const totalItems = data?.length || 0;
   const itemsPerPage = 10;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  console.log("BlockTable data:", data);
 
   const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -54,97 +51,51 @@ function BlockTable({ data }: BlockTableProps) {
 
     return (
       <Grid container spacing={2} pl={0} pr={0}>
-        {data
-          ?.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-          .map(({ block }: { block: Block }, index: number) => {
-            const height = block?.header?.height || 'no data';
-            const timestamp = block?.header?.timestamp || 'no data';
-            const hash = block?.header?.hash?.data || 'no data';
-            const pow = block?.header?.pow?.pow_algo?.toString() || 'no data';
-            const kernels = block?.body.kernels.length || 'no data';
-            const outputs = block?.body.outputs.length || 'no data';
+        {data?.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((block: KernelSearchItem, index: number) => {
+          const height = block?.block_height || "no data";
+          const hash = block?.hash?.data || "no data";
 
-            return (
-              <Fragment key={index}>
-                <Grid item xs={col1}>
-                  <Typography variant="body2">Height</Typography>
-                </Grid>
-                <Grid item xs={col2}>
-                  <TypographyData>
-                    <Link to={`/blocks/${height}`}>
-                      {height.toLocaleString('en-US')}{' '}
-                    </Link>
-                  </TypographyData>
-                </Grid>
+          return (
+            <Fragment key={index}>
+              <Grid item xs={col1}>
+                <Typography variant="body2">Height</Typography>
+              </Grid>
+              <Grid item xs={col2}>
+                <TypographyData>
+                  <Link to={`/blocks/${height}`}>{parseInt(height).toLocaleString("en-US")}</Link>
+                </TypographyData>
+              </Grid>
 
-                <Grid item xs={col1}>
-                  <Typography variant="body2">Timestamp</Typography>
-                </Grid>
-                <Grid item xs={col2}>
-                  <TypographyData>
-                    {typeof timestamp === 'number'
-                      ? formatTimestamp(timestamp)
-                      : 'no data'}
-                  </TypographyData>
-                </Grid>
+              <Grid item xs={col1}>
+                <Typography variant="body2">Hash</Typography>
+              </Grid>
+              <Grid item xs={col2}>
+                <TypographyData>
+                  {shortenString(toHexString(hash), 6, 6)}
+                  <CopyToClipboard copy={toHexString(hash)} />
+                </TypographyData>
+              </Grid>
 
-                <Grid item xs={col1}>
-                  <Typography variant="body2">Proof of Work</Typography>
-                </Grid>
-                <Grid item xs={col2}>
-                  <TypographyData>
-                    {pow === 'no data' ? 'no data' : powCheck(pow)}
-                  </TypographyData>
-                </Grid>
-
-                <Grid item xs={col1}>
-                  <Typography variant="body2">Hash</Typography>
-                </Grid>
-                <Grid item xs={col2}>
-                  <TypographyData>
-                    {shortenString(toHexString(hash), 6, 6)}
-                    <CopyToClipboard copy={toHexString(hash)} />
-                  </TypographyData>
-                </Grid>
-
-                <Grid item xs={col1}>
-                  <Typography variant="body2">Kernels</Typography>
-                </Grid>
-                <Grid item xs={col2}>
-                  <TypographyData>{kernels}</TypographyData>
-                </Grid>
-
-                <Grid item xs={col1}>
-                  <Typography variant="body2">Outputs</Typography>
-                </Grid>
-                <Grid item xs={col2}>
-                  <TypographyData>{outputs}</TypographyData>
-                </Grid>
-
-                <Grid item xs={12} pb={2}>
-                  <Link to={`/blocks/${height}`}>
-                    <Button variant="outlined" fullWidth>
-                      View Block
-                    </Button>
-                  </Link>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-              </Fragment>
-            );
-          })}
+              <Grid item xs={12} pb={2}>
+                <Link to={`/blocks/${height}`}>
+                  <Button variant="outlined" fullWidth>
+                    View Block
+                  </Button>
+                </Link>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+            </Fragment>
+          );
+        })}
       </Grid>
     );
   }
 
   function Desktop() {
-    const col1 = 2;
-    const col2 = 3;
-    const col3 = 2;
-    const col4 = 3;
-    const col5 = 1;
-    const col6 = 1;
+    const col1 = 3;
+    const col4 = 9;
 
     return (
       <>
@@ -152,96 +103,34 @@ function BlockTable({ data }: BlockTableProps) {
           <Grid item xs={col1} md={col1} lg={col1}>
             <Typography variant="body2">Height</Typography>
           </Grid>
-          <Grid item xs={col2} md={col2} lg={col2}>
-            <Typography variant="body2">Time</Typography>
-          </Grid>
-          <Grid item xs={col3} md={col3} lg={col3}>
-            <Typography variant="body2">Proof of Work</Typography>
-          </Grid>
           <Grid item xs={col4} md={col4} lg={col4}>
             <Typography variant="body2">Hash</Typography>
           </Grid>
-          <Grid
-            item
-            xs={col5}
-            md={col5}
-            lg={col5}
-            style={{ textAlign: 'center' }}
-          >
-            <Typography variant="body2">Kernels</Typography>
-          </Grid>
-          <Grid
-            item
-            xs={col6}
-            md={col6}
-            lg={col6}
-            style={{ textAlign: 'center' }}
-          >
-            <Typography variant="body2">Outputs</Typography>
-          </Grid>
         </Grid>
         <Grid container spacing={2} pl={0} pr={0} pb={2}>
-          {data
-            ?.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-            .map(({ block }: { block: Block }, index: number) => {
-              const height = block?.header?.height || 'no data';
-              const timestamp = block?.header?.timestamp || 'no data';
-              const hash = block?.header?.hash?.data || 'no data';
-              const pow = block?.header?.pow?.pow_algo?.toString() || 'no data';
-              const kernels = block?.body.kernels.length || 'no data';
-              const outputs = block?.body.outputs.length || 'no data';
+          {data?.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((block: KernelSearchItem, index: number) => {
+            const height = block?.block_height || "no data";
+            const hash = block?.hash?.data || "no data";
 
-              return (
-                <Fragment key={index}>
-                  <Grid item xs={12}>
-                    <Divider />
-                  </Grid>
-                  <Grid item xs={col1} md={col1} lg={col1}>
-                    <TypographyData>
-                      <Link to={`/blocks/${height}`}>
-                        {height.toLocaleString('en-US')}
-                      </Link>
-                    </TypographyData>
-                  </Grid>
-                  <Grid item xs={col2} md={col2} lg={col2}>
-                    <TypographyData>
-                      {typeof timestamp === 'number'
-                        ? formatTimestamp(timestamp)
-                        : 'no data'}
-                    </TypographyData>
-                  </Grid>
-                  <Grid item xs={col3} md={col3} lg={col3}>
-                    <TypographyData>
-                      {pow === 'no data' ? 'no data' : powCheck(pow)}
-                    </TypographyData>
-                  </Grid>
-                  <Grid item xs={col4} md={col4} lg={col4}>
-                    <TypographyData>
-                      {shortenString(toHexString(hash))}
-                      <CopyToClipboard copy={toHexString(hash)} />
-                    </TypographyData>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={col5}
-                    md={col5}
-                    lg={col5}
-                    style={{ textAlign: 'center' }}
-                  >
-                    <TypographyData>{kernels}</TypographyData>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={col6}
-                    md={col6}
-                    lg={col6}
-                    style={{ textAlign: 'center' }}
-                  >
-                    <TypographyData>{outputs}</TypographyData>
-                  </Grid>
-                </Fragment>
-              );
-            })}
+            return (
+              <Fragment key={index}>
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+                <Grid item xs={col1} md={col1} lg={col1}>
+                  <TypographyData>
+                    <Link to={`/blocks/${height}`}>{parseInt(height).toLocaleString("en-US")}</Link>
+                  </TypographyData>
+                </Grid>
+                <Grid item xs={col4} md={col4} lg={col4}>
+                  <TypographyData>
+                    {shortenString(toHexString(hash))}
+                    <CopyToClipboard copy={toHexString(hash)} />
+                  </TypographyData>
+                </Grid>
+              </Fragment>
+            );
+          })}
         </Grid>
       </>
     );
@@ -249,17 +138,11 @@ function BlockTable({ data }: BlockTableProps) {
 
   return (
     <>
-      <InnerHeading>Found in Block{totalItems > 1 && 's'}:</InnerHeading>
+      <InnerHeading>Found in Block{totalItems > 1 && "s"}:</InnerHeading>
       {isMobile ? <Mobile /> : <Desktop />}
       <Divider />
       {totalItems > itemsPerPage && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          pt={2}
-          pb={2}
-        >
+        <Box display="flex" justifyContent="center" alignItems="center" pt={2} pb={2}>
           <Pagination
             count={totalPages}
             color="primary"

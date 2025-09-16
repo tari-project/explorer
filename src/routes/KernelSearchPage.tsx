@@ -20,27 +20,24 @@
 //  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 //  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import { GradientPaper } from '@components/StyledComponents';
-import { Grid } from '@mui/material';
-import { useLocation } from 'react-router-dom';
-import { useSearchByKernel } from '@services/api/hooks/useBlocks';
-import FetchStatusCheck from '@components/FetchStatusCheck';
-import BlockTable from '@components/KernelSearch/BlockTable';
+import { GradientPaper } from "@components/StyledComponents";
+import { Grid } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import { useSearchByKernel } from "@services/api/hooks/useBlocks";
+import FetchStatusCheck from "@components/FetchStatusCheck";
+import BlockTable from "@components/KernelSearch/BlockTable";
 
 function KernelsPage() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
-  const noncesParams = params.get('nonces');
-  const nonces = noncesParams ? noncesParams.split(',') : [];
+  const noncesParams = params.get("nonces");
+  const nonces = noncesParams ? noncesParams.split(",") : [];
 
-  const signaturesParams = params.get('signatures');
-  const signatures = signaturesParams ? signaturesParams.split(',') : [];
+  const signaturesParams = params.get("signatures");
+  const signatures = signaturesParams ? signaturesParams.split(",") : [];
 
-  const { data, isLoading, isError, error } = useSearchByKernel(
-    nonces,
-    signatures
-  );
+  const { data, isLoading, isError, error } = useSearchByKernel(nonces, signatures);
 
   if (isLoading || isError) {
     return (
@@ -49,7 +46,7 @@ function KernelsPage() {
           <FetchStatusCheck
             isError={isError}
             isLoading={isLoading}
-            errorMessage={error?.message || 'Error retrieving data'}
+            errorMessage={error?.message || "Error retrieving data"}
           />
         </GradientPaper>
       </Grid>
@@ -57,10 +54,8 @@ function KernelsPage() {
   }
 
   if (data?.items.length === 1) {
-    const blockHeight = data.items[0].block.header.height;
-    window.location.replace(
-      `/blocks/${blockHeight}?nonce=${noncesParams}&signature=${signaturesParams}`
-    );
+    const blockHeight = data.items[0].block_height;
+    window.location.replace(`/blocks/${blockHeight}?nonce=${noncesParams}&signature=${signaturesParams}`);
   }
 
   return (
