@@ -248,7 +248,7 @@ describe('KernelSearchPage', () => {
 
   it('should redirect to block page when only one result is found', async () => {
     const mockData = {
-      items: [{ block: { header: { height: 12345 } } }]
+      items: [{ block_height: "12345" }]
     }
     const nonces = 'nonce1'
     const signatures = 'sig1'

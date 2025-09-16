@@ -11,6 +11,14 @@ export interface HexData {
 }
 
 /**
+ * Buffer data structure as received from Node.js Buffer serialization
+ */
+export interface BufferData {
+  type: "Buffer";
+  data: number[];
+}
+
+/**
  * API Error structure
  */
 export interface ApiError {
@@ -26,6 +34,20 @@ export interface ApiError {
  */
 export interface ProofOfWork {
   pow_algo: number; // 0=RandomX(MM), 1=SHA3x, 2=RandomX
+}
+
+export interface KernelSearchItem {
+  block_height: string;
+  features: number;
+  fee: string;
+  lock_height: string;
+  excess: HexData;
+  excess_sig: {
+    public_nonce: HexData;
+    signature: HexData;
+  };
+  hash: HexData;
+  version: number;
 }
 
 /**
@@ -204,7 +226,7 @@ export interface TimeSeriesPoint {
  * Block times chart data
  */
 export interface BlockTimesData {
-  type: 'RandomX' | 'Sha3' | 'All';
+  type: "RandomX" | "Sha3" | "All";
   targetTime: number;
   series: number[]; // Time in minutes
 }
@@ -213,7 +235,7 @@ export interface BlockTimesData {
  * Hash rates chart data
  */
 export interface HashRatesData {
-  type: 'RandomX' | 'Sha3' | 'TariRandomX';
+  type: "RandomX" | "Sha3" | "TariRandomX";
   series: TimeSeriesPoint[];
 }
 
@@ -293,9 +315,9 @@ export interface PaginatedBlockDataResponse {
 // === Search Response Structures ===
 
 /**
- * Kernel search result item
+ * Kernel search result item (legacy - for search results)
  */
-export interface KernelSearchItem {
+export interface KernelSearchResultItem {
   block_height: number;
   kernel_index: number;
   signature: HexData;
@@ -306,7 +328,7 @@ export interface KernelSearchItem {
  * Kernel search response
  */
 export interface KernelSearchResponse {
-  items: KernelSearchItem[];
+  items: KernelSearchResultItem[];
 }
 
 /**
@@ -363,13 +385,13 @@ export enum OutputType {
  * Search type enumeration
  */
 export enum SearchType {
-  BLOCK_HEIGHT = 'height',
-  BLOCK_HASH = 'hash',
-  KERNEL_SIGNATURE = 'kernel',
-  PAYMENT_REFERENCE = 'payref',
+  BLOCK_HEIGHT = "height",
+  BLOCK_HASH = "hash",
+  KERNEL_SIGNATURE = "kernel",
+  PAYMENT_REFERENCE = "payref",
 }
 
 /**
  * Block data type for pagination
  */
-export type BlockDataType = 'inputs' | 'outputs' | 'kernels';
+export type BlockDataType = "inputs" | "outputs" | "kernels";
