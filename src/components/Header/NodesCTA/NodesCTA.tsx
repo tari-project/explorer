@@ -9,7 +9,7 @@ import {
   Text,
   TextWrapper,
   Wrapper,
-} from './MinersCTA.styles';
+} from './NodesCTA.styles';
 import ArrowIcon from '../images/ArrowIcon';
 import { useMinerStats } from '@services/api/hooks/useMinerStats';
 import { getOS } from '@utils/getOs';
@@ -29,15 +29,15 @@ interface Props {
   buttonOnly?: boolean;
 }
 
-export default function MinersCTA({
+export default function NodesCTA({
   theme,
   buttonText = 'Download Tari Universe',
   noBackground,
   minersOnly = false,
   buttonOnly = false,
 }: Props) {
-  const { data } = useMinerStats();
-  const countValue = data?.totalMiners ?? 0;
+  const { data, isError } = useMinerStats();
+  const countValue = data?.confirmed_nodes_24h ?? 0;
   const [numberWidth, setNumberWidth] = useState(26);
   const numberRef = useRef<HTMLSpanElement>(null);
   const [downloadLink, setDownloadLink] = useState(DOWNLOAD_LINKS.default);
@@ -86,11 +86,11 @@ export default function MinersCTA({
   if (minersOnly) {
     return (
       <TextWrapper
-        data-testid="miners-cta"
+        data-testid="nodes-cta"
         data-theme={theme}
         data-button-text={buttonText}
         data-no-background={noBackground ? 'true' : 'false'}
-        data-miners-only="true"
+        data-nodes-only="true"
         data-button-only="false"
       >
         <DotSml $theme={theme} />
@@ -108,18 +108,20 @@ export default function MinersCTA({
           >
             <span ref={numberRef}>
               <Suspense fallback={<div>Loading...</div>}>
-                <NumberFlow
-                  value={countValue}
-                  format={{
-                    notation: countValue > 100000 ? 'compact' : 'standard',
-                    compactDisplay: 'short',
-                    maximumFractionDigits: 1,
-                  }}
-                />
+                {(isError && <span>???</span>) || (
+                  <NumberFlow
+                    value={countValue}
+                    format={{
+                      notation: countValue > 100000 ? 'compact' : 'standard',
+                      compactDisplay: 'short',
+                      maximumFractionDigits: 1,
+                    }}
+                  />
+                )}
               </Suspense>
             </span>
           </NumberWrapperSml>
-          active miners
+          active nodes
         </Text>
       </TextWrapper>
     );
@@ -128,11 +130,11 @@ export default function MinersCTA({
   if (buttonOnly) {
     return (
       <ButtonWrapper
-        data-testid="miners-cta"
+        data-testid="nodes-cta"
         data-theme={theme}
         data-button-text={buttonText}
         data-no-background={noBackground ? 'true' : 'false'}
-        data-miners-only="false"
+        data-nodes-only="false"
         data-button-only="true"
       >
         <Button $theme={theme} onClick={handleDownloadClick}>
@@ -148,11 +150,11 @@ export default function MinersCTA({
       <Wrapper
         $theme={theme}
         $noBackground={noBackground}
-        data-testid="miners-cta"
+        data-testid="nodes-cta"
         data-theme={theme}
         data-button-text={buttonText}
         data-no-background={noBackground ? 'true' : 'false'}
-        data-miners-only="false"
+        data-nodes-only="false"
         data-button-only="false"
       >
         <TextWrapper>
@@ -161,18 +163,20 @@ export default function MinersCTA({
             <NumberWrapper style={{ width: `${numberWidth}px` }}>
               <span ref={numberRef}>
                 <Suspense fallback={<div>Loading...</div>}>
-                  <NumberFlow
-                    value={countValue}
-                    format={{
-                      notation: countValue > 100000 ? 'compact' : 'standard',
-                      compactDisplay: 'short',
-                      maximumFractionDigits: 1,
-                    }}
-                  />
+                  {(isError && <span>???</span>) || (
+                    <NumberFlow
+                      value={countValue}
+                      format={{
+                        notation: countValue > 100000 ? 'compact' : 'standard',
+                        compactDisplay: 'short',
+                        maximumFractionDigits: 1,
+                      }}
+                    />
+                  )}
                 </Suspense>
               </span>
             </NumberWrapper>
-            active miners
+            active nodes
           </Text>
         </TextWrapper>
         <ButtonWrapper>

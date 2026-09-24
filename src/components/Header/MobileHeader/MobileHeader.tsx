@@ -11,7 +11,7 @@ import {
 } from './styles';
 import MobileMenuButton from '../MobileMenuButton/MobileMenuButton';
 import { useMainStore } from '@services/stores/useMainStore';
-import MinersCTA from '../MinersCTA/MinersCTA';
+import NodesCTA from '../NodesCTA/NodesCTA';
 import { SocialIconButtons } from '@components/SocialLinks/SocialLinks';
 import MobileNavigation from './MobileNavigation/MobileNavigation';
 import Gem from '@assets/images/tari-gem.svg';
@@ -54,7 +54,7 @@ export default function MobileHeader() {
                       }}
                     />
                   </Link>
-                  <MinersCTA
+                  <NodesCTA
                     theme="dark"
                     buttonText={`Download Tari Universe`}
                     noBackground
@@ -78,7 +78,7 @@ export default function MobileHeader() {
         <Menu>
           <MenuHolder>
             <MobileNavigation />
-            <MinersCTA
+            <NodesCTA
               theme="dark"
               buttonText={`Download Tari Universe`}
               buttonOnly
