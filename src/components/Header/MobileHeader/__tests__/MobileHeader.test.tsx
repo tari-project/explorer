@@ -20,7 +20,7 @@ vi.mock('../MobileMenuButton/MobileMenuButton', () => ({
   default: () => <button data-testid="mobile-menu-button">Menu</button>,
 }));
 
-vi.mock('../MinersCTA/MinersCTA', () => ({
+vi.mock('../NodesCTA/NodesCTA', () => ({
   default: ({
     theme,
     buttonText,
@@ -35,15 +35,15 @@ vi.mock('../MinersCTA/MinersCTA', () => ({
     buttonOnly?: boolean;
   }) => (
     <div
-      data-testid="miners-cta"
+      data-testid="nodes-cta"
       data-theme={theme}
       data-button-text={buttonText}
       data-no-background={noBackground ? 'true' : 'false'}
-      data-miners-only={minersOnly ? 'true' : 'false'}
+      data-nodes-only={minersOnly ? 'true' : 'false'}
       data-button-only={buttonOnly ? 'true' : 'false'}
     >
       {minersOnly
-        ? 'Miners Only CTA'
+        ? 'Nodes Only CTA'
         : buttonOnly
         ? 'Button Only CTA'
         : 'Full CTA'}
@@ -51,8 +51,8 @@ vi.mock('../MinersCTA/MinersCTA', () => ({
   ),
 }));
 
-// Mock the actual MinersCTA path more specifically
-vi.mock('../../MinersCTA/MinersCTA', () => ({
+// Mock the actual NodesCTA path more specifically
+vi.mock('../../NodesCTA/NodesCTA', () => ({
   default: ({
     theme,
     buttonText,
@@ -67,15 +67,15 @@ vi.mock('../../MinersCTA/MinersCTA', () => ({
     buttonOnly?: boolean;
   }) => (
     <div
-      data-testid="miners-cta"
+      data-testid="nodes-cta"
       data-theme={theme}
       data-button-text={buttonText}
       data-no-background={noBackground ? 'true' : 'false'}
-      data-miners-only={minersOnly ? 'true' : 'false'}
+      data-nodes-only={minersOnly ? 'true' : 'false'}
       data-button-only={buttonOnly ? 'true' : 'false'}
     >
       {minersOnly
-        ? 'Miners Only CTA'
+        ? 'Nodes Only CTA'
         : buttonOnly
         ? 'Button Only CTA'
         : 'Full CTA'}
@@ -159,7 +159,7 @@ describe('MobileHeader', () => {
     document.body.style.overflow = 'auto';
   });
 
-  it('should render mobile header with logo and miners CTA', () => {
+  it('should render mobile header with logo and nodes CTA', () => {
     render(
       <TestWrapper>
         <MobileHeader />
@@ -167,27 +167,27 @@ describe('MobileHeader', () => {
     );
 
     expect(screen.getByAltText('Tari Logo')).toBeInTheDocument();
-    expect(screen.getByTestId('miners-cta')).toBeInTheDocument();
+    expect(screen.getByTestId('nodes-cta')).toBeInTheDocument();
     expect(screen.getByTestId('search-field')).toBeInTheDocument();
     expect(screen.getByTestId('mobile-menu-button')).toBeInTheDocument();
   });
 
-  it('should render miners CTA with correct props for main display', () => {
+  it('should render nodes CTA with correct props for main display', () => {
     render(
       <TestWrapper>
         <MobileHeader />
       </TestWrapper>
     );
 
-    const minersCTA = screen.getAllByTestId('miners-cta')[0];
-    expect(minersCTA).toHaveAttribute('data-theme', 'dark');
-    expect(minersCTA).toHaveAttribute(
+    const nodesCTA = screen.getAllByTestId('nodes-cta')[0];
+    expect(nodesCTA).toHaveAttribute('data-theme', 'dark');
+    expect(nodesCTA).toHaveAttribute(
       'data-button-text',
       'Download Tari Universe'
     );
-    expect(minersCTA).toHaveAttribute('data-no-background', 'true');
-    expect(minersCTA).toHaveAttribute('data-miners-only', 'true');
-    expect(minersCTA).toHaveTextContent('Miners Only CTA');
+    expect(nodesCTA).toHaveAttribute('data-no-background', 'true');
+    expect(nodesCTA).toHaveAttribute('data-nodes-only', 'true');
+    expect(nodesCTA).toHaveTextContent('Nodes Only CTA');
   });
 
   it('should set showMobileMenu to false on mount', () => {
@@ -278,13 +278,13 @@ describe('MobileHeader', () => {
     expect(screen.getByTestId('mobile-navigation')).toBeInTheDocument();
     expect(screen.getByTestId('social-icon-buttons')).toBeInTheDocument();
 
-    // Should have button-only miners CTA in the menu
-    const minersCTAs = screen.getAllByTestId('miners-cta');
-    const menuMinersCTA = minersCTAs.find(
+    // Should have button-only nodes CTA in the menu
+    const nodesCTAs = screen.getAllByTestId('nodes-cta');
+    const menuNodesCTA = nodesCTAs.find(
       (cta) => cta.getAttribute('data-button-only') === 'true'
     );
-    expect(menuMinersCTA).toBeInTheDocument();
-    expect(menuMinersCTA).toHaveTextContent('Button Only CTA');
+    expect(menuNodesCTA).toBeInTheDocument();
+    expect(menuNodesCTA).toHaveTextContent('Button Only CTA');
   });
 
   it('should not show mobile menu when showMobileMenu is false', () => {
@@ -327,7 +327,7 @@ describe('MobileHeader', () => {
     });
   });
 
-  it('should render both miners CTA variants correctly', () => {
+  it('should render both nodes CTA variants correctly', () => {
     // Using mocked useMainStore
 
     (useMainStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
@@ -346,18 +346,18 @@ describe('MobileHeader', () => {
       </TestWrapper>
     );
 
-    const minersCTAs = screen.getAllByTestId('miners-cta');
-    expect(minersCTAs).toHaveLength(2);
+    const nodesCTAs = screen.getAllByTestId('nodes-cta');
+    expect(nodesCTAs).toHaveLength(2);
 
-    // Header CTA (miners only)
-    const headerCTA = minersCTAs[0];
-    expect(headerCTA).toHaveAttribute('data-miners-only', 'true');
+    // Header CTA (nodes only)
+    const headerCTA = nodesCTAs[0];
+    expect(headerCTA).toHaveAttribute('data-nodes-only', 'true');
     expect(headerCTA).toHaveAttribute('data-button-only', 'false');
 
     // Menu CTA (button only)
-    const menuCTA = minersCTAs[1];
+    const menuCTA = nodesCTAs[1];
     expect(menuCTA).toHaveAttribute('data-button-only', 'true');
-    expect(menuCTA).toHaveAttribute('data-miners-only', 'false');
+    expect(menuCTA).toHaveAttribute('data-nodes-only', 'false');
   });
 
   it('should have correct component layout structure', () => {
@@ -368,7 +368,7 @@ describe('MobileHeader', () => {
     );
 
     // Should have both the wrapper and the conditional menu
-    expect(screen.getByTestId('miners-cta')).toBeInTheDocument();
+    expect(screen.getByTestId('nodes-cta')).toBeInTheDocument();
     expect(screen.getByTestId('search-field')).toBeInTheDocument();
     expect(screen.getByTestId('mobile-menu-button')).toBeInTheDocument();
   });
@@ -383,7 +383,7 @@ describe('MobileHeader', () => {
     // isExpanded is hardcoded to false in the component
     // Logo should be visible when not expanded
     expect(screen.getByAltText('Tari Logo')).toBeInTheDocument();
-    expect(screen.getByTestId('miners-cta')).toBeInTheDocument();
+    expect(screen.getByTestId('nodes-cta')).toBeInTheDocument();
     // SearchField should receive isExpanded=false
     expect(screen.getByTestId('search-field')).toHaveAttribute(
       'data-is-expanded',
@@ -391,10 +391,10 @@ describe('MobileHeader', () => {
     );
     // Simulate expanding
     fireEvent.click(screen.getByTestId('expand-search'));
-    // No visible change in logo/miners-cta since isExpanded is local state, but setIsExpanded is called
+    // No visible change in logo/nodes-cta since isExpanded is local state, but setIsExpanded is called
   });
 
-  it('should apply correct theme to miners CTA components', () => {
+  it('should apply correct theme to nodes CTA components', () => {
     // Using mocked useMainStore
 
     (useMainStore as unknown as ReturnType<typeof vi.fn>).mockImplementation(
@@ -413,8 +413,8 @@ describe('MobileHeader', () => {
       </TestWrapper>
     );
 
-    const minersCTAs = screen.getAllByTestId('miners-cta');
-    minersCTAs.forEach((cta) => {
+    const nodesCTAs = screen.getAllByTestId('nodes-cta');
+    nodesCTAs.forEach((cta) => {
       expect(cta).toHaveAttribute('data-theme', 'dark');
     });
   });

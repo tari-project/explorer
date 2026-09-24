@@ -34,7 +34,7 @@ describe('useMinerStats', () => {
   });
 
   it('should fetch miner stats successfully', async () => {
-    const mockStats = { totalMiners: 42 };
+    const mockStats = { totalMiners: 42, confirmed_nodes_24h: 1234 };
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => mockStats,
@@ -47,7 +47,9 @@ describe('useMinerStats', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(mockFetch).toHaveBeenCalledWith('https://rwa.y.at/miner/stats');
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://netmap.supportxtm.com/api/v1/stats'
+    );
     expect(result.current.data).toEqual(mockStats);
     expect(result.current.isLoading).toBe(false);
     expect(result.current.error).toBe(null);
@@ -64,7 +66,9 @@ describe('useMinerStats', () => {
 
     await waitFor(() => expect(result.current.isError).toBe(true));
 
-    expect(mockFetch).toHaveBeenCalledWith('https://rwa.y.at/miner/stats');
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://netmap.supportxtm.com/api/v1/stats'
+    );
     expect(result.current.data).toBeUndefined();
     expect(result.current.error).toBeInstanceOf(Error);
     expect((result.current.error as Error)?.message).toBe(
@@ -79,13 +83,15 @@ describe('useMinerStats', () => {
 
     await waitFor(() => expect(result.current.isError).toBe(true));
 
-    expect(mockFetch).toHaveBeenCalledWith('https://rwa.y.at/miner/stats');
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://netmap.supportxtm.com/api/v1/stats'
+    );
     expect(result.current.data).toBeUndefined();
     expect(result.current.error).toBeInstanceOf(Error);
   });
 
   it('should use correct query options', async () => {
-    const mockStats = { totalMiners: 100 };
+    const mockStats = { totalMiners: 100, confirmed_nodes_24h: 100 };
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => mockStats,
@@ -117,7 +123,7 @@ describe('useMinerStats', () => {
   });
 
   it('should return correct data structure', async () => {
-    const mockStats = { totalMiners: 250 };
+    const mockStats = { totalMiners: 250, confirmed_nodes_24h: 250 };
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => mockStats,
@@ -130,6 +136,9 @@ describe('useMinerStats', () => {
     expect(result.current.data).toHaveProperty('totalMiners');
     expect(typeof result.current.data?.totalMiners).toBe('number');
     expect(result.current.data?.totalMiners).toBe(250);
+    expect(result.current.data).toHaveProperty('confirmed_nodes_24h');
+    expect(typeof result.current.data?.confirmed_nodes_24h).toBe('number');
+    expect(result.current.data?.confirmed_nodes_24h).toBe(250);
   });
 
   it('should handle empty response', async () => {

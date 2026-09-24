@@ -4,14 +4,15 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
-import MinersCTA from '../MinersCTA/MinersCTA';
+import NodesCTA from '../NodesCTA/NodesCTA';
 import { lightTheme } from '@theme/themes';
 
 // Mock hooks and utilities
 vi.mock('@services/api/hooks/useMinerStats', () => ({
   useMinerStats: vi.fn(() => ({
-    data: { totalMiners: 1234 },
+    data: { confirmed_nodes_24h: 1234 },
     isLoading: false,
+    isError: false,
     error: null,
   })),
 }));
@@ -90,7 +91,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-describe('MinersCTA', () => {
+describe('NodesCTA', () => {
   beforeEach(() => {
     mockOpen.mockClear();
     vi.clearAllTimers();
@@ -105,11 +106,11 @@ describe('MinersCTA', () => {
   it('should render full component with miners count and download button', () => {
     render(
       <TestWrapper>
-        <MinersCTA theme="light" />
+        <NodesCTA theme="light" />
       </TestWrapper>
     );
 
-    expect(screen.getByText('active miners')).toBeInTheDocument();
+    expect(screen.getByText('active nodes')).toBeInTheDocument();
     expect(screen.getByText('Download Tari Universe')).toBeInTheDocument();
     expect(screen.getByTestId('number-flow')).toBeInTheDocument();
   });
@@ -117,11 +118,11 @@ describe('MinersCTA', () => {
   it('should render minersOnly variant with correct styling', () => {
     render(
       <TestWrapper>
-        <MinersCTA theme="light" minersOnly={true} />
+        <NodesCTA theme="light" minersOnly={true} />
       </TestWrapper>
     );
 
-    expect(screen.getByText('active miners')).toBeInTheDocument();
+    expect(screen.getByText('active nodes')).toBeInTheDocument();
     expect(
       screen.queryByText('Download Tari Universe')
     ).not.toBeInTheDocument();
@@ -131,18 +132,18 @@ describe('MinersCTA', () => {
   it('should render buttonOnly variant with download button only', () => {
     render(
       <TestWrapper>
-        <MinersCTA theme="light" buttonOnly={true} />
+        <NodesCTA theme="light" buttonOnly={true} />
       </TestWrapper>
     );
 
-    expect(screen.queryByText('active miners')).not.toBeInTheDocument();
+    expect(screen.queryByText('active nodes')).not.toBeInTheDocument();
     expect(screen.getByText('Download Tari Universe')).toBeInTheDocument();
   });
 
   it('should open download link when button is clicked', () => {
     render(
       <TestWrapper>
-        <MinersCTA theme="light" />
+        <NodesCTA theme="light" />
       </TestWrapper>
     );
 
@@ -158,7 +159,7 @@ describe('MinersCTA', () => {
   it('should use custom button text when provided', () => {
     render(
       <TestWrapper>
-        <MinersCTA theme="light" buttonText="Custom Download Text" />
+        <NodesCTA theme="light" buttonText="Custom Download Text" />
       </TestWrapper>
     );
 
@@ -175,7 +176,7 @@ describe('MinersCTA', () => {
     (getOS as unknown as MockInstance).mockReturnValue('MacOS');
     const { unmount: unmountMac } = render(
       <TestWrapper>
-        <MinersCTA theme="light" />
+        <NodesCTA theme="light" />
       </TestWrapper>
     );
 
@@ -190,7 +191,7 @@ describe('MinersCTA', () => {
     (getOS as unknown as MockInstance).mockReturnValue('Unknown');
     render(
       <TestWrapper>
-        <MinersCTA theme="light" />
+        <NodesCTA theme="light" />
       </TestWrapper>
     );
 
@@ -220,7 +221,7 @@ describe('MinersCTA', () => {
 
     render(
       <TestWrapper>
-        <MinersCTA theme="light" />
+        <NodesCTA theme="light" />
       </TestWrapper>
     );
 
@@ -240,14 +241,14 @@ describe('MinersCTA', () => {
 
     // Test large number formatting
     (useMinerStats as unknown as MockInstance).mockReturnValue({
-      data: { totalMiners: 150000 },
+      data: { confirmed_nodes_24h: 150000 },
       isLoading: false,
       error: null,
     });
 
     render(
       <TestWrapper>
-        <MinersCTA theme="light" />
+        <NodesCTA theme="light" />
       </TestWrapper>
     );
 
@@ -265,33 +266,54 @@ describe('MinersCTA', () => {
 
     render(
       <TestWrapper>
-        <MinersCTA theme="light" />
+        <NodesCTA theme="light" />
       </TestWrapper>
     );
 
-    expect(screen.getByText('active miners')).toBeInTheDocument();
+    expect(screen.getByText('active nodes')).toBeInTheDocument();
     expect(screen.getByTestId('number-flow')).toBeInTheDocument();
+  });
+
+  it('should display ??? when stats fetch fails', async () => {
+    const { useMinerStats } = await import('@services/api/hooks/useMinerStats');
+
+    (useMinerStats as unknown as MockInstance).mockReturnValue({
+      data: null,
+      isLoading: false,
+      isError: true,
+      error: new Error('Failed to fetch miner stats'),
+    });
+
+    render(
+      <TestWrapper>
+        <NodesCTA theme="light" />
+      </TestWrapper>
+    );
+
+    expect(screen.getByText('???')).toBeInTheDocument();
+    expect(screen.queryByTestId('number-flow')).not.toBeInTheDocument();
+    expect(screen.getByText('active nodes')).toBeInTheDocument();
   });
 
   it('should apply dark theme styling', () => {
     render(
       <TestWrapper>
-        <MinersCTA theme="dark" />
+        <NodesCTA theme="dark" />
       </TestWrapper>
     );
 
-    expect(screen.getByText('active miners')).toBeInTheDocument();
+    expect(screen.getByText('active nodes')).toBeInTheDocument();
     expect(screen.getByText('Download Tari Universe')).toBeInTheDocument();
   });
 
   it('should apply noBackground styling', () => {
     render(
       <TestWrapper>
-        <MinersCTA theme="light" noBackground={true} />
+        <NodesCTA theme="light" noBackground={true} />
       </TestWrapper>
     );
 
-    expect(screen.getByText('active miners')).toBeInTheDocument();
+    expect(screen.getByText('active nodes')).toBeInTheDocument();
     expect(screen.getByText('Download Tari Universe')).toBeInTheDocument();
   });
 
@@ -311,11 +333,11 @@ describe('MinersCTA', () => {
 
     render(
       <TestWrapper>
-        <MinersCTA theme="light" />
+        <NodesCTA theme="light" />
       </TestWrapper>
     );
 
-    expect(screen.getByText('active miners')).toBeInTheDocument();
+    expect(screen.getByText('active nodes')).toBeInTheDocument();
     expect(screen.getByText('Download Tari Universe')).toBeInTheDocument();
   });
 });

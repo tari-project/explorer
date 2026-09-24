@@ -1,7 +1,7 @@
 import { Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { StyledContainer } from './HeaderTop.styles';
-import MinersCTA from '../MinersCTA/MinersCTA';
+import NodesCTA from '../NodesCTA/NodesCTA';
 import Logo from '@assets/images/tari-logo.svg';
 
 function HeaderTop() {
@@ -11,7 +11,7 @@ function HeaderTop() {
         <Link to="/">
           <img src={Logo} alt="Tari Logo" />
         </Link>
-        <MinersCTA
+        <NodesCTA
           theme="dark"
           buttonText="Download Tari Universe"
           noBackground={false}

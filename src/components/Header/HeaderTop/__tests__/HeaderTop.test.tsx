@@ -6,16 +6,16 @@ import React from 'react'
 import HeaderTop from '../HeaderTop'
 import { lightTheme } from '@theme/themes'
 
-// Mock MinersCTA component
-vi.mock('../../MinersCTA/MinersCTA', () => ({
+// Mock NodesCTA component
+vi.mock('../../NodesCTA/NodesCTA', () => ({
   default: ({ theme, buttonText, noBackground }: { 
     theme: string; 
     buttonText: string; 
     noBackground: boolean 
   }) => (
-    <div data-testid="miners-cta">
+    <div data-testid="nodes-cta">
       <span data-theme={theme}>{buttonText}</span>
-      <span data-no-background={noBackground.toString()}>MinersCTA</span>
+      <span data-no-background={noBackground.toString()}>NodesCTA</span>
     </div>
   )
 }))
@@ -65,18 +65,18 @@ describe('HeaderTop', () => {
     expect(logoLink).toHaveAttribute('href', '/')
   })
 
-  it('should render MinersCTA component', () => {
+  it('should render NodesCTA component', () => {
     render(
       <TestWrapper>
         <HeaderTop />
       </TestWrapper>
     )
 
-    const minersCTA = screen.getByTestId('miners-cta')
-    expect(minersCTA).toBeInTheDocument()
+    const nodesCTA = screen.getByTestId('nodes-cta')
+    expect(nodesCTA).toBeInTheDocument()
   })
 
-  it('should pass correct props to MinersCTA', () => {
+  it('should pass correct props to NodesCTA', () => {
     render(
       <TestWrapper>
         <HeaderTop />
@@ -84,13 +84,13 @@ describe('HeaderTop', () => {
     )
 
     expect(screen.getByText('Download Tari Universe')).toBeInTheDocument()
-    expect(screen.getByText('MinersCTA')).toBeInTheDocument()
+    expect(screen.getByText('NodesCTA')).toBeInTheDocument()
     
     // Check props are passed correctly
     const themeElement = screen.getByText('Download Tari Universe')
     expect(themeElement).toHaveAttribute('data-theme', 'dark')
     
-    const noBackgroundElement = screen.getByText('MinersCTA')
+    const noBackgroundElement = screen.getByText('NodesCTA')
     expect(noBackgroundElement).toHaveAttribute('data-no-background', 'false')
   })
 
@@ -116,7 +116,7 @@ describe('HeaderTop', () => {
     expect(divider).toHaveClass('MuiDivider-root')
   })
 
-  it('should have correct structure with container, logo link, and MinersCTA', () => {
+  it('should have correct structure with container, logo link, and NodesCTA', () => {
     render(
       <TestWrapper>
         <HeaderTop />
@@ -125,11 +125,11 @@ describe('HeaderTop', () => {
 
     const container = screen.getByTestId('styled-container')
     const logoLink = screen.getByRole('link')
-    const minersCTA = screen.getByTestId('miners-cta')
+    const nodesCTA = screen.getByTestId('nodes-cta')
 
-    // Check that container contains both logo link and MinersCTA
+    // Check that container contains both logo link and NodesCTA
     expect(container).toContainElement(logoLink)
-    expect(container).toContainElement(minersCTA)
+    expect(container).toContainElement(nodesCTA)
   })
 
   it('should render logo with proper attributes', () => {
@@ -177,6 +177,6 @@ describe('HeaderTop', () => {
     
     // Should render all components
     expect(screen.getByAltText('Tari Logo')).toBeInTheDocument()
-    expect(screen.getByTestId('miners-cta')).toBeInTheDocument()
+    expect(screen.getByTestId('nodes-cta')).toBeInTheDocument()
   })
 })
