@@ -19,23 +19,25 @@ const SearchKernel = () => {
 
   const handleKernelSearch = () => {
     setTouched({ nonce: true, signature: true });
-    if (!inputValue.nonce || !inputValue.signature) {
+    const trimmedNonce = inputValue.nonce.trim();
+    const trimmedSignature = inputValue.signature.trim();
+    if (!trimmedNonce || !trimmedSignature) {
       setMessage('Both fields are required.');
       return;
     }
-    if (!validateQuery(inputValue.nonce)) {
+    if (!validateQuery(trimmedNonce)) {
       setMessage('Nonce must be a 64-character hash.');
       return;
     }
-    if (!validateQuery(inputValue.signature)) {
+    if (!validateQuery(trimmedSignature)) {
       setMessage('Signature must be a 64-character hash.');
       return;
     }
     setMessage('');
     setSearchOpen(false);
     const params = new URLSearchParams();
-    params.append('nonces', inputValue.nonce);
-    params.append('signatures', inputValue.signature);
+    params.append('nonces', trimmedNonce);
+    params.append('signatures', trimmedSignature);
     navigate(`/kernel_search?${params.toString()}`);
   };
 

@@ -6,30 +6,32 @@ const kernelSearch = (
   kernels: unknown[]
 ): number | null => {
   if (!kernels) return null;
+  const normalizedNonce = nonce.trim().toLowerCase();
+  const normalizedSignature = signature.trim().toLowerCase();
 
   const foundIndex = kernels.findIndex((kernel) => {
-    const k = kernel as Record<string, unknown>;
-    const excess_sig = k.excess_sig as Record<string, unknown>;
-    const public_nonce = excess_sig.public_nonce as Record<string, unknown>;
-    const sig = excess_sig.signature as Record<string, unknown>;
-    
-    const kernelNonce = toHexString(public_nonce.data as number[]);
-    const kernelSignature = toHexString(sig.data as number[]);
+    const k = kernel as Record<string, unknown> | null | undefined;
+    const excess_sig = k?.excess_sig as Record<string, unknown> | null | undefined;
+    const public_nonce = excess_sig?.public_nonce as Record<string, unknown> | null | undefined;
+    const sig = excess_sig?.signature as Record<string, unknown> | null | undefined;
+
+    const kernelNonce = String(toHexString(public_nonce?.data as number[])).toLowerCase();
+    const kernelSignature = String(toHexString(sig?.data as number[])).toLowerCase();
 
     // Match if either field is provided and matches
-    const nonceMatch = nonce ? kernelNonce.includes(nonce) : false;
-    const signatureMatch = signature
-      ? kernelSignature.includes(signature)
+    const nonceMatch = normalizedNonce ? kernelNonce.includes(normalizedNonce) : false;
+    const signatureMatch = normalizedSignature
+      ? kernelSignature.includes(normalizedSignature)
       : false;
 
     // If both fields are provided, require both to match; if only one, require that one
-    if (nonce && signature) {
+    if (normalizedNonce && normalizedSignature) {
       return nonceMatch && signatureMatch;
     }
-    if (nonce) {
+    if (normalizedNonce) {
       return nonceMatch;
     }
-    if (signature) {
+    if (normalizedSignature) {
       return signatureMatch;
     }
     return false;
@@ -40,12 +42,12 @@ const kernelSearch = (
 
 const payrefSearch = (payref: string, outputs: unknown[]): number | null => {
   if (!outputs) return null;
-  payref = payref.toLowerCase();
+  payref = payref.trim().toLowerCase();
 
   const foundIndex = outputs.findIndex((output) => {
-    const o = output as Record<string, unknown>;
-    const payment_reference = o.payment_reference as Record<string, unknown>;
-    const paymentRefHex = toHexString(payment_reference.data as number[]);
+    const o = output as Record<string, unknown> | null | undefined;
+    const payment_reference = o?.payment_reference as Record<string, unknown> | null | undefined;
+    const paymentRefHex = String(toHexString(payment_reference?.data as number[])).toLowerCase();
     const payrefMatch = payref ? paymentRefHex === payref : false;
     if (payref) {
       return payrefMatch;
@@ -58,12 +60,12 @@ const payrefSearch = (payref: string, outputs: unknown[]): number | null => {
 
 const commitmentSearch = (commitment: string, outputs: unknown[]): number | null => {
   if (!outputs) return null;
-  commitment = commitment.toLowerCase();
+  commitment = commitment.trim().toLowerCase();
 
   const foundIndex = outputs.findIndex((output) => {
-    const o = output as Record<string, unknown>;
-    const commitmentData = o.commitment as Record<string, unknown>;
-    const commitmentHex = toHexString(commitmentData.data as number[]);
+    const o = output as Record<string, unknown> | null | undefined;
+    const commitmentData = o?.commitment as Record<string, unknown> | null | undefined;
+    const commitmentHex = String(toHexString(commitmentData?.data as number[])).toLowerCase();
     const commitmentMatch = commitment ? commitmentHex === commitment : false;
     if (commitment) {
       return commitmentMatch;
