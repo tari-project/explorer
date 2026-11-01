@@ -425,6 +425,28 @@ describe("useBlocks hooks", () => {
         "https://textexplore.tari.com/search_kernels?nonces=single-nonce&signatures=single-sig&json"
       );
     });
+
+    it("should use unique cache keys for different kernel search parameters", async () => {
+      mockJsonRpc.mockResolvedValue({ results: [] });
+
+      const { useSearchByKernel } = await import("../useBlocks");
+      const wrapper = createWrapper();
+
+      const { result: result1 } = renderHook(() => useSearchByKernel(["nonce1"], ["sig1"]), {
+        wrapper,
+      });
+
+      const { result: result2 } = renderHook(() => useSearchByKernel(["nonce2"], ["sig2"]), {
+        wrapper,
+      });
+
+      await waitFor(() => {
+        expect(result1.current.isSuccess).toBe(true);
+        expect(result2.current.isSuccess).toBe(true);
+      });
+
+      expect(mockJsonRpc).toHaveBeenCalledTimes(2);
+    });
   });
 
   describe("Hook integrations", () => {

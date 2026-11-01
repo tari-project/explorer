@@ -390,4 +390,31 @@ describe('SearchKernel', () => {
       screen.getByText('Nonce must be a 64-character hash.')
     ).toBeInTheDocument();
   });
+
+  it('should trim leading and trailing whitespace from valid 64-character hashes', () => {
+    render(
+      <TestWrapper>
+        <SearchKernel />
+      </TestWrapper>
+    );
+
+    const nonceInput = screen.getByRole('textbox', { name: /nonce/i });
+    const signatureInput = screen.getByRole('textbox', { name: /signature/i });
+    const searchButton = screen.getByRole('button', { name: /search/i });
+
+    const validNonce =
+      '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef';
+    const validSignature =
+      'fedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321';
+
+    fireEvent.change(nonceInput, { target: { value: `  ${validNonce}  ` } });
+    fireEvent.change(signatureInput, {
+      target: { value: ` ${validSignature}\n` },
+    });
+    fireEvent.click(searchButton);
+
+    expect(mockNavigate).toHaveBeenCalledWith(
+      `/kernel_search?nonces=${validNonce}&signatures=${validSignature}`
+    );
+  });
 });

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { kernelSearch, payrefSearch } from '../searchFunctions';
+import { kernelSearch, payrefSearch, commitmentSearch } from '../searchFunctions';
 
 // Mock the helpers module
 vi.mock('@utils/helpers', () => ({
@@ -102,6 +102,16 @@ describe('kernelSearch', () => {
     const result = kernelSearch('test', '', malformedKernels);
     expect(result).toBeNull();
   });
+
+  it('should match uppercase and whitespace-padded hex queries case-insensitively', () => {
+    const result = kernelSearch('  090A0B0C ', ' 0D0E0F10  ', mockKernels);
+    expect(result).toBe(1);
+  });
+
+  it('should handle missing excess_sig gracefully without throwing', () => {
+    const malformedKernels = [{}, null];
+    expect(kernelSearch('01020304', '', malformedKernels)).toBeNull();
+  });
 });
 
 describe('payrefSearch', () => {
@@ -144,5 +154,25 @@ describe('payrefSearch', () => {
     const malformedOutputs = [{ payment_reference: { data: null } }];
     const result = payrefSearch('test', malformedOutputs);
     expect(result).toBeNull();
+  });
+
+  it('should match uppercase and whitespace-padded payref queries', () => {
+    const outputs = [createMockOutput([10, 11, 12, 13])];
+    expect(payrefSearch('  0A0B0C0D ', outputs)).toBe(0);
+  });
+});
+
+describe('commitmentSearch', () => {
+  const createMockCommitmentOutput = (commitmentData: number[] | null) => ({
+    commitment: { data: commitmentData },
+  });
+
+  it('should match commitment case-insensitively and ignore surrounding whitespace', () => {
+    const outputs = [createMockCommitmentOutput([10, 11, 12, 13])];
+    expect(commitmentSearch(' 0A0B0C0D ', outputs)).toBe(0);
+  });
+
+  it('should handle malformed outputs without commitment field gracefully', () => {
+    expect(commitmentSearch('0a0b0c0d', [{}, null])).toBeNull();
   });
 });
