@@ -356,7 +356,7 @@ function BlockTable() {
         }}
       >
         <Typography variant="h6">
-          Showing blocks {firstHeight - blocksPerPage + 1} - {firstHeight}
+          Showing blocks {Math.max(0, firstHeight - blocksPerPage + 1)} - {firstHeight}
         </Typography>
         <ButtonGroup
           variant="outlined"

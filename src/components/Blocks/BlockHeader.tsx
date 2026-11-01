@@ -43,7 +43,7 @@ import {
 
 function BlockHeader() {
   const { pathname } = useLocation();
-  const heightOrHash = pathname.split('/')[2];
+  const heightOrHash = pathname.split('/')[2] ?? '';
   const { data, isFetching, isError } = useGetBlockByHeightOrHash(heightOrHash);
   const { data: tipInfo } = useAllBlocks();
   const [nextDisabled, setNextDisabled] = useState(false);
@@ -51,37 +51,48 @@ function BlockHeader() {
   const theme = useTheme();
   const tip = tipInfo?.tipInfo.metadata.best_block_height;
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const nextLink = data?.height ? `/blocks/${data.height + 1}` : `/blocks/`;
-  const prevLink = data?.height ? `/blocks/${data.height - 1}` : '/blocks/';
+  const hasHeight =
+    data?.height !== undefined && data?.height !== null && data?.height !== '';
+  const numericHeight = hasHeight ? Number(data.height) : undefined;
+  const nextLink =
+    numericHeight !== undefined && !Number.isNaN(numericHeight)
+      ? `/blocks/${numericHeight + 1}`
+      : `/blocks/`;
+  const prevLink =
+    numericHeight !== undefined && !Number.isNaN(numericHeight) && numericHeight > 0
+      ? `/blocks/${numericHeight - 1}`
+      : '/blocks/';
 
   useEffect(() => {
-    if (isError || !data) {
+    if (isError || !data || numericHeight === undefined || Number.isNaN(numericHeight)) {
       setPrevDisabled(true);
       setNextDisabled(true);
       return;
     }
-    if (data?.height === 0) {
+    if (numericHeight === 0) {
       setPrevDisabled(true);
     } else {
       setPrevDisabled(false);
     }
-    if (data?.height >= tip) {
+    if (tip !== undefined && numericHeight >= Number(tip)) {
       setNextDisabled(true);
     } else {
       setNextDisabled(false);
     }
-  }, [data, isError, data?.height, tip]);
+  }, [data, isError, numericHeight, tip]);
 
   return (
     <>
       <Container maxWidth="xl">
-        {data?.height ? (
+        {hasHeight ? (
           <HeaderContainer isMobile={isMobile}>
             <HeaderTitle variant="h6">
               Block at Height
             </HeaderTitle>
             <HeaderHeight variant="h1" isMobile={isMobile}>
-              {(data?.height || '').toLocaleString()}
+              {numericHeight !== undefined && !Number.isNaN(numericHeight)
+                ? numericHeight.toLocaleString()
+                : String(data?.height ?? '')}
             </HeaderHeight>
           </HeaderContainer>
         ) : (

@@ -188,6 +188,12 @@ describe('BlockHeader', () => {
 
     const prevButton = screen.getByText('Previous Block').closest('button') as HTMLButtonElement;
     expect(prevButton).toBeDisabled();
+    expect(screen.getByText('Block at Height')).toBeInTheDocument();
+    expect(screen.getByText('0')).toBeInTheDocument();
+    expect(screen.getByText('Next Block').closest('a') as HTMLAnchorElement).toHaveAttribute(
+      'href',
+      '/blocks/1'
+    );
   });
 
   it('should disable next button when at tip height', () => {

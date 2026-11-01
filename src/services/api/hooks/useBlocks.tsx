@@ -87,7 +87,7 @@ export const useGetPaginatedData = (blockHeight: string, what: string, from: num
 
 export const useSearchByKernel = (nonces: string[], signatures: string[]) => {
   return useQuery({
-    queryKey: ["searchByKernel"],
+    queryKey: ["searchByKernel", nonces, signatures],
     queryFn: () => {
       const encodedNonces = nonces.map(encodeURIComponent).join(",");
       const encodedSignatures = signatures.map(encodeURIComponent).join(",");
